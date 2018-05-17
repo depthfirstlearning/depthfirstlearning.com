@@ -2,7 +2,7 @@
 layout: post
 title:  "Alpha Go Zero"
 date:   2018-05-10 18:50:23 -0400
-categories: 
+categories: games
 ---
 
 # Class 1: Minimax and Alpha Beta Pruning
