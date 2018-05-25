@@ -6,10 +6,10 @@ categories: games
 ---
 
 # Resources:
-  1. MAS: [Multi Agent Systems](http://www.masfoundations.org/mas.pdf)
-  2. LT: [Marc Lanctot’s Thesis](http://mlanctot.info/files/papers/PhD_Thesis_MarcLanctot.pdf)
-  3. ICRM: [Introduction to Counterfactual Regret Minimization](http://modelai.gettysburg.edu/2013/cfr/cfr.pdf**)
-  4. PLG: [Prediction, Learning, and Games](http://www.ii.uni.wroc.pl/~lukstafi/pmwiki/uploads/AGT/Prediction_Learning_and_Games.pdf)
+1. MAS: [Multi Agent Systems](http://www.masfoundations.org/mas.pdf)
+2. LT: [Marc Lanctot’s Thesis](http://mlanctot.info/files/papers/PhD_Thesis_MarcLanctot.pdf)
+3. ICRM: [Introduction to Counterfactual Regret Minimization](http://modelai.gettysburg.edu/2013/cfr/cfr.pdf**)
+4. PLG: [Prediction, Learning, and Games](http://www.ii.uni.wroc.pl/~lukstafi/pmwiki/uploads/AGT/Prediction_Learning_and_Games.pdf)
 
 # Class 1: Normal-Form Games & Poker
   **Motivation**: Normal-Form games are the backbone for many of the techniques that later were used in DeepStack and Libratus. Understanding them will be a necessary foundation to understanding the innovations they presented.
