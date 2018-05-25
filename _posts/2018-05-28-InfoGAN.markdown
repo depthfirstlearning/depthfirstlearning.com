@@ -1,0 +1,95 @@
+# InfoGAN
+
+The full paper is here: https://arxiv.org/abs/1606.03657, originally from NIPS 2016.
+
+## Why is this paper important?
+
+InfoGAN is an extension of GAN, which learns to map unlabelled data to codes (aka representation learning). Compare this to vanilla GANs that can only generate samples, or to another generative model, VAE, that learns to both generate codes and samples. Representation learning is one of the biggest promises of unsupservised learning, and GANs are one of the most flexible and powerful such models. This makes InfoGAN important and an interesting stepping stone towards possible future research in representation learning.
+
+## Study Plan
+
+1. [Information Theory](#1-information-theory)
+2. [GANs](#2-gans-generative-adversarial-networks)
+3. [InfoGAN](#3-infogan)
+
+***
+
+TODO: Look over some of the content we generated as a group here: https://docs.google.com/document/d/1N_wXMcdesBidE-Hg7W3vrccngJDIPNe7goL6ArdNe5I/edit
+
+## 1. Information Theory
+
+TODO: Add intro pararaph
+
+### General high-level topics:
+
+ - Entropy
+ - Differential Entropy
+ - Conditional Entropy
+ - Jensen’s Inequality
+ - KL divergence
+ - Mutual Information
+
+### Resources
+
+ - Chapter 1.6 from Pattern Recognition and Machine Learning / Bishop. (book colloquially known as "PRML")
+ - A good [intuitive explanation of Entropy](https://www.quora.com/What-is-an-intuitive-explanation-of-the-concept-of-entropy-in-information-theory/answer/Peter-Gribble), from Quora.
+ - For more perspectives and deeper dependencies, see Metacademy:
+   - [Entropy](https://metacademy.org/graphs/concepts/entropy)
+   - [Mutual Information](https://metacademy.org/graphs/concepts/mutual_information)
+   - [KL diverence](https://metacademy.org/graphs/concepts/kl_divergence)
+   - (Optional) [Notes on Kullback-Leibler Divergence and Likelihood Theory](https://arxiv.org/pdf/1404.2000.pdf)
+
+### Questions
+ - From PRML: 1.28, 1.31, 1.36, 1.37, 1.38, 1.39, 1.41.
+ - In classification problems, [minimizing cross-entropy loss is the same as minimizing the KL divergence 
+   of the predicted class distribution from the true class distribution](https://ai.stackexchange.com/questions/3065/why-has-cross-entropy-become-the-classification-standard-loss-function-and-not-k/4185). Why do we minimize the KL, rather
+   than other measures, such as L2 distance?
+   <details><summary>One possible answer</summary>
+   (TODO: reformat) In classification problem: One natural measure of “goodness” is the likelihood or marginal prob of observed values. By definition, it’s P(Y | X; params), which is Sum_i P(Y = yi | X; params). This says that we want to maximize the probability of producing the “correct” yi class only, and don’t really care to push down the probability of incorrect class like L2 loss would.
+
+	E.g., suppose the true label y = [0, 1, 0] (one-hot of class label {1, 2, 3}), and the softmax of the final layer in NN is y’ = [0.2, 0.5, 0.3]. One could use L2 between these two distributions, but if instead we minimize KL divergence KL(y || y’), which is equivalent to minimizing cross-entropy loss (the standard loss everyone uses to solve this problem), we would compute 0 * log(0) + 1 * log (0.5) + 0 * log(0) = log(0.5), which describes exactly the log likelihood of the label being class 2 for this particular training example. Here choosing to minimize KL means we’re maximizing the data likelihood. I think it could also be reasonable to use L2, but we would be maximizing the data likelihood + “unobserved anti-likelihood” :) (my made up word) meaning we want to kill off all those probabilities of predicting wrong labels as well. Another reason L2 is less prefered might be that L2 involves looping over all class labels whereas KL can look only at the correct class when computing the loss.
+  </details>
+
+***
+
+## 2. GANs (Generative Adversarial Networks)
+
+GANs are framework for constructing models that learn to sample from a
+probability distribution, given a finite sample from that distribution.
+More concretely, after training on a finite unlabeled dataset (say of images), 
+a GAN can generate new images from the same "kind" that aren't in the original
+training set.
+
+GANs are most commonly known for their ability to generate realistic
+looking images when trained on datasets like CIFAR-10, CelebA or ImageNet.
+
+### General high level topics:
+ - JS (Jensen-Shannon) divergence
+ - How are GANs trained?
+ - Various possible GAN objectives. Why are they needed?
+ - GAN training minimizes the JS divergence between the data-generating distribution and the distribution of samples from the generator part of the GAN
+
+### Resources
+ - [JS Divergence](https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence)
+ - [The original GAN paper](https://arxiv.org/abs/1406.2661)
+ - [Understanding the vanishing generator gradients point in the GAN paper](https://drive.google.com/file/d/0B_-OCJsRhqAuVlhZaVZwSHMyOFE/view)
+
+### Questions
+  - (TODO: clarify): Prove the equivalence between this definition of JSD and the one using Jensen's inequality and Shannon Entropy
+
+***
+
+## 3. InfoGAN
+
+TODO: everything here :)
+
+TODO: Explain that really, all that InfoGAN does it try to predict z from x after sampling. The variational inequality stuff was just added after to make it seem more mathematical.
+
+Questions (draft)
+ - Understand section 5 and appendix A in the paper. Possible questions to discuss:
+ - There is more than one way to expand H(c|G(z, c)) in equation (4). Why do they choose that particular form (first sample x, then c' conditioned on x)? What other ways could it be done?
+ - Why is an auxiliary Q distribution necessary? 
+ - Why is Lemma 5.1 (proven in appendix A) needed?
+ - How is Lemma 5.1 used in equation (5)
+ - What do they mean by "L_I can be maximized w.r.t G via the reparameterization trick"? (Google has some good references)
+ - Could you re-write section 5? What would you change?
