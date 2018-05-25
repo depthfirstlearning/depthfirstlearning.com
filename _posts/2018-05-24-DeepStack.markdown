@@ -55,14 +55,16 @@ categories: games
 	  3. Succinctly describe the technique demonstrated in the Accelerating Best Response paper.
 
 # Class 4: Counterfactual Regret Minimization #1
-  **Motivation: Counterfactual Regret Minimization (CFR) is only a decade old 
-  but has already achieved huge success as the foundation underlying DeepStack 
-  and Libratus. In the first of two weeks dedicated to CFR, we learn how it 
-  works algorithmically.
-  **Required Reading**:
-    1. ICRM: 2.1-2.4, 3.1-3.4
-    2. LT: 2.2
-    3. Original Paper --> [Regret Minimization in Games with Incomplete Information](http://poker.cs.ualberta.ca/publications/NIPS07-cfr.pdf)
+
+**Motivation**: Counterfactual Regret Minimization (CFR) is only a decade old 
+but has already achieved huge success as the foundation underlying DeepStack 
+and Libratus. In the first of two weeks dedicated to CFR, we learn how it 
+works algorithmically.
+
+**Required Reading**:
+1. ICRM: 2.1-2.4, 3.1-3.4
+2. LT: 2.2
+3. Original Paper --> [Regret Minimization in Games with Incomplete Information](http://poker.cs.ualberta.ca/publications/NIPS07-cfr.pdf)
   **Optional Reading**: The two below are CFR extensions used in DeepStack.
     1. CFR-D --> [Solving Imperfect Information Games Using Decomposition](https://pdfs.semanticscholar.org/8216/0cbdcbeb13d53db85da928d8c42a789fdd69.pdf)
     2. CFR+ --> [Solving Large Imperfect Information Games Using CFR+](https://arxiv.org/pdf/1407.5042.pdf)
