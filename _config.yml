@@ -1,47 +1,38 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely edit after that. If you find
-# yourself editing this file very often, consider using Jekyll's data files
-# feature for the data you need to update frequently.
-#
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
-
 # Site settings
-# These are used to personalize your new site. If you look in the HTML files,
-# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
-# You can create any custom variable you would like, and they will be accessible
-# in the templates via {{ site.myvariable }}.
-title: Depth First Learning
+title:          Depth First Learning
 email: depthfirstlearning@gmail.com
-description: >- # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://depthfirstlearning.com" # the base hostname & protocol for your site, e.g. http://example.com
-# TODO: Fill in twitter username.
-twitter_username: jekyllrb
-# TODO: Fill in github username.
-github_username:  jekyll
+description:    "Machine Learning Curricula"
+url:            "https://www.depthfirstlearning.com"
+twitter_username: depthfirstlearning
+github_username:  deconstructed
+
+# Authors
+dfl:
+    name: Depth First Learning
+    email: depthfirstlearning@gmail.com
+    web: http://twitter.com/depthfirstlearning
+avital:
+    name: Avital Oliver
+    email: avitalo@google.com
+    web: http://twitter.com/avitaloliver
+cinjon:
+    name: Cinjon Resnick
+    email: cinjon.resnick@gmail.com
+    web: http://twitter.com/cinjoncin
 
 # Build settings
-markdown: kramdown
-theme: minima
+markdown:       kramdown
+
+# Assets
+sass:
+  sass_dir:     _sass
+  style:        compressed
+
+# Gems
 plugins:
-  - jekyll-feed
+  - jekyll-paginate
+  # - jemoji #Uncomment this to allow emoji in your post
 
-# Exclude from processing.
-# The following items will not be processed, by default. Create a custom list
-# to override the default setting.
-# exclude:
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
-
-permalink: /blog/:year/:month/:day/:title
+# Permalinks
+permalink:      /:year-:month-:day/:title
+paginate:       5

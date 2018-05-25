@@ -1,26 +1,24 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Depth First Learning</title>
-        <link rel="stylesheet" type="text/css" href="/css/main.css">
-    </head>
-    <body>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/about">About</a></li>
-                <li><a href="/curriculums">Curriculums</a></li>
-            </ul>
-        </nav>
-        <div class="container">
+<html lang="en">
 
-            {{ content }}
+  {% include head.html %}
 
-        </div><!-- /.container -->
-        <footer>
-            <ul>
-                <li><a href="mailto:depthfirstlearning@gmail.com">email</a></li>
-            </ul>
-        </footer>
-    </body>
+  <body>
+    <nav class="nav">
+      <div class="nav-container">
+        <a href="{{ site.baseurl }}/">
+          <h2 class="nav-title">{{ site.title }}</h2>
+        </a>
+        <ul>
+          <li><a href="{{ '/about' | prepend: site.baseurl }}">About</a></li>
+          <li><a href="{{ site.baseurl }}/">Curriculums</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      {{ content }}
+    </main>
+
+  </body>
 </html>
