@@ -4,6 +4,9 @@ title:  "Deep Stack"
 date:   2018-05-24 18:50:23 -0400
 categories: games
 author: cinjon
+blurb: "In this curriculum, you will explore game theory and counterfactual
+        regret minimization in order to understand techniques for solving two 
+        person zero-sum games of incomplete information."
 ---
 
 # Introduction

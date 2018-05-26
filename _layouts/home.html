@@ -10,9 +10,7 @@ layout: default
         <h1 class="catalogue-title">{{ post.title }}</h1>
         <div class="catalogue-line"></div>
 
-        <p>
-          {{ post.content | strip_html | truncatewords: 30 }}
-        </p>
+        <p> {{ post.blurb | strip_html }} </p>
 
       </div>
     </a>

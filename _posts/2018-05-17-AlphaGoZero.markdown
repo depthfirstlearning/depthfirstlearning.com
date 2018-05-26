@@ -4,6 +4,8 @@ title:  "AlphaGo Zero"
 date:   2018-05-10 18:50:23 -0400
 categories: games
 author: cinjon
+blurb: "In this curriculum, you will learn about two person zero-sum perfect 
+        information games and develop understanding to completely grok AlphaGo."
 ---
 
 # Introduction
