@@ -84,7 +84,7 @@ looking images when trained on datasets like CIFAR-10, CelebA or ImageNet.
 <!--- TODO:  - Why is it called the Jensen-Shannon divergence? --->
   - Implement a GAN for MNIST
   - In the paper, why do they say “In practice, equation 1 may not provide sufficient gradient for G to learn well. Early in learning, when G is poor, D can reject samples with high confidence because they are clearly different from the training data. In this case, log(1 − D(G(z))) saturates”?
-    <details><summary>An answer</summary>
+    <details><summary>A sketch of an answer</summary>
       <a href="/assets/gan_gradient.pdf">Understanding the vanishing generator gradients point in the GAN paper</a>
     </details>
 
