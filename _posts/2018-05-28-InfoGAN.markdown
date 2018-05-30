@@ -127,4 +127,5 @@ has some good references)
 13. Could you re-write section 5? What would you change?
 14. What would happen if we try to predict the whole latent, not just some dimensions of it?
 15. In what way does InfoGAN actually find disentangled representations?
+16. Add Colab link
 
