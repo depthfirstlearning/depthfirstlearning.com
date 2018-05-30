@@ -10,7 +10,7 @@ InfoGAN is an extension of GAN, which learns to map unlabelled data to codes (ak
 
 1. [Information Theory](#1-information-theory)
 2. [GANs](#2-gans-generative-adversarial-networks)
-3. [InfoGAN](#3-infogan)
+3. [The InfoGAN paper](#3-the-infogan-paper)
 
 ***
 
@@ -77,13 +77,19 @@ looking images when trained on datasets like CIFAR-10, CelebA or ImageNet.
  - [The original GAN paper](https://arxiv.org/abs/1406.2661)
 
 ### Questions
-  - (TODO: clarify): Prove the equivalence between this definition of JSD and the one using Jensen's inequality and Shannon Entropy
-  - TODO: In the GAN paper, why do they say “In practice, equation 1 may not provide sufficient gradient for G to learn well. Early in learning, when G is poor, D can reject samples with high confidence because they are clearly different from the training data. In this case, log(1 − D(G(z))) saturates” [Understanding the vanishing generator gradients point in the GAN paper](https://drive.google.com/file/d/0B_-OCJsRhqAuVlhZaVZwSHMyOFE/view)
-
+  - Prove that 0 <= JSD(P||Q) <= 1 bit for all P, Q. When are the bounds achieved?
+    <details><summary>Answer</summary>Start [here](https://en.wikipedia.org/wiki/Jensen-Shannon_divergence#Relation_to_mutual_information)
+    </details>
+    - What are the bounds for KL divergence? When are those bounds achieved?
+<!--- TODO:  - Why is it called the Jensen-Shannon divergence? --->
+  - Implement a GAN for MNIST
+  - In the paper, why do they say “In practice, equation 1 may not provide sufficient gradient for G to learn well. Early in learning, when G is poor, D can reject samples with high confidence because they are clearly different from the training data. In this case, log(1 − D(G(z))) saturates”?
+    <details><summary>An answer</summary>[Understanding the vanishing generator gradients point in the GAN paper](/assets/gan_gradient.pdf)
+    </details>
 
 ***
 
-## 3. InfoGAN
+## 3. The InfoGAN paper
 
 TODO: everything here :)
 
