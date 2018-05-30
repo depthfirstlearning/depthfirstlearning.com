@@ -78,13 +78,14 @@ looking images when trained on datasets like CIFAR-10, CelebA or ImageNet.
 
 ### Questions
   - Prove that 0 <= JSD(P||Q) <= 1 bit for all P, Q. When are the bounds achieved?
-    <details><summary>Answer</summary>Start [here](https://en.wikipedia.org/wiki/Jensen-Shannon_divergence#Relation_to_mutual_information)
+    <details><summary>Answer</summary>Start <a href="https://en.wikipedia.org/wiki/Jensen-Shannon_divergence#Relation_to_mutual_information">here</a>
     </details>
-    - What are the bounds for KL divergence? When are those bounds achieved?
+  - What are the bounds for KL divergence? When are those bounds achieved?
 <!--- TODO:  - Why is it called the Jensen-Shannon divergence? --->
   - Implement a GAN for MNIST
   - In the paper, why do they say “In practice, equation 1 may not provide sufficient gradient for G to learn well. Early in learning, when G is poor, D can reject samples with high confidence because they are clearly different from the training data. In this case, log(1 − D(G(z))) saturates”?
-    <details><summary>An answer</summary>[Understanding the vanishing generator gradients point in the GAN paper](/assets/gan_gradient.pdf)
+    <details><summary>An answer</summary>
+      <a href="/assets/gan_gradient.pdf">Understanding the vanishing generator gradients point in the GAN paper</a>
     </details>
 
 ***
