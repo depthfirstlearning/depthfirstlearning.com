@@ -49,7 +49,7 @@ This section leads up to Mutual Information, which extends entropy to how much a
    than other measures, such as L2 distance?
    <details><summary>One possible answer</summary>
    In classification problem: One natural measure of “goodness” is the likelihood or marginal prob of observed values. By definition, it’s P(Y | X; params), which is Sum_i P(Y = yi | X; params). This says that we want to maximize the probability of producing the “correct” yi class only, and don’t really care to push down the probability of incorrect class like L2 loss would.
- 
+   <br />
    E.g., suppose the true label y = [0, 1, 0] (one-hot of class label {1, 2, 3}), and the softmax of the final layer in NN is y’ = [0.2, 0.5, 0.3]. One could use L2 between these two distributions, but if instead we minimize KL divergence KL(y || y’), which is equivalent to minimizing cross-entropy loss (the standard loss everyone uses to solve this problem), we would compute 0 * log(0) + 1 * log (0.5) + 0 * log(0) = log(0.5), which describes exactly the log likelihood of the label being class 2 for this particular training example. Here choosing to minimize KL means we’re maximizing the data likelihood. I think it could also be reasonable to use L2, but we would be maximizing the data likelihood + “unobserved anti-likelihood” :) (my made up word) meaning we want to kill off all those probabilities of predicting wrong labels as well. Another reason L2 is less prefered might be that L2 involves looping over all class labels whereas KL can look only at the correct class when computing the loss.
    </details>
 
@@ -92,47 +92,42 @@ looking images when trained on datasets like CIFAR-10, CelebA or ImageNet.
 
 ## 3. The InfoGAN paper
 
-TODO: everything here :)
+We now get to the [paper itself](https://arxiv.org/abs/1606.03657). InfoGAN modifies the original GAN objective thus:
+ - Split the incoming noise vector z into two parts -- z (noise) and c (code). The goal is to learn meaningful codes for the dataset.
+ - It achieves this by adding another prediction head to the network (in addition to the discriminator) that tries to predict c from the generated sample. The loss is a combination of the normal GAN loss and the loss on the new predictions of c.
+ - This new loss term can be interpreted as a lower bound on the mutual information between the generated samples and the code.
 
-TODO: Explain that really, all that InfoGAN does it try to predict z from x after sampling. The variational inequality stuff was just added after to make it seem more mathematical.
+### General high-level topics:
 
-Questions (TODO) 
- 0. Can you send me the photo you took of the whiteboard?
+ - The InfoGAN objective
+ - Why can't we directly optimize for the mutual information I(c; G(z,c))
+ - Variational Information Maximization
+ - Possible choices for classes of random variables for dimensions of the code c
 
-1. What is the prior p(c)? Is it defined anywhere?
-(Looks like there are answers in 7.1 and 7.2
+### Resources
 
-2. What would happen if you don't know that classes have equal # of training examples in the dataset? You couldn't sample c_1 from a categorical distribution with 10 classes with equal probability?
+ - The [InfoGAN paper](https://arxiv.org/abs/1606.03657)
+ - [A correction to a proof in the paper](http://aoliver.org/assets/correct-proof-of-infogan-lemma.pdf)
+ - [A sample InfoGAN implementation Colab](https://drive.google.com/file/d/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq/view?usp=sharing)
 
-My answer: You could imagine learning the parameters of the distribution of c, if you can get H(c) to be a differentiable function of those parameters. (See their statement "...by fixing the latent code distribution and we will treat H(c) as a constant.")
+### Questions
 
-3. Need to elaborate on the main point which is the actual actual loss they are optimizing. [Need to find a simple good reference for how negative log likelihood of data given a unit gaussian prediction is the same as squared error between the data and the mean. How about http://aoliver.org/assets/why-mse.pdf? Though that contains too much. Maybe we write our own thing?]
-
-The loss is also missing an expectation over z (as we discussed)
-
-4.  Another variant of (3) is to have a Colab exercise which is: "Fill in the gap. We have all of the GAN setup for you. Now add the InfoGAN part."
-
-5. They say, "the lower bound ... is quickly maximized to ... and maximal mutual information is achieved". How do they know this is the maximal value?
-
-6. What is the point of Lemma A.1? (I don't get it -- can you explain it to me? Was that what you were writing on the whiteboard)
-
-+The questions we had originally discussed:
-
-7. Understand section 5 and appendix A in the paper. Possible questions to discuss:
-
-8. There is more than one way to expand H(c	G(z, c)) in equation (4). Why do they choose that particular form (first sample x, then c’ conditioned on x)? What other ways could it be done?
-
-9. Why is an auxiliary Q distribution necessary?
-
-10. Why is Lemma 5.1 (proven in appendix A) needed?
-
-11. How is Lemma 5.1 used in equation (5)
-
-12. What do they mean by “L_I can be maximized w.r.t G via the reparameterization trick”? (Google 
-has some good references)
-
-13. Could you re-write section 5? What would you change?
-14. What would happen if we try to predict the whole latent, not just some dimensions of it?
-15. In what way does InfoGAN actually find disentangled representations?
-16. Add Colab link
-
+ - How does one compute log Q(c|x) in practice? How does this answer change based on the choice of the type of random variables in c?
+    <details><summary>Hint</summary>
+      What is log Q(c|x) when c is a Gaussian centered at f_theta(x)? What about when c is the output of a softmax?
+      <br />
+      See section 6.
+    </details>
+ - Which objective in the paper can actually be optimized with gradient-based algorithms? How? (An answer to this needs to refer to "the reparameterization trick")
+ - Why is an auxiliary Q distribution necessary?
+ - Draw a neural network diagram for InfoGAN
+   <details><summary>Answer</summary>
+     There is a good diagram in <a href="https://towardsdatascience.com/infogan-generative-adversarial-networks-part-iii-380c0c6712cd">this blog post</a>
+  </details>
+ - In the paper they say "However, in this paper we opt for
+simplicity by fixing the latent code distribution and we will treat H(c) as a constant.". What if you want to learn
+the latent code (say, if you don't know that classes are balanced in the dataset). Can you still optimize for this with gradient-based algorithms? Can you implement this on an intentionally class-imbalanced variant of MNIST?
+    <details><summary>A sketch of an answer</summary>
+    You could imagine learning the parameters of the distribution of c, if you can get H(c) to be a differentiable function of those parameters.</details>
+ - In the paper they say "the lower bound ... is quickly maximized to ... and maximal mutual information is achieved". How do they know this is the maximal value?
+ - Open-ended question: Is InfoGAN guaranteed to find disentangled representations? How would you tell if a representation is disentangled?
