@@ -108,7 +108,8 @@ We now get to the [paper itself](https://arxiv.org/abs/1606.03657). InfoGAN modi
 
  - The [InfoGAN paper](https://arxiv.org/abs/1606.03657)
  - [A correction to a proof in the paper](http://aoliver.org/assets/correct-proof-of-infogan-lemma.pdf)
- - [A sample InfoGAN implementation Colab](https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq)
+ - [A sample InfoGAN implementation Colab](https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq#forceEdit=true&offline=true&sandboxMode=true)
+ - [A blog post explaining InfoGAN](https://towardsdatascience.com/infogan-generative-adversarial-networks-part-iii-380c0c6712cd)
 
 ### Questions
 
