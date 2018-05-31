@@ -8,7 +8,7 @@ blurb: "In this curriculum, you will learn about two person zero-sum perfect
         information games and develop understanding to completely grok AlphaGo."
 ---
 
-# Introduction
+# Why
 
 AlphaGo Zero was a big splash when it debuted and for good reason. The grand effort 
 was led by David Silver at DeepMind and was an extension of work that he started
@@ -20,7 +20,7 @@ In this curriculum, you will focus on the study of two person zero-sum perfect
 information games and develop understanding sufficient to grok AlphaGo.
 
 <br>
-# Class 1: Minimax and Alpha Beta Pruning
+# 1 Minimax and Alpha Beta Pruning
   **Motivation**: These original core ideas did so much for the study of games. They spurred the field forward starting in the 50s and still to this day have mindshare in how to build a computer engine that beats games, including in popular chess engines like Stockfish.
   
   **Required Reading**: 
@@ -41,7 +41,7 @@ information games and develop understanding sufficient to grok AlphaGo.
   5. (Knuth) Show that Theorem 2.(1, 2, 3) are correct.
 
 <br>
-# Class 2: Multi-Armed Bandits and Upper Confidence Bounds
+# 2 Multi-Armed Bandits and Upper Confidence Bounds
   **Motivation**: Bandits and UCB are key components of how MCTS was originally formalized. The node selection during the search is achieved through the UCB approach, which is analogues to how its performed in a multi-armed bandit scenario.
   
   **Required Reading**: 
@@ -60,7 +60,7 @@ information games and develop understanding sufficient to grok AlphaGo.
   5. Can you reproduce the UCB1 algorithm?
 
 <br>
-# Class 3: Policy and Value Functions
+# 3 Policy and Value Functions
   **Note**: Sutton from here out refers to the [final version](http://incompleteideas.net/book/bookdraft2017nov5.pdf).
   
   **Motivation**: The Policy and Value Functions are at the core of Reinforcement Learning. The Policy function is the set of probabilities you give to each possible move. The Value function is your estimate of how good is the current state. In AlphaGoZero, a single network calculates both a value and a policy, then later updates its weights based off of the difference between those figures and the empirical results.
@@ -93,7 +93,7 @@ information games and develop understanding sufficient to grok AlphaGo.
      7. 13.2 (important!): Prove (13.7) using the definitions and elementary calculus.
 
 <br>
-# Class 4: MCTS & UCT
+# 4 MCTS & UCT
   **Motivation**: Monte Carlo Tree Search (MCTS) forms the backbone of AlphaGoZero. It’s what lets it reliably explore and then hone in on the best policy. UCT (UCB for Trees) builds on top of what we’ve been learning and, paired with MCTS, is integral to the training process.
   
   **Required Reading**:
@@ -116,7 +116,7 @@ information games and develop understanding sufficient to grok AlphaGo.
   4. Why is UCT optimal? Can you prove that the failure probability at the root converges to zero at a polynomial rate in the number of games simulated?
   
 <br>
-# Class 5: MCTS & RL
+# 5 MCTS & RL
   **Motivation**: Up to this point, we’ve learned a lot about how games can be solved and how RL works on a foundational level. Before we jump into the paper, one last foray contrasting and unifying the games vs learning perspective is worthwhile for understanding the domain more fully.
   
   **Required Reading**:
@@ -135,7 +135,7 @@ information games and develop understanding sufficient to grok AlphaGo.
   4. What is a Control Policy? Give an example not described in the text.
 
 <br>
-# Class 6: The Paper
+# 6 The Paper
   **Motivation**: Let's read the paper!
   
   **Required Reading**:

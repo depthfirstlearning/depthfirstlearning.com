@@ -9,7 +9,7 @@ blurb: "In this curriculum, you will explore game theory and counterfactual
         person zero-sum games of incomplete information."
 ---
 
-# Introduction
+# Why
 
 Along with Libratus, DeepStack is one of two approaches to solving No-Limit 
 Texas Hold-em that debuted coincidentally. This game was notoriously difficult
@@ -28,7 +28,7 @@ building up the requisite understanding to tackle DeepStack.
 4. PLG: [Prediction, Learning, and Games](http://www.ii.uni.wroc.pl/~lukstafi/pmwiki/uploads/AGT/Prediction_Learning_and_Games.pdf)
 
 <br>
-# Class 1: Normal-Form Games & Poker
+# 1 Normal-Form Games & Poker
   **Motivation**: Normal-Form games are the backbone for many of the techniques that later were used in DeepStack and Libratus. Understanding them will be a necessary foundation to understanding the innovations they presented.
   
   **Required Reading**:
@@ -47,7 +47,7 @@ building up the requisite understanding to tackle DeepStack.
   4. Can you prove Theorem 3.1.8 (which is a really cool result)? 
 
 <br>
-# Class 2: Optimality and Equilibrium 
+# 2 Optimality and Equilibrium 
   **Motivation**: How do you reason about games? The best strategy in multi-agent scenario depends on the choices of others. Game theory deals with this problem by identifying subsets of outcomes called solution concepts, of which fundamental ones are the Nash Equilibrium, Pareto Optimality, and Correlated Equilibrium.
   
   **Required Reading**:
@@ -66,7 +66,7 @@ building up the requisite understanding to tackle DeepStack.
   6. Take your favorite normal-form game, find a Nash Equilibrium, and then find a corresponding Correlated Equilibrium.
 
 <br>
-# Class 3: Extensive-Form Games
+# 3 Extensive-Form Games
   **Motivation**: What happens when players don't act simultaneously? Extensive-Form Games are an answer to this question. While this representation of a game always has a comparable Normal-Form, it's much more natural to reason about in this format.
   
   **Required Reading**:
@@ -83,7 +83,7 @@ building up the requisite understanding to tackle DeepStack.
   3. Succinctly describe the technique demonstrated in the Accelerating Best Response paper.
 
 <br>
-# Class 4: Counterfactual Regret Minimization #1
+# 4 Counterfactual Regret Minimization #1
   **Motivation**: Counterfactual Regret Minimization (CFR) is only a decade old 
   but has already achieved huge success as the foundation underlying DeepStack 
   and Libratus. In the first of two weeks dedicated to CFR, we learn how it 
@@ -104,7 +104,7 @@ building up the requisite understanding to tackle DeepStack.
   3. How do you know if you’ve implemented CFR correctly?
 
 <br>
-# Class 5: Counterfactual Regret Minimization #2
+# 5 Counterfactual Regret Minimization #2
   **Motivation**: We saw last week the practical side of CFR and how effective it 
   can be. This week we’ll be diving more into the theory underlying it. This 
   will culminate with Blackwell’s Approachability Theorem, a generalization of 
@@ -125,7 +125,7 @@ building up the requisite understanding to tackle DeepStack.
   2. It’s brushed over in the proof of Theorem 7.5 (PLG), but prove that if set S is approachable, then every halfspace H containing S is approachable.
 
 <br>
-# Class 6: DeepStack
+# 6 DeepStack
   **Motivation**: Let’s read the paper!
   
   **Required Reading**:
