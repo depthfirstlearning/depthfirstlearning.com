@@ -123,11 +123,12 @@ We now get to the [paper itself](https://arxiv.org/abs/1606.03657). InfoGAN modi
  - Draw a neural network diagram for InfoGAN
    <details><summary>Answer</summary>
      There is a good diagram in <a href="https://towardsdatascience.com/infogan-generative-adversarial-networks-part-iii-380c0c6712cd">this blog post</a>
-  </details>
+   </details>
  - In the paper they say "However, in this paper we opt for
 simplicity by fixing the latent code distribution and we will treat H(c) as a constant.". What if you want to learn
 the latent code (say, if you don't know that classes are balanced in the dataset). Can you still optimize for this with gradient-based algorithms? Can you implement this on an intentionally class-imbalanced variant of MNIST?
     <details><summary>A sketch of an answer</summary>
-    You could imagine learning the parameters of the distribution of c, if you can get H(c) to be a differentiable function of those parameters.</details>
+    You could imagine learning the parameters of the distribution of c, if you can get H(c) to be a differentiable function of those parameters.
+    </details>
  - In the paper they say "the lower bound ... is quickly maximized to ... and maximal mutual information is achieved". How do they know this is the maximal value?
  - Open-ended question: Is InfoGAN guaranteed to find disentangled representations? How would you tell if a representation is disentangled?
