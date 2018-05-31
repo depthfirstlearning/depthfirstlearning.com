@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "AlphaGo Zero"
-date:   2018-05-10 18:50:23 -0400
+date:   2018-06-10 10:00:00 -0400
 categories: games
 author: cinjon
 blurb: "In this curriculum, you will learn about two person zero-sum perfect 
