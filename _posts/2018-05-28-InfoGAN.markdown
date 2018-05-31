@@ -4,7 +4,7 @@ The full paper is here: [https://arxiv.org/abs/1606.03657](https://arxiv.org/abs
 
 ## Why is this paper important?
 
-InfoGAN is an extension of GAN, which learns to map unlabelled data to codes (aka representation learning). Compare this to vanilla GANs that can only generate samples, or to another generative model, VAE, that learns to both generate codes and samples. Representation learning is one of the biggest promises of unsupservised learning, and GANs are one of the most flexible and powerful such models. This makes InfoGAN important and an interesting stepping stone towards possible future research in representation learning.
+InfoGAN is an extension of GANs that learns to map unlabelled data to codes (aka representation learning). Compare this to vanilla GANs that can only generate samples, or to another generative model, VAE, that learns to both generate codes and samples. Representation learning is one of the biggest promises of unsupservised learning, and GANs are one of the most flexible and powerful such models. This makes InfoGAN important and an interesting stepping stone towards possible future research in representation learning.
 
 ## Study Plan
 
