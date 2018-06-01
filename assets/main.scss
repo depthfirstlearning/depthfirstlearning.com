@@ -6,4 +6,17 @@
 
 summary {
   color: $blue;
+  padding-left: 6px;
+  padding-right: 6px;
+  border: 1px solid brown;
+  display: inline-block;
 }
+
+details[open] summary {
+  margin-bottom: 6px;
+}
+
+details[open] {
+  margin-bottom: 6px;
+}
+
