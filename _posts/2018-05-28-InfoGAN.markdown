@@ -84,7 +84,7 @@ observing each variable separately.
 
   **Questions**:
   1. Prove that 0 <= JSD(P||Q) <= 1 bit for all P, Q. When are the bounds achieved?
-     <details><summary>Answer</summary>Start <a href="https://en.wikipedia.org/wiki/Jensen-Shannon_divergence#Relation_to_mutual_information">here</a>
+     <details><summary>Answer</summary>Start <a href="https://en.wikipedia.org/wiki/Jensen-Shannon_divergence#Relation_to_mutual_information">here</a>.
      </details>
   2. What are the bounds for KL divergence? When are those bounds achieved?
 <!--- TODO:  - Why is it called the Jensen-Shannon divergence? --->
