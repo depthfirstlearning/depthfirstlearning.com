@@ -23,7 +23,7 @@ details[open] {
 
 a.colab-root {
   display: inline-block;
-  background: rgba(255, 255, 0, 0.75);
+  background: rgba(255, 255, 120, 0.75);
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 11px!important;
@@ -38,7 +38,7 @@ a.colab-root {
 
   &:hover {
     color: #666;
-    background: rgba(238, 238, 0, 1);
+    background: rgba(255, 255, 0, 1);
     border-color: rgba(0, 0, 0, 0.2);
     text-decoration: none;
   }
