@@ -114,7 +114,7 @@ observing each variable separately.
   3. Variational Information Maximization
   4. Possible choices for classes of random variables for dimensions of the code c
 
-  **Reproduce in a Colab**:
+  **Reproduce**:
   
   <a class="colab-reproduce" href="https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq#forceEdit=true&offline=true&sandboxMode=true" class="colab-root">Reproduce in a
     <span>Notebook</span></a>
