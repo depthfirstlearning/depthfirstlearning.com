@@ -44,13 +44,13 @@ observing each variable separately.
   **Required Reading**:
   1. Chapter 1.6 from Pattern Recognition and Machine Learning / Bishop. ("PRML")
   2. A good [intuitive explanation of Entropy](https://www.quora.com/What-is-an-intuitive-explanation-of-the-concept-of-entropy-in-information-theory/answer/Peter-Gribble), from Quora.
-  3. For more perspectives and deeper dependencies, see Metacademy:
-  4. [Entropy](https://metacademy.org/graphs/concepts/entropy)
-  5. [Mutual Information](https://metacademy.org/graphs/concepts/mutual_information)
-  6. [KL diverence](https://metacademy.org/graphs/concepts/kl_divergence)
   
   **Optional Reading**:
   1. [Notes on Kullback-Leibler Divergence and Likelihood Theory](https://arxiv.org/pdf/1404.2000.pdf)
+  2. For more perspectives and deeper dependencies, see Metacademy:
+      1. [Entropy](https://metacademy.org/graphs/concepts/entropy)
+      2. [Mutual Information](https://metacademy.org/graphs/concepts/mutual_information)
+      3. [KL diverence](https://metacademy.org/graphs/concepts/kl_divergence)
 
   **Questions**:
   1. From PRML: 1.28, 1.31, 1.36, 1.37, 1.38, 1.39, 1.41.
