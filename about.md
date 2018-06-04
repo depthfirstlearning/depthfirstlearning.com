@@ -33,5 +33,3 @@ to people at Google or at NYU. If you are interested in developing your own
 curriculum for a paper that we do not already host, we will help you! Reach out
 to us at depthfirstlearning@gmail.com. We want your help in growing this resource
 and making it richer.
-
-

@@ -9,6 +9,7 @@ blurb: "InfoGAN is an extension of GANs that learns to represent unlabeled
         unsupervised learning, and GANs are a flexible and powerful interpretation.
         This makes InfoGAN an important and interesting stepping stone in
         representation learning."
+feedback: true
 ---
 
 # Why
@@ -19,6 +20,9 @@ samples or to VAEs that learn to both generate code and samples. Representation
 learning is an important direction for unsupervised learning and GANs are a 
 flexible and powerful interpretation. This makes InfoGAN an interesting stepping 
 stone towards research in representation learning.
+
+  <a href="https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq#forceEdit=true&offline=true&sandboxMode=true" class="colab-root">Reproduce in a
+    <span>Notebook</span></a>
 
 <br />
 
@@ -41,13 +45,13 @@ observing each variable separately.
   **Required Reading**:
   1. Chapter 1.6 from Pattern Recognition and Machine Learning / Bishop. ("PRML")
   2. A good [intuitive explanation of Entropy](https://www.quora.com/What-is-an-intuitive-explanation-of-the-concept-of-entropy-in-information-theory/answer/Peter-Gribble), from Quora.
-  3. For more perspectives and deeper dependencies, see Metacademy:
-  4. [Entropy](https://metacademy.org/graphs/concepts/entropy)
-  5. [Mutual Information](https://metacademy.org/graphs/concepts/mutual_information)
-  6. [KL diverence](https://metacademy.org/graphs/concepts/kl_divergence)
   
   **Optional Reading**:
   1. [Notes on Kullback-Leibler Divergence and Likelihood Theory](https://arxiv.org/pdf/1404.2000.pdf)
+  2. For more perspectives and deeper dependencies, see Metacademy:
+      1. [Entropy](https://metacademy.org/graphs/concepts/entropy)
+      2. [Mutual Information](https://metacademy.org/graphs/concepts/mutual_information)
+      3. [KL diverence](https://metacademy.org/graphs/concepts/kl_divergence)
 
   **Questions**:
   1. From PRML: 1.28, 1.31, 1.36, 1.37, 1.38, 1.39, 1.41.
@@ -114,13 +118,17 @@ observing each variable separately.
   3. Variational Information Maximization
   4. Possible choices for classes of random variables for dimensions of the code c
 
+  **Reproduce**:
+  
+  <a href="https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq#forceEdit=true&offline=true&sandboxMode=true" class="colab-root">Reproduce in a
+    <span>Notebook</span></a>
+
   **Required Reading**:
   1. [InfoGAN](https://arxiv.org/abs/1606.03657)
   2. [A correction to a proof in the paper](http://aoliver.org/assets/correct-proof-of-infogan-lemma.pdf)
   
   **Optional Reading**:
-  1. [A sample InfoGAN implementation Colab](https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq#forceEdit=true&offline=true&sandboxMode=true)
-  2. [A blog post explaining InfoGAN](https://towardsdatascience.com/infogan-generative-adversarial-networks-part-iii-380c0c6712cd)
+  1. [A blog post explaining InfoGAN](https://towardsdatascience.com/infogan-generative-adversarial-networks-part-iii-380c0c6712cd)
 
   **Questions**:
   1. How does one compute $$log Q(c|x)$$ in practice? How does this answer change based on the choice of the type of random variables in c?

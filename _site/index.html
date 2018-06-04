@@ -19,6 +19,16 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <script type="text/javascript">
+    window.onload = function() {
+      Array.prototype.slice.call(document.querySelectorAll("a")).forEach(function(a) {
+        if (a.getAttribute('href').startsWith("http")) {
+          a.target = "_blank";
+        }
+      });
+    };
+  </script>
 </head>
 
 
@@ -26,7 +36,7 @@
     <nav class="nav">
       <div class="nav-container">
         <a href="/">
-          <h2 class="nav-title">Depth First Learning</h2>
+          <img class="nav-title" src="/assets/title-img.png " />
         </a>
         <ul>
           <li><a href="/about">About</a></li>
@@ -45,6 +55,17 @@
         <div class="catalogue-line"></div>
 
         <p> InfoGAN is an extension of GANs that learns to represent unlabeled data as codes. Representation learning is an important aspect of unsupervised learning, and GANs are a flexible and powerful interpretation. This makes InfoGAN an important and interesting stepping stone in representation learning. </p>
+
+      </div>
+    </a>
+  
+    <a href="/2018-05-27/What-This-Is" class="catalogue-item">
+      <div>
+        <time datetime="2018-05-27 10:00:00 -0400" class="catalogue-time">May 27, 2018</time>
+        <h1 class="catalogue-title">What Is This</h1>
+        <div class="catalogue-line"></div>
+
+        <p> Welcome to Depth First Learning. </p>
 
       </div>
     </a>

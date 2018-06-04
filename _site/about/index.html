@@ -19,6 +19,16 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <script type="text/javascript">
+    window.onload = function() {
+      Array.prototype.slice.call(document.querySelectorAll("a")).forEach(function(a) {
+        if (a.getAttribute('href').startsWith("http")) {
+          a.target = "_blank";
+        }
+      });
+    };
+  </script>
 </head>
 
 
@@ -26,7 +36,7 @@
     <nav class="nav">
       <div class="nav-container">
         <a href="/">
-          <h2 class="nav-title">Depth First Learning</h2>
+          <img class="nav-title" src="/assets/title-img.png " />
         </a>
         <ul>
           <li><a href="/about">About</a></li>
@@ -56,6 +66,8 @@
   <h1 class="post-title"></h1>
   <div class="post-line"></div>
 
+  
+
   <p>Understanding research papers can be hard. Paper authors typically assume that 
 you share the same context and prior knowledge that they have. When you don’t, 
 it becomes hard to follow the paper. Looking for material from which to 
@@ -84,7 +96,6 @@ to people at Google or at NYU. If you are interested in developing your own
 curriculum for a paper that we do not already host, we will help you! Reach out
 to us at depthfirstlearning@gmail.com. We want your help in growing this resource
 and making it richer.</p>
-
 
 
 </div>

@@ -18,4 +18,14 @@
   <link rel="icon" type="image/png" sizes="32x32" href="{{ "/assets/favicon-32x32.png" | relative_url }}">
   <link rel="icon" type="image/png" sizes="16x16" href="{{ "/assets/favicon-16x16.png" | relative_url }}">
   <link rel="apple-touch-icon" sizes="180x180" href="{{ "/assets/apple-touch-icon.png" | relative_url }}">
+
+  <script type="text/javascript">
+    window.onload = function() {
+      Array.prototype.slice.call(document.querySelectorAll("a")).forEach(function(a) {
+        if (a.getAttribute('href').startsWith("http")) {
+          a.target = "_blank";
+        }
+      });
+    };
+  </script>
 </head>
