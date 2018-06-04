@@ -2,11 +2,11 @@
 layout: post
 title:  "InfoGAN"
 date:   2018-05-28 10:00:00 -0400
-categories: generative-adversarial-networs representation-learning
+categories: generative-adversarial-networks representation-learning
 author: avital
 blurb: "InfoGAN is an extension of GANs that learns to represent unlabeled 
         data as codes. Representation learning is an important aspect of 
-        unsupervised learning and GANs are a flexible and powerful interpretation.
+        unsupervised learning, and GANs are a flexible and powerful interpretation.
         This makes InfoGAN an important and interesting stepping stone in
         representation learning."
 feedback: true
@@ -15,7 +15,7 @@ feedback: true
 # Why
 
 InfoGAN is an extension of GANs that learns to represent unlabeled data as codes,
-aka Representation Learning. Compare this to vanilla GANs that can only generate 
+aka representation learning. Compare this to vanilla GANs that can only generate 
 samples or to VAEs that learn to both generate code and samples. Representation 
 learning is an important direction for unsupervised learning and GANs are a 
 flexible and powerful interpretation. This makes InfoGAN an interesting stepping 
@@ -29,8 +29,8 @@ stone towards research in representation learning.
 # 1 Information Theory
   **Motivation**: Information theory formalizes the concept of the "amount of randomness" or 
 "amount of information". These concepts can be extended to relative quantities 
-among random variables. This section leads to Mutual Information, a concept core to 
-InfoGAN which extends entropy to how much additional information you yield from 
+among random variables. This section leads to Mutual Information (MI), a concept core to 
+InfoGAN. MI extends entropy to the amount of additional information you yield from 
 observing a joint sample of two random variables as compared to the baseline of 
 observing each variable separately. 
 
@@ -59,11 +59,11 @@ observing each variable separately.
   3. In classification problems, [minimizing cross-entropy loss is the same as minimizing the KL divergence 
      of the predicted class distribution from the true class distribution](https://ai.stackexchange.com/questions/3065/why-has-cross-entropy-become-the-classification-standard-loss-function-and-not-k/4185). Why do we minimize the KL, rather
      than other measures, such as L2 distance?
-     <details><summary>One possible answer</summary>
+     <details><summary>Solution</summary>
      <p>
-     In classification problem: One natural measure of “goodness” is the likelihood or marginal prob of observed values. By definition, it’s P(Y | X; params), which is Prod_i P(Y = yi | X; params). This says that we want to maximize the probability of producing the “correct” yi class only, and don’t really care to push down the probability of incorrect class like L2 loss would.
+     In classification problem: One natural measure of “goodness” is the likelihood or marginal prob of observed values. By definition, it’s P(Y | X; params), which is {Prod}_i P(Y = y_i | X; params). This says that we want to maximize the probability of producing the “correct” yi class only, and don’t really care to push down the probability of incorrect class like L2 loss would.
      </p><p>
-     E.g., suppose the true label y = [0, 1, 0] (one-hot of class label {1, 2, 3}), and the softmax of the final layer in NN is y’ = [0.2, 0.5, 0.3]. One could use L2 between these two distributions, but if instead we minimize KL divergence KL(y || y’), which is equivalent to minimizing cross-entropy loss (the standard loss everyone uses to solve this problem), we would compute 0 * log(0) + 1 * log (0.5) + 0 * log(0) = log(0.5), which describes exactly the log likelihood of the label being class 2 for this particular training example. Here choosing to minimize KL means we’re maximizing the data likelihood. I think it could also be reasonable to use L2, but we would be maximizing the data likelihood + “unobserved anti-likelihood” :) (my made up word) meaning we want to kill off all those probabilities of predicting wrong labels as well. Another reason L2 is less prefered might be that L2 involves looping over all class labels whereas KL can look only at the correct class when computing the loss.
+     E.g., suppose the true label y = [0, 1, 0] (one-hot of class label {1, 2, 3}), and the softmax of the final layer in NN is y’ = [0.2, 0.5, 0.3]. One could use L2 between these two distributions, but if instead we minimize KL divergence $$KL(y || y’)$$, which is equivalent to minimizing cross-entropy loss (the standard loss everyone uses to solve this problem), we would compute 0 * log(0) + 1 * log (0.5) + 0 * log(0) = log(0.5), which describes exactly the log likelihood of the label being class 2 for this particular training example. Here choosing to minimize KL means we’re maximizing the data likelihood. I think it could also be reasonable to use L2, but we would be maximizing the data likelihood + “unobserved anti-likelihood” :) (my made up word) meaning we want to kill off all those probabilities of predicting wrong labels as well. Another reason L2 is less prefered might be that L2 involves looping over all class labels whereas KL can look only at the correct class when computing the loss.
      </p>
      </details>
 
@@ -87,13 +87,13 @@ observing each variable separately.
   2. [The original GAN paper](https://arxiv.org/abs/1406.2661)
 
   **Questions**:
-  1. Prove that 0 <= JSD(P||Q) <= 1 bit for all P, Q. When are the bounds achieved?
-     <details><summary>Answer</summary>Start <a href="https://en.wikipedia.org/wiki/Jensen-Shannon_divergence#Relation_to_mutual_information">here</a>.
+  1. Prove that $$0 \leq JSD(P||Q) \leq 1$$ bit for all P, Q. When are the bounds achieved?
+     <details><summary>Solution</summary>Start <a href="https://en.wikipedia.org/wiki/Jensen-Shannon_divergence#Relation_to_mutual_information">here</a>.
      </details>
   2. What are the bounds for KL divergence? When are those bounds achieved?
 <!--- TODO:  - Why is it called the Jensen-Shannon divergence? --->
-  3. In the paper, why do they say “In practice, equation 1 may not provide sufficient gradient for G to learn well. Early in learning, when G is poor, D can reject samples with high confidence because they are clearly different from the training data. In this case, log(1 − D(G(z))) saturates”?
-     <details><summary>A sketch of an answer</summary>
+  3. In the paper, why do they say “In practice, equation 1 may not provide sufficient gradient for G to learn well. Early in learning, when G is poor, D can reject samples with high confidence because they are clearly different from the training data. In this case, $$log(1 − D(G(z)))$$ saturates”?
+     <details><summary>Solution</summary>
        <a href="/assets/gan_gradient.pdf">Understanding the vanishing generator gradients point in the GAN paper</a>
      </details>
   4. Implement a [Colab](https://colab.research.google.com/) that trains a GAN for MNIST. Try both the saturating and non-saturating discriminator loss.
@@ -114,7 +114,7 @@ observing each variable separately.
 
   **Topics**:
   1. The InfoGAN objective
-  2. Why can't we directly optimize for the mutual information I(c; G(z,c))
+  2. Why can't we directly optimize for the mutual information $$I(c; G(z,c))$$
   3. Variational Information Maximization
   4. Possible choices for classes of random variables for dimensions of the code c
 
@@ -131,23 +131,23 @@ observing each variable separately.
   1. [A blog post explaining InfoGAN](https://towardsdatascience.com/infogan-generative-adversarial-networks-part-iii-380c0c6712cd)
 
   **Questions**:
-  1. How does one compute log Q(c|x) in practice? How does this answer change based on the choice of the type of random variables in c?
-     <details><summary>Hint</summary>
-       <p>What is log Q(c|x) when c is a Gaussian centered at f_theta(x)? What about when c is the output of a softmax?
+  1. How does one compute $$log Q(c|x)$$ in practice? How does this answer change based on the choice of the type of random variables in c?
+     <details><summary>Solution</summary>
+       <p>What is log Q(c|x) when c is a Gaussian centered at f_\theta(x)? What about when c is the output of a softmax?
        </p><p>
        See section 6 in the paper.
        </p> 
      </details>
   2. Which objective in the paper can actually be optimized with gradient-based algorithms? How? (An answer to this needs to refer to "the reparameterization trick")
-  3. Why is an auxiliary Q distribution necessary?
+  3. Why is an auxiliary $$Q$$ distribution necessary?
   4. Draw a neural network diagram for InfoGAN
-     <details><summary>Answer</summary>
+     <details><summary>Solution</summary>
        There is a good diagram in <a href="https://towardsdatascience.com/infogan-generative-adversarial-networks-part-iii-380c0c6712cd">this blog post</a>
      </details>
   5. In the paper they say "However, in this paper we opt for
-simplicity by fixing the latent code distribution and we will treat H(c) as a constant.". What if you want to learn
+simplicity by fixing the latent code distribution and we will treat $$H(c)$$ as a constant.". What if you want to learn
 the latent code (say, if you don't know that classes are balanced in the dataset). Can you still optimize for this with gradient-based algorithms? Can you implement this on an intentionally class-imbalanced variant of MNIST?
-     <details><summary>A sketch of an answer</summary>
+     <details><summary>Solution</summary>
      You could imagine learning the parameters of the distribution of c, if you can get H(c) to be a differentiable function of those parameters.
      </details>
   6. In the paper they say "the lower bound ... is quickly maximized to ... and maximal mutual information is achieved". How do they know this is the maximal value?
