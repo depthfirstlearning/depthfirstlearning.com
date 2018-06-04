@@ -153,7 +153,7 @@ observing each variable separately.
   **Questions**:
   1. How does one compute $$log Q(c|x)$$ in practice? How does this answer change based on the choice of the type of random variables in c?
      <details><summary>Solution</summary>
-       <p>What is log Q(c|x) when c is a Gaussian centered at f_\theta(x)? What about when c is the output of a softmax?
+       <p>What is \(\log Q(c|x)\) when c is a Gaussian centered at \(f_\theta(x)\)? What about when c is the output of a softmax?
        </p><p>
        See section 6 in the paper.
        </p> 
