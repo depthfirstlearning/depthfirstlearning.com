@@ -54,4 +54,27 @@ a.colab-root {
   } 
 }
 
+.request-feedback {
+  border: 1px solid #bbb;
+  background: #eee;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 35px;
 
+  .inner {
+    margin-left: auto;
+    margin-right: auto;
+  } 
+}
+
+@media only screen and (min-width: 680px) {
+  .request-feedback {
+    .inner {
+      width: 500px;
+    }
+  }
+}
