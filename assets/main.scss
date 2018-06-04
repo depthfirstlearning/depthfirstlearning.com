@@ -10,6 +10,7 @@ summary {
   padding-right: 6px;
   border: 1px solid #ee0;
   display: inline-block;
+  border-radius: 4px;
 }
 
 details[open] summary {
@@ -64,6 +65,7 @@ a.colab-root {
   text-align: center;
   line-height: 1.6;
   margin-bottom: 35px;
+  border-radius: 4px;
 
   .inner {
     margin-left: auto;
