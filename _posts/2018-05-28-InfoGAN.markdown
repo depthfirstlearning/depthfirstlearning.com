@@ -114,13 +114,20 @@ observing each variable separately.
   3. Variational Information Maximization
   4. Possible choices for classes of random variables for dimensions of the code c
 
+  **Reproduce InfoGAN in a Colab**:
+  
+  <a class="colab-reproduce" href="https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq#forceEdit=true&offline=true&sandboxMode=true" class="colab-root">Reproduce in a
+    <span>Notebook</span></a>
+
+<!--- [Open in Colab](https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq#forceEdit=true&offline=true&sandboxMode=true)
+-->
+
   **Required Reading**:
   1. [InfoGAN](https://arxiv.org/abs/1606.03657)
   2. [A correction to a proof in the paper](http://aoliver.org/assets/correct-proof-of-infogan-lemma.pdf)
   
   **Optional Reading**:
-  1. [A sample InfoGAN implementation Colab](https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq#forceEdit=true&offline=true&sandboxMode=true)
-  2. [A blog post explaining InfoGAN](https://towardsdatascience.com/infogan-generative-adversarial-networks-part-iii-380c0c6712cd)
+  1. [A blog post explaining InfoGAN](https://towardsdatascience.com/infogan-generative-adversarial-networks-part-iii-380c0c6712cd)
 
   **Questions**:
   1. How does one compute log Q(c|x) in practice? How does this answer change based on the choice of the type of random variables in c?
