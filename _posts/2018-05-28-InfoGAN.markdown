@@ -21,7 +21,7 @@ learning is an important direction for unsupervised learning and GANs are a
 flexible and powerful interpretation. This makes InfoGAN an interesting stepping 
 stone towards research in representation learning.
 
-  <a class="colab-reproduce" href="https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq#forceEdit=true&offline=true&sandboxMode=true" class="colab-root">Reproduce in a
+  <a href="https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq#forceEdit=true&offline=true&sandboxMode=true" class="colab-root">Reproduce in a
     <span>Notebook</span></a>
 
 <br />
@@ -120,7 +120,7 @@ observing each variable separately.
 
   **Reproduce**:
   
-  <a class="colab-reproduce" href="https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq#forceEdit=true&offline=true&sandboxMode=true" class="colab-root">Reproduce in a
+  <a href="https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq#forceEdit=true&offline=true&sandboxMode=true" class="colab-root">Reproduce in a
     <span>Notebook</span></a>
 
   **Required Reading**:
