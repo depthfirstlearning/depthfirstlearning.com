@@ -2,7 +2,7 @@
 
 This is the open source code repository running [Depth First Learning](http://www.depthfirstlearning.com/about/), powered by [Jekyll](https://jekyllrb.com/).
 
-Start this with `bundle exect jekyll serve`.
+Start this locally with `bundle exec jekyll serve`.
 
 ## Contributing
 
