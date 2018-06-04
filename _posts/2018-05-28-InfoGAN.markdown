@@ -61,9 +61,30 @@ observing each variable separately.
      than other measures, such as L2 distance?
      <details><summary>Solution</summary>
      <p>
-     In classification problem: One natural measure of “goodness” is the likelihood or marginal prob of observed values. By definition, it’s P(Y | X; params), which is {Prod}_i P(Y = y_i | X; params). This says that we want to maximize the probability of producing the “correct” yi class only, and don’t really care to push down the probability of incorrect class like L2 loss would.
+     In classification problem: One natural measure of “goodness” is the likelihood or marginal
+     probability of observed values. By definition, it’s \(P(Y | X; params)\), which is
+     \(\prod_i P(Y_i = y_i | X; params)\).
+     This says that we want to maximize the probability of producing the “correct” \(y_i\)
+     class only, and don’t really care to push down the probability of incorrect class like
+     L2 loss would.
      </p><p>
-     E.g., suppose the true label y = [0, 1, 0] (one-hot of class label {1, 2, 3}), and the softmax of the final layer in NN is y’ = [0.2, 0.5, 0.3]. One could use L2 between these two distributions, but if instead we minimize KL divergence $$KL(y || y’)$$, which is equivalent to minimizing cross-entropy loss (the standard loss everyone uses to solve this problem), we would compute 0 * log(0) + 1 * log (0.5) + 0 * log(0) = log(0.5), which describes exactly the log likelihood of the label being class 2 for this particular training example. Here choosing to minimize KL means we’re maximizing the data likelihood. I think it could also be reasonable to use L2, but we would be maximizing the data likelihood + “unobserved anti-likelihood” :) (my made up word) meaning we want to kill off all those probabilities of predicting wrong labels as well. Another reason L2 is less prefered might be that L2 involves looping over all class labels whereas KL can look only at the correct class when computing the loss.
+     E.g., suppose the true label \(y = [0, 1, 0]\) (one-hot of class label {1, 2, 3}),
+     and the softmax of the final layer in NN is \(y’ = [0.2, 0.5, 0.3]\).
+     One could use L2 between these two distributions, but if instead we minimize KL
+     divergence \(KL(y || y’)\), which is equivalent to minimizing cross-entropy
+     loss (the standard loss everyone uses to solve this problem),
+     we would compute \(0 \cdot \log(0) + 1 \cdot \log (0.5) + 0 \cdot \log(0) = \log(0.5)\),
+     which describes exactly the log likelihood of the label being class 2
+     for this particular training example.
+     </p><p>
+     Here choosing to minimize KL means we’re maximizing the data likelihood.
+     I think it could also be reasonable to use L2, but we would be maximizing
+     the data likelihood + “unobserved anti-likelihood” :) (my made up word)
+     meaning we want to kill off all those probabilities of predicting wrong
+     labels as well.
+     </p><p>
+     Another reason L2 is less prefered might be that L2 involves looping over all
+     class labels whereas KL can look only at the correct class when computing the loss.
      </p>
      </details>
 
@@ -91,7 +112,6 @@ observing each variable separately.
      <details><summary>Solution</summary>Start <a href="https://en.wikipedia.org/wiki/Jensen-Shannon_divergence#Relation_to_mutual_information">here</a>.
      </details>
   2. What are the bounds for KL divergence? When are those bounds achieved?
-<!--- TODO:  - Why is it called the Jensen-Shannon divergence? --->
   3. In the paper, why do they say “In practice, equation 1 may not provide sufficient gradient for G to learn well. Early in learning, when G is poor, D can reject samples with high confidence because they are clearly different from the training data. In this case, $$log(1 − D(G(z)))$$ saturates”?
      <details><summary>Solution</summary>
        <a href="/assets/gan_gradient.pdf">Understanding the vanishing generator gradients point in the GAN paper</a>
