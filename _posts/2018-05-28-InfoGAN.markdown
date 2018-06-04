@@ -9,6 +9,7 @@ blurb: "InfoGAN is an extension of GANs that learns to represent unlabeled
         unsupervised learning and GANs are a flexible and powerful interpretation.
         This makes InfoGAN an important and interesting stepping stone in
         representation learning."
+feedback: true
 ---
 
 # Why

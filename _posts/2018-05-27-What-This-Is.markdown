@@ -5,10 +5,10 @@ date:   2018-05-27 10:00:00 -0400
 categories: introduction
 author: dfl
 blurb: "Welcome to Depth First Learning."
+feedback: false
 ---
 
-Welcome! We made this for you. Really! You, you, and also (maybe even
-especially) - you.
+Welcome! We made this for you. 
 
 Why? Because there's a flood of information out there on machine learning and it
 is woefully insufficient in two ways that we all recognize.
