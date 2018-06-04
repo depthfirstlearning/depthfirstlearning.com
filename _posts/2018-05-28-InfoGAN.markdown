@@ -27,8 +27,8 @@ stone towards research in representation learning.
 "amount of information". These concepts can be extended to relative quantities 
 among random variables. This section leads to Mutual Information (MI), a concept core to 
 InfoGAN. MI extends entropy to the amount of additional information you yield from 
-observing a sample from the conditional distribution of two random variables as compared to the baseline of 
-observing the variable separately. 
+observing a joint sample of two random variables as compared to the baseline of 
+observing each variable separately. 
 
   **Topics**:
   1. Entropy
