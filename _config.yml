@@ -23,6 +23,10 @@ surya:
     name: Surya Bhupatiraju
     email: sbhupatiraju@google.com
     web: http://twitter.com/suryabhupa
+krishna:
+    name: Kumar Krishna Agrawal
+    email: kumarkagrawal@gmail.com
+    web: http://twitter.com/kumarkagrawal
 
 # Build settings
 markdown:       kramdown
