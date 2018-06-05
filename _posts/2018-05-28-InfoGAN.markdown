@@ -12,11 +12,8 @@ blurb: "InfoGAN is an extension of GANs that learns to represent unlabeled
 feedback: true
 ---
 
-<iframe class="deps" src="/assets/infogan-deps.svg" width="200" >
-</iframe>
+<iframe class="deps" src="/assets/infogan-deps.svg" width="200"></iframe>
 
-<!--
-<img src="/assets/infogan-deps.svg" style="width: 200px; height: auto; float: right; margin-left: 40px; margin-bottom: 30px;" />
 -->
 
 # Why
@@ -121,7 +118,7 @@ observing each variable separately.
   2. What are the bounds for KL divergence? When are those bounds achieved?
   3. In the paper, why do they say “In practice, equation 1 may not provide sufficient gradient for G to learn well. Early in learning, when G is poor, D can reject samples with high confidence because they are clearly different from the training data. In this case, $$log(1 − D(G(z)))$$ saturates”?
      <details><summary>Solution</summary>
-       <a href="/assets/gan_gradient.pdf">Understanding the vanishing generator gradients point in the GAN paper</a>
+       <p><a href="/assets/gan_gradient.pdf">Understanding the vanishing generator gradients point in the GAN paper</a></p>
      </details>
   4. Implement a [Colab](https://colab.research.google.com/) that trains a GAN for MNIST. Try both the saturating and non-saturating discriminator loss. (Please [let us know](https://github.com/depthfirstlearning/depthfirstlearning.com/issues/3) if you do this!)
 
@@ -169,13 +166,15 @@ observing each variable separately.
   3. Why is an auxiliary $$Q$$ distribution necessary?
   4. Draw a neural network diagram for InfoGAN
      <details><summary>Solution</summary>
-       There is a good diagram in <a href="https://towardsdatascience.com/infogan-generative-adversarial-networks-part-iii-380c0c6712cd">this blog post</a>
+       <p>There is a good diagram in <a href="https://towardsdatascience.com/infogan-generative-adversarial-networks-part-iii-380c0c6712cd">this blog post</a></p>
      </details>
   5. In the paper they say "However, in this paper we opt for
 simplicity by fixing the latent code distribution and we will treat $$H(c)$$ as a constant.". What if you want to learn
 the latent code (say, if you don't know that classes are balanced in the dataset). Can you still optimize for this with gradient-based algorithms? Can you implement this on an intentionally class-imbalanced variant of MNIST?
      <details><summary>Solution</summary>
+     <p>
      You could imagine learning the parameters of the distribution of c, if you can get H(c) to be a differentiable function of those parameters.
+     </p>
      </details>
   6. In the paper they say "the lower bound ... is quickly maximized to ... and maximal mutual information is achieved". How do they know this is the maximal value?
   7. Open-ended question: Is InfoGAN guaranteed to find disentangled representations? How would you tell if a representation is disentangled?
