@@ -19,6 +19,10 @@ cinjon:
     name: Cinjon Resnick
     email: cinjon.resnick@gmail.com
     web: http://twitter.com/cinjoncin
+surya:
+    name: Surya Bhupatiraju
+    email: sbhupatiraju@google.com
+    web: http://twitter.com/suryabhupa
 
 # Build settings
 markdown:       kramdown
