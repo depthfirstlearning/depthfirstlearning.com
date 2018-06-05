@@ -29,6 +29,11 @@
 
 
       Array.prototype.slice.call(document.querySelectorAll("iframe.deps")).forEach(function(iframe) {
+        // Add CSS to all deps iframes
+        css = 'a { cursor: pointer } font { color: #4a9ae1; } font:hover { text-decoration: underline; }';
+        var style = document.createElement('style');
+        style.appendChild(document.createTextNode(css));
+        iframe.contentDocument.children[0].appendChild(style);
 
         // Fix size of SVG container
         svg = iframe.contentDocument.querySelector("svg");
@@ -56,7 +61,6 @@
           if (a.getAttribute("xlink:href")) {
             a.setAttribute("xlink:href", window.location.href.split("#")[0] + a.getAttribute("xlink:href"));  
             a.setAttribute("target", "_parent");
-            a.style.cursor = "pointer";
           }
         });
       });
