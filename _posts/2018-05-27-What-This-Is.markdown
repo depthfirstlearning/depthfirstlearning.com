@@ -30,3 +30,5 @@ designed to be shared with and grown by the community. If you are interested in
 developing your own curriculum for a paper that we do not already host, we will
 help you! Reach out to us at depthfirstlearning@gmail.com. We want your help in
 growing this resource and making it richer.
+
+- <a href="{{site["avital"].web}}">Avital</a>, Surya, Kumar, <a href="{{site["cinjon"].web}}">Cinjon</a>
