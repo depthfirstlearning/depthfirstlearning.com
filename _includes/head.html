@@ -40,17 +40,19 @@
         if (svg) {
           scale = parseInt(iframe.width) / parseInt(svg.getAttribute("width"));
           transform = "scale(" + scale + ")";
-          svg.style["transform"] = transform;
-          svg.style["-ms-transform"] = transform;
-          svg.style["-moz-transform"] = transform;
-          svg.style["-o-transform"] = transform;
-          svg.style["-webkit-transform"] = transform;
+          gElement = svg.querySelector("g");
 
-          svg.style["transform-origin"] = "0 0";
-          svg.style["-ms-transform-origin"] = "0 0";
-          svg.style["-moz-transform-origin"] = "0 0";
-          svg.style["-o-transform-origin"] = "0 0";
-          svg.style["-webkit-transform-origin"] = "0 0";
+          gElement.style["transform"] = transform;
+          gElement.style["-ms-transform"] = transform;
+          gElement.style["-moz-transform"] = transform;
+          gElement.style["-o-transform"] = transform;
+          gElement.style["-webkit-transform"] = transform;
+
+          gElement.style["transform-origin"] = "0 0";
+          gElement.style["-ms-transform-origin"] = "0 0";
+          gElement.style["-moz-transform-origin"] = "0 0";
+          gElement.style["-o-transform-origin"] = "0 0";
+          gElement.style["-webkit-transform-origin"] = "0 0";
 
           iframe.height = svg.height.baseVal.value * scale;
           iframe.scrolling = "no";
