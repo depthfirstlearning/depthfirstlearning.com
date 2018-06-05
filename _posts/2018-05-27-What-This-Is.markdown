@@ -31,4 +31,5 @@ developing your own curriculum for a paper that we do not already host, we will
 help you! Reach out to us at depthfirstlearning@gmail.com. We want your help in
 growing this resource and making it richer.
 
-- <a href="{{site["avital"].web}}">Avital</a>, Surya, Kumar, <a href="{{site["cinjon"].web}}">Cinjon</a>
+- <a href="{{site["avital"].web}}">Avital</a>, <a href="{{site["surya"].web}}">Surya</a>, 
+<a href="{{site["krishna"].web}}">Kumar</a>, <a href="{{site["cinjon"].web}}">Cinjon</a>

@@ -22,11 +22,9 @@ rigorously understand the content.
 
 We did this across two locations, one at Google AI in Mountain View as part of 
 the Google AI Residency and the other at New York University as part of Joan 
-Bruna's class on The Mathematics of Deep Learning.
-
-We realized that the resources we were compiling would be useful to a much 
-broader community, and this repository of depth-first study plans is the outcome  
-of that genesis.
+Bruna's class on The Mathematics of Deep Learning. We realized that the resources 
+we had compiled would be useful to a much broader community, and this repository 
+of depth-first study plans is the outcome of that genesis.
 
 DFL was designed to be shared with and grown by the community. It is not limited
 to people at Google or at NYU. If you are interested in developing your own 
@@ -34,4 +32,5 @@ curriculum for a paper that we do not already host, we will help you! Reach out
 to us at depthfirstlearning@gmail.com. We want your help in growing this resource
 and making it richer.
 
-- <a href="{{site["avital"].web}}">Avital</a>, Surya, Kumar, <a href="{{site["cinjon"].web}}">Cinjon</a>
+- <a href="{{site["avital"].web}}">Avital</a>, <a href="{{site["surya"].web}}">Surya</a>, 
+<a href="{{site["krishna"].web}}">Kumar</a>, <a href="{{site["cinjon"].web}}">Cinjon</a>
