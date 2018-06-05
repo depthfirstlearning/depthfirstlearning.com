@@ -27,6 +27,46 @@
           a.target = "_blank";
         }
       });
+
+
+      Array.prototype.slice.call(document.querySelectorAll("iframe.deps")).forEach(function(iframe) {
+        // Add CSS to all deps iframes
+        css = 'a { cursor: pointer } font { color: #4a9ae1; } font:hover { text-decoration: underline; }';
+        var style = document.createElement('style');
+        style.appendChild(document.createTextNode(css));
+        iframe.contentDocument.children[0].appendChild(style);
+
+        // Fix size of SVG container
+        svg = iframe.contentDocument.querySelector("svg");
+        if (svg) {
+          scale = parseInt(iframe.width) / parseInt(svg.getAttribute("width"));
+          transform = "scale(" + scale + ")";
+          gElement = svg.querySelector("g");
+
+          gElement.style["transform"] = transform;
+          gElement.style["-ms-transform"] = transform;
+          gElement.style["-moz-transform"] = transform;
+          gElement.style["-o-transform"] = transform;
+          gElement.style["-webkit-transform"] = transform;
+
+          gElement.style["transform-origin"] = "0 0";
+          gElement.style["-ms-transform-origin"] = "0 0";
+          gElement.style["-moz-transform-origin"] = "0 0";
+          gElement.style["-o-transform-origin"] = "0 0";
+          gElement.style["-webkit-transform-origin"] = "0 0";
+
+          iframe.height = svg.height.baseVal.value * scale;
+          iframe.scrolling = "no";
+        }
+
+        // Fix links in embedded SVG files, used to navigate between dependencies
+        Array.prototype.slice.call(iframe.contentDocument.querySelectorAll("a")).forEach(function(a) {
+          if (a.getAttribute("xlink:href")) {
+            a.setAttribute("xlink:href", window.location.href.split("#")[0] + a.getAttribute("xlink:href"));  
+            a.setAttribute("target", "_parent");
+          }
+        });
+      });
     };
   </script>
 </head>
@@ -36,7 +76,7 @@
     <nav class="nav">
       <div class="nav-container">
         <a href="/">
-          <img class="nav-title" src="/assets/title-img.png " />
+          <img class="nav-title" src="/assets/title-img.svg " width=158 height=89/>
         </a>
         <ul>
           <li><a href="/about">About</a></li>
@@ -51,7 +91,7 @@
 <div class="post">
 
   <script type="text/javascript"
-    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
   </script>
 
   <div class="post-info">
