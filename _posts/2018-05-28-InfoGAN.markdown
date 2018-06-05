@@ -14,7 +14,10 @@ feedback: true
 
 (We thank Kumar Agrawal, Yasaman Bahri, Peter Chen, Nic Ford, Roy Frostig, Xinyang Geng, Rein Houthooft, Ben Poole, Colin Raffel and Supasorn Suwajanakorn for contributing to this guide.)
 
-<iframe class="deps" src="/assets/infogan-deps.svg" width="200"></iframe>
+<div class="deps-graph">
+  <iframe class="deps" src="/assets/infogan-deps.svg" width="200"></iframe>
+  <div>Concepts used in InfoGAN. Click to navigate.</div>
+</div>
 
 # Why
 

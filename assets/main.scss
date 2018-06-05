@@ -81,26 +81,33 @@ a.colab-root {
   }
 }
 
+iframe.deps {
+  border: 0;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+div.deps-graph {
+  text-align: center;
+  font-size: 75%;
+}
+
 @media only screen and (max-width: 599px) {
-  iframe.deps {
+  div.deps-graph {
     display: block;
     margin-left: auto;
     margin-right: auto;
     margin-top: 10px;
-    margin-bottom: 30px;
-    border: 0;
-    overflow: hidden;
+    margin-bottom: 20px;
   }
 }
 
 @media only screen and (min-width: 600px) {
-  iframe.deps {
+  div.deps-graph {
     float: right;
     margin-left: 40px;
     margin-top: 10px;
-    margin-bottom: 30px;
-    border: 0;
-    overflow: hidden;
+    margin-bottom: 20px;
   }
 }
 
