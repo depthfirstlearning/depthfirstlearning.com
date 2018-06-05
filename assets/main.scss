@@ -81,10 +81,24 @@ a.colab-root {
   }
 }
 
-iframe.deps {
-  float: right;
-  margin-left: 40px;
-  margin-bottom: 30px;
-  border: 0;
-  overflow: hidden;
+@media only screen and (max-width: 550px) {
+  iframe.deps {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+    border: 0;
+    overflow: hidden;
+  }
 }
+
+@media only screen and (min-width: 551px) {
+  iframe.deps {
+    float: right;
+    margin-left: 40px;
+    margin-bottom: 30px;
+    border: 0;
+    overflow: hidden;
+  }
+}
+
