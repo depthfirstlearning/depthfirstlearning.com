@@ -26,6 +26,40 @@
           a.target = "_blank";
         }
       });
+
+
+      Array.prototype.slice.call(document.querySelectorAll("iframe.deps")).forEach(function(iframe) {
+
+        // Fix size of SVG container
+        svg = iframe.contentDocument.querySelector("svg");
+        if (svg) {
+          scale = parseInt(iframe.width) / parseInt(svg.getAttribute("width"));
+          transform = "scale(" + scale + ")";
+          svg.style["transform"] = transform;
+          svg.style["-ms-transform"] = transform;
+          svg.style["-moz-transform"] = transform;
+          svg.style["-o-transform"] = transform;
+          svg.style["-webkit-transform"] = transform;
+
+          svg.style["transform-origin"] = "0 0";
+          svg.style["-ms-transform-origin"] = "0 0";
+          svg.style["-moz-transform-origin"] = "0 0";
+          svg.style["-o-transform-origin"] = "0 0";
+          svg.style["-webkit-transform-origin"] = "0 0";
+
+          iframe.height = svg.height.baseVal.value * scale;
+          iframe.scrolling = "no";
+        }
+
+        // Fix links in embedded SVG files, used to navigate between dependencies
+        Array.prototype.slice.call(iframe.contentDocument.querySelectorAll("a")).forEach(function(a) {
+          if (a.getAttribute("xlink:href")) {
+            a.setAttribute("xlink:href", window.location.href.split("#")[0] + a.getAttribute("xlink:href"));  
+            a.setAttribute("target", "_parent");
+            a.style.cursor = "pointer";
+          }
+        });
+      });
     };
   </script>
 </head>

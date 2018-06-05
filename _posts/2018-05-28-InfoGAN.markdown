@@ -12,6 +12,13 @@ blurb: "InfoGAN is an extension of GANs that learns to represent unlabeled
 feedback: true
 ---
 
+<iframe class="deps" src="/assets/infogan-deps.svg" width="200" >
+</iframe>
+
+<!--
+<img src="/assets/infogan-deps.svg" style="width: 200px; height: auto; float: right; margin-left: 40px; margin-bottom: 30px;" />
+-->
+
 # Why
 
 InfoGAN is an extension of GANs that learns to represent unlabeled data as codes,
@@ -116,7 +123,7 @@ observing each variable separately.
      <details><summary>Solution</summary>
        <a href="/assets/gan_gradient.pdf">Understanding the vanishing generator gradients point in the GAN paper</a>
      </details>
-  4. Implement a [Colab](https://colab.research.google.com/) that trains a GAN for MNIST. Try both the saturating and non-saturating discriminator loss.
+  4. Implement a [Colab](https://colab.research.google.com/) that trains a GAN for MNIST. Try both the saturating and non-saturating discriminator loss. (Please [let us know](https://github.com/depthfirstlearning/depthfirstlearning.com/issues/3) if you do this!)
 
 
 <br />
