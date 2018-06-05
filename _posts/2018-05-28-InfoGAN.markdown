@@ -14,8 +14,6 @@ feedback: true
 
 <iframe class="deps" src="/assets/infogan-deps.svg" width="200"></iframe>
 
--->
-
 # Why
 
 InfoGAN is an extension of GANs that learns to represent unlabeled data as codes,
@@ -113,7 +111,9 @@ observing each variable separately.
 
   **Questions**:
   1. Prove that $$0 \leq JSD(P||Q) \leq 1$$ bit for all P, Q. When are the bounds achieved?
-     <details><summary>Solution</summary>Start <a href="https://en.wikipedia.org/wiki/Jensen-Shannon_divergence#Relation_to_mutual_information">here</a>.
+     <details><summary>Solution</summary>
+     <p>Start <a href="https://en.wikipedia.org/wiki/Jensen-Shannon_divergence#Relation_to_mutual_information">here</a>.
+     </p>
      </details>
   2. What are the bounds for KL divergence? When are those bounds achieved?
   3. In the paper, why do they say “In practice, equation 1 may not provide sufficient gradient for G to learn well. Early in learning, when G is poor, D can reject samples with high confidence because they are clearly different from the training data. In this case, $$log(1 − D(G(z)))$$ saturates”?
