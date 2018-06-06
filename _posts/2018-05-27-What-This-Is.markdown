@@ -26,10 +26,12 @@ knew before that to influence those choices.
 
 This public repository of depth-first study plans is the outcome of an effort to
 address those shortcomings in the machine learning research world. DFL was
-designed to be shared with and grown by the community. If you are interested in
-developing your own curriculum for a paper that we do not already host, we will
-help you! Reach out to us at depthfirstlearning@gmail.com. We want your help in
-growing this resource and making it richer.
+designed to be shared with and grown by the community. If you are interested in developing your own 
+curriculum for a paper that we do not already host, we will help you! Check out out
+<a href="https://github.com/depthfirstlearning/depthfirstlearning.com#contributing">github</a>
+for examples and open an <a href="https://github.com/depthfirstlearning/depthfirstlearning.com/issues">issue</a>
+detailing which paper you want to study. We want your help in growing this resource
+and making it richer.
 
 - <a href="{{site["avital"].web}}">Avital</a>, <a href="{{site["surya"].web}}">Surya</a>, 
 <a href="{{site["krishna"].web}}">Kumar</a>, <a href="{{site["cinjon"].web}}">Cinjon</a>
