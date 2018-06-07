@@ -2,7 +2,7 @@
 layout: post
 title:  "InfoGAN"
 date:   2018-05-28 10:00:00 -0400
-categories: generative-adversarial-networks representation-learning
+categories: generative-adversarial-networks,representation-learning
 author: avital
 blurb: "InfoGAN is an extension of GANs that learns to represent unlabeled 
         data as codes. Representation learning is an important aspect of 
@@ -12,7 +12,7 @@ blurb: "InfoGAN is an extension of GANs that learns to represent unlabeled
 feedback: true
 ---
 
-(We thank Kumar Agrawal, Yasaman Bahri, Peter Chen, Nic Ford, Roy Frostig, Xinyang Geng, Rein Houthooft, Ben Poole, Colin Raffel and Supasorn Suwajanakorn for contributing to this guide.)
+(Thank you to Kumar Agrawal, Yasaman Bahri, Peter Chen, Nic Ford, Roy Frostig, Xinyang Geng, Rein Houthooft, Ben Poole, Colin Raffel and Supasorn Suwajanakorn for contributing to this guide.)
 
 <div class="deps-graph">
   <iframe class="deps" src="/assets/infogan-deps.svg" width="200"></iframe>
