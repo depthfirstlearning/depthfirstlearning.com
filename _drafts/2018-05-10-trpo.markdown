@@ -3,164 +3,180 @@ layout: post
 title:  "Trust Region Policy Optimization"
 date:   2018-05-10 18:50:23 -0400
 categories: reinforcement-learning
+author: surya,krishna
+blurb: "InfoGAN is an extension of GANs that learns to represent unlabeled 
+        data as codes. Representation learning is an important aspect of 
+        unsupervised learning, and GANs are a flexible and powerful interpretation.
+        This makes InfoGAN an important and interesting stepping stone in
+        representation learning."
+feedback: true
 ---
-# Trust Region Policy Optimization
 
-## Policy Gradients
+(Thank you to ... for contribution to this guide.)
 
-### General high level topics:
- - Introduce MDP setting
- - REINFORCE theorem
- - Continuous action spaces
- - On-policy setting
- - Policy gradient
- - Why does policy gradient have such high variance?
- - Why does step size matter?
- - Off-policy vs on-policy?
- - Why PG for continuous action spaces?
+TODO: Change to be TRPO's navigable svg.
+<div class="deps-graph">
+  <iframe class="deps" src="/assets/infogan-deps.svg" width="200"></iframe>
+  <div>Concepts used in InfoGAN. Click to navigate.</div>
+</div>
 
-### Resources
- - CS 294 Lecture 4 about Policy Gradient (main source):
-    - [Slides](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_4_policy_gradient.pdf)
-    - [Video](https://www.youtube.com/watch?v=tWNpiNzWuO8&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3&index=4)
- - David Silver’s class slides about PG (main source):
-    - [Slides](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching_files/pg.pdf)
-    - [Video](https://www.youtube.com/watch?v=KHZVXao4qXs&index=7&list=PL7-jPKtc4r78-wCZcQn5IqyuWhBZ8fOxT)
-  - (Optional, but highly recommended) [John Schulman introduction at MLSS Cadiz](http://rl-gym-doc.s3-website-us-west-2.amazonaws.com/mlss/2016-MLSS-RL.pdf)
-  - (Optional) [Lecture on Variance Reduction for Policy Gradient](http://rll.berkeley.edu/deeprlcoursesp17/docs/lec6.pdf)
-  - (Optional) [Introduction to policy gradient and motivations by Andrej Karpathy](http://karpathy.github.io/2016/05/31/rl/)
+# Why
 
-### Papers
- - Sutton and Barto 2nd Edition, pages 265 - 273: [Textbook]
- - (**Highly recommended**) [Simple statistical gradient-following algorithms for connectionist reinforcement learning](http://www-anw.cs.umass.edu/~barto/courses/cs687/williams92simple.pdf) (REINFORCE, Williams, 1992)
- - (Optional) [Connection Between Importance Sampling and Likelihood Ratio](http://rll.berkeley.edu/~jietang/pubs/nips10_Tang.pdf) (Tang and Abbeel, 2010)
+Trust Region Policy Optimization, or TRPO, is an approach to reinforcement
+learning that uses a trust region to constrain the size of the update step.
+TODO: ADD MORE CONTEXT.
 
-## Variance Reduction and Advantage Estimate
+TODO: Edit correct link.
+  <a href="https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq#forceEdit=true&offline=true&sandboxMode=true" class="colab-root">Reproduce in a
+    <span>Notebook</span></a>
 
-### General high level topics of discussion:
- - REINFORCE / Vanilla PG
- - Likelihood Ratio
- - Importance Sampling connection
- - Show why no dynamics model is needed
- - Variance reduction: Baselines
- - Variance reduction: Causality
- - Advantage Estimation / GAE?
- - Final Algorithm
- - Why does it fail?
+<br />
 
-### Resources
- - CS 294 Lecture 5 about Actor Critic Algorithms
-   - [Slides](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_5_actor_critic_pdf.pdf)
-   - [Video](https://www.youtube.com/watch?v=PpVhtJn-iZI&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3&index=5)
- - George Tucker’s notes on Variance Reduction
+# 1 Policy Gradients
+  **Motivation**: TODO
 
+  **Topics**:
+  1. Markov Decision Processes (MDP).
+  2. REINFORCE.
+  3. Continuous action spaces.
+  4. On-policy & Off-Policy settings.
+  5. Policy gradients.
 
-### Papers
- - Sutton and Barto 2nd Edition, pages 273 - 275: [Textbook]
- - (Optional) [High-dimensional continuous control using generalized advantage estimation](https://arxiv.org/abs/1506.02438) (GAE)
- - (Optional) [Asynchronous Methods for Deep Reinforcement Learning](https://arxiv.org/abs/1602.01783) (A3C) 
+  **Required Readings**:
+  1. CS 294 Lecture 4 about Policy Gradient:
+      1. [Slides](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_4_policy_gradient.pdf)
+      2. [Video](https://www.youtube.com/watch?v=tWNpiNzWuO8&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3&index=4)
+  2. David Silver’s class slides about PG:
+      1. [Slides](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching_files/pg.pdf)
+      2. [Video](https://www.youtube.com/watch?v=KHZVXao4qXs&index=7&list=PL7-jPKtc4r78-wCZcQn5IqyuWhBZ8fOxT)
+  3. Sutton and Barto 2nd Edition, pages 265 - 273.
+  4. [Simple statistical gradient-following algorithms for connectionist reinforcement learning](http://www-anw.cs.umass.edu/~barto/courses/cs687/williams92simple.pdf)
 
-## Fisher Information Matrix and Natural Gradient Descent
+  **Optional Readings**:
+  1. [John Schulman introduction at MLSS Cadiz](http://rl-gym-doc.s3-website-us-west-2.amazonaws.com/mlss/2016-MLSS-RL.pdf)
+  2. [Lecture on Variance Reduction for Policy Gradient](http://rll.berkeley.edu/deeprlcoursesp17/docs/lec6.pdf)
+  3. [Introduction to policy gradient and motivations by Andrej Karpathy](http://karpathy.github.io/2016/05/31/rl/)
+  4. [Connection Between Importance Sampling and Likelihood Ratio](http://rll.berkeley.edu/~jietang/pubs/nips10_Tang.pdf)
 
-### General high level topics of discussion:
- - Fisher Information Matrix
- - Natural Gradient Descent
- - (Optional) K-Fac
- - Gradient descent as Euclidean steepest descent
- - Fisher Matrix
-   - How is it similar, and different from the Hessian
- - Two equivalent definitions
- - Natural gradient descent, compared to Newton’s method
- - Why is the natural gradient slow to compute?
+  **Questions**:
+  1. Why does policy gradient have such high variance?
+  2. Why does the step size matter?
+  3. What is the difference between Off-policy and On-policy?
+  4. What is the advantage of policy gradients for continuous action spaces?
 
+<br />
 
-### Main Resources (required reading)
- - [New insights and perspectives on the natural gradient method](https://arxiv.org/pdf/1412.1193.pdf) / James Martens (Sections 1-11; ends at page 24)
- - Matt Johnson’s Natural Gradient Descent and K-Fac Tutorial (Sections 1-7, Section A, Section B)
- - [Fisher Information Matrix](https://web.archive.org/web/20170807004738/https://hips.seas.harvard.edu/blog/2013/04/08/fisher-information/) from Ryan Adams’ lab
+# 2 Variance Reduction and Advantage Estimate
+  **Motivation**: TODO
 
-#### Optional resources
-   - The rest of Matt Johnson’s tutorial above
-   - The rest of James Martens’ survey paper above
-   - [Wikipedia on Fisher Information](https://en.wikipedia.org/wiki/Fisher_information)
-   - [8-page intro to natural gradients](http://ipvs.informatik.uni-stuttgart.de/mlr/wp-content/uploads/2015/01/mathematics_for_intelligent_systems_lecture12_notes_I.pdf)
+  **Topics**:
+  1. Likelihood Ratio.
+  2. Importance Sampling connection.
+  3. Variance reduction: Baselines & Causality.
+  4. Advantage Estimation.
 
-#### Papers (optional)
-   - [Why Natural Gradient Descent / Amari and Douglas](http://www.yaroslavvb.com/papers/amari-why.pdf)
-   - [Natural Gradient Works Efficiently in Learning / Amari](https://personalrobotics.ri.cmu.edu/files/courses/papers/Amari1998a.pdf)
+  **Required Readings**:
+  1. CS 294 Lecture 5 about Actor Critic Algorithms
+      1. [Slides](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_5_actor_critic_pdf.pdf)
+      2. [Video](https://www.youtube.com/watch?v=PpVhtJn-iZI&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3&index=5)
+  2. George Tucker’s notes on Variance Reduction (TODO: Where is this?)
 
-#### Books (very optional)
-   - A book by Amari on Information Geometry: [Springer](http://www.springer.com/gp/book/9784431559771)
+  **Optional Readings**:
+  1. Sutton and Barto 2nd Edition, pages 273 - 275.
+  2. [High-dimensional continuous control using generalized advantage estimation](https://arxiv.org/abs/1506.02438)
+  3. [Asynchronous Methods for Deep Reinforcement Learning](https://arxiv.org/abs/1602.01783)
 
-## Conjugate Gradients
+  **Questions**: TODO
 
-### General high level topics of discussion: 
- - Solving system of linear equations
- - Efficiently computing matrix-vector products 
- - Natural Gradient descent requires computing F^{-1} \grad{f}
- - Generally, 2nd order methods require computing B^{-1} \grad{f} for some B
- - How to solve efficiently for the gradient direction?
+<br />
 
-### Main Resources (required reading)
- - [An Introduction to the Conjugate Gradient Method Without the Agonizing Pain](https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf) (Section 7 to 9)
- - Convex Optimization II by Stephen Boyd
-   - [Lecture 12, from 37:10 to 1:05:00](https://www.youtube.com/watch?feature=player_embedded&v=cHVpwyYU_LY#t=2230)
-   - [Lecture 13, from 21:20 to 29:30](https://www.youtube.com/watch?feature=player_embedded&v=E4gl91l0l40#t=1266)
+# 3 Fisher Information Matrix and Natural Gradient Descent
+  **Motivation**: TODO
 
-#### Optional references (Book) :
-  - Numerical Optimization by Nocedal, Wright
-  - Section 5.1, "The linear conjugate gradient method," up through "A practical form of the conjugate gradient method,"
+  **Topics**:
+  1. Fisher Information Matrix.
+  2. Natural Gradient Descent.
+  3. K-Fac.
 
-### References : 
- - [Metacademy](https://metacademy.org/graphs/concepts/conjugate_gradient)
+  **Required Readings**:
+  1. [New insights and perspectives on the natural gradient method](https://arxiv.org/pdf/1412.1193.pdf): Sections 1-11.
+  2. Matt Johnson’s Natural Gradient Descent and K-Fac Tutorial: Sections 1-7, Section A, Section B (TODO: Where is this?)
+  3. [Fisher Information Matrix](https://web.archive.org/web/20170807004738/https://hips.seas.harvard.edu/blog/2013/04/08/fisher-information/)
 
-## Trust Region Methods
+  **Optional Readings**:
+  1. [8-page intro to natural gradients](http://ipvs.informatik.uni-stuttgart.de/mlr/wp-content/uploads/2015/01/mathematics_for_intelligent_systems_lecture12_notes_I.pdf)
+  2. [Why Natural Gradient Descent / Amari and Douglas](http://www.yaroslavvb.com/papers/amari-why.pdf)
+  3. [Natural Gradient Works Efficiently in Learning / Amari](https://personalrobotics.ri.cmu.edu/files/courses/papers/Amari1998a.pdf)
 
-### General high level topics of discussion:
- - What are trust regions?
- - How do we solve problems with trust regions? 
- - What are trust region methods and line search methods?
- - What is a Cauchy point?
- - How can we efficiently solve the trust region subproblems?	
-    - Dog-leg
-    - 2-dimensional search method
-    - Truncated conjugate gradient
- - What are the advantages and drawbacks of trust region methods?
- - Why are they especially good for RL?
+  **Questions**:
+  1. How is the Fisher Matrix similar and different from the Hessian?
+  2. How does Natural gradient descent compare to Newton’s method?
+  3. Why is the Natural Gradient slow to compute?
 
-### Main Resources (required reading)
- - Nocedal and Wright, Numerical Optimization:
-    - Chapter 2 (overview -- feel free to skim)
-    - Chapter 4, Section 4.1, 4.2
- - A review of trust region algorithms for optimization
+<br />
 
-#### Optional references
-   - [A light, more friendly introduction to trust region methods](https://optimization.mccormick.northwestern.edu/index.php/Trust-region_methods) (feel free to start with this)
-   - Nocedal and Wright, Numerical Optimization:
-      - Chapter 4, Section 4.3
-   - [TRPO](https://arxiv.org/abs/1502.05477)
-   - [ACKTR](https://arxiv.org/abs/1708.05144)
+# 4 Conjugate Gradients
+  **Motivation**: TODO
 
-## TRPO
+  **Topics**:
+  1. Solving system of linear equations.
+  2. Efficiently computing matrix-vector products .
+  3. Computational complexities of 2nd order methods.
 
-### General high level topics of discussion:
- - What is the problem we are trying to solve?
- - What are the bottlenecks in existing approaches?
- - Why TRPO?
+  **Required Readings**:
+  1. [An Introduction to the Conjugate Gradient Method Without the Agonizing Pain](https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf): Section 7 to 9.
+  2. Convex Optimization II by Stephen Boyd:
+      1. [Lecture 12, from 37:10 to 1:05:00](https://www.youtube.com/watch?feature=player_embedded&v=cHVpwyYU_LY#t=2230)
+      2. [Lecture 13, from 21:20 to 29:30](https://www.youtube.com/watch?feature=player_embedded&v=E4gl91l0l40#t=1266)
 
-### Overview
- - What is the connection between TRPO, PPO, and CPO?
- - In practice, TRPO is really slow. What is the main computational bottleneck, and how might we remove it?
- - What is Policy Improvement? (and monotic improvement theory)
- - Why use conjugate gradient methods for optimization? (Can we exploit the fact the conjugate gradient optimization is differentiable?)
- - How is line search used in TRPO?
+  **Optional Readings**: 
+  1. (TODO: I might have gotten this wrong. Please double check) Numerical Optimization by Nocedal, Wright: Section 5.1 "The linear conjugate gradient method," up through "A practical form of the conjugate gradient method"
+  2. [Metacademy](https://metacademy.org/graphs/concepts/conjugate_gradient)
 
-### Main Resources (required reading)
- - [Trust Region Policy Optimization](https://arxiv.org/abs/1502.05477)
- - DRL Course @Berkeley
-   - [Slides](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_13_advanced_pg.pdf)
-   - [Video](https://www.youtube.com/watch?v=ycCtmp4hcUs&feature=youtu.be&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3)
+  **Questions**: TODO
 
-#### Optional references
-   - [Approximately Optimal Approximate Reinforcement Learning](https://people.eecs.berkeley.edu/~pabbeel/cs287-fa09/readings/KakadeLangford-icml2002.pdf)
-   - [TRPO Tutorial](https://reinforce.io/blog/end-to-end-computation-graphs-for-reinforcement-learning/)
+<br />
+
+# 5 Trust Region Methods
+  **Motivation**: TODO
+
+  **Topics**:
+  1. Trust Regions and subproblems.
+  2. Line Search Methods.
+
+  **Required Readings**:
+  1. [A friendly introduction to Trust Region Methods](https://optimization.mccormick.northwestern.edu/index.php/Trust-region_methods)
+  2. Numerical Optimization by Nocedal, Wright: Chapter 2, Chapter 4, Section 4.1, 4.2
+
+  **Optional Readings**:
+  1. Nocedal and Wright, Numerical Optimization: Chapter 4, Section 4.3
+
+  **Questions**: TODO
+
+<br />
+
+# 6 The Paper
+  **Motivation**: Let's read the [paper](https://arxiv.org/abs/1502.05477). TODO: add more motivation if necessary.
+
+  **Topics**:
+  1. What is the problem that TRPO addresses?
+  2. What are the bottlenecks to addressing that problem in the existing approaches when it debuted?
+  3. Which of those bottlenecks does it effectively address? Why?
+
+  **Required Readings**:
+  1. [Trust Region Policy Optimization](https://arxiv.org/abs/1502.05477)
+  2. Deep Reinforcement Learning @Berkeley
+      1. [Slides](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_13_advanced_pg.pdf)
+      2. [Video](https://www.youtube.com/watch?v=ycCtmp4hcUs&feature=youtu.be&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3)
+
+  **Optional Readings**:
+  1. [Approximately Optimal Approximate Reinforcement Learning](https://people.eecs.berkeley.edu/~pabbeel/cs287-fa09/readings/KakadeLangford-icml2002.pdf)
+  2. [TRPO Tutorial](https://reinforce.io/blog/end-to-end-computation-graphs-for-reinforcement-learning/)
+  3. [ACKTR](https://arxiv.org/abs/1708.05144)
+
+  **Questions**:
+  1. What is the connection between TRPO, PPO, and CPO?
+  2. In practice, TRPO is really slow. What is the main computational bottleneck and how might we remove it?
+  3. What is Policy Improvement and Monotic Improvement Theory?
+  4. Why do we use conjugate gradient methods for optimization in TRPO? Can we exploit the fact the conjugate gradient optimization is differentiable?
+  5. How is line search used in TRPO?
