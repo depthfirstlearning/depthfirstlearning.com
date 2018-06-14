@@ -26,10 +26,6 @@ Trust Region Policy Optimization, or TRPO, is an approach to reinforcement
 learning that uses a trust region to constrain the size of the update step.
 TODO: ADD MORE CONTEXT.
 
-TODO: Edit correct link.
-  <a href="https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq#forceEdit=true&offline=true&sandboxMode=true" class="colab-root">Reproduce in a
-    <span>Notebook</span></a>
-
 <br />
 
 # 1 Policy Gradients
@@ -66,7 +62,7 @@ TODO: Edit correct link.
 
 <br />
 
-# 2 Variance Reduction and Advantage Estimate
+# 2 (Optional, not used in TRPO) Variance Reduction and Advantage Estimate
   **Motivation**: TODO
 
   **Topics**:
@@ -91,7 +87,14 @@ TODO: Edit correct link.
 <br />
 
 # 3 Fisher Information Matrix and Natural Gradient Descent
-  **Motivation**: TODO
+  **Motivation**: While gradient descent is able to solve many optimization problems,
+  it suffers from a basic problem -- its performance is dependent on the particular
+  parameterization chosen for the model. Natural gradient descent is a variant of
+  gradient descent, which is invariant to model parameterization. This is achieved
+  by multiplying gradient vectors by the inverse of the Fisher Information Matrix (also
+  called "conditioning on the Fisher").
+  The Fisher Information Matrix measures how much model predictions change with
+  local changes to parameters.
 
   **Topics**:
   1. Fisher Information Matrix.
@@ -99,8 +102,8 @@ TODO: Edit correct link.
   3. K-Fac.
 
   **Required Readings**:
-  1. [New insights and perspectives on the natural gradient method](https://arxiv.org/pdf/1412.1193.pdf): Sections 1-11.
-  2. Matt Johnson’s Natural Gradient Descent and K-Fac Tutorial: Sections 1-7, Section A, Section B (TODO: Where is this?)
+  1. Matt Johnson’s Natural Gradient Descent and K-Fac Tutorial: Sections 1-7, Section A, Section B (TODO: Where is this?)
+  2. [New insights and perspectives on the natural gradient method](https://arxiv.org/pdf/1412.1193.pdf): Sections 1-11.
   3. [Fisher Information Matrix](https://web.archive.org/web/20170807004738/https://hips.seas.harvard.edu/blog/2013/04/08/fisher-information/)
 
   **Optional Readings**:
