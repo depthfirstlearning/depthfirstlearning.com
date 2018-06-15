@@ -187,8 +187,9 @@ TRPO is a scalable algorithm of optimizing policies in reinforcement learning by
   3. [ACKTR](https://arxiv.org/abs/1708.05144)
 
   **Questions**:
-  1. What is the connection between TRPO, PPO, and CPO?
-  2. In practice, TRPO is really slow. What is the main computational bottleneck and how might we remove it?
-  3. What is Policy Improvement and Monotic Improvement Theory?
-  4. Why do we use conjugate gradient methods for optimization in TRPO? Can we exploit the fact the conjugate gradient optimization is differentiable?
-  5. How is line search used in TRPO?
+  1. How is the trust region set in TRPO?
+  2. What is the connection between TRPO, PPO, and CPO?
+  3. In practice, TRPO is really slow. What is the main computational bottleneck and how might we remove it?
+  4. What is Policy Improvement and Monotic Improvement Theory?
+  5. Why do we use conjugate gradient methods for optimization in TRPO? Can we exploit the fact the conjugate gradient optimization is differentiable?
+  6. How is line search used in TRPO?
