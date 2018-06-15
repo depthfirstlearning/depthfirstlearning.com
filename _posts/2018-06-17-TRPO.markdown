@@ -33,14 +33,13 @@ TRPO is a scalable algorithm of optimizing policies in reinforcement learning by
 <br />
 
 # 1 Policy Gradients
-  **Motivation**: TODO
+  **Motivation**: Policy gradient methods are a class of algorithms that allow one to directly optimize the parameters of a policy (whether it is a linear function or a complex neural network) by gradient descent. TRPO is one such algorithm in the policy gradient family of algorithms. In this section, we formalize the notion of MDPs, action and state spaces, and what it means to be on-policy or off-policy. This will then lead to describing the REINFORCE algorithm, which is the simplest instantiation of the policy gradient method.
 
   **Topics**:
   1. Markov Decision Processes (MDP).
-  2. REINFORCE.
-  3. Continuous action spaces.
-  4. On-policy & Off-Policy settings.
-  5. Policy gradients.
+  2. Continuous action spaces.
+  3. On-policy and off-policy.
+  4. REINFORCE.
 
   **Required Readings**:
   1. CS 294 Lecture 4 about Policy Gradient:
