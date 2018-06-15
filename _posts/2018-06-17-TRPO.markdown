@@ -86,7 +86,7 @@ TRPO is a scalable algorithm of optimizing policies in reinforcement learning by
   3. [Asynchronous Methods for Deep Reinforcement Learning](https://arxiv.org/abs/1602.01783)
 
   **Questions**: TODO
-
+  
 <br />
 
 # 3 Fisher Information Matrix and Natural Gradient Descent
@@ -104,7 +104,7 @@ TRPO is a scalable algorithm of optimizing policies in reinforcement learning by
   **Topics**:
   1. Fisher Information Matrix.
   2. Natural Gradient Descent.
-  3. K-Fac.
+  3. (Optional) K-Fac.
 
   **Required Readings**:
   1. [Matt Johnson’s Natural Gradient Descent and K-Fac Tutorial](/assets/k-fac-tutorial.pdf): Sections 1-7, Section A, Section B
@@ -123,8 +123,12 @@ TRPO is a scalable algorithm of optimizing policies in reinforcement learning by
 
 <br />
 
-# 4 Conjugate Gradients
-  **Motivation**: TODO
+# 4 Conjugate Gradient 
+  **Motivation**: The conjugate gradient method is an iterative algorithm for finding
+  approximate solutions to $$Ax=b$$, where $$A$$ is a symmetric and positive-definite matrix (such
+  as the Fisher information matrix). The method works by iteratively computing matrix-vector
+  products $$Ax_i$$, so is particularly well-suited for matrices for which matrix-vector
+  products are easy to compute.
 
   **Topics**:
   1. Solving system of linear equations.
