@@ -4,17 +4,16 @@ title:  "Trust Region Policy Optimization"
 date:   2018-05-10 18:50:23 -0400
 categories: reinforcement-learning
 author: surya,krishna
-blurb: "TRPO is a scalable algorithm of optimizing policies in reinforcement learning by gradient descent. Because model-free algorithms, such as policy gradient methods, do not require access to a model of the environment and often enjoy better practical stability, they are straightforward to apply to new problems, but were previously not able to scale to large, nonlinear policies. TRPO represents a significant improvement over previous methods in this sense and has demonstrated widespread success."
+blurb: "TRPO is a scalable algorithm for optimizing policies in reinforcement learning by gradient descent. Because model-free algorithms, such as policy gradient methods, do not require access to a model of the environment and often enjoy better practical stability, they are straightforward to apply to new problems, but were previously not scalable to large, nonlinear policies. TRPO represents a significant improvement over previous methods in this sense and has demonstrated widespread success."
 hidden: true
 feedback: true
 ---
 
 (Thank you to ... for contribution to this guide.)
 
-TODO: Change to be TRPO's navigable svg.
 <div class="deps-graph">
-  <iframe class="deps" src="/assets/infogan-deps.svg" width="200"></iframe>
-  <div>Concepts used in InfoGAN. Click to navigate.</div>
+  <iframe class="deps" src="/assets/trpo-deps.svg" width="200"></iframe>
+  <div>Concepts used in TRPO. Click to navigate.</div>
 </div>
 
 # Why
@@ -23,16 +22,17 @@ TRPO is a scalable algorithm of optimizing policies in reinforcement learning by
  gradient descent. Because model-free algorithms, such as policy gradient methods,
  do not require access to a model of the environment and often enjoy better
  practical stability, they are straightforward to apply to new problems, but
- were previously not able to scale to large, nonlinear policies. TRPO
- represents a significant improvement over previous methods in this sense and
- has demonstrated widespread success.
+ were previously not able to scale to large, nonlinear policies. TRPO brings
+together insights from reinforcement learning and optimization theory to develop
+an algorithm which (under certain assumptions) provides guarantees for monotonic
+improvement, and is often used as a strong baseline.
 
   <a href="https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq#forceEdit=true&offline=true&sandboxMode=true" class="colab-root">Reproduce in a
     <span>Notebook</span></a>
 
 <br />
 
-# 1 Policy Gradients
+# 1 Policy Gradient
   **Motivation**: Policy gradient methods are a class of algorithms that allow
   one to directly optimize the parameters of a policy (whether it is a linear
   function or a complex neural network) by gradient descent. TRPO is one such
