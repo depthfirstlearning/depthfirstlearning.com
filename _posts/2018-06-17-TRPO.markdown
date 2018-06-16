@@ -5,7 +5,6 @@ date:   2018-05-10 18:50:23 -0400
 categories: reinforcement-learning
 author: surya,krishna
 blurb: "TRPO is a scalable algorithm for optimizing policies in reinforcement learning by gradient descent. Because model-free algorithms, such as policy gradient methods, do not require access to a model of the environment and often enjoy better practical stability, they are straightforward to apply to new problems, but were previously not scalable to large, nonlinear policies. TRPO represents a significant improvement over previous methods in this sense and has demonstrated widespread success."
-hidden: true
 feedback: true
 ---
 
@@ -156,10 +155,13 @@ improvement, and is often used as a strong baseline.
       2. [Lecture 13, from 21:20 to 29:30](https://www.youtube.com/watch?feature=player_embedded&v=E4gl91l0l40#t=1266)
 
   **Optional Readings**:
-  1. (TODO: I might have gotten this wrong. Please double check) Numerical Optimization by Nocedal, Wright: Section 5.1 "The linear conjugate gradient method," up through "A practical form of the conjugate gradient method"
+  1. Numerical Optimization ("NOpt") by Nocedal, Wright: Section 5.1 "The linear conjugate gradient method," up through "Practical Preconditioners".
   2. [Metacademy](https://metacademy.org/graphs/concepts/conjugate_gradient)
 
-  **Questions**: TODO
+  **Questions**:
+  1. In pre-conditioned Conjugate Gradient, how does scaling the pre-conditioner
+     matrix $$M$$ by a constant $c$, impact the convergence?
+  2. From NOpt: Exercises 5.1 to 5.10
 
 <br />
 
@@ -180,9 +182,11 @@ improvement, and is often used as a strong baseline.
   2. Numerical Optimization by Nocedal, Wright: Chapter 2, Chapter 4, Section 4.1, 4.2
 
   **Optional Readings**:
-  1. Nocedal and Wright, Numerical Optimization: Chapter 4, Section 4.3
+  1. Numerical Optimization by Nocedal and Wright: Chapter 4, Section 4.3
 
-  **Questions**: TODO
+  **Questions**:
+  1. Instead of directly imposing constraints on the updates, what would be
+     alternatives to enforce an algorithm to make bounded updates?
 
 <br />
 
