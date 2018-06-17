@@ -48,13 +48,13 @@ improvement, and is often used as a strong baseline.
   4. REINFORCE / likelihood ratio methods.
 
   **Required Readings**:
-  1. CS 294 Lecture 4 about Policy Gradient:
+  1. Deep RL Course at UC Berkeley (CS 294); Policy Gradient Lecture
       1. [Slides](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_4_policy_gradient.pdf)
       2. [Video](https://www.youtube.com/watch?v=tWNpiNzWuO8&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3&index=4)
-  2. David Silver’s class slides about PG:
+  2. David Silver’s course at UCL; Policy Gradient Lecture
       1. [Slides](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching_files/pg.pdf)
       2. [Video](https://www.youtube.com/watch?v=KHZVXao4qXs&index=7&list=PL7-jPKtc4r78-wCZcQn5IqyuWhBZ8fOxT)
-  3. Sutton and Barto 2nd Edition, pages 265 - 273.
+  3. Reinforcement Learning by Sutton and Barto, 2nd Edition; pages 265 - 273.
   4. [Simple statistical gradient-following algorithms for connectionist reinforcement learning](http://www-anw.cs.umass.edu/~barto/courses/cs687/williams92simple.pdf)
 
   **Optional Readings**:
@@ -95,13 +95,13 @@ improvement, and is often used as a strong baseline.
   2. Advantage estimation.
 
   **Required Readings**:
-  1. CS 294 Lecture 5 about Actor Critic Algorithms
+  1. Deep RL Course at UC Berkeley (CS 294); Actor-Critic Methods Lecture
       1. [Slides](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_5_actor_critic_pdf.pdf)
       2. [Video](https://www.youtube.com/watch?v=PpVhtJn-iZI&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3&index=5)
-  2. George Tucker’s notes on Variance Reduction (TODO: Where is this?)
+  2. [George Tucker’s notes on Variance Reduction](/assets/gjt-var-red-notes.pdf)
 
   **Optional Readings**:
-  1. Sutton and Barto 2nd Edition, pages 273 - 275.
+  1. Reinforcement Learning by Sutton and Barto, 2nd Edition; pages 273 - 275.
   2. [High-dimensional continuous control using generalized advantage estimation](https://arxiv.org/abs/1506.02438)
   3. [Asynchronous Methods for Deep Reinforcement Learning](https://arxiv.org/abs/1602.01783)
   4. [Monte Carlo theory, methods, and examples by Art B. Owen; Chapter 8](https://statweb.stanford.edu/~owen/mc/Ch-var-basic.pdf)
@@ -177,13 +177,13 @@ improvement, and is often used as a strong baseline.
       2. [Lecture 13, from 21:20 to 29:30](https://www.youtube.com/watch?feature=player_embedded&v=E4gl91l0l40#t=1266)
 
   **Optional Readings**:
-  1. Numerical Optimization ("NOpt") by Nocedal, Wright: Section 5.1 "The linear conjugate gradient method," up through "Practical Preconditioners".
+  1. Numerical Optimization by Nocedal and Wright; Section 5.1, pages 101-120.
   2. [Metacademy](https://metacademy.org/graphs/concepts/conjugate_gradient)
 
   **Questions**:
   1. In pre-conditioned conjugate gradient, how does scaling the pre-conditioner
-     matrix $$M$$ by a constant $c$ impact the convergence?
-  2. From NOpt: Exercises 5.1 to 5.10
+     matrix \( M \) by a constant \( c \) impact the convergence?
+  2. Exercises 5.1 to 5.10 in Chapter 5, Numerical Optimization.
 
 <br />
 
@@ -201,15 +201,15 @@ improvement, and is often used as a strong baseline.
 
   **Required Readings**:
   1. [A friendly introduction to Trust Region Methods](https://optimization.mccormick.northwestern.edu/index.php/Trust-region_methods)
-  2. Numerical Optimization by Nocedal, Wright: Chapter 2, Chapter 4, Section 4.1, 4.2
+  2. Numerical Optimization by Nocedal and Wright: Chapter 2, Chapter 4, Section 4.1, 4.2
 
   **Optional Readings**:
-  1. Numerical Optimization by Nocedal, Wright: Chapter 4, Section 4.3
+  1. Numerical Optimization by Nocedal and Wright: Chapter 4, Section 4.3
 
   **Questions**:
   1. Instead of directly imposing constraints on the updates, what would be
      alternatives to enforce an algorithm to make bounded updates?
-  2. NOpt: Exercise: 4.1 to 4.10
+  2. Exercise: 4.1 to 4.10 in Chapter 4, Numerical Optimization.
 
 <br />
 
@@ -229,7 +229,7 @@ improvement, and is often used as a strong baseline.
 
   **Required Readings**:
   1. [Trust Region Policy Optimization](https://arxiv.org/abs/1502.05477)
-  2. Deep Reinforcement Learning @Berkeley
+  2. Deep RL Course at UC Berkeley (CS 294); Advanced Policy Gradient Methods (TRPO)
       1. [Slides](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_13_advanced_pg.pdf)
       2. [Video](https://www.youtube.com/watch?v=ycCtmp4hcUs&feature=youtu.be&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3)
   3. [Approximately Optimal Approximate Reinforcement Learning](https://people.eecs.berkeley.edu/~pabbeel/cs287-fa09/readings/KakadeLangford-icml2002.pdf)
