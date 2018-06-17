@@ -40,7 +40,7 @@
 
       Array.prototype.slice.call(document.querySelectorAll("iframe.deps")).forEach(function(iframe) {
         // Add CSS to all deps iframes
-        css = 'a { cursor: pointer } font { color: #4a9ae1; } font:hover { text-decoration: underline; }';
+        css = 'a { cursor: pointer; } div { color: #4a9ae1; } div:hover { text-decoration: underline; }';
         var style = document.createElement('style');
         style.appendChild(document.createTextNode(css));
         iframe.contentDocument.children[0].appendChild(style);
