@@ -137,8 +137,8 @@ improvement, and is often used as a strong baseline.
   local changes to parameters.
 
   **Topics**:
-  1. Fisher Information Matrix.
-  2. Natural Gradient Descent.
+  1. Fisher information matrix.
+  2. Natural gradient descent.
   3. (Optional) K-Fac.
 
   **Required Readings**:
@@ -152,9 +152,9 @@ improvement, and is often used as a strong baseline.
   3. [Natural Gradient Works Efficiently in Learning / Amari](https://personalrobotics.ri.cmu.edu/files/courses/papers/Amari1998a.pdf)
 
   **Questions**:
-  1. How is the Fisher Matrix similar and different from the Hessian?
-  2. How does Natural gradient descent compare to Newton’s method?
-  3. Why is the Natural Gradient slow to compute?
+  1. How is the Fisher matrix similar and different from the Hessian?
+  2. How does natural gradient descent compare to Newton’s method?
+  3. Why is the natural gradient slow to compute?
 
 <br />
 
@@ -223,18 +223,18 @@ improvement, and is often used as a strong baseline.
   used by many today. Let's read the [paper](https://arxiv.org/abs/1502.05477)!
 
   **Topics**:
-  1. What is the problem that TRPO addresses?
+  1. What is the problem with policy gradients that TRPO addresses?
   2. What are the bottlenecks to addressing that problem in the existing approaches when it debuted?
-  3. Which of those bottlenecks does it effectively address? Why?
+  3. Policy improvement bounds and theory.
 
   **Required Readings**:
   1. [Trust Region Policy Optimization](https://arxiv.org/abs/1502.05477)
   2. Deep Reinforcement Learning @Berkeley
       1. [Slides](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_13_advanced_pg.pdf)
       2. [Video](https://www.youtube.com/watch?v=ycCtmp4hcUs&feature=youtu.be&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3)
+  3. [Approximately Optimal Approximate Reinforcement Learning](https://people.eecs.berkeley.edu/~pabbeel/cs287-fa09/readings/KakadeLangford-icml2002.pdf)
 
   **Optional Readings**:
-  1. [Approximately Optimal Approximate Reinforcement Learning](https://people.eecs.berkeley.edu/~pabbeel/cs287-fa09/readings/KakadeLangford-icml2002.pdf)
   2. [TRPO Tutorial](https://reinforce.io/blog/end-to-end-computation-graphs-for-reinforcement-learning/)
   3. [ACKTR](https://arxiv.org/abs/1708.05144)
 
@@ -243,13 +243,14 @@ improvement, and is often used as a strong baseline.
   2. Why do we use conjugate gradient methods for optimization in TRPO? Can we
     exploit the fact the conjugate gradient optimization is differentiable?
   3. How is line search used in TRPO?
-  4. In practice, TRPO is really slow. What is the main computational
+  4. What are the pros and cons of using the vine and single-path methods?
+  5. In practice, TRPO is really slow. What is the main computational
     bottleneck and how might we remove it? Can we approximate this bottleneck?
-  5. TRPO makes a series of approximations that deviate from the policy
+  6. TRPO makes a series of approximations that deviate from the policy
     improvement theory that is cited. What are the assumptions that are made
     that allow these approximations to be reasonable? Should we still expect
     monotonic improvement in our policy?
-  6. TRPO is a general procedure to directly optimize parameters from rewards,
+  7. TRPO is a general procedure to directly optimize parameters from rewards,
     even though the procedure is "non-differentiable". Does it make sense to
     apply TRPO to other non-differentiable problems, like problems involving
     hard attention or discrete random variables?
