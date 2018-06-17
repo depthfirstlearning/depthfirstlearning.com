@@ -45,7 +45,7 @@ improvement, and is often used as a strong baseline.
   1. Markov Decision Processes (MDP).
   2. Continuous action spaces.
   3. On-policy and off-policy.
-  4. REINFORCE.
+  4. REINFORCE / likelihood ratio methods.
 
   **Required Readings**:
   1. CS 294 Lecture 4 about Policy Gradient:
@@ -64,10 +64,17 @@ improvement, and is often used as a strong baseline.
   4. [Connection Between Importance Sampling and Likelihood Ratio](http://rll.berkeley.edu/~jietang/pubs/nips10_Tang.pdf)
 
   **Questions**:
-  1. Why does policy gradient have such high variance?
-  2. Why does the step size matter?
-  3. What is the difference between Off-policy and On-policy?
-  4. What is the advantage of policy gradients for continuous action spaces?
+  1. Remember that at its core, REINFORCE describes an algorithm to compute an
+    approximate gradient of the reward with respect to the parameters. Why
+    can't we just use gradient descent? What makes the learning procedure
+    "non-differentiable"?
+  2. Does the REINFORCE gradient estimator resemble maximum likelihood estimation?
+    Why or why not?
+  3. In its original formulation, REINFORCE is an on-policy algorithm. Why?
+    Can we make REINFORCE work off-policy as well?
+  4. Do policy gradient methods work for discrete and continuous action spaces?
+    If not, why not? If so, is there an advantage policy gradient methods
+    provide over other RL algorithms, like Q-learning?
 
 <br />
 
@@ -83,10 +90,9 @@ improvement, and is often used as a strong baseline.
   recommended) because TRPO does not introduce new methods for variance reduction.
 
   **Topics**:
-  1. Likelihood ratio.
-  2. Importance sampling connection.
-  3. Variance reduction: baselines and causality.
-  4. Advantage estimation.
+  1. Causality for REINFORCE.
+  2. Baselines and control variates.
+  2. Advantage estimation.
 
   **Required Readings**:
   1. CS 294 Lecture 5 about Actor Critic Algorithms
@@ -98,9 +104,24 @@ improvement, and is often used as a strong baseline.
   1. Sutton and Barto 2nd Edition, pages 273 - 275.
   2. [High-dimensional continuous control using generalized advantage estimation](https://arxiv.org/abs/1506.02438)
   3. [Asynchronous Methods for Deep Reinforcement Learning](https://arxiv.org/abs/1602.01783)
+  4. [Monte Carlo theory, methods, and examples by Art B. Owen; Chapter 8](https://statweb.stanford.edu/~owen/mc/Ch-var-basic.pdf)
+    (in-depth treatment of variance reduction; suitable for independent study).
 
-  **Questions**: TODO
-  
+  **Questions**:
+  1. What is the intuition for using advantages instead of rewards as the
+    learning signal (Note on terminology: the learning signal is the term that
+    we multiply \( \log \pi (a \| s) \) by inside the expectation of REINFORCE).
+  2. What are some assumptions we make by using baselines as a variance
+    reduction method?
+  3. What are other methods of variance reduction?
+  4. The theory of control variates tells us that our control variate should
+    be correlated with the quantity we are trying to lower the variance of.
+    Can we construct a better control variate that is even more correlated
+    than a learned state-dependent value function? Why or why not?
+  5. We use control variates as a method to reduce variance in our gradient
+    estimate. Why don't we use these for supervised learning problems, like
+    classification? Or, are we implicitly using them?
+
 <br />
 
 # 3 Fisher Information Matrix and Natural Gradient Descent
@@ -137,7 +158,7 @@ improvement, and is often used as a strong baseline.
 
 <br />
 
-# 4 Conjugate Gradient 
+# 4 Conjugate Gradient
   **Motivation**: The conjugate gradient method is an iterative algorithm for finding
   approximate solutions to $$Ax=b$$, where $$A$$ is a symmetric and positive-definite matrix (such
   as the Fisher information matrix). The method works by iteratively computing matrix-vector
@@ -160,8 +181,8 @@ improvement, and is often used as a strong baseline.
   2. [Metacademy](https://metacademy.org/graphs/concepts/conjugate_gradient)
 
   **Questions**:
-  1. In pre-conditioned Conjugate Gradient, how does scaling the pre-conditioner
-     matrix $$M$$ by a constant $c$, impact the convergence?
+  1. In pre-conditioned conjugate gradient, how does scaling the pre-conditioner
+     matrix $$M$$ by a constant $c$ impact the convergence?
   2. From NOpt: Exercises 5.1 to 5.10
 
 <br />
@@ -218,9 +239,17 @@ improvement, and is often used as a strong baseline.
   3. [ACKTR](https://arxiv.org/abs/1708.05144)
 
   **Questions**:
-  1. How is the trust region set in TRPO?
-  2. What is the connection between TRPO, PPO, and CPO?
-  3. In practice, TRPO is really slow. What is the main computational bottleneck and how might we remove it?
-  4. What is Policy Improvement and Monotic Improvement Theory?
-  5. Why do we use conjugate gradient methods for optimization in TRPO? Can we exploit the fact the conjugate gradient optimization is differentiable?
-  6. How is line search used in TRPO?
+  1. How is the trust region set in TRPO? Can we do better? Is it worth it?
+  2. Why do we use conjugate gradient methods for optimization in TRPO? Can we
+    exploit the fact the conjugate gradient optimization is differentiable?
+  3. How is line search used in TRPO?
+  4. In practice, TRPO is really slow. What is the main computational
+    bottleneck and how might we remove it? Can we approximate this bottleneck?
+  5. TRPO makes a series of approximations that deviate from the policy
+    improvement theory that is cited. What are the assumptions that are made
+    that allow these approximations to be reasonable? Should we still expect
+    monotonic improvement in our policy?
+  6. TRPO is a general procedure to directly optimize parameters from rewards,
+    even though the procedure is "non-differentiable". Does it make sense to
+    apply TRPO to other non-differentiable problems, like problems involving
+    hard attention or discrete random variables?
