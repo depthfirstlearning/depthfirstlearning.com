@@ -5,7 +5,6 @@ date:   2018-05-10 18:50:23 -0400
 categories: reinforcement-learning
 author: surya,krishna
 blurb: "TRPO is a scalable algorithm for optimizing policies in reinforcement learning by gradient descent. Because model-free algorithms, such as policy gradient methods, do not require access to a model of the environment and often enjoy better practical stability, they are straightforward to apply to new problems, but were previously not scalable to large, nonlinear policies. TRPO represents a significant improvement over previous methods in this sense and has demonstrated widespread success."
-hidden: true
 feedback: true
 ---
 
@@ -27,7 +26,7 @@ together insights from reinforcement learning and optimization theory to develop
 an algorithm which (under certain assumptions) provides guarantees for monotonic
 improvement, and is often used as a strong baseline.
 
-  <a href="https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq#forceEdit=true&offline=true&sandboxMode=true" class="colab-root">Reproduce in a
+  <a href="https://colab.research.google.com/drive/1f9IBs_LajqbS53ZONjdlD8L4LmvN3ivp#forceEdit=true&offline=true&sandboxMode=true" class="colab-root">Reproduce in a
     <span>Notebook</span></a>
 
 <br />
@@ -171,8 +170,10 @@ improvement, and is often used as a strong baseline.
   3. Computational complexities of 2nd order methods.
 
   **Required Readings**:
-  1. [An Introduction to the Conjugate Gradient Method Without the Agonizing Pain](https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf): Section 7 to 9.
-  2. Convex Optimization II by Stephen Boyd:
+  1. [An Introduction to the Conjugate Gradient Method Without the Agonizing Pain](https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf): Section 7-9.
+  2. [Convex Optimization and
+     Approximation](https://ee227c.github.io/notes/ee227c-notes.pdf), UC Berkeley, Section 7.4
+  3. Convex Optimization II by Stephen Boyd:
       1. [Lecture 12, from 37:10 to 1:05:00](https://www.youtube.com/watch?feature=player_embedded&v=cHVpwyYU_LY#t=2230)
       2. [Lecture 13, from 21:20 to 29:30](https://www.youtube.com/watch?feature=player_embedded&v=E4gl91l0l40#t=1266)
 
