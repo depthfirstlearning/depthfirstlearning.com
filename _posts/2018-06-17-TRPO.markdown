@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Trust Region Policy Optimization"
-date:   2018-05-10 18:50:23 -0400
+date:   2018-06-17 18:50:23 -0400
 categories: reinforcement-learning
 author: surya,krishna
 blurb: "TRPO is a scalable algorithm for optimizing policies in reinforcement learning by gradient descent. Because model-free algorithms, such as policy gradient methods, do not require access to a model of the environment and often enjoy better practical stability, they are straightforward to apply to new problems, but were previously not scalable to large, nonlinear policies. TRPO represents a significant improvement over previous methods in this sense and has demonstrated widespread success."
@@ -49,7 +49,7 @@ improvement, and is often used as a strong baseline.
 
   **Required Readings**:
   1. Deep RL Course at UC Berkeley (CS 294); Policy Gradient Lecture
-      1. [Slides](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_4_policy_gradient.pdf)
+      1. [Slides](http://rail.eecs.berkeley.edu/deeprlcourse-fa17/f17docs/lecture_4_policy_gradient.pdf)
       2. [Video](https://www.youtube.com/watch?v=tWNpiNzWuO8&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3&index=4)
   2. David Silver’s course at UCL; Policy Gradient Lecture
       1. [Slides](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching_files/pg.pdf)
@@ -59,9 +59,9 @@ improvement, and is often used as a strong baseline.
 
   **Optional Readings**:
   1. [John Schulman introduction at MLSS Cadiz](http://rl-gym-doc.s3-website-us-west-2.amazonaws.com/mlss/2016-MLSS-RL.pdf)
-  2. [Lecture on Variance Reduction for Policy Gradient](http://rll.berkeley.edu/deeprlcoursesp17/docs/lec6.pdf)
+  2. [Lecture on Variance Reduction for Policy Gradient](http://rail.eecs.berkeley.edu/deeprlcoursesp17/docs/lec6.pdf)
   3. [Introduction to policy gradient and motivations by Andrej Karpathy](http://karpathy.github.io/2016/05/31/rl/)
-  4. [Connection Between Importance Sampling and Likelihood Ratio](http://rll.berkeley.edu/~jietang/pubs/nips10_Tang.pdf)
+  4. [Connection Between Importance Sampling and Likelihood Ratio](https://papers.nips.cc/paper/3922-on-a-connection-between-importance-sampling-and-the-likelihood-ratio-policy-gradient.pdf)
 
   **Questions**:
   1. Remember that at its core, REINFORCE describes an algorithm to compute an
@@ -96,7 +96,7 @@ improvement, and is often used as a strong baseline.
 
   **Required Readings**:
   1. Deep RL Course at UC Berkeley (CS 294); Actor-Critic Methods Lecture
-      1. [Slides](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_5_actor_critic_pdf.pdf)
+      1. [Slides](http://rail.eecs.berkeley.edu/deeprlcourse-fa17/f17docs/lecture_5_actor_critic_pdf.pdf)
       2. [Video](https://www.youtube.com/watch?v=PpVhtJn-iZI&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3&index=5)
   2. [George Tucker’s notes on Variance Reduction](/assets/gjt-var-red-notes.pdf)
 
@@ -142,7 +142,7 @@ improvement, and is often used as a strong baseline.
   3. (Optional) K-Fac.
 
   **Required Readings**:
-  1. [Matt Johnson’s Natural Gradient Descent and K-Fac Tutorial](/assets/k-fac-tutorial.pdf): Sections 1-7, Section A, Section B
+  1. [Matt Johnson’s Natural Gradient Descent and K-Fac Tutorial](/assets/k-fac-tutorial.pdf): Sections 1-7, Section A, B
   2. [New insights and perspectives on the natural gradient method](https://arxiv.org/pdf/1412.1193.pdf): Sections 1-11.
   3. [Fisher Information Matrix](https://web.archive.org/web/20170807004738/https://hips.seas.harvard.edu/blog/2013/04/08/fisher-information/)
 
@@ -232,7 +232,7 @@ improvement, and is often used as a strong baseline.
   **Required Readings**:
   1. [Trust Region Policy Optimization](https://arxiv.org/abs/1502.05477)
   2. Deep RL Course at UC Berkeley (CS 294); Advanced Policy Gradient Methods (TRPO)
-      1. [Slides](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_13_advanced_pg.pdf)
+      1. [Slides](http://rail.eecs.berkeley.edu/deeprlcourse-fa17/f17docs/lecture_13_advanced_pg.pdf)
       2. [Video](https://www.youtube.com/watch?v=ycCtmp4hcUs&feature=youtu.be&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3)
   3. [Approximately Optimal Approximate Reinforcement Learning](https://people.eecs.berkeley.edu/~pabbeel/cs287-fa09/readings/KakadeLangford-icml2002.pdf)
 
@@ -241,7 +241,8 @@ improvement, and is often used as a strong baseline.
   3. [ACKTR](https://arxiv.org/abs/1708.05144)
 
   **Questions**:
-  1. How is the trust region set in TRPO? Can we do better? Is it worth it?
+  1. How is the trust region set in TRPO? Can we do better? Under what
+     assumptions is imposing the trust region constraint not required?
   2. Why do we use conjugate gradient methods for optimization in TRPO? Can we
     exploit the fact the conjugate gradient optimization is differentiable?
   3. How is line search used in TRPO?
@@ -252,7 +253,11 @@ improvement, and is often used as a strong baseline.
     improvement theory that is cited. What are the assumptions that are made
     that allow these approximations to be reasonable? Should we still expect
     monotonic improvement in our policy?
-  7. TRPO is a general procedure to directly optimize parameters from rewards,
+  7. How does TRPO differ from TNPG (Truncated Natural Polcy Gradient)?
+     <details><summary>Solution</summary>
+     <p> See slides 30-34 from <a href="http://rail.eecs.berkeley.edu/deeprlcourse-fa17/f17docs/lecture_13_advanced_pg.pdf">this lecture</a> </p>
+    </details>
+  8. TRPO is a general procedure to directly optimize parameters from rewards,
     even though the procedure is "non-differentiable". Does it make sense to
     apply TRPO to other non-differentiable problems, like problems involving
     hard attention or discrete random variables?
