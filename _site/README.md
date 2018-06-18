@@ -1,6 +1,6 @@
 # Depth First Learning
 
-This is the open source code repository running [Depth First Learning](http://www.depthfirstlearning.com/about/), powered by [Jekyll](https://jekyllrb.com/).
+This is the open source code repository running [Depth First Learning](http://www.depthfirstlearning.com/about/), powered by [Jekyll](https://jekyllrb.com/) and the [Tale](http://jekyllthemes.org/themes/tale/) theme.
 
 Start this locally with `bundle exec jekyll serve`.
 

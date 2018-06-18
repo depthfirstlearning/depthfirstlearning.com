@@ -18,7 +18,7 @@ picking up machine learning in 24 hours, there is not nearly as much that treats
 this as a ten year endeavor. When you start thinking that way, you really want
 to consider the trunk of your tree foremost before each convolutional leaf.
 
-The second is that there is no bridge from where we came from before to where we
+The second is that there is no bridge from where we came from before, to where we
 are today. Without that, it is really hard to insightfully propose directions on
 where to go. For example, it is one thing to understand how an algorithm like TRPO
 works but all together another to grasp why the authors made the choices that they

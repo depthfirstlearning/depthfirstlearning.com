@@ -1,0 +1,256 @@
+---
+layout: post
+title:  "Trust Region Policy Optimization"
+date:   2018-05-10 18:50:23 -0400
+categories: reinforcement-learning
+author: surya,krishna
+blurb: "TRPO is a scalable algorithm for optimizing policies in reinforcement learning by gradient descent. Because model-free algorithms, such as policy gradient methods, do not require access to a model of the environment and often enjoy better practical stability, they are straightforward to apply to new problems, but were previously not scalable to large, nonlinear policies. TRPO represents a significant improvement over previous methods in this sense and has demonstrated widespread success."
+hidden: true
+feedback: true
+---
+
+(Thank you to ... for contribution to this guide.)
+
+<div class="deps-graph">
+  <iframe class="deps" src="/assets/trpo-deps.svg" width="200"></iframe>
+  <div>Concepts used in TRPO. Click to navigate.</div>
+</div>
+
+# Why
+
+TRPO is a scalable algorithm of optimizing policies in reinforcement learning by
+ gradient descent. Because model-free algorithms, such as policy gradient methods,
+ do not require access to a model of the environment and often enjoy better
+ practical stability, they are straightforward to apply to new problems, but
+ were previously not able to scale to large, nonlinear policies. TRPO brings
+together insights from reinforcement learning and optimization theory to develop
+an algorithm which (under certain assumptions) provides guarantees for monotonic
+improvement, and is often used as a strong baseline.
+
+  <a href="https://colab.research.google.com/drive/1JkCI_n2U2i6DFU8NKk3P6EkPo3ZTKAaq#forceEdit=true&offline=true&sandboxMode=true" class="colab-root">Reproduce in a
+    <span>Notebook</span></a>
+
+<br />
+
+# 1 Policy Gradient
+  **Motivation**: Policy gradient methods are a class of algorithms that allow
+  one to directly optimize the parameters of a policy (whether it is a linear
+  function or a complex neural network) by gradient descent. TRPO is one such
+  algorithm in the policy gradient family of algorithms. In this section, we
+  formalize the notion of MDPs, action and state spaces, and what it means to
+  be on-policy or off-policy. This will then lead to describing the REINFORCE
+  algorithm, which is the simplest instantiation of the policy gradient method.
+
+  **Topics**:
+  1. Markov Decision Processes (MDP).
+  2. Continuous action spaces.
+  3. On-policy and off-policy.
+  4. REINFORCE / likelihood ratio methods.
+
+  **Required Readings**:
+  1. Deep RL Course at UC Berkeley (CS 294); Policy Gradient Lecture
+      1. [Slides](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_4_policy_gradient.pdf)
+      2. [Video](https://www.youtube.com/watch?v=tWNpiNzWuO8&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3&index=4)
+  2. David Silver’s course at UCL; Policy Gradient Lecture
+      1. [Slides](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching_files/pg.pdf)
+      2. [Video](https://www.youtube.com/watch?v=KHZVXao4qXs&index=7&list=PL7-jPKtc4r78-wCZcQn5IqyuWhBZ8fOxT)
+  3. Reinforcement Learning by Sutton and Barto, 2nd Edition; pages 265 - 273.
+  4. [Simple statistical gradient-following algorithms for connectionist reinforcement learning](http://www-anw.cs.umass.edu/~barto/courses/cs687/williams92simple.pdf)
+
+  **Optional Readings**:
+  1. [John Schulman introduction at MLSS Cadiz](http://rl-gym-doc.s3-website-us-west-2.amazonaws.com/mlss/2016-MLSS-RL.pdf)
+  2. [Lecture on Variance Reduction for Policy Gradient](http://rll.berkeley.edu/deeprlcoursesp17/docs/lec6.pdf)
+  3. [Introduction to policy gradient and motivations by Andrej Karpathy](http://karpathy.github.io/2016/05/31/rl/)
+  4. [Connection Between Importance Sampling and Likelihood Ratio](http://rll.berkeley.edu/~jietang/pubs/nips10_Tang.pdf)
+
+  **Questions**:
+  1. Remember that at its core, REINFORCE describes an algorithm to compute an
+    approximate gradient of the reward with respect to the parameters. Why
+    can't we just use gradient descent? What makes the learning procedure
+    "non-differentiable"?
+  2. Does the REINFORCE gradient estimator resemble maximum likelihood estimation?
+    Why or why not?
+  3. In its original formulation, REINFORCE is an on-policy algorithm. Why?
+    Can we make REINFORCE work off-policy as well?
+  4. Do policy gradient methods work for discrete and continuous action spaces?
+    If not, why not? If so, is there an advantage policy gradient methods
+    provide over other RL algorithms, like Q-learning?
+
+<br />
+
+# 2 (Optional, not used in TRPO) Variance Reduction and Advantage Estimate
+  **Motivation**: One major shortcoming of policy gradient methods is that the
+  simplest instantation of REINFORCE suffers from high variance in the gradients
+  it computes. High variance results from the fact that rewards are sparse, we
+  only visit a finite set of states, and that we only take one action (and not
+  try all actions) at each state. In order to scale policy gradient methods to
+  harder problems, we need to reduce this variance. In this section, we study
+  common techniques for reducing variance for REINFORCE, including using
+  causality, baselines, and advantages. This section is optional (but highly
+  recommended) because TRPO does not introduce new methods for variance reduction.
+
+  **Topics**:
+  1. Causality for REINFORCE.
+  2. Baselines and control variates.
+  2. Advantage estimation.
+
+  **Required Readings**:
+  1. Deep RL Course at UC Berkeley (CS 294); Actor-Critic Methods Lecture
+      1. [Slides](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_5_actor_critic_pdf.pdf)
+      2. [Video](https://www.youtube.com/watch?v=PpVhtJn-iZI&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3&index=5)
+  2. [George Tucker’s notes on Variance Reduction](/assets/gjt-var-red-notes.pdf)
+
+  **Optional Readings**:
+  1. Reinforcement Learning by Sutton and Barto, 2nd Edition; pages 273 - 275.
+  2. [High-dimensional continuous control using generalized advantage estimation](https://arxiv.org/abs/1506.02438)
+  3. [Asynchronous Methods for Deep Reinforcement Learning](https://arxiv.org/abs/1602.01783)
+  4. [Monte Carlo theory, methods, and examples by Art B. Owen; Chapter 8](https://statweb.stanford.edu/~owen/mc/Ch-var-basic.pdf)
+    (in-depth treatment of variance reduction; suitable for independent study).
+
+  **Questions**:
+  1. What is the intuition for using advantages instead of rewards as the
+    learning signal (Note on terminology: the learning signal is the term that
+    we multiply \( \log \pi (a \| s) \) by inside the expectation of REINFORCE).
+  2. What are some assumptions we make by using baselines as a variance
+    reduction method?
+  3. What are other methods of variance reduction?
+  4. The theory of control variates tells us that our control variate should
+    be correlated with the quantity we are trying to lower the variance of.
+    Can we construct a better control variate that is even more correlated
+    than a learned state-dependent value function? Why or why not?
+  5. We use control variates as a method to reduce variance in our gradient
+    estimate. Why don't we use these for supervised learning problems, like
+    classification? Or, are we implicitly using them?
+
+<br />
+
+# 3 Fisher Information Matrix and Natural Gradient Descent
+  <img src="/assets/fisher-steepest.png" />
+
+  **Motivation**: While gradient descent is able to solve many optimization problems,
+  it suffers from a basic problem -- its performance is dependent on the particular
+  parameterization chosen for the model. Natural gradient descent is a variant of
+  gradient descent, which is invariant to model parameterization. This is achieved
+  by multiplying gradient vectors by the inverse of the Fisher Information Matrix (thus its
+  other name, Fisher steepest descent).
+  The Fisher Information Matrix measures how much model predictions change with
+  local changes to parameters.
+
+  **Topics**:
+  1. Fisher information matrix.
+  2. Natural gradient descent.
+  3. (Optional) K-Fac.
+
+  **Required Readings**:
+  1. [Matt Johnson’s Natural Gradient Descent and K-Fac Tutorial](/assets/k-fac-tutorial.pdf): Sections 1-7, Section A, Section B
+  2. [New insights and perspectives on the natural gradient method](https://arxiv.org/pdf/1412.1193.pdf): Sections 1-11.
+  3. [Fisher Information Matrix](https://web.archive.org/web/20170807004738/https://hips.seas.harvard.edu/blog/2013/04/08/fisher-information/)
+
+  **Optional Readings**:
+  1. [8-page intro to natural gradients](http://ipvs.informatik.uni-stuttgart.de/mlr/wp-content/uploads/2015/01/mathematics_for_intelligent_systems_lecture12_notes_I.pdf)
+  2. [Why Natural Gradient Descent / Amari and Douglas](http://www.yaroslavvb.com/papers/amari-why.pdf)
+  3. [Natural Gradient Works Efficiently in Learning / Amari](https://personalrobotics.ri.cmu.edu/files/courses/papers/Amari1998a.pdf)
+
+  **Questions**:
+  1. How is the Fisher matrix similar and different from the Hessian?
+  2. How does natural gradient descent compare to Newton’s method?
+  3. Why is the natural gradient slow to compute?
+
+<br />
+
+# 4 Conjugate Gradient
+  **Motivation**: The conjugate gradient method is an iterative algorithm for finding
+  approximate solutions to $$Ax=b$$, where $$A$$ is a symmetric and positive-definite matrix (such
+  as the Fisher information matrix). The method works by iteratively computing matrix-vector
+  products $$Ax_i$$, so is particularly well-suited for matrices for which matrix-vector
+  products are easy to compute.
+
+  **Topics**:
+  1. Solving system of linear equations.
+  2. Efficiently computing matrix-vector products .
+  3. Computational complexities of 2nd order methods.
+
+  **Required Readings**:
+  1. [An Introduction to the Conjugate Gradient Method Without the Agonizing Pain](https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf): Section 7 to 9.
+  2. Convex Optimization II by Stephen Boyd:
+      1. [Lecture 12, from 37:10 to 1:05:00](https://www.youtube.com/watch?feature=player_embedded&v=cHVpwyYU_LY#t=2230)
+      2. [Lecture 13, from 21:20 to 29:30](https://www.youtube.com/watch?feature=player_embedded&v=E4gl91l0l40#t=1266)
+
+  **Optional Readings**:
+  1. Numerical Optimization by Nocedal and Wright; Section 5.1, pages 101-120.
+  2. [Metacademy](https://metacademy.org/graphs/concepts/conjugate_gradient)
+
+  **Questions**:
+  1. In pre-conditioned conjugate gradient, how does scaling the pre-conditioner
+     matrix \( M \) by a constant \( c \) impact the convergence?
+  2. Exercises 5.1 to 5.10 in Chapter 5, Numerical Optimization.
+
+<br />
+
+# 5 Trust Region Methods
+  **Motivation**: Trust region methods are a class of methods used in general
+  optimization problems as a way to constraint the size of the update. While
+  TRPO does not use the full gamut of tools from the trust region literature,
+  we believe studying them provides good intuition for the problem that TRPO
+  tries to solve and how we might improve the algorithm even more. In this
+  section, we focus on understanding trust regions and line search methods.
+
+  **Topics**:
+  1. Trust regions and subproblems.
+  2. Line search methods.
+
+  **Required Readings**:
+  1. [A friendly introduction to Trust Region Methods](https://optimization.mccormick.northwestern.edu/index.php/Trust-region_methods)
+  2. Numerical Optimization by Nocedal and Wright: Chapter 2, Chapter 4, Section 4.1, 4.2
+
+  **Optional Readings**:
+  1. Numerical Optimization by Nocedal and Wright: Chapter 4, Section 4.3
+
+  **Questions**:
+  1. Instead of directly imposing constraints on the updates, what would be
+     alternatives to enforce an algorithm to make bounded updates?
+  2. Exercise: 4.1 to 4.10 in Chapter 4, Numerical Optimization.
+
+<br />
+
+# 6 The Paper
+  **Motivation**: We've built a good foundation for the various tools and
+  mathematical ideas used by TRPO. In this section, we study two more important
+  features of TRPO that are not explicitly covered by the above topics: the
+  ideas of monotonic policy improvement and the variants of TRPO described in
+  the paper, such as vine and single-path. Lastly, we discuss how the former
+  improvement bounds are approximated and result in the practical algorithm
+  used by many today. Let's read the [paper](https://arxiv.org/abs/1502.05477)!
+
+  **Topics**:
+  1. What is the problem with policy gradients that TRPO addresses?
+  2. What are the bottlenecks to addressing that problem in the existing approaches when it debuted?
+  3. Policy improvement bounds and theory.
+
+  **Required Readings**:
+  1. [Trust Region Policy Optimization](https://arxiv.org/abs/1502.05477)
+  2. Deep RL Course at UC Berkeley (CS 294); Advanced Policy Gradient Methods (TRPO)
+      1. [Slides](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_13_advanced_pg.pdf)
+      2. [Video](https://www.youtube.com/watch?v=ycCtmp4hcUs&feature=youtu.be&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3)
+  3. [Approximately Optimal Approximate Reinforcement Learning](https://people.eecs.berkeley.edu/~pabbeel/cs287-fa09/readings/KakadeLangford-icml2002.pdf)
+
+  **Optional Readings**:
+  2. [TRPO Tutorial](https://reinforce.io/blog/end-to-end-computation-graphs-for-reinforcement-learning/)
+  3. [ACKTR](https://arxiv.org/abs/1708.05144)
+
+  **Questions**:
+  1. How is the trust region set in TRPO? Can we do better? Is it worth it?
+  2. Why do we use conjugate gradient methods for optimization in TRPO? Can we
+    exploit the fact the conjugate gradient optimization is differentiable?
+  3. How is line search used in TRPO?
+  4. What are the pros and cons of using the vine and single-path methods?
+  5. In practice, TRPO is really slow. What is the main computational
+    bottleneck and how might we remove it? Can we approximate this bottleneck?
+  6. TRPO makes a series of approximations that deviate from the policy
+    improvement theory that is cited. What are the assumptions that are made
+    that allow these approximations to be reasonable? Should we still expect
+    monotonic improvement in our policy?
+  7. TRPO is a general procedure to directly optimize parameters from rewards,
+    even though the procedure is "non-differentiable". Does it make sense to
+    apply TRPO to other non-differentiable problems, like problems involving
+    hard attention or discrete random variables?
