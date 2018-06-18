@@ -5,6 +5,7 @@ date:   2018-05-10 18:50:23 -0400
 categories: reinforcement-learning
 author: surya,krishna
 blurb: "TRPO is a scalable algorithm for optimizing policies in reinforcement learning by gradient descent. Because model-free algorithms, such as policy gradient methods, do not require access to a model of the environment and often enjoy better practical stability, they are straightforward to apply to new problems, but were previously not scalable to large, nonlinear policies. TRPO represents a significant improvement over previous methods in this sense and has demonstrated widespread success."
+hidden: true
 feedback: true
 ---
 
