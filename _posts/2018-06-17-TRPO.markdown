@@ -110,7 +110,7 @@ improvement, and is often used as a strong baseline.
   **Questions**:
   1. What is the intuition for using advantages instead of rewards as the
     learning signal (Note on terminology: the learning signal is the term that
-    we multiply \( \log \pi (a \| s) \) by inside the expectation of REINFORCE).
+    we multiply $$\log \pi (a | s)$$ by inside the expectation of REINFORCE).
   2. What are some assumptions we make by using baselines as a variance
     reduction method?
   3. What are other methods of variance reduction?
