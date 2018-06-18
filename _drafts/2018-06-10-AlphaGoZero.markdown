@@ -5,8 +5,16 @@ date:   2018-06-10 10:00:00 -0400
 categories: games
 author: cinjon
 blurb: "In this curriculum, you will learn about two person zero-sum perfect 
-        information games and develop understanding to completely grok AlphaGo."
+        information games and develop understanding to completely grok AlphaGo Zero."
+feedback: true
 ---
+
+(Thank you to Marc Lanctot, Tim Lillicrap, Joan Bruna, Martin Arjovsky, <students> ... (who else) for contributing to this guide.) 
+
+<div class="deps-graph">
+  <iframe class="deps" src="/assets/infogan-deps.svg" width="200"></iframe>
+  <div>Concepts used in AlphaGo Zero. Click to navigate.</div>
+</div>
 
 # Why
 
@@ -19,10 +27,18 @@ approximation to cut off the search space.
 In this curriculum, you will focus on the study of two person zero-sum perfect 
 information games and develop understanding sufficient to grok AlphaGo.
 
-<br>
+<br />
 # 1 Minimax and Alpha Beta Pruning
-  **Motivation**: These original core ideas did so much for the study of games. They spurred the field forward starting in the 50s and still to this day have mindshare in how to build a computer engine that beats games, including in popular chess engines like Stockfish.
-  
+  **Motivation**: These original core ideas did so much for the study of games.
+  They spurred the field forward starting in the 50s and still to this day have
+  mindshare in how to build a computer engine that beats games, including in
+  popular chess engines like Stockfish.
+
+  **Topics**:
+  1. Perfect Information Games.
+  1. Minimax.
+  2. Alpha-Beta Pruning.
+
   **Required Reading**: 
   1. [Cornell Recitation on Minimax & AB Pruning](https://www.cs.cornell.edu/courses/cs312/2002sp/lectures/rec21.htm).
   2. [Knuth](https://pdfs.semanticscholar.org/dce2/6118156e5bc287bca2465a62e75af39c7e85.pdf): 6 (Theorems 1&2, Corollaries 1&3).
@@ -40,10 +56,14 @@ information games and develop understanding sufficient to grok AlphaGo.
   4. (Knuth) For Theorem 1.(3), why is it that p’s successor positions are of type 2 if p is not terminal?
   5. (Knuth) Show that Theorem 2.(1, 2, 3) are correct.
 
-<br>
+<br />
 # 2 Multi-Armed Bandits and Upper Confidence Bounds
   **Motivation**: Bandits and UCB are key components of how MCTS was originally formalized. The node selection during the search is achieved through the UCB approach, which is analogues to how its performed in a multi-armed bandit scenario.
-  
+
+  **Topics**:
+  1. Basics of Reinforcement Learning.
+  2. Multi-Armed Bandit algorithms and their bounds.
+
   **Required Reading**: 
   1. Sutton: Sections 2.1 - 2.6 (Find on newclasses.nyu.edu in the class materials)
   2. [Jeremy Kun: Optimizing in the Face of Uncertainty](https://jeremykun.com/2013/10/28/optimism-in-the-face-of-uncertainty-the-ucb1-algorithm/)
@@ -59,11 +79,18 @@ information games and develop understanding sufficient to grok AlphaGo.
   4. Kun: Do you understand the argument for why the regret bound is O(sqrt(KTlog(T)))?
   5. Can you reproduce the UCB1 algorithm?
 
-<br>
+<br />
 # 3 Policy and Value Functions
   **Note**: Sutton from here out refers to the [final version](http://incompleteideas.net/book/bookdraft2017nov5.pdf).
   
   **Motivation**: The Policy and Value Functions are at the core of Reinforcement Learning. The Policy function is the set of probabilities you give to each possible move. The Value function is your estimate of how good is the current state. In AlphaGoZero, a single network calculates both a value and a policy, then later updates its weights based off of the difference between those figures and the empirical results.
+
+  **Topics**:
+  1. Bellman Equation.
+  2. Policy Gradient.
+  3. On-Policy / Off-Policy.
+  4. Policy Iteration.
+  5. Value Iteration.
   
   **Required Reading**: 
   1. Value Function:
@@ -92,10 +119,14 @@ information games and develop understanding sufficient to grok AlphaGo.
      6. 4.6 (important!): How would policy iteration be defined for action values? Give a complete algorithm for computing q∗, analogous to that on page 65 for computing v∗. Please pay special attention to this exercise, because the ideas involved will be used throughout the rest of the book. 
      7. 13.2 (important!): Prove (13.7) using the definitions and elementary calculus.
 
-<br>
+<br />
 # 4 MCTS & UCT
   **Motivation**: Monte Carlo Tree Search (MCTS) forms the backbone of AlphaGoZero. It’s what lets it reliably explore and then hone in on the best policy. UCT (UCB for Trees) builds on top of what we’ve been learning and, paired with MCTS, is integral to the training process.
-  
+
+  **Topics**:
+  1. Conceptual understanding of Monte Carlo Tree Search.
+  2. Optimality of UCT.
+
   **Required Reading**:
   1. [Sutton](http://incompleteideas.net/book/bookdraft2017nov5.pdf): Section 8.11
   2. [Browne](https://gnunet.org/sites/default/files/Browne%20et%20al%20-%20A%20survey%20of%20MCTS%20methods.pdf): Sections 2.2, 2.4, 3.1-3.5, 8.2-8.4.
@@ -115,9 +146,15 @@ information games and develop understanding sufficient to grok AlphaGo.
   3. What are examples of domain knowledge default policies in Go?
   4. Why is UCT optimal? Can you prove that the failure probability at the root converges to zero at a polynomial rate in the number of games simulated?
   
-<br>
+<br />
 # 5 MCTS & RL
-  **Motivation**: Up to this point, we’ve learned a lot about how games can be solved and how RL works on a foundational level. Before we jump into the paper, one last foray contrasting and unifying the games vs learning perspective is worthwhile for understanding the domain more fully.
+  **Motivation**: Up to this point, we’ve learned a lot about how games can be
+  solved and how RL works on a foundational level. Before we jump into the paper,
+  one last foray contrasting and unifying the games vs learning perspective is
+  worthwhile for understanding the domain more fully.
+
+  **Topics**:
+  1. Integrating MCTS and RL.
   
   **Required Reading**:
   1. [Vodopivec](http://www.jair.org/media/5507/live-5507-10333-jair.pdf): 
@@ -134,10 +171,13 @@ information games and develop understanding sufficient to grok AlphaGo.
   3. What is a Representation Policy? Give an example not described in the text.
   4. What is a Control Policy? Give an example not described in the text.
 
-<br>
+<br />
 # 6 The Paper
   **Motivation**: Let's read the paper!
-  
+
+  **Topics**:
+  1. MCTS learning and computational capacity.
+
   **Required Reading**:
   1. [Mastering the Game of Go Without Human Knowledge](https://www.dropbox.com/s/yva172qos2u15hf/2017-silver.pdf?dl=0)
   2. [Thinking Fast and Slow with Deep Learning and Tree Search](https://arxiv.org/pdf/1705.08439.pdf)

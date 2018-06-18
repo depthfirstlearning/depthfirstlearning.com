@@ -7,7 +7,10 @@ author: cinjon
 blurb: "In this curriculum, you will explore game theory and counterfactual
         regret minimization in order to understand techniques for solving two 
         person zero-sum games of incomplete information."
+feedback: true
 ---
+
+(Thank you to Marc Lanctot, Michael (DeepStack), Michael Bowling, Joan Bruna, Martin Arjovsky, and <students> for contributing to this guide.)
 
 # Why
 
