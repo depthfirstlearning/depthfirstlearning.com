@@ -55,7 +55,7 @@ a.colab-root {
   } 
 }
 
-.request-feedback {
+.request-feedback, .welcome {
   border: 1px solid #bbb;
   background: #eee;
   padding-left: 12px;
@@ -73,8 +73,17 @@ a.colab-root {
   } 
 }
 
+.welcome {
+  margin-top: 25px;
+  margin-bottom: 25px;
+
+  .welcome-blurb {
+    text-align: left;
+  }
+}
+
 @media only screen and (min-width: 680px) {
-  .request-feedback {
+  .request-feedback, .welcome {
     .inner {
       width: 500px;
     }
