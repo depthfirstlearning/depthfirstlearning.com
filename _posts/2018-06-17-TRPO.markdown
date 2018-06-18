@@ -78,7 +78,7 @@ improvement, and is often used as a strong baseline.
 
 <br />
 
-# 2 (Optional, not used in TRPO) Variance Reduction and Advantage Estimate
+# 2 Variance Reduction and Advantage Estimate
   **Motivation**: One major shortcoming of policy gradient methods is that the
   simplest instantation of REINFORCE suffers from high variance in the gradients
   it computes. High variance results from the fact that rewards are sparse, we
@@ -86,8 +86,8 @@ improvement, and is often used as a strong baseline.
   try all actions) at each state. In order to scale policy gradient methods to
   harder problems, we need to reduce this variance. In this section, we study
   common techniques for reducing variance for REINFORCE, including using
-  causality, baselines, and advantages. This section is optional (but highly
-  recommended) because TRPO does not introduce new methods for variance reduction.
+  causality, baselines, and advantages. <b>This section is optional (but highly
+  recommended) because TRPO does not introduce new methods for variance reduction.</b>
 
   **Topics**:
   1. Causality for REINFORCE.
@@ -184,7 +184,7 @@ improvement, and is often used as a strong baseline.
 
   **Questions**:
   1. In pre-conditioned conjugate gradient, how does scaling the pre-conditioner
-     matrix \( M \) by a constant \( c \) impact the convergence?
+     matrix $$M$$ by a constant $$c$$ impact the convergence?
   2. Exercises 5.1 to 5.10 in Chapter 5, Numerical Optimization.
 
 <br />
@@ -211,7 +211,12 @@ improvement, and is often used as a strong baseline.
   **Questions**:
   1. Instead of directly imposing constraints on the updates, what would be
      alternatives to enforce an algorithm to make bounded updates?
-  2. Exercise: 4.1 to 4.10 in Chapter 4, Numerical Optimization.
+  2. Each step of a Trust Region optimization method updates parameters to
+     the optimal setting given some constraint. Can we solve this in closed
+     form using Lagrange Multipliers? In what way would this be similar, or
+     different, from the trust region methods we just discussed?
+  3. Exercises 4.1 to 4.10 in Chapter 4, Numerical Optimization.
+     (<b>Exercise 4.10 is particularly recommended</b>)
 
 <br />
 
@@ -239,6 +244,7 @@ improvement, and is often used as a strong baseline.
   **Optional Readings**:
   2. [TRPO Tutorial](https://reinforce.io/blog/end-to-end-computation-graphs-for-reinforcement-learning/)
   3. [ACKTR](https://arxiv.org/abs/1708.05144)
+  4. [A Natural Policy Gradient](https://papers.nips.cc/paper/2073-a-natural-policy-gradient.pdf)
 
   **Questions**:
   1. How is the trust region set in TRPO? Can we do better? Under what
@@ -246,17 +252,17 @@ improvement, and is often used as a strong baseline.
   2. Why do we use conjugate gradient methods for optimization in TRPO? Can we
     exploit the fact the conjugate gradient optimization is differentiable?
   3. How is line search used in TRPO?
-  4. What are the pros and cons of using the vine and single-path methods?
-  5. In practice, TRPO is really slow. What is the main computational
-    bottleneck and how might we remove it? Can we approximate this bottleneck?
-  6. TRPO makes a series of approximations that deviate from the policy
-    improvement theory that is cited. What are the assumptions that are made
-    that allow these approximations to be reasonable? Should we still expect
-    monotonic improvement in our policy?
-  7. How does TRPO differ from TNPG (Truncated Natural Polcy Gradient)?
+  4. How does TRPO differ from Natural Policy Gradient?
      <details><summary>Solution</summary>
      <p> See slides 30-34 from <a href="http://rail.eecs.berkeley.edu/deeprlcourse-fa17/f17docs/lecture_13_advanced_pg.pdf">this lecture</a> </p>
     </details>
+  5. What are the pros and cons of using the vine and single-path methods?
+  6. In practice, TRPO is really slow. What is the main computational
+    bottleneck and how might we remove it? Can we approximate this bottleneck?
+  7. TRPO makes a series of approximations that deviate from the policy
+    improvement theory that is cited. What are the assumptions that are made
+    that allow these approximations to be reasonable? Should we still expect
+    monotonic improvement in our policy?
   8. TRPO is a general procedure to directly optimize parameters from rewards,
     even though the procedure is "non-differentiable". Does it make sense to
     apply TRPO to other non-differentiable problems, like problems involving
