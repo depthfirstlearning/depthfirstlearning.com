@@ -28,7 +28,7 @@ practical stability. Consequently, they are both straightforward to apply to new
 problems and have trouble scaling to large, nonlinear policies. TRPO couples
 insights from reinforcement learning and optimization theory to develop an
 algorithm which, under certain assumptions, provides guarantees for monotonic
-improvement. 
+improvement.
 
   <a href="javascript:alert('Coming soon!')" class="colab-root">Colab Notebook
     <span>Soon</span></a>
