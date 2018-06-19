@@ -30,7 +30,7 @@ together insights from reinforcement learning and optimization theory to develop
 an algorithm which, under certain assumptions, provides guarantees for monotonic
 improvement. It is often used as a strong baseline when evaluating new algorithms.
 
-  <a href="#" class="colab-root">Colab Notebook
+  <a href="javascript:alert('Coming soon!')" class="colab-root">Colab Notebook
     <span>Soon</span></a>
 
 <br />
