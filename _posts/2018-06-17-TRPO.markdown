@@ -3,7 +3,7 @@ layout: post
 title:  "Trust Region Policy Optimization"
 date:   2018-06-17 18:50:23 -0400
 categories: reinforcement-learning
-author: surya,krishna
+authors: ['surya', 'krishna']
 blurb: "TRPO is a model-free algorithm for optimizing policies in reinforcement
        learning by gradient descent. It represents a significant improvement over
        previous methods in its scalability and consequently has enjoyed widespread

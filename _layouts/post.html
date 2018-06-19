@@ -3,6 +3,8 @@ layout: default
 ---
 {% assign author = site[page.author] %}
 
+
+
 <div class="post">
 
   <script type="text/javascript"
@@ -11,7 +13,24 @@ layout: default
 
   <div class="post-info">
     <span>Written by</span>
-    {% if author %}
+    {% if page.authors %}
+      {% comment %}
+      This is a very hacky way to randomize the list of authors, every time the page is
+      re-rendered. We use the current second of the timestamp at render time to choose
+      a rotation of the author list.
+      {% endcomment %}
+
+      {% assign numAuthors = page.authors | size %}
+      {% assign numAuthorsMinusOne = numAuthors | minus: 1 %}
+      {% assign randomRot = "now" | date: "%S" %}
+      {% for i in (0..numAuthorsMinusOne) %}
+        {% assign j = i | plus: randomRot | modulo: numAuthors %}
+        {% assign author_name = page.authors[j] %}
+        {% assign one_author=site[author_name] %}
+        <a href="{{ one_author.web }}" target="_blank">{{ one_author.name }}</a>
+        {% if forloop.last == false %} and {% endif %}
+      {% endfor %}
+    {% elsif author %}
       <a href="{{ author.web }}" target="_blank">{{ author.name }}</a> 
     {% else %}
       {{ site.author.name }}
