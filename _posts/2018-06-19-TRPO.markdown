@@ -199,7 +199,7 @@ improvement.
 <br />
 
 # 4 Conjugate Gradient
-  **Motivation**: The conjugate gradient method is an iterative algorithm for finding
+  **Motivation**: The conjugate gradient method (CG) is an iterative algorithm for finding
   approximate solutions to $$Ax=b$$, where $$A$$ is a symmetric and positive-definite matrix (such
   as the Fisher information matrix). The method works by iteratively computing matrix-vector
   products $$Ax_i$$ and is particularly well-suited for matrices for which matrix-vector
@@ -223,35 +223,36 @@ improvement.
   2. [Metacademy](https://metacademy.org/graphs/concepts/conjugate_gradient)
 
   **Questions**:
-  1. Conjugate gradient finds approximate solutions to $$Ax=b$$. What does it
-     need to be able to do with $$A$$ in order to achieve this?
-     <details><summary>Hint</summary>
-     It needs to be able to compute matrix-vector products \(Av\) for arbitrary
-     vectors \(v\).
-     </details>
-  2. How long does each iteration in the process described in the previous question take? Can it be made faster
-     in some settings?
-     <details><summary>Hint</summary>
-     For arbitrary square matrix \(A\), it would take \(O(n^2)\) steps for each
-     iteration (where \(n\) is the dimension of the matrix).
-     In some settings, we may have \(A\) represented as a sparse matrix, in which
-     case computing \(Av\) would take \(O(m)\) steps, where \(m\) is the number of
-     non-zero entries. Another interesting setting is when you may already have
-     access to a closed-form process that computes \(Av\) (even when storing \(A\)
-     directly is not possible).
-     </details>
-  3. How one could use the conjugate gradient method to
-     approximate the natural gradient of the loss of a model w.r.t. its parameters?
-     How does the run-time and memory use compare to directly computing the inverse Fisher times gradient?
-     <details><summary>Hint</summary>
-     Computing the inverse Fisher times gradient explicitly would take \(O(n^3)\) steps and \(O(n^2)\) memory.
-     Given the answer in question 5 in the section on Fisher Information Matrix and Natural Gradient Descent in this
-     guide, it is possible to analytically compute Fisher-vector products. Now, see the answers to the previous
-     two questions and combine these insights.
-     </details>
-  4. In pre-conditioned conjugate gradient, how does scaling the pre-conditioner
+  1. Remember that the natural gradient of a model is the Fisher information matrix of that model times the
+     vanilla gradient ($$F^{-1}g$$). How does CG allow us to approximate the natural gradient?
+      1. What is the naive way to compute $$F^{-1}g$$? How much memory and time would it take?
+         <details><summary>Answer</summary>
+         Assume we have an estimate of \(F\) (by the process
+         in section 7 of <a href="/assets/k-fac-tutorial.pdf">Matt Johnson's tutorial</a>).
+         Storing \(F\) would take space proportional to \(n^2\), and inverting \(F\) would take
+         time proportional to \(n^3\) (or slightly lower with the Strassen algorithm)
+         </details>
+      2. How long would a run of CG to *exactly* compute $$F^{-1}g$$ take? How does that compare
+         to the naive process?
+         <details><summary>Answer</summary>
+         Each iteration of CG computes \(Fv\) for some vector \(v\), which would take time
+         proportional to \(n^2\). CG converges to the true answer after \(n\) steps, so in total
+         it would take time proportional to \(n^3\). This process ends up being slower than directly inverting
+         the Fisher naively and uses the same amount of memory.
+         </details>
+      3. What can we do to use CG and bring down the time and memory to compute the natural gradient $$F^{-1}g$$?
+         <details><summary>Answer</summary>
+         <ol>
+           <li>
+             Use the closed form estimate of \(Fv\) for arbitrary \(v\), as described in section A of <a href="/assets/k-fac-tutorial.pdf">Matt Johnson's tutorial</a>)
+           </li>
+           <li>
+             Take fewer CG iteration steps, which leads to an approximation of the natural gradient that may be sufficient.
+           </li>
+         </ol>
+  2. In pre-conditioned conjugate gradient, how does scaling the pre-conditioner
      matrix $$M$$ by a constant $$c$$ impact the convergence?
-  5. Exercises 5.1 to 5.10 in Chapter 5, Numerical Optimization.
+  3. Exercises 5.1 to 5.10 in Chapter 5, Numerical Optimization.
      (<b> Exercises 5.2, 5.9 are particularly recommended </b>)
 
 <br />
