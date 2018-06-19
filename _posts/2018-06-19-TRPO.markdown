@@ -240,7 +240,7 @@ improvement.
          it would take time proportional to \(n^3\). This process ends up being slower than directly inverting
          the Fisher naively and uses the same amount of memory.
          </details>
-      3. What can we do to use CG and bring down the time and memory to compute the natural gradient $$F^{-1}g$$?
+      3. How can we use CG and bring down the time and memory to compute the natural gradient $$F^{-1}g$$?
          <details><summary>Answer</summary>
          <ol>
            <li>
