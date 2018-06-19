@@ -226,7 +226,7 @@ improvement.
   1. Remember that the natural gradient of a model is the Fisher information matrix of that model times the
      vanilla gradient ($$F^{-1}g$$). How does CG allow us to approximate the natural gradient?
       1. What is the naive way to compute $$F^{-1}g$$? How much memory and time would it take?
-         <details><summary>Answer</summary>
+         <details><summary>Solution</summary>
          Assume we have an estimate of \(F\) (by the process
          in section 7 of <a href="/assets/k-fac-tutorial.pdf">Matt Johnson's tutorial</a>).
          Storing \(F\) would take space proportional to \(n^2\), and inverting \(F\) would take
@@ -234,14 +234,14 @@ improvement.
          </details>
       2. How long would a run of CG to *exactly* compute $$F^{-1}g$$ take? How does that compare
          to the naive process?
-         <details><summary>Answer</summary>
+         <details><summary>Solution</summary>
          Each iteration of CG computes \(Fv\) for some vector \(v\), which would take time
          proportional to \(n^2\). CG converges to the true answer after \(n\) steps, so in total
          it would take time proportional to \(n^3\). This process ends up being slower than directly inverting
          the Fisher naively and uses the same amount of memory.
          </details>
       3. How can we use CG and bring down the time and memory to compute the natural gradient $$F^{-1}g$$?
-         <details><summary>Answer</summary>
+         <details><summary>Solution</summary>
          <ol>
            <li>
              Use the closed form estimate of \(Fv\) for arbitrary \(v\), as described in section A of <a href="/assets/k-fac-tutorial.pdf">Matt Johnson's tutorial</a>)
