@@ -71,10 +71,25 @@ improvement. It is often used as a strong baseline when evaluating new algorithm
     approximate gradient of the reward with respect to the parameters. Why
     can't we just use gradient descent? What makes the learning procedure
     "non-differentiable"?
+     <details><summary>Hint</summary>
+     <p>
+     In classification problem: One natural measure of “goodness” is the likelihood or marginal
+     </p>
+     </details>
   2. Does the REINFORCE gradient estimator resemble maximum likelihood estimation?
     Why or why not?
+     <details><summary>Hint</summary>
+     <p>
+     In classification problem: One natural measure of “goodness” is the likelihood or marginal
+     </p>
+     </details>
   3. In its original formulation, REINFORCE is an on-policy algorithm. Why?
     Can we make REINFORCE work off-policy as well?
+     <details><summary>Hint</summary>
+     <p>
+     In classification problem: One natural measure of “goodness” is the likelihood or marginal
+     </p>
+     </details>
   4. Do policy gradient methods work for discrete and continuous action spaces?
     If not, why not? If so, is there an advantage policy gradient methods
     provide over other RL algorithms, like Q-learning?
@@ -121,9 +136,19 @@ improvement. It is often used as a strong baseline when evaluating new algorithm
     be correlated with the quantity we are trying to lower the variance of.
     Can we construct a better control variate that is even more correlated
     than a learned state-dependent value function? Why or why not?
+     <details><summary>Hint</summary>
+     <p>
+     In classification problem: One natural measure of “goodness” is the likelihood or marginal
+     </p>
+     </details>
   5. We use control variates as a method to reduce variance in our gradient
     estimate. Why don't we use these for supervised learning problems, like
     classification? Or, are we implicitly using them?
+     <details><summary>Hint</summary>
+     <p>
+     In classification problem: One natural measure of “goodness” is the likelihood or marginal
+     </p>
+     </details>
 
 <br />
 
