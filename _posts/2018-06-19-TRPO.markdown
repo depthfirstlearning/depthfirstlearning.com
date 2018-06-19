@@ -41,8 +41,7 @@ improvement.
   function or a complex neural network) by gradient descent. TRPO is one such
   algorithm. In this section, we formalize the notion of Markov Decision Processes (MDP),
   action and state spaces, and on-policy vs off-policy approaches. This leads to
-  REINFORCE algorithm, which is the simplest instantiation of the policy gradient
-  method.
+  REINFORCE algorithm, the simplest instantiation of the policy gradient method.
 
   **Topics**:
   1. Markov Decision Processes.
