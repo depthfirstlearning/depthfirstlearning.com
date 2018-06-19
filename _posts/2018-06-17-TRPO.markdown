@@ -179,13 +179,14 @@ improvement. It is often used as a strong baseline when evaluating new algorithm
   2. [Why Natural Gradient Descent / Amari and Douglas](http://www.yaroslavvb.com/papers/amari-why.pdf)
   3. [Natural Gradient Works Efficiently in Learning / Amari](https://personalrobotics.ri.cmu.edu/files/courses/papers/Amari1998a.pdf)
 
-  **Questions**:i
+  **Questions**:
   1. Consider classifiers with parameters $$\theta_{1}$$ and $$\theta_{2}$$,
      such that $$distance(\theta_1, \theta_2)$$ is large. Under what conditions
      would both classifiers have the same accuracy?
   2. How is the Fisher matrix similar and different from the Hessian?
   3. How does natural gradient descent compare to Newton’s method?
   4. Why is the natural gradient slow to compute?
+  5. How can one efficiently compute the product of the Fisher information matrix with an arbitrary vector?
 
 <br />
 
@@ -214,9 +215,15 @@ improvement. It is often used as a strong baseline when evaluating new algorithm
   2. [Metacademy](https://metacademy.org/graphs/concepts/conjugate_gradient)
 
   **Questions**:
-  1. In pre-conditioned conjugate gradient, how does scaling the pre-conditioner
+  1. Explain in detail how one could use the conjugate gradient method to
+     compute an approximation of the inverse of the Fisher information matrix
+     for a model.
+     <details><summary>Hint</summary>
+     See question 5 in the last section (computing Fisher-vector products)
+     </details>
+  2. In pre-conditioned conjugate gradient, how does scaling the pre-conditioner
      matrix $$M$$ by a constant $$c$$ impact the convergence?
-  2. Exercises 5.1 to 5.10 in Chapter 5, Numerical Optimization.
+  3. Exercises 5.1 to 5.10 in Chapter 5, Numerical Optimization.
 
 <br />
 
