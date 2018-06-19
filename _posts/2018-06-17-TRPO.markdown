@@ -215,9 +215,8 @@ improvement. It is often used as a strong baseline when evaluating new algorithm
   2. [Metacademy](https://metacademy.org/graphs/concepts/conjugate_gradient)
 
   **Questions**:
-  1. Explain in detail how one could use the conjugate gradient method to
-     compute an approximation of the inverse of the Fisher information matrix
-     for a model.
+  1. How one could use the conjugate gradient method to
+     approximate the natural gradient of the loss of a model?
      <details><summary>Hint</summary>
      See question 5 in the last section (computing Fisher-vector products)
      </details>
