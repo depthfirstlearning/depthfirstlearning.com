@@ -40,12 +40,13 @@ improvement. It is often used as a strong baseline when evaluating new algorithm
   one to directly optimize the parameters of a policy (whether it is a linear
   function or a complex neural network) by gradient descent. TRPO is one such
   algorithm in the policy gradient family of algorithms. In this section, we
-  formalize the notion of MDPs, action and state spaces, and what it means to
-  be on-policy or off-policy. This will then lead to describing the REINFORCE
-  algorithm, which is the simplest instantiation of the policy gradient method.
+  formalize the notion of Markov Decision Processes (MDP), action and state spaces,
+  and what it means to be on-policy or off-policy. This will then lead to describing
+  the REINFORCE algorithm, which is the simplest instantiation of the policy
+  gradient method.
 
   **Topics**:
-  1. Markov Decision Processes (MDP).
+  1. Markov Decision Processes.
   2. Continuous action spaces.
   3. On-policy and off-policy.
   4. REINFORCE / likelihood ratio methods.
@@ -104,8 +105,9 @@ improvement. It is often used as a strong baseline when evaluating new algorithm
   try all actions) at each state. In order to scale policy gradient methods to
   harder problems, we need to reduce this variance. In this section, we study
   common techniques for reducing variance for REINFORCE, including using
-  causality, baselines, and advantages. <b>This section is optional (but highly
-  recommended) because TRPO does not introduce new methods for variance reduction.</b>
+  causality, baselines, and advantages. TRPO does not introduce new methods for
+  variance reduction, but we cover it here because this is highly recommended for
+  complete understanding.
 
   **Topics**:
   1. Causality for REINFORCE.
@@ -258,13 +260,13 @@ improvement. It is often used as a strong baseline when evaluating new algorithm
 <br />
 
 # 6 The Paper
-  **Motivation**: We've built a good foundation for the various tools and
-  mathematical ideas used by TRPO. In this section, we study two more important
-  features of TRPO that are not explicitly covered by the above topics: the
-  ideas of monotonic policy improvement and the variants of TRPO described in
-  the paper, such as vine and single-path. Lastly, we discuss how the former
-  improvement bounds are approximated and result in the practical algorithm
-  used by many today. Let's read the [paper](https://arxiv.org/abs/1502.05477)!
+  **Motivation**: Let's read the [paper](https://arxiv.org/abs/1502.05477).
+  We've built a good foundation for the various tools and mathematical ideas
+  used by TRPO. In this section, we study two more important features of TRPO
+  that are not explicitly covered by the above topics: monotonic
+  policy improvement and the variants of TRPO described in the paper, vine and
+  single-path. Lastly, we discuss how the former improvement bounds are
+  approximated and result in the practical algorithm used by many today. 
 
   **Topics**:
   1. What is the problem with policy gradients that TRPO addresses?
