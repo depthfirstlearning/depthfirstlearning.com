@@ -223,26 +223,26 @@ improvement.
   **Questions**:
   1. Conjugate gradient finds approximate solutions to $$Ax=b$$. What does it
      need to be able to do with $$A$$ in order to achieve this?
-     <details><summary>Answer</summary>
-     It needs to be able to compute matrix-vector products $$Av$$ for arbitrary
-     vectors $$v$$.
+     <details><summary>Hint</summary>
+     It needs to be able to compute matrix-vector products \(Av\) for arbitrary
+     vectors \(v\).
      </details>
   2. How long does each iteration in the process described in the previous question take? Can it be made faster
      in some settings?
-     <details><summary>Answer</summary>
-     For arbitrary square matrix $$A$$, it would take $$n^2$$ steps for each
-     iteration (where $$n$$ is the dimension of the matrix).
+     <details><summary>Hint</summary>
+     For arbitrary square matrix \(A\), it would take \(O(n^2)\) steps for each
+     iteration (where \(n\) is the dimension of the matrix).
      In some settings, we may have $$A$$ represented as a sparse matrix, in which
-     case computing $$Av$$ would take $$m$$ steps, where $$m$$ is the number of
+     case computing \(Av\) would take \(O(m)\) steps, where \(m\) is the number of
      non-zero entries. Another interesting setting is when you may already have
-     access to a closed-form process that computes $$Av$$ (even when storing $$A$$
+     access to a closed-form process that computes \(Av\) (even when storing \(A\)
      directly is not possible)
      </details>
   3. How one could use the conjugate gradient method to
      approximate the natural gradient of the loss of a model w.r.t. its parameters?
      How does the run-time and memory use compare to directly computing the inverse Fisher times gradient?
      <details><summary>Hint</summary>
-     Computing the inverse Fisher times gradient explicitly would take $$O(n^3)$$ steps and $$O(n^2)$$ memory.
+     Computing the inverse Fisher times gradient explicitly would take \(O(n^3)\) steps and \(O(n^2)\) memory.
      Given the answer in question 5 in the section on Fisher Information Matrix and Natural Gradient Descent in this
      guide, it is possible to analytically compute Fisher-vector products. Now, see the answers to the previous
      two questions and combine these insights.
