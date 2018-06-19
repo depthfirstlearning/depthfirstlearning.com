@@ -12,8 +12,8 @@ layout: default
   </script>
 
   <div class="post-info">
-    <span>Written by</span>
     {% if page.authors %}
+      <span>Written by</span>
       {% comment %}
       This is a very hacky way to randomize the list of authors, every time the page is
       re-rendered. We use the current second of the timestamp at render time to choose
@@ -31,8 +31,10 @@ layout: default
         {% if forloop.last == false %} and {% endif %}
       {% endfor %}
     {% elsif author %}
+      <span>Written by</span>
       <a href="{{ author.web }}" target="_blank">{{ author.name }}</a> 
     {% else %}
+      <span>Written by</span>
       {{ site.author.name }}
     {% endif %}
 
