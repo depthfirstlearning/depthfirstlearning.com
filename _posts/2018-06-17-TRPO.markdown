@@ -8,11 +8,11 @@ blurb: "TRPO is a model-free algorithm for optimizing policies in reinforcement
        learning by gradient descent. It represents a significant improvement over
        previous methods in its scalability and consequently has enjoyed widespread
        success."
-hidden: false
+hidden: true
 feedback: true
 ---
 
-(Thank you to ... for contribution to this guide.)
+(Thank you to Avital Oliver, Matthew Johnson and George Tucker for contribution to this guide.)
 
 <div class="deps-graph">
   <iframe class="deps" src="/assets/trpo-deps.svg" width="200"></iframe>
@@ -30,8 +30,8 @@ together insights from reinforcement learning and optimization theory to develop
 an algorithm which, under certain assumptions, provides guarantees for monotonic
 improvement. It is often used as a strong baseline when evaluating new algorithms.
 
-  <a href="https://colab.research.google.com/drive/1f9IBs_LajqbS53ZONjdlD8L4LmvN3ivp#forceEdit=true&offline=true&sandboxMode=true" class="colab-root">Reproduce in a
-    <span>Notebook</span></a>
+  <a href="#" class="colab-root">Colab Notebook
+    <span>Soon</span></a>
 
 <br />
 
@@ -154,10 +154,13 @@ improvement. It is often used as a strong baseline when evaluating new algorithm
   2. [Why Natural Gradient Descent / Amari and Douglas](http://www.yaroslavvb.com/papers/amari-why.pdf)
   3. [Natural Gradient Works Efficiently in Learning / Amari](https://personalrobotics.ri.cmu.edu/files/courses/papers/Amari1998a.pdf)
 
-  **Questions**:
-  1. How is the Fisher matrix similar and different from the Hessian?
-  2. How does natural gradient descent compare to Newton’s method?
-  3. Why is the natural gradient slow to compute?
+  **Questions**:i
+  1. Consider classifiers with parameters $$\theta_{1}$$ and $$\theta_{2}$$,
+     such that $$distance(\theta_1, \theta_2)$$ is large. Under what conditions
+     would both classifiers have the same accuracy?
+  2. How is the Fisher matrix similar and different from the Hessian?
+  3. How does natural gradient descent compare to Newton’s method?
+  4. Why is the natural gradient slow to compute?
 
 <br />
 
