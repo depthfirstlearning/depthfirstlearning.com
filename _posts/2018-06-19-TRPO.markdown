@@ -79,7 +79,7 @@ improvement.
     Why or why not?
      <details><summary>Solution</summary>
      <p>
-     The term \( \log \pi (a | s) \) should look like a very familiar tool in statistical learning: the likelihood function! When we think of what happens when we do MLE, we are trying to maximize the likelihood of \( \log p(D | \theta) \) or as in supervised learning, we try to maximize $$\log p(y_i == y_{\text{label}} | x_i, \theta).$$ Normally, because we have the true label, this paradigm aligns perfectly with what we are ultimately trying to do with MLE. However, this naive strategy of maximizing the likelihood \( \pi(a | s) \) won't work in reinforcement learning, because we do not have a label for the correct action to be taken at a given time step (if we did, we should just do supervised learning!). If we tried doing this, we would find that we would simply maximize the probability of every action; make sure you convince yourself this to be true. Instead, the only (imperfect) evidence we have of good or bad actions is the reward we receive at that time step. Thus, a reasonable thing to do seems like scaling the log-likelihood by how good or bad the action by the reward. Thus, we would then then maximize $$r(a, s) \log \pi (a | s).$$ Look familiar? This is just the REINFORCE term in our expectation: $$ \mathbb{E}_{s,a} [ \nabla r(a, s) \log \pi (a | s) ] $$
+     The term \( \log \pi (a | s) \) should look like a very familiar tool in statistical learning: the likelihood function! When we think of what happens when we do MLE, we are trying to maximize the likelihood of \( \log p(D | \theta) \) or as in supervised learning, we try to maximize $$\log p(y_i^* | x_i, \theta).$$ Normally, because we have the true label \( y_i^* \), this paradigm aligns perfectly with what we are ultimately trying to do with MLE. However, this naive strategy of maximizing the likelihood \( \pi(a | s) \) won't work in reinforcement learning, because we do not have a label for the correct action to be taken at a given time step (if we did, we should just do supervised learning!). If we tried doing this, we would find that we would simply maximize the probability of every action; make sure you convince yourself this to be true. Instead, the only (imperfect) evidence we have of good or bad actions is the reward we receive at that time step. Thus, a reasonable thing to do seems like scaling the log-likelihood by how good or bad the action by the reward. Thus, we would then then maximize $$r(a, s) \log \pi (a | s).$$ Look familiar? This is just the REINFORCE term in our expectation: $$ \mathbb{E}_{s,a} [ \nabla r(a, s) \log \pi (a | s) ] $$
      </p>
      </details>
   3. In its original formulation, REINFORCE is an on-policy algorithm. Why?
@@ -125,8 +125,8 @@ improvement.
 
   **Questions**:
   1. What is the intuition for using advantages instead of rewards as the
-    learning signal (Note on terminology: the learning signal is the term that
-    we multiply $$\log \pi (a | s)$$ by inside the expectation of REINFORCE).
+    learning signal? Note on terminology: the learning signal is the term that
+    we multiply $$\log \pi (a | s)$$ by inside the expectation of REINFORCE.
   2. What are some assumptions we make by using baselines as a variance
     reduction method?
   3. What are other methods of variance reduction?
