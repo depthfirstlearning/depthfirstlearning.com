@@ -185,6 +185,10 @@ improvement.
   1. Consider classifiers with parameters $$\theta_{1}$$ and $$\theta_{2}$$,
      such that $$distance(\theta_1, \theta_2)$$ is large. Under what conditions
      would both classifiers have the same accuracy?
+     <details><summary>Hint</summary>
+     In this case, we are interested in the distance between classifiers in
+     function space, rather than in parameter space.
+     </details>
   2. How is the Fisher matrix similar and different from the Hessian?
   3. How does natural gradient descent compare to Newton’s method?
   4. Why is the natural gradient slow to compute?
@@ -217,8 +221,8 @@ improvement.
   2. [Metacademy](https://metacademy.org/graphs/concepts/conjugate_gradient)
 
   **Questions**:
-  1. How one could use the conjugate gradient method to
-     approximate the natural gradient of the loss of a model?
+  1. How would you use conjugate gradient method to
+     approximate the natural gradient w.r.t a given objective?
      <details><summary>Hint</summary>
      See question 5 in the last section (computing Fisher-vector products)
      </details>
