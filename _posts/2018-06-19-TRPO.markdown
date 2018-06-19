@@ -1,14 +1,14 @@
 ---
 layout: post
 title:  "Trust Region Policy Optimization"
-date:   2018-06-17 18:50:23 -0400
+date:   2018-06-19 12:00:00 -0400
 categories: reinforcement-learning
 authors: ['surya', 'krishna']
 blurb: "TRPO is a model-free algorithm for optimizing policies in reinforcement
        learning by gradient descent. It represents a significant improvement over
        previous methods in its scalability and consequently has enjoyed widespread
        success."
-hidden: true
+hidden: false
 feedback: true
 ---
 
@@ -22,13 +22,13 @@ feedback: true
 # Why
 
 TRPO is a scalable algorithm for optimizing policies in reinforcement learning by
-gradient descent. Because model-free algorithms, such as policy gradient methods,
-do not require access to a model of the environment and often enjoy better
-practical stability, they are straightforward to apply to new problems, but
-were previously not able to scale to large, nonlinear policies. TRPO brings
-together insights from reinforcement learning and optimization theory to develop
-an algorithm which, under certain assumptions, provides guarantees for monotonic
-improvement. It is often used as a strong baseline when evaluating new algorithms.
+gradient descent. Model-free algorithms such as policy gradient methods do not
+require access to a model of the environment and often enjoy better
+practical stability. Consequently, they are both straightforward to apply to new
+problems and have trouble scaling to large, nonlinear policies. TRPO couples
+insights from reinforcement learning and optimization theory to develop an
+algorithm which, under certain assumptions, provides guarantees for monotonic
+improvement. 
 
   <a href="javascript:alert('Coming soon!')" class="colab-root">Colab Notebook
     <span>Soon</span></a>
@@ -39,11 +39,10 @@ improvement. It is often used as a strong baseline when evaluating new algorithm
   **Motivation**: Policy gradient methods are a class of algorithms that allow
   one to directly optimize the parameters of a policy (whether it is a linear
   function or a complex neural network) by gradient descent. TRPO is one such
-  algorithm in the policy gradient family of algorithms. In this section, we
-  formalize the notion of Markov Decision Processes (MDP), action and state spaces,
-  and what it means to be on-policy or off-policy. This will then lead to describing
-  the REINFORCE algorithm, which is the simplest instantiation of the policy
-  gradient method.
+  algorithm. In this section, we formalize the notion of Markov Decision Processes (MDP),
+  action and state spaces, and on-policy vs off-policy approaches. This leads to
+  REINFORCE algorithm, which is the simplest instantiation of the policy gradient
+  method.
 
   **Topics**:
   1. Markov Decision Processes.
@@ -100,14 +99,12 @@ improvement. It is often used as a strong baseline when evaluating new algorithm
 # 2 Variance Reduction and Advantage Estimate
   **Motivation**: One major shortcoming of policy gradient methods is that the
   simplest instantation of REINFORCE suffers from high variance in the gradients
-  it computes. High variance results from the fact that rewards are sparse, we
-  only visit a finite set of states, and that we only take one action (and not
-  try all actions) at each state. In order to scale policy gradient methods to
-  harder problems, we need to reduce this variance. In this section, we study
-  common techniques for reducing variance for REINFORCE, including using
-  causality, baselines, and advantages. TRPO does not introduce new methods for
-  variance reduction, but we cover it here because this is highly recommended for
-  complete understanding.
+  it computes. This results from the rewards being sparse, only visiting a finite
+  set of states, and that we only take one action at each state rather than all actions.
+  In order to properly scale, we need to reduce this variance. In this section, we study
+  common techniques for reducing variance for REINFORCE: causal approaches,
+  baselines, and advantages. Note that TRPO does not introduce new methods for
+  variance reduction, but we cover it here for complete understanding.
 
   **Topics**:
   1. Causality for REINFORCE.
@@ -158,13 +155,11 @@ improvement. It is often used as a strong baseline when evaluating new algorithm
   <img src="/assets/fisher-steepest.png" />
 
   **Motivation**: While gradient descent is able to solve many optimization problems,
-  it suffers from a basic problem -- its performance is dependent on the particular
-  parameterization chosen for the model. Natural gradient descent is a variant of
-  gradient descent, which is invariant to model parameterization. This is achieved
-  by multiplying gradient vectors by the inverse of the Fisher Information Matrix (thus its
-  other name, Fisher steepest descent).
-  The Fisher Information Matrix measures how much model predictions change with
-  local changes to parameters.
+  it suffers from a basic problem - performance is dependent on the model's parameterization.
+  Natural gradient descent, on the other hand, is invariant to model parameterization.
+  This is achieved by multiplying gradient vectors by the inverse of the Fisher
+  Information Matrix, which is a measure of how much model predictions change with
+  local parameter changes.
 
   **Topics**:
   1. Fisher information matrix.
@@ -196,7 +191,7 @@ improvement. It is often used as a strong baseline when evaluating new algorithm
   **Motivation**: The conjugate gradient method is an iterative algorithm for finding
   approximate solutions to $$Ax=b$$, where $$A$$ is a symmetric and positive-definite matrix (such
   as the Fisher information matrix). The method works by iteratively computing matrix-vector
-  products $$Ax_i$$, so is particularly well-suited for matrices for which matrix-vector
+  products $$Ax_i$$ and is particularly well-suited for matrices for which matrix-vector
   products are easy to compute.
 
   **Topics**:
@@ -230,10 +225,10 @@ improvement. It is often used as a strong baseline when evaluating new algorithm
 
 # 5 Trust Region Methods
   **Motivation**: Trust region methods are a class of methods used in general
-  optimization problems as a way to constraint the size of the update. While
+  optimization problems to constrain the update size. While
   TRPO does not use the full gamut of tools from the trust region literature,
-  we believe studying them provides good intuition for the problem that TRPO
-  tries to solve and how we might improve the algorithm even more. In this
+  studying them provides good intuition for the problem that TRPO
+  addresses and how we might improve the algorithm even more. In this
   section, we focus on understanding trust regions and line search methods.
 
   **Topics**:
@@ -262,11 +257,10 @@ improvement. It is often used as a strong baseline when evaluating new algorithm
 # 6 The Paper
   **Motivation**: Let's read the [paper](https://arxiv.org/abs/1502.05477).
   We've built a good foundation for the various tools and mathematical ideas
-  used by TRPO. In this section, we study two more important features of TRPO
-  that are not explicitly covered by the above topics: monotonic
-  policy improvement and the variants of TRPO described in the paper, vine and
-  single-path. Lastly, we discuss how the former improvement bounds are
-  approximated and result in the practical algorithm used by many today. 
+  used by TRPO. In this section, we focus on the parts of the paper that aren't
+  explicitly covered by the above topics and together result in the practical
+  algorithm used by many today. These are monotonic policy improvement and the
+  two different implementation approaches: vine and single-path.
 
   **Topics**:
   1. What is the problem with policy gradients that TRPO addresses?
