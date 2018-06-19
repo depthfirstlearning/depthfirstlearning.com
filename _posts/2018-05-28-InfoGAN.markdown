@@ -59,6 +59,7 @@ observing each variable separately.
       1. [Entropy](https://metacademy.org/graphs/concepts/entropy)
       2. [Mutual Information](https://metacademy.org/graphs/concepts/mutual_information)
       3. [KL diverence](https://metacademy.org/graphs/concepts/kl_divergence)
+  3. [Visual Information Theory](https://colah.github.io/posts/2015-09-Visual-Information/)
 
   **Questions**:
   1. From PRML: 1.28, 1.31, 1.36, 1.37, 1.38, 1.39, 1.41.
