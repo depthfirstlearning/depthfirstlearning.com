@@ -232,7 +232,7 @@ algorithms.
   **Topics**:
   1. Solving system of linear equations.
   2. Efficiently computing matrix-vector products.
-  3. Computational complexities of second order methods.
+  3. Computational complexities of second order methods optimization methods.
 
   **Required Readings**:
   1. [An Introduction to the Conjugate Gradient Method Without the Agonizing Pain](https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf): Section 7-9
