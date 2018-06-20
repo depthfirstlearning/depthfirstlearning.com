@@ -28,7 +28,8 @@ practical stability. Consequently, while straightforward to apply to new
 problems, they have trouble scaling to large, nonlinear policies. TRPO couples
 insights from reinforcement learning and optimization theory to develop an
 algorithm which, under certain assumptions, provides guarantees for monotonic
-improvement.
+improvement. It is now commonly used as a strong baseline when developing new
+algorithms.
 
   <a href="javascript:alert('Coming soon!')" class="colab-root">Colab Notebook
     <span>Soon</span></a>
@@ -37,8 +38,8 @@ improvement.
 
 # 1 Policy Gradient
   **Motivation**: Policy gradient methods are a class of algorithms that allow
-  one to directly optimize the parameters of a policy (whether it is a linear
-  function or a complex neural network) by gradient descent. TRPO is one such
+  one to directly optimize the parameters of a policy, whether it is a linear
+  function or a neural network, by gradient descent. TRPO is one such
   algorithm. In this section, we formalize the notion of Markov Decision Processes (MDP),
   action and state spaces, and on-policy vs off-policy approaches. This leads to
   REINFORCE algorithm, the simplest instantiation of the policy gradient method.
@@ -46,7 +47,7 @@ improvement.
   **Topics**:
   1. Markov Decision Processes.
   2. Continuous action spaces.
-  3. On-policy and off-policy.
+  3. On-policy and off-policy algorithms.
   4. REINFORCE / likelihood ratio methods.
 
   **Required Readings**:
@@ -56,7 +57,7 @@ improvement.
   2. David Silver’s course at UCL; Policy Gradient Lecture
       1. [Slides](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching_files/pg.pdf)
       2. [Video](https://www.youtube.com/watch?v=KHZVXao4qXs&index=7&list=PL7-jPKtc4r78-wCZcQn5IqyuWhBZ8fOxT)
-  3. Reinforcement Learning by Sutton and Barto, 2nd Edition; pages 265 - 273.
+  3. Reinforcement Learning by Sutton and Barto, 2nd Edition; pages 265 - 273
   4. [Simple statistical gradient-following algorithms for connectionist reinforcement learning](http://www-anw.cs.umass.edu/~barto/courses/cs687/williams92simple.pdf)
 
   **Optional Readings**:
@@ -68,8 +69,7 @@ improvement.
   **Questions**:
   1. Remember that at its core, REINFORCE describes an algorithm to compute an
     approximate gradient of the reward with respect to the parameters. Why
-    can't we just use gradient descent? What makes the learning procedure
-    "non-differentiable"?
+    can't we just use the familiar stochastic gradient descent?
      <details><summary>Hint</summary>
      <p>
     Just as in reinforcement learning, when we use stochastic gradient descent, we also compute an estimate of the gradient, which looks something like $$\nabla_{\theta} \mathbb{E}_{x \sim p(x)} [ f_{\theta}(x) ] = \mathbb{E}_{x \sim p(x)} [\nabla_{\theta} f_{\theta}(x)]$$ where we move the gradient into the expectation (an operation made precise by the <a href=""> Leibniz integral rule</a>). In other words, the objective we're trying to take the gradient of is indeed differentiable with respect to the inputs. In reinforcement learning, our objective is non-differentiable -- we actually <b>select</b> an action and act on it. To convince yourself that this isn't something we can differentiate through, write out explicitly the full expansion of the training objective for policy gradient before we move the gradient into the expectation. Is sampling an action really non-differentiable? (spoiler: yes, but we can work around it in various ways, such as using REINFORCE or <a href="https://arxiv.org/abs/1611.01144">other methods</a>).
@@ -90,20 +90,19 @@ improvement.
      </p>
      </details>
   4. Do policy gradient methods work for discrete and continuous action spaces?
-    If not, why not? If so, is there an advantage policy gradient methods
-    provide over other RL algorithms, like Q-learning?
+    If not, why not?
 
 <br />
 
 # 2 Variance Reduction and Advantage Estimate
   **Motivation**: One major shortcoming of policy gradient methods is that the
   simplest instantation of REINFORCE suffers from high variance in the gradients
-  it computes. This results from the rewards being sparse, only visiting a finite
-  set of states, and that we only take one action at each state rather than all actions.
-  In order to properly scale, we need to reduce this variance. In this section, we study
-  common techniques for reducing variance for REINFORCE: causal approaches,
-  baselines, and advantages. Note that TRPO does not introduce new methods for
-  variance reduction, but we cover it here for complete understanding.
+  it computes. This results from the fact that rewards are sparse, we only visit a finite
+  set of states, and that we only take one action at each state rather than try all actions.
+  In order to properly scale our methods to harder problems, we need to reduce this variance.
+  In this section, we study common tools for reducing variance for REINFORCE:
+  a simple causality result, baselines, and advantages. Note that TRPO does not introduce
+  new methods for variance reduction, but we cover it here for complete understanding.
 
   **Topics**:
   1. Causality for REINFORCE.
@@ -117,11 +116,11 @@ improvement.
   2. [George Tucker’s notes on Variance Reduction](/assets/gjt-var-red-notes.pdf)
 
   **Optional Readings**:
-  1. Reinforcement Learning by Sutton and Barto, 2nd Edition; pages 273 - 275.
+  1. Reinforcement Learning by Sutton and Barto, 2nd Edition; pages 273 - 275
   2. [High-dimensional continuous control using generalized advantage estimation](https://arxiv.org/abs/1506.02438)
   3. [Asynchronous Methods for Deep Reinforcement Learning](https://arxiv.org/abs/1602.01783)
   4. [Monte Carlo theory, methods, and examples by Art B. Owen; Chapter 8](https://statweb.stanford.edu/~owen/mc/Ch-var-basic.pdf)
-    (in-depth treatment of variance reduction; suitable for independent study).
+    (in-depth treatment of variance reduction; suitable for independent study)
 
   **Questions**:
   1. What is the intuition for using advantages instead of rewards as the
@@ -130,6 +129,11 @@ improvement.
   2. What are some assumptions we make by using baselines as a variance
     reduction method?
   3. What are other methods of variance reduction?
+     <details><summary>Solution</summary>
+     <p>
+     Check out the optional reading <a href="https://statweb.stanford.edu/~owen/mc/Ch-var-basic.pdf">Monte Carlo theory, methods, and examples by Art B. Owen; Chapter 8</a> if you're interested! Broadly speaking, other techniques for doing variance reduction for Monte Carlo integration include stratified sampling, antithetic sampling, common random variables, conditioning.
+     </p>
+     </details>
   4. The theory of control variates tells us that our control variate should
     be correlated with the quantity we are trying to lower the variance of.
     Can we construct a better control variate that is even more correlated
@@ -163,7 +167,7 @@ improvement.
   it suffers from a basic problem - performance is dependent on the model's parameterization.
   Natural gradient descent, on the other hand, is invariant to model parameterization.
   This is achieved by multiplying gradient vectors by the inverse of the Fisher
-  Information Matrix, which is a measure of how much model predictions change with
+  information matrix, which is a measure of how much model predictions change with
   local parameter changes.
 
   **Topics**:
@@ -183,8 +187,9 @@ improvement.
 
   **Questions**:
   1. Consider classifiers $$p(y | x; \theta_{1})$$ and $$p(y | x; \theta_{2})$$,
-     such that $$l_2(\theta_1, \theta_2)$$ is large. Does this imply difference
-     in accuracy of the classifiers is high?
+     such that $$l_2(\theta_1, \theta_2)$$ is large, where $$l_2$$ indicates the
+     Euclidean distance metric. Does this imply difference in accuracy of the
+     classifiers is high?
      <details><summary>Solution</summary>
      The accuracy of the classifier depends on the function defined by
      \(p(y|x;\theta) \). The distance between the parameters do not inform us
@@ -207,11 +212,11 @@ improvement.
 
   **Topics**:
   1. Solving system of linear equations.
-  2. Efficiently computing matrix-vector products .
+  2. Efficiently computing matrix-vector products.
   3. Computational complexities of 2nd order methods.
 
   **Required Readings**:
-  1. [An Introduction to the Conjugate Gradient Method Without the Agonizing Pain](https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf): Section 7-9.
+  1. [An Introduction to the Conjugate Gradient Method Without the Agonizing Pain](https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf): Section 7-9
   2. [Convex Optimization and
      Approximation](https://ee227c.github.io/notes/ee227c-notes.pdf), UC Berkeley, Section 7.4
   3. Convex Optimization II by Stephen Boyd:
@@ -219,7 +224,7 @@ improvement.
       2. [Lecture 13, from 21:20 to 29:30](https://www.youtube.com/watch?feature=player_embedded&v=E4gl91l0l40#t=1266)
 
   **Optional Readings**:
-  1. Numerical Optimization by Nocedal and Wright; Section 5.1, pages 101-120.
+  1. Numerical Optimization by Nocedal and Wright; Section 5.1, pages 101-120
   2. [Metacademy](https://metacademy.org/graphs/concepts/conjugate_gradient)
 
   **Questions**:
@@ -252,8 +257,8 @@ improvement.
          </ol>
   2. In pre-conditioned conjugate gradient, how does scaling the pre-conditioner
      matrix $$M$$ by a constant $$c$$ impact the convergence?
-  3. Exercises 5.1 to 5.10 in Chapter 5, Numerical Optimization.
-     (<b> Exercises 5.2, 5.9 are particularly recommended </b>)
+  3. Exercises 5.1 to 5.10 in Chapter 5, Numerical Optimization
+     (<b>Exercises 5.2 and 5.9 are particularly recommended.</b>)
 
 <br />
 
