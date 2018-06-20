@@ -8,7 +8,7 @@ blurb: "TRPO is a model-free algorithm for optimizing policies in reinforcement
        learning by gradient descent. It represents a significant improvement over
        previous methods in its scalability and consequently has enjoyed widespread
        success."
-hidden: true
+hidden: false
 feedback: true
 ---
 
