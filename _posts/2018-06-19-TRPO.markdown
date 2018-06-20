@@ -41,7 +41,7 @@ algorithms.
   one to directly optimize the parameters of a policy, whether it is a linear
   function or a neural network, by gradient descent. TRPO is one such
   algorithm. In this section, we formalize the notion of Markov Decision Processes (MDP),
-  action and state spaces, and on-policy vs off-policy approaches. This leads to
+  action and state spaces, and on-policy vs off-policy approaches. This leads to the
   REINFORCE algorithm, the simplest instantiation of the policy gradient method.
 
   **Topics**:
@@ -67,7 +67,7 @@ algorithms.
   4. [Connection Between Importance Sampling and Likelihood Ratio](https://papers.nips.cc/paper/3922-on-a-connection-between-importance-sampling-and-the-likelihood-ratio-policy-gradient.pdf)
 
   **Questions**:
-  1. Remember that at its core, REINFORCE describes an algorithm to compute an
+  1. At its core, REINFORCE computes an
     approximate gradient of the reward with respect to the parameters. Why
     can't we just use the familiar stochastic gradient descent?
      <details><summary>Hint</summary>
@@ -124,8 +124,8 @@ algorithms.
 
   **Questions**:
   1. What is the intuition for using advantages instead of rewards as the
-    learning signal? Note on terminology: the learning signal is the term that
-    we multiply $$\log \pi (a | s)$$ by inside the expectation of REINFORCE.
+    learning signal? Note on terminology: the learning signal is the factor by 
+    which we multiply $$\log \pi (a | s)$$ inside the expectation in REINFORCE.
   2. What are some assumptions we make by using baselines as a variance
     reduction method?
   3. What are other methods of variance reduction?
@@ -144,17 +144,36 @@ algorithms.
      </p>
      </details>
   5. We use control variates as a method to reduce variance in our gradient
-    estimate. Why don't we use these for supervised learning problems, like
-    classification? Or, are we implicitly using them?
+    estimate. Why don't we use these for supervised learning problems such as
+    classification? Are we implicitly using them?
      <details><summary>Solution</summary>
      <p>
-      Reducing variance in our gradient estimates seems like an important thing to do, but we don't often see explicit variance reduction methods when we do supervised learning. However, there is a line of work around <b>stochastic variance reduced gradient</b> descent called <a href="https://papers.nips.cc/paper/4937-accelerating-stochastic-gradient-descent-using-predictive-variance-reduction.pdf">SVRG</a> that try to construct gradient estimators that have reduced variance. See <a href="http://ranger.uta.edu/~heng/CSE6389_15_slides/SGD2.pdf">these slides</a> and <a href="https://arxiv.org/abs/1202.6258">these</a> <a href="https://arxiv.org/abs/1209.1873">papers</a> for more related work around this topic.
+      Reducing variance in our gradient estimates seems like an important thing 
+      to do, but we don't often see explicit variance reduction methods when we
+      do supervised learning. However, there is a line of work around 
+      <b>stochastic variance reduced gradient</b> descent called 
+      <a href="https://papers.nips.cc/paper/4937-accelerating-stochastic-gradient-descent-using-predictive-variance-reduction.pdf">SVRG</a> 
+      that tries to construct gradient estimators with reduced variance. See 
+      <a href="http://ranger.uta.edu/~heng/CSE6389_15_slides/SGD2.pdf">these 
+      slides</a> and <a href="https://arxiv.org/abs/1202.6258">these</a>
+      <a href="https://arxiv.org/abs/1209.1873">papers</a> for more on this topic. 
      </p>
      <p>
-     However, the reason that we don't often see these being used in the supervised learning setting is because we're not necessarily looking to reduce the variance of SGD and converge smoothly to the minima of our training objective. This is because we're actually interested in looking for minima that have low <b>generalization error</b> and don't want to overfit to solutions with very small training error. In fact, we usually the consider the noise introduced by using minibatches in SGD as a good thing so that we can still escape minima that we may prematurely find. However, SVRG at its related algorithms are still very useful for solving optimization problems. Note that in reinforcement learning, we usually find that the variance of our gradient estimates is so high that it becomes one of the most important problems to solve first.
+     The reason that we don't often see these being used in the supervised 
+     learning setting is because we're not necessarily looking to reduce the variance 
+     of SGD and smoothly converge to a minima. This is 
+     because we're actually interested in looking for minima that have low 
+     <b>generalization error</b> and don't want to overfit to solutions with very 
+     small training error. In fact, we often rely on the noise introduced by 
+     using minibatches in SGD to help us to escape premature minima.
+     On the other hand, in reinforcement learning, the variance of our gradient 
+     estimates is so high that it's often the foremost problem.
      </p>
       <p>
-      Beyond supervised learning, control variates are used often in problems of Monte Carlo integration, which is used ubiquitously throughout Bayesian methods, and used for problems in hard attention, discrete latent random variables, and general stochastic computation graphs.
+      Beyond supervised learning, control variates are used often in Monte Carlo 
+      integration, which is ubiquitous throughout Bayesian methods. They are also
+      used for problems in hard attention, discrete latent random variables, and 
+      general stochastic computation graphs.
       </p>
      </details>
 
@@ -188,7 +207,7 @@ algorithms.
   **Questions**:
   1. Consider classifiers $$p(y | x; \theta_{1})$$ and $$p(y | x; \theta_{2})$$,
      such that $$l_2(\theta_1, \theta_2)$$ is large, where $$l_2$$ indicates the
-     Euclidean distance metric. Does this imply difference in accuracy of the
+     Euclidean distance metric. Does this imply the difference in accuracy of the
      classifiers is high?
      <details><summary>Solution</summary>
      The accuracy of the classifier depends on the function defined by
@@ -207,13 +226,13 @@ algorithms.
   **Motivation**: The conjugate gradient method (CG) is an iterative algorithm for finding
   approximate solutions to $$Ax=b$$, where $$A$$ is a symmetric and positive-definite matrix (such
   as the Fisher information matrix). The method works by iteratively computing matrix-vector
-  products $$Ax_i$$ and is particularly well-suited for matrices for which matrix-vector
-  products are easy to compute.
+  products $$Ax_i$$ and is particularly well-suited for matrices with computationally
+  tractable matrix-vector products.
 
   **Topics**:
   1. Solving system of linear equations.
   2. Efficiently computing matrix-vector products.
-  3. Computational complexities of 2nd order methods.
+  3. Computational complexities of second order methods.
 
   **Required Readings**:
   1. [An Introduction to the Conjugate Gradient Method Without the Agonizing Pain](https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf): Section 7-9
