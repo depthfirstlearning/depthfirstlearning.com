@@ -284,9 +284,14 @@ algorithms.
   **Questions**:
   1. Instead of directly imposing constraints on the updates, what would be
      alternatives to enforce an algorithm to make bounded updates?
-  2. Each step of a Trust Region optimization method updates parameters to
+     <details><summary>Hint</summary>
+     <p>
+     Recall the methods of <a href="https://en.wikipedia.org/wiki/Lagrange_multiplier">Lagrange multipliers</a>. How does this method move between two types of optimization problems?
+     </p>
+    </details>
+  2. Each step of a trust region optimization method updates parameters to
      the optimal setting given some constraint. Can we solve this in closed
-     form using Lagrange Multipliers? In what way would this be similar, or
+     form using Lagrange multipliers? In what way would this be similar, or
      different, from the trust region methods we just discussed?
   3. Exercises 4.1 to 4.10 in Chapter 4, Numerical Optimization.
      (<b>Exercise 4.10 is particularly recommended</b>)
@@ -324,7 +329,7 @@ algorithms.
   2. Why do we use conjugate gradient methods for optimization in TRPO? Can we
     exploit the fact the conjugate gradient optimization is differentiable?
   3. How is line search used in TRPO?
-  4. How does TRPO differ from Natural Policy Gradient?
+  4. How does TRPO differ from natural policy gradient?
      <details><summary>Solution</summary>
      <p> See slides 30-34 from <a href="http://rail.eecs.berkeley.edu/deeprlcourse-fa17/f17docs/lecture_13_advanced_pg.pdf">this lecture</a>. </p>
     </details>
