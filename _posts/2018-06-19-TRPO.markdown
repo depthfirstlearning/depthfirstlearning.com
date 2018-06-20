@@ -37,10 +37,9 @@ algorithms.
 <br />
 
 # 1 Policy Gradient
-  **Motivation**: Policy gradient methods are a class of algorithms that allow
-  one to directly optimize the parameters of a policy, whether it is a linear
-  function or a neural network, by gradient descent. TRPO is one such
-  algorithm. In this section, we formalize the notion of Markov Decision Processes (MDP),
+  **Motivation**: Policy gradient methods (e.g. TRPO) are a class
+  of algorithms that allow us to directly optimize the parameters of a policy by
+  gradient descent. In this section, we formalize the notion of Markov Decision Processes (MDP),
   action and state spaces, and on-policy vs off-policy approaches. This leads to the
   REINFORCE algorithm, the simplest instantiation of the policy gradient method.
 
@@ -100,8 +99,8 @@ algorithms.
   it computes. This results from the fact that rewards are sparse, we only visit a finite
   set of states, and that we only take one action at each state rather than try all actions.
   In order to properly scale our methods to harder problems, we need to reduce this variance.
-  In this section, we study common tools for reducing variance for REINFORCE:
-  a simple causality result, baselines, and advantages. Note that TRPO does not introduce
+  In this section, we study common tools for reducing variance for REINFORCE. These include
+  a causality result, baselines, and advantages. Note that the TRPO paper does not introduce
   new methods for variance reduction, but we cover it here for complete understanding.
 
   **Topics**:
