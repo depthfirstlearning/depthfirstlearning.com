@@ -12,7 +12,7 @@ hidden: false
 feedback: true
 ---
 
-(Thank you to Avital Oliver, Nic Ford, Matthew Johnson and George Tucker for contributing to this guide.)
+(Thank you to Avital Oliver, Nic Ford, Matthew Johnson, John Schulman, and George Tucker for contributing to this guide.)
 
 <div class="deps-graph">
   <iframe class="deps" src="/assets/trpo-deps.svg" width="200"></iframe>
@@ -123,7 +123,7 @@ algorithms.
 
   **Questions**:
   1. What is the intuition for using advantages instead of rewards as the
-    learning signal? Note on terminology: the learning signal is the factor by 
+    learning signal? Note on terminology: the learning signal is the factor by
     which we multiply $$\log \pi (a | s)$$ inside the expectation in REINFORCE.
   2. What are some assumptions we make by using baselines as a variance
     reduction method?
@@ -147,31 +147,31 @@ algorithms.
     classification? Are we implicitly using them?
      <details><summary>Solution</summary>
      <p>
-      Reducing variance in our gradient estimates seems like an important thing 
+      Reducing variance in our gradient estimates seems like an important thing
       to do, but we don't often see explicit variance reduction methods when we
-      do supervised learning. However, there is a line of work around 
-      <b>stochastic variance reduced gradient</b> descent called 
-      <a href="https://papers.nips.cc/paper/4937-accelerating-stochastic-gradient-descent-using-predictive-variance-reduction.pdf">SVRG</a> 
-      that tries to construct gradient estimators with reduced variance. See 
-      <a href="http://ranger.uta.edu/~heng/CSE6389_15_slides/SGD2.pdf">these 
+      do supervised learning. However, there is a line of work around
+      <b>stochastic variance reduced gradient</b> descent called
+      <a href="https://papers.nips.cc/paper/4937-accelerating-stochastic-gradient-descent-using-predictive-variance-reduction.pdf">SVRG</a>
+      that tries to construct gradient estimators with reduced variance. See
+      <a href="http://ranger.uta.edu/~heng/CSE6389_15_slides/SGD2.pdf">these
       slides</a> and <a href="https://arxiv.org/abs/1202.6258">these</a>
-      <a href="https://arxiv.org/abs/1209.1873">papers</a> for more on this topic. 
+      <a href="https://arxiv.org/abs/1209.1873">papers</a> for more on this topic.
      </p>
      <p>
-     The reason that we don't often see these being used in the supervised 
-     learning setting is because we're not necessarily looking to reduce the variance 
-     of SGD and smoothly converge to a minima. This is 
-     because we're actually interested in looking for minima that have low 
-     <b>generalization error</b> and don't want to overfit to solutions with very 
-     small training error. In fact, we often rely on the noise introduced by 
+     The reason that we don't often see these being used in the supervised
+     learning setting is because we're not necessarily looking to reduce the variance
+     of SGD and smoothly converge to a minima. This is
+     because we're actually interested in looking for minima that have low
+     <b>generalization error</b> and don't want to overfit to solutions with very
+     small training error. In fact, we often rely on the noise introduced by
      using minibatches in SGD to help us to escape premature minima.
-     On the other hand, in reinforcement learning, the variance of our gradient 
+     On the other hand, in reinforcement learning, the variance of our gradient
      estimates is so high that it's often the foremost problem.
      </p>
       <p>
-      Beyond supervised learning, control variates are used often in Monte Carlo 
+      Beyond supervised learning, control variates are used often in Monte Carlo
       integration, which is ubiquitous throughout Bayesian methods. They are also
-      used for problems in hard attention, discrete latent random variables, and 
+      used for problems in hard attention, discrete latent random variables, and
       general stochastic computation graphs.
       </p>
      </details>
