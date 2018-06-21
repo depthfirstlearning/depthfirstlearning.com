@@ -1,18 +1,19 @@
 ---
 layout: post
 title:  "AlphaGo Zero"
-date:   2018-06-10 10:00:00 -0400
+date:   2018-06-27 12:00:00 -0400
 categories: games
 author: cinjon
 blurb: "In this curriculum, you will learn about two person zero-sum perfect 
         information games and develop understanding to completely grok AlphaGo Zero."
+hidden: true
 feedback: true
 ---
 
-(Thank you to Marc Lanctot, Tim Lillicrap, Joan Bruna, Martin Arjovsky, <students> ... (who else) for contributing to this guide.) 
+(Thank you to Marc Lanctot, Tim Lillicrap, Joan Bruna, Martin Arjovsky, Xintian Han, Liang Zhuo, Chirag Maheshwari, Ryan Saxe, Ojas Deshpande, Sanyam Kapoor, Anant Gupta, Yixiang Luo, and Chen Li for contributing to this guide.)
 
 <div class="deps-graph">
-  <iframe class="deps" src="/assets/infogan-deps.svg" width="200"></iframe>
+  <iframe class="deps" src="/assets/ag0-deps.svg" width="200"></iframe>
   <div>Concepts used in AlphaGo Zero. Click to navigate.</div>
 </div>
 
@@ -20,7 +21,7 @@ feedback: true
 
 AlphaGo Zero was a big splash when it debuted and for good reason. The grand effort 
 was led by David Silver at DeepMind and was an extension of work that he started
-during his PhD. The main idea is to beat the game of Go and the approach taken
+during his PhD. The main idea is to solve the game of Go and the approach taken
 is to use Monte Carlo Tree Search along with a deep neural network as the value
 approximation to cut off the search space. 
 
@@ -28,7 +29,7 @@ In this curriculum, you will focus on the study of two person zero-sum perfect
 information games and develop understanding sufficient to grok AlphaGo.
 
 <br />
-# 1 Minimax and Alpha Beta Pruning
+# 1 Minimax & Alpha Beta Pruning
   **Motivation**: These original core ideas did so much for the study of games.
   They spurred the field forward starting in the 50s and still to this day have
   mindshare in how to build a computer engine that beats games, including in
@@ -51,13 +52,29 @@ information games and develop understanding sufficient to grok AlphaGo.
     
   **Questions**:
   1. (Knuth) Show that AlphaBetaMin(p, alpha, beta) = -AlphaBetaMax(p, -beta, -alpha). (p. 300)
+     <details><summary>Solution</summary>
+     <p>
+     </p>
+     </details>
   2. (Knuth) For Theorem 1.(1), why are the successor positions of type 2? (p. 305)
+     <details><summary>Solution</summary>
+     <p>
+     </p>
+     </details>
   3. (Knuth) For Theorem 1.(2), why is it that p’s successor position is of type 3 if p is not terminal?
+     <details><summary>Solution</summary>
+     <p>
+     </p>
+     </details>
   4. (Knuth) For Theorem 1.(3), why is it that p’s successor positions are of type 2 if p is not terminal?
+     <details><summary>Solution</summary>
+     <p>
+     </p>
+     </details>
   5. (Knuth) Show that Theorem 2.(1, 2, 3) are correct.
 
 <br />
-# 2 Multi-Armed Bandits and Upper Confidence Bounds
+# 2 Multi-Armed Bandits & Upper Confidence Bounds
   **Motivation**: Bandits and UCB are key components of how MCTS was originally formalized. The node selection during the search is achieved through the UCB approach, which is analogues to how its performed in a multi-armed bandit scenario.
 
   **Topics**:
@@ -80,7 +97,7 @@ information games and develop understanding sufficient to grok AlphaGo.
   5. Can you reproduce the UCB1 algorithm?
 
 <br />
-# 3 Policy and Value Functions
+# 3 Policy & Value Functions
   **Note**: Sutton from here out refers to the [final version](http://incompleteideas.net/book/bookdraft2017nov5.pdf).
   
   **Motivation**: The Policy and Value Functions are at the core of Reinforcement Learning. The Policy function is the set of probabilities you give to each possible move. The Value function is your estimate of how good is the current state. In AlphaGoZero, a single network calculates both a value and a policy, then later updates its weights based off of the difference between those figures and the empirical results.
