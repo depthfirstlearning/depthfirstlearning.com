@@ -152,15 +152,15 @@ information games and develop understanding sufficient to grok AlphaGo.
      4. 3.20: Give the Bellman equation for q∗ for the recycling robot. 
      5. 4.3: What are the equations analogous to (4.3), (4.4), and (4.5) for the action-value function qπ and its successive approximation by a sequence of functions q0, q1, q2, . . . ? 
      6. 4.6 (important!): How would policy iteration be defined for action values? Give a complete algorithm for computing q∗, analogous to that on page 65 for computing v∗. Please pay special attention to this exercise, because the ideas involved will be used throughout the rest of the book.
-     <details><summary>Solution</summary>
-     <p>
-     </p>
-     </details>
+        <details><summary>Solution</summary>
+        <p>
+        </p>
+        </details>
      7. 13.2 (important!): Prove (13.7) using the definitions and elementary calculus.
-     <details><summary>Solution</summary>
-     <p>
-     </p>
-     </details>
+        <details><summary>Solution</summary>
+        <p>
+        </p>
+        </details>
 
 
 <br />
