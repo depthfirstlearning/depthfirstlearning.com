@@ -10,7 +10,9 @@ hidden: true
 feedback: true
 ---
 
-(Thank you to Marc Lanctot, Tim Lillicrap, Joan Bruna, Martin Arjovsky, Xintian Han, Liang Zhuo, Chirag Maheshwari, Ryan Saxe, Ojas Deshpande, Sanyam Kapoor, Anant Gupta, Yixiang Luo, and Chen Li for contributing to this guide.)
+(Thank you to Marc Lanctot, Tim Lillicrap, Joan Bruna, Martin Arjovsky, Xintian Han,
+Liang Zhuo, Chirag Maheshwari, Ryan Saxe, Ojas Deshpande, Sanyam Kapoor, Anant Gupta,
+Yixiang Luo, and Chen Li for contributing to this guide.)
 
 <div class="deps-graph">
   <iframe class="deps" src="/assets/ag0-deps.svg" width="200"></iframe>
@@ -72,6 +74,10 @@ information games and develop understanding sufficient to grok AlphaGo.
      </p>
      </details>
   5. (Knuth) Show that Theorem 2.(1, 2, 3) are correct.
+     <details><summary>Solution</summary>
+     <p>
+     </p>
+     </details>
 
 <br />
 # 2 Multi-Armed Bandits & Upper Confidence Bounds
@@ -93,8 +99,16 @@ information games and develop understanding sufficient to grok AlphaGo.
   1. Sutton Exercises 2.1, 2.2, 2.4, 2.5
   2. Sutton: What are the pros and cons of the optimistic initial values method?
   3. Kun: In the proof for the expected cumulative regret of UCB1, why is delta(T) a trivial regret bound if the deltas are all the same?
+     <details><summary>Solution</summary>
+     <p>
+     </p>
+     </details>
   4. Kun: Do you understand the argument for why the regret bound is O(sqrt(KTlog(T)))?
-  5. Can you reproduce the UCB1 algorithm?
+     <details><summary>Solution</summary>
+     <p>
+     </p>
+     </details>
+  5. Reproduce the UCB1 algorithm in code with minimal supervision.
 
 <br />
 # 3 Policy & Value Functions
@@ -127,14 +141,27 @@ information games and develop understanding sufficient to grok AlphaGo.
   **Questions**:
   1. Why does policy gradient have such high variance?
   2. What is the difference between off-policy and on-policy?
+     <details><summary>Solution</summary>
+     <p>
+     </p>
+     </details>
   3. Sutton:
      1. 3.13: What is the Bellman equation for action values, that is, for qπ? ...
      2. 3.14: In the gridworld example … are the signs of these rewards important, or only the intervals between them? Prove ...
      3. 3.15: Now consider adding a constant c to all the rewards in an episodic task … would this have any effect, or would it leave the task unchanged as in the continuing task above? Why or why not? Give an example. 
      4. 3.20: Give the Bellman equation for q∗ for the recycling robot. 
      5. 4.3: What are the equations analogous to (4.3), (4.4), and (4.5) for the action-value function qπ and its successive approximation by a sequence of functions q0, q1, q2, . . . ? 
-     6. 4.6 (important!): How would policy iteration be defined for action values? Give a complete algorithm for computing q∗, analogous to that on page 65 for computing v∗. Please pay special attention to this exercise, because the ideas involved will be used throughout the rest of the book. 
+     6. 4.6 (important!): How would policy iteration be defined for action values? Give a complete algorithm for computing q∗, analogous to that on page 65 for computing v∗. Please pay special attention to this exercise, because the ideas involved will be used throughout the rest of the book.
+     <details><summary>Solution</summary>
+     <p>
+     </p>
+     </details>
      7. 13.2 (important!): Prove (13.7) using the definitions and elementary calculus.
+     <details><summary>Solution</summary>
+     <p>
+     </p>
+     </details>
+
 
 <br />
 # 4 MCTS & UCT
@@ -159,9 +186,23 @@ information games and develop understanding sufficient to grok AlphaGo.
     
   **Questions**:
   1. Can you detail each of the four parts of the MCTS algorithm?
+     <details><summary>Solution</summary>
+     <p>
+
+     1. Selection: Select child node from the current node based on the tree policy.
+     2. Expansion: Expand the child node based on the exploration / exploitation trade-off.
+     3. Simulation: Simulate from the child node until termination or upon reaching a suitably small future reward (like from reward decay).
+     4. Backup: Backup the reward along the path taken according to the tree policy.
+
+     </p>
+     </details>
   2. What characteristics make MCTS a good choice?
   3. What are examples of domain knowledge default policies in Go?
   4. Why is UCT optimal? Can you prove that the failure probability at the root converges to zero at a polynomial rate in the number of games simulated?
+     <details><summary>Solution</summary>
+     <p>
+     </p>
+     </details>
   
 <br />
 # 5 MCTS & RL
