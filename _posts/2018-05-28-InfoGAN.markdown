@@ -12,7 +12,7 @@ blurb: "InfoGAN is an extension of GANs that learns to represent unlabeled
 feedback: true
 ---
 
-(Thank you to Kumar Krishna Agrawal, Yasaman Bahri, Peter Chen, Nic Ford, Roy Frostig, Xinyang Geng, Rein Houthooft, Ben Poole, Colin Raffel and Supasorn Suwajanakorn for contributing to this guide.)
+Thank you to Kumar Krishna Agrawal, Yasaman Bahri, Peter Chen, Nic Ford, Roy Frostig, Xinyang Geng, Rein Houthooft, Ben Poole, Colin Raffel and Supasorn Suwajanakorn for contributing to this guide.
 
 <div class="deps-graph">
   <iframe class="deps" src="/assets/infogan-deps.svg" width="200"></iframe>

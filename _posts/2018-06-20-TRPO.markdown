@@ -12,7 +12,7 @@ hidden: false
 feedback: true
 ---
 
-(Thank you to Avital Oliver, Nic Ford, Matthew Johnson, John Schulman, and George Tucker for contributing to this guide.)
+Thank you to Avital Oliver, Nic Ford, Matthew Johnson, John Schulman, and George Tucker for contributing to this guide.
 
 <div class="deps-graph">
   <iframe class="deps" src="/assets/trpo-deps.svg" width="200"></iframe>
