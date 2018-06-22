@@ -6,7 +6,7 @@ categories: games
 author: cinjon
 blurb: "In this curriculum, you will learn about two person zero-sum perfect 
         information games and develop understanding to completely grok AlphaGo Zero."
-hidden: false
+hidden: true
 feedback: true
 ---
 
