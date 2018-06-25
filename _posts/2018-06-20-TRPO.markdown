@@ -78,14 +78,45 @@ algorithms.
     Why or why not?
      <details><summary>Solution</summary>
      <p>
-     The term \( \log \pi (a | s) \) should look like a very familiar tool in statistical learning: the likelihood function! When we think of what happens when we do MLE, we are trying to maximize the likelihood of \( \log p(D | \theta) \) or as in supervised learning, we try to maximize $$\log p(y_i^* | x_i, \theta).$$ Normally, because we have the true label \( y_i^* \), this paradigm aligns perfectly with what we are ultimately trying to do with MLE. However, this naive strategy of maximizing the likelihood \( \pi(a | s) \) won't work in reinforcement learning, because we do not have a label for the correct action to be taken at a given time step (if we did, we should just do supervised learning!). If we tried doing this, we would find that we would simply maximize the probability of every action; make sure you convince yourself this to be true. Instead, the only (imperfect) evidence we have of good or bad actions is the reward we receive at that time step. Thus, a reasonable thing to do seems like scaling the log-likelihood by how good or bad the action by the reward. Thus, we would then maximize $$r(a, s) \log \pi (a | s).$$ Look familiar? This is just the REINFORCE term in our expectation: $$ \mathbb{E}_{s,a} [ \nabla r(a, s) \log \pi (a | s) ] $$
+     The term \( \log \pi (a | s) \) should look like a very familiar tool in 
+     statistical learning: the likelihood function! When we think of what happens 
+     when we do MLE, we are trying to maximize the likelihood of \( \log p(D | \theta) \) 
+     or as in supervised learning, we try to maximize $$\log p(y_i^* | x_i, \theta).$$ 
+     Normally, because we have the true label \( y_i^* \), this paradigm aligns 
+     perfectly with what we are ultimately trying to do with MLE. However, this 
+     naive strategy of maximizing the likelihood \( \pi(a | s) \) won't work in 
+     reinforcement learning, because we do not have a label for the correct action 
+     to be taken at a given time step (if we did, we should just do supervised 
+     learning!). If we tried doing this, we would find that we would simply 
+     maximize the probability of every action; make sure you convince yourself 
+     this to be true. Instead, the only (imperfect) evidence we have of good or 
+     bad actions is the reward we receive at that time step. Thus, a reasonable 
+     thing to do seems like scaling the log-likelihood by how good or bad the 
+     action by the reward. Thus, we would then maximize $$r(a, s) \log \pi (a | s).$$ 
+     Look familiar? This is just the REINFORCE term in our 
+     expectation: $$ \mathbb{E}_{s,a} [ \nabla r(a, s) \log \pi (a | s) ] $$
      </p>
      </details>
   3. In its original formulation, REINFORCE is an on-policy algorithm. Why?
     Can we make REINFORCE work off-policy as well?
      <details><summary>Solution</summary>
      <p>
-    We can tell that REINFORCE is on-policy by looking at the expectation a bit closer: $$ \mathbb{E}_{s,a} [ \nabla \log \pi (a | s) r(a, s). ]$$ When we see any expectation in an equation, we should always ask what exactly is the expectation <b>over</b>? In this case, if we expand the expectation, we have: $$\mathbb{E}_{s \sim p_{\theta}(s), a \sim \pi_{\theta}(a|s)} [ \nabla_{\theta} \log \pi_{\theta} (a | s) r(a, s), ]$$ and we see that while the states are being sampled from the empirical state visitation distribution induced by the current policy, and the actions \( a \) are coming directly from the current policy. Because we learn from the current policy, and not some arbitrary policy, REINFORCE is an on-policy. To change REINFORCE to use data, we simply change the sampling distribution to some other policy \( \pi_{\beta} \) and use importance sampling to correct for this disparity. For more details, see <a href="https://scholarworks.umass.edu/cgi/viewcontent.cgi?referer=https://www.google.com/&httpsredir=1&article=1079&context=cs_faculty_pubs">a classic paper</a> on this subject and <a href="https://arxiv.org/abs/1606.02647">a recent paper</a> with new insights on off-policy learning with policy gradient methods.
+    We can tell that REINFORCE is on-policy by looking at the expectation a bit 
+    closer: $$ \mathbb{E}_{s,a} [ \nabla \log \pi (a | s) r(a, s). ]$$ When we 
+    see any expectation in an equation, we should always ask what exactly is the 
+    expectation <b>over</b>? In this case, if we expand the expectation, we 
+    have: $$\mathbb{E}_{s \sim p_{\theta}(s), a \sim \pi_{\theta}(a|s)} 
+    [ \nabla_{\theta} \log \pi_{\theta} (a | s) r(a, s), ]$$ and we see that
+    while the states are being sampled from the empirical state visitation 
+    distribution induced by the current policy, and the actions \( a \) are 
+    coming directly from the current policy. Because we learn from the current 
+    policy, and not some arbitrary policy, REINFORCE is an on-policy. To change 
+    REINFORCE to use data, we simply change the sampling distribution to some 
+    other policy \( \pi_{\beta} \) and use importance sampling to correct for 
+    this disparity. For more details, see 
+    <a href="https://scholarworks.umass.edu/cgi/viewcontent.cgi?referer=https://www.google.com/&httpsredir=1&article=1079&context=cs_faculty_pubs">a classic paper</a> 
+    on this subject and <a href="https://arxiv.org/abs/1606.02647">a recent paper</a> 
+    with new insights on off-policy learning with policy gradient methods.
      </p>
      </details>
   4. Do policy gradient methods work for discrete and continuous action spaces?
