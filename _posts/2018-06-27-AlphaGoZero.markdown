@@ -29,11 +29,14 @@ and Liang Zhuo.
 AlphaGo Zero was a big splash when it debuted and for good reason. The grand effort 
 was led by David Silver at DeepMind and was an extension of work that he started
 during his PhD. The main idea is to solve the game of Go and the approach taken
-is to use Monte Carlo Tree Search along with a deep neural network as the value
-approximation to cut off the search space. 
+is to use an algorithm called Monte Carlo Tree Search (MCTS) as an expert guide to teach
+a deep neural network how to approximate the value of each state. The convergence
+properties of MCTS provides the neural network with a founded way to reduce the 
+search space.
 
 In this curriculum, you will focus on the study of two person zero-sum perfect 
-information games and develop understanding sufficient to grok AlphaGo.
+information games and develop understanding so that you can completely grok 
+AlphaGo Zero.
 
 <br />
 # Common Resources:
@@ -44,11 +47,11 @@ information games and develop understanding sufficient to grok AlphaGo.
 
 <br />
 # 1 Minimax & Alpha Beta Pruning
-  **Motivation**: Minimax and Alpha-Beta Pruning are original ideas that spurred
-  the study of games starting in the 50s. To this day, they have mindshare in 
-  how to build a computer engine that beats games, including in popular chess 
-  engines like Stockfish. In this class, we will go over these foundations, 
-  learn from Prof. Knuth's work analyzing their properties, and prove that these
+  **Motivation**: Minimax and Alpha-Beta Pruning are original ideas that blossomed
+  from the study of games starting in the 50s. To this day, they have mindshare 
+  in how to build a strong game-playing computer engine, including in popular chess 
+  programs like Stockfish. In this class, we will go over these foundations, learn
+  from Prof. Knuth's work analyzing their properties, and prove that these
   algorithms are theoretically sound solutions to two-player games.
 
   **Topics**:
@@ -116,7 +119,7 @@ information games and develop understanding sufficient to grok AlphaGo.
   2. [UW Lecture Notes](https://courses.cs.washington.edu/courses/cse599s/14sp/scribes/lecture15/lecture15_draft.pdf)
     
   **Questions**:
-  1. SB: Exercises 2.3, 2.4, 2.6
+  1. SB: Exercises 2.3, 2.4, 2.6.
   2. SB: What are the pros and cons of the optimistic initial values method? (Section 2.6)
   3. Kun: In the proof for the expected cumulative regret of UCB1, why is delta(T) a trivial regret bound if the deltas are all the same?
      <details><summary>Solution</summary>
@@ -124,8 +127,11 @@ information games and develop understanding sufficient to grok AlphaGo.
      </p>
      </details>
   4. Kun: Do you understand the argument for why the regret bound is O(sqrt(KTlog(T)))?
-     <details><summary>Solution</summary>
+     <details><summary>Hint</summary>
      <p>
+     What happens if you break the arms into those with regret \(< \sqrt{K\log{T}/T}\) 
+     and those with regret \(\geq \sqrt{K\log{T}/T}\)? Can we use this to bound
+     the total regret?
      </p>
      </details>
   5. Reproduce the UCB1 algorithm in code with minimal supervision.
@@ -153,7 +159,7 @@ information games and develop understanding sufficient to grok AlphaGo.
      2. SB: Sections 9.1, 9.2, 9.3*.
   2. Policy Function:
      1. SB: Sections 4.1, 4.2, 4.3.
-     2. SB: Sections 13.1, 13.2*, 13.3, 13.4
+     2. SB: Sections 13.1, 13.2*, 13.3, 13.4.
     
   **Optional Reading**:
   1. Sergey Levine: [Berkeley Fall'17: Policy Gradients](https://www.youtube.com/watch?v=tWNpiNzWuO8&feature=youtu.be) →  This is really good.
@@ -167,15 +173,23 @@ information games and develop understanding sufficient to grok AlphaGo.
   2. What is the difference between off-policy and on-policy?
      <details><summary>Solution</summary>
      <p>
+     On-policy algorithms learn from the current policy's action decisions. 
+     Off-policy algorithms learn from another arbitrary policy's actions. An 
+     example of an on-policy algorithm is SARSA or REINFORCE. An example of an 
+     off-policy algorithm is Q-Learning.
      </p>
      </details>
-  3. SB: Exercises 3.13, 3.14, 3.15, 3.20, 4.3
-  4. SB: Exercise 4.6 - How would policy iteration be defined for action values? Give a complete algorithm for computing q∗, analogous to that on page 65 for computing v∗.
+  3. SB: Exercises 3.13, 3.14, 3.15, 3.20, 4.3.
+  4. SB: Exercise 4.6 - How would policy iteration be defined for action values? 
+  Give a complete algorithm for computing $$q^{*}$$, analogous to that on page 65 
+  for computing $$v^{*}$$.
        <details><summary>Solution</summary>
        <p>
        </p>
        </details>
-  5. SB: Exercise 13.2 - Prove that (TODO: Insert 13.7 equation) using the definitions and elementary calculus.
+  5. SB: Exercise 13.2 - Prove that the eligibility vector 
+  $$\nabla_{\theta} \ln \pi (a | s, \theta) = x(s, a) - \sum_{b} \pi (b | s, \theta)x(s, b)$$ 
+  using the definitions and elementary calculus.
        <details><summary>Solution</summary>
        <p>
        </p>
@@ -217,9 +231,10 @@ information games and develop understanding sufficient to grok AlphaGo.
      <li>Backup: Backup the reward along the path taken according to the tree policy.</li>
      </ol>
      </details>
-  2. What characteristics make MCTS a good choice?
+  2. What characteristics make MCTS a good choice to implement for a game?
   3. What are examples of domain knowledge default policies in Go?
-  4. Why is UCT optimal? Can you prove that the failure probability at the root converges to zero at a polynomial rate in the number of games simulated?
+  4. Why is UCT optimal? Can you prove that the failure probability at the root 
+  converges to zero at a polynomial rate in the number of games simulated?
      <details><summary>Solution</summary>
      <p>
      </p>
@@ -252,6 +267,27 @@ information games and develop understanding sufficient to grok AlphaGo.
   2. UCT can be described in RL terms as the following "The original UCT searches 
   identically as an offline on-policy every-visit MC control algorithm that uses 
   UCB1 as the policy." What do each of these terms mean?
+     <details><summary>Solution</summary>
+     <ol>
+     <li>
+     UCT is trained on-policy, which means it improves the policy used to make the
+     action decisions, i.e. UCB1. 
+     </li>
+     <li>
+     The offline means that we can't learn until after the episode is completed. 
+     An alternative online algorithm would learn while the episode was running. 
+     </li>
+     <li>
+     Every-visit versus first-visit decides if we are going to update a state for 
+     every time it's accessed in an episode or just the first time. The original
+     UCT algorithm did every-visit. Subsequent versions relaxed this.
+     </li>
+     <li>
+     MC control means that we are using Monte Carlo as the policy, i.e. we use
+     the average value of the state as the true value. 
+     </li>
+     </ol>
+     </details>
   3. What is a Representation Policy? Give an example not described in the text.
   4. What is a Control Policy? Give an example not described in the text.
 
@@ -278,5 +314,7 @@ information games and develop understanding sufficient to grok AlphaGo.
   4. [Mastering Chess and Shogi by Self-Play with a General Reinforcement Learning Algorithm](https://arxiv.org/abs/1712.01815)
   
   **Questions**:
-  1. What were the differences between the two papers "Mastering the Game of Go Without Human Knowledge" and "Thinking Fast and Slow with Deep Learning and Tree Search"?
-  2. What was common to both of "Mastering the Game of Go Without Human Knowledge" and "Thinking Fast and Slow with Deep Learning and Tree Search"?  
+  1. What were the differences between the two papers "Mastering the Game of Go 
+  Without Human Knowledge" and "Thinking Fast and Slow with Deep Learning and Tree Search"?
+  2. What was common to both of "Mastering the Game of Go Without Human Knowledge" 
+  and "Thinking Fast and Slow with Deep Learning and Tree Search"?  
