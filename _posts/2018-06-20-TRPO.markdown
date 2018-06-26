@@ -31,8 +31,6 @@ algorithm which, under certain assumptions, provides guarantees for monotonic
 improvement. It is now commonly used as a strong baseline when developing new
 algorithms.
 
-  <a href="https://colab.research.google.com/drive/1KFQ-NvcYHL0Pi9TUM96iTEGZzt9GLffO" class="colab-root">Colab Notebook</a>
-
 <br />
 
 # 1 Policy Gradient
@@ -41,6 +39,8 @@ algorithms.
   gradient descent. In this section, we formalize the notion of Markov Decision Processes (MDP),
   action and state spaces, and on-policy vs off-policy approaches. This leads to the
   REINFORCE algorithm, the simplest instantiation of the policy gradient method.
+
+  <a href="https://colab.research.google.com/drive/1KFQ-NvcYHL0Pi9TUM96iTEGZzt9GLffO" class="colab-root">Reproduce in a <span>Notebook</span></a>
 
   **Topics**:
   1. Markov Decision Processes.
