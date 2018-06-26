@@ -16,8 +16,8 @@ Additionally, this would not have been possible without the generous support of
 Prof. Joan Bruna and his class at NYU, [The Mathematics of Deep Learning](https://github.com/joanbruna/MathsDL-spring18).
 Special thanks to him, as well as Martin Arjovsky, my colleague in leading this
 recitation, as well as my fellow students Ojas Deshpande, Anant Gupta, Xintian Han, 
-Sanyam Kapoor, Chen Li, Yixiang Luo, Chirag Maheshwari, Roberta Raileanu, Ryan Saxe, 
-and Liang Zhuo.
+Sanyam Kapoor, Chen Li, Yixiang Luo, Chirag Maheshwari, Zsolt Pajor-Gyulai, 
+Roberta Raileanu, Ryan Saxe, and Liang Zhuo.
 
 <div class="deps-graph">
   <iframe class="deps" src="/assets/ag0-deps.svg" width="200"></iframe>
@@ -43,7 +43,7 @@ AlphaGo Zero.
 1. Knuth: [An Analysis of Alpha-Beta Pruning](https://pdfs.semanticscholar.org/dce2/6118156e5bc287bca2465a62e75af39c7e85.pdf)
 2. SB: [Sutton & Barto](http://incompleteideas.net/book/bookdraft2017nov5.pdf).
 3. Kun: [Jeremy Kun: Optimizing in the Face of Uncertainty](https://jeremykun.com/2013/10/28/optimism-in-the-face-of-uncertainty-the-ucb1-algorithm/).
-4. Vodopivec: [Vodopivec](http://www.jair.org/media/5507/live-5507-10333-jair.pdf).
+4. Vodopivec: [On Monte Carlo Tree Search and Reinforcement Learning](https://pdfs.semanticscholar.org/3d78/317f8aaccaeb7851507f5256fdbc5d7a6b91.pdf).
 
 <br />
 # 1 Minimax & Alpha Beta Pruning
@@ -70,27 +70,54 @@ AlphaGo Zero.
   4. [Chess Programming on AB Pruning](https://chessprogramming.wikispaces.com/Alpha-Beta).
     
   **Questions**:
-  1. Knuth: Show that AlphaBetaMin(p, alpha, beta) = -AlphaBetaMax(p, -beta, -alpha). (p. 300)
+  1. Knuth: Show that $$AlphaBetaMin = G2(p, alpha, beta) = -F2(p, -beta, -alpha) = -AlphaBetaMax$$. (p. 300)
      <details><summary>Solution</summary>
-     <p>
+     <p>If \(d = 0\), then \(F2(p, a, b) = f(p)\) and \(G2(p, -b, -a) = g(p) = -f(p)\) 
+     as desired, where the last step follows from equation 2 on p. 295.
+     </p>
+     <p>Otherwise, \(d > 0\) and we proceed by induction on the height \(h\). The
+     base case of \(h = 0\) is trivial because then the tree is a single root and
+     consequently is the \(d = 0\) case. Assume it is true for height \(< h\), 
+     then for \(p\) of height \(h\), we have that \(m = a\) at the start of 
+     \(F2(p, a, b)\) and \(m\prime = -a\) at the start of \(G2(p, -b, -a)\). So
+     \(m = -m\prime\).
+     </p>
+     <p>In the i-th iteration of the loop, let's label the resulting value of \(m\)
+     as \(m_{n}\). We have that \(t = G2(p_{i}, m , b) = -F2(p_i, -b, -m) = -t\)
+     by the inductive assumption. Then, 
+     \(t > m \iff -t < -m \iff t\prime < m\prime \iff m_{n} = t = -m_{n}\prime\),
+     which means that every time there is an update to the value of \(m\), it will
+     be preserved across both functions. Further, because 
+     \(m \geq b \iff -m \leq -b \iff m\prime \leq -b\), we have that \(G2\) and 
+     \(F2\) will have the same stopping criterion. Together, these imply that
+     \(G2(p, alpha, beta) = -F2(p, -beta, -alpha)\) after each iteration of the 
+     loop as desired.
      </p>
      </details>
   2. Knuth: For Theorem 1.(1), why are the successor positions of type 2? (p. 305)
      <details><summary>Solution</summary>
-     <p>
+     <p>By the definition of being type 1, \(p = a_{1} a_{2} \ldots a_{l}\), where
+     each \(a_{k} = 1\). Its successor positions \(p_{l+1} = p (l+1)\) all have length 
+     \(l + 1\) and their first term \(> 1\) is at position \(l+1\), the last entry. 
+     Consequently, \((l+1) - (l+1) = 0\) is even and they are type 2.
      </p>
      </details>
-  3. Knuth: For Theorem 1.(2), why is it that p’s successor position is of type 3 if p is not terminal?
+  3. Knuth: For Theorem 1.(2), why is it that p’s successor position is of type 3 
+     if p is not terminal?
      <details><summary>Solution</summary>
-     <p>
+     <p>If \(p\) is type 2 and size \(l\), then for \(j\) s.t. \(a_j\) is the first entry where
+     \(a_j > 1\), we have that \(l - j\) is even. When it's not terminal, then its
+     successor position \(p_1 = a_{1} \ldots a_{j} \dots a_{l} 1\) has a length of
+     size \(l + 1\), which implies that \(l + 1 - j\) is odd and so \(p_1\) is 
+     type 3.
      </p>
      </details>
-  4. Knuth: For Theorem 1.(3), why is it that p’s successor positions are of type 2 if p is not terminal?
-     <details><summary>Solution</summary>
-     <p>
-     </p>
+  4. Knuth: For Theorem 1.(3), why is it that p’s successor positions are of type 2 
+     if p is not terminal?
+     <details><summary>Hint</summary>
+     <p>This is similar to the above two.</p>
      </details>
-  5. Knuth: Show that Theorem 2.(1, 2, 3) are correct.
+  5. Knuth: Show that Theorem 2.(1, 2, 3) are correct. TODO
      <details><summary>Solution</summary>
      <p>
      </p>
@@ -112,7 +139,7 @@ AlphaGo Zero.
 
   **Required Reading**: 
   1. SB: Sections 2.1 - 2.7.
-  2. Kun
+  2. Kun.
     
   **Optional Reading**:
   1. [Original UCB1 Paper](https://homes.di.unimi.it/~cesabian/Pubblicazioni/ml-02.pdf)
@@ -121,9 +148,22 @@ AlphaGo Zero.
   **Questions**:
   1. SB: Exercises 2.3, 2.4, 2.6.
   2. SB: What are the pros and cons of the optimistic initial values method? (Section 2.6)
-  3. Kun: In the proof for the expected cumulative regret of UCB1, why is delta(T) a trivial regret bound if the deltas are all the same?
+  3. Kun: In the proof for the expected cumulative regret of UCB1, why is delta(T) 
+  a trivial regret bound if the deltas are all the same?
      <details><summary>Solution</summary>
-     <p>
+     <p>\(
+     \begin{align}
+     \mathbb{E}[R_{A}(T)] &= \mu^{*}T - \mathbb{E}[G_{A}(T)] \\
+     &= \mu^{*}T - \sum_{i} \mu_{i}\mathbb{E}[P_{i}(T)] \\
+     &= \sum_{i} (\mu^{*} - \mu_{i})\mathbb{E}[P_{i}(T)] \\
+     &= \sum_{i} \delta_{i} \mathbb{E}[P_{i}(T)] \\
+     &\leq \delta \sum_{i} \mathbb{E}[P_{i}(T)] \\
+     &= \delta * T
+     \end{align}
+     \)
+     </p>
+     <p>The third line follows from \(sum_{i} \mathbb{E}[P_{i}(T)] = T\) and the 
+     fifth line from the definition of \(\delta\).
      </p>
      </details>
   4. Kun: Do you understand the argument for why the regret bound is O(sqrt(KTlog(T)))?
@@ -231,15 +271,104 @@ AlphaGo Zero.
      <li>Backup: Backup the reward along the path taken according to the tree policy.</li>
      </ol>
      </details>
-  2. What characteristics make MCTS a good choice to implement for a game?
-  3. What are examples of domain knowledge default policies in Go?
-  4. Why is UCT optimal? Can you prove that the failure probability at the root 
-  converges to zero at a polynomial rate in the number of games simulated?
+  2. What happens to the information gained from the Tree Search after each run?
      <details><summary>Solution</summary>
-     <p>
+     <p>We can reuse the accumulated statistics in subsequent runs. We could also
+     ignore those statistics and build fresh each subsequent root. Both are used
+     in actual implementations.
      </p>
      </details>
-  
+  3. What characteristics of a domain would make MCTS a good algorithmic choice?
+     <details><summary>Solution</summary>
+     <p>
+     A few such characteristics are:
+     </p>
+     <ul>
+     <li>MCTS is aheuristic, meaning that it does not require any domain-specific
+     knowledge. Consequently, if it is difficult to produce game heuristics for
+     your target domain (e.g. Go), then it can perform much better than alternatives
+     like Minimax. And on the flip side, if you did have domain-specific knowledge,
+     MCTS can incorporate it and will improve dramatically.
+     </li>
+     <li>
+     If the target domain needs actions online, then MCTS is a good choice as all 
+     values are always up to date. Go does not have this property but digital games 
+     like in the <a href="http://ggp.stanford.edu/">General Game Playing</a> suite 
+     may.
+     </li>
+     If the target domain's game tree is of a nontrivial size, then MCTS may be
+     a much better choice than other algorithms as it tends to build unbalanced
+     trees that explore the more promising routes rather than consider all routes.
+     </li>
+     <li>
+     If there is noise or delayed rewards in the target domain, then MCTS is a 
+     good choice because it is robust to these effects which can gravely impact 
+     other algorithms such as modern Deep Reinforcement Learning.
+     </li>
+     </ul>
+     </details>
+  4. What are examples of domain knowledge default policies in Go?
+     <details><summary>Solution</summary>
+     <ul>
+     <li>Crazy Stone, an early program that won the 2006 9x9 Computer Go Olympiad,
+     used an 
+     <a href="https://www.researchgate.net/figure/Examples-of-move-urgency_fig2_220174551">urgency</a> 
+     heuristic value for each of the moves on the board.
+     </li>
+     <li>
+     MoGo, the algorithm that introduced UCT, bases its default policies on this
+     sequence:
+       <ol>
+       <li>Respond to ataris by playing a saving move at random.</li>
+       <li>If one of the eight intersections surrounding the last move matches a 
+       simple pattern for cutting or <i>hane</i>, randomly play one.</li>
+       <li>If there are capturing moves, play one at random.</li>
+       <li>Play a random move.</li>
+       </ol>
+     </li>
+     </li>The second version of Crazy Stone used an algorithm learned from actual
+     game play to learn a library of strong patterns. It incorporated this into 
+     its default policy.
+     </li>
+     </ul>
+     </details>
+  5. Why is UCT optimal? For a finite-horizon MDP with rewards scaled to lie in
+  $$[0, 1]$$, can you prove that the failure probability at the root converges
+  to zero at a polynomial rate in the number of games simulated?
+     <details><summary>Hint</summary>
+     <p>
+     Try using induction on \(D\), the horizon of the MDP. At \(D=1\), to what 
+     result does this correspond?
+     </p>
+     </details>
+     <details><summary>Hint 2</summary>
+     <p>
+     Assume that the result holds for a horizon up to depth  \(D - 1\) and 
+     consider a tree of depth \(D\). We can keep the cumulative rewards bounded 
+     in the interval by dividing by \(D\). Now can you show that the UCT payoff
+     sequences at the root satisfy the drift conditions, repeated below?
+     </p>
+     <ul>
+     <li>The payoffs are bounded - \(0 \leq X_{it} \leq 1\), where \(i\) is the 
+     arm number and \(t\) is the time step.</li>
+     <li>The expected values of the averages, \(\overline{X_{it}} = 
+     \frac{1}{n} \sum_{t=1}^{n} X_{it}\), converge.</li>
+     <li>Define \(\mu_{in} = \mathbb{E}[\overline{X_{in}}]\) and \(\mu_{i} = \lim_{n\to\inf} \mu_{in}\).
+     Then, for \(c_{t, s} = 2C_{p}\sqrt{\frac{\ln{t}}{s}}\), where \(C_p\) is a 
+     suitable constant, both 
+     \(\mathbb{P}(\overline{X_{is}} \geq \mu_{i} + c_{t, s}) \leq t^{-4}\) and
+     \(\mathbb{P}(\overline{X_{is}} \leq \mu_{i} - c_{t, s}) \leq t^{-4}\) hold.
+     </li>
+     </ul>
+     </details>
+     <details><summary>Solution</summary>
+     <p>
+     For a complete detail of the proof, see the original 
+     <a href="http://ggp.stanford.edu/readings/uct.pdf">UCT</a> paper.
+     </p>
+     </details>
+
+
 <br />
 # 5 MCTS & RL
   **Motivation**: Up to this point, we have learned a lot about how games can be
@@ -268,7 +397,7 @@ AlphaGo Zero.
   identically as an offline on-policy every-visit MC control algorithm that uses 
   UCB1 as the policy." What do each of these terms mean?
      <details><summary>Solution</summary>
-     <ol>
+     <ul>
      <li>
      UCT is trained on-policy, which means it improves the policy used to make the
      action decisions, i.e. UCB1. 
@@ -286,10 +415,21 @@ AlphaGo Zero.
      MC control means that we are using Monte Carlo as the policy, i.e. we use
      the average value of the state as the true value. 
      </li>
-     </ol>
+     </ul>
      </details>
   3. What is a Representation Policy? Give an example not described in the text.
+     <details><summary>Solution</summary>
+     <p>A Representation Policy defines the model of the state space (e.g. in
+     the form of a value function) and the boundary between memorized and 
+     non-memorized parts of the space. 
+     </p>
+     </details>
   4. What is a Control Policy? Give an example not described in the text.
+     <details><summary>Solution</summary>
+     <p>A Control Policy dictates what actions will be performed and (consequently)
+     which states will be visited. In MCTS, it includes the tree and default policies.
+     </p>
+     </details>
 
 <br />
 # 6 The Paper
@@ -304,7 +444,7 @@ AlphaGo Zero.
   1. MCTS learning and computational capacity.
 
   **Required Reading**:
-  1. [Mastering the Game of Go Without Human Knowledge](https://www.dropbox.com/s/yva172qos2u15hf/2017-silver.pdf?dl=0)
+  1. [Mastering the Game of Go Without Human Knowledge](https://deepmind.com/documents/119/agz_unformatted_nature.pdf)
   2. [Thinking Fast and Slow with Deep Learning and Tree Search](https://arxiv.org/pdf/1705.08439.pdf)
   
   **Optional Reading**:
@@ -316,5 +456,34 @@ AlphaGo Zero.
   **Questions**:
   1. What were the differences between the two papers "Mastering the Game of Go 
   Without Human Knowledge" and "Thinking Fast and Slow with Deep Learning and Tree Search"?
+     <details><summary>Solution</summary>
+     <p>Some differences between the former (AG0) and the latter (ExIt) are:</p>
+     <ul>
+     <li>AG0 uses MC value estimates from the expert for the value networks
+     where ExIt uses estimates from the apprentice. This requires more computation 
+     by AG0 but produces better estimates.</li>
+     <li>AG0 uses an MSE loss with L2 regularization for the value function; ExIt
+     uses a cross entropy loss and early stopping.</li>
+     <li>AG0 uses the value network to evaluate moves; ExIt uses RAVE and rollouts,
+     plus warm starts from the MCTS.</li>
+     <li>AG0 adds in Dirichlet noise to the prior probability at the root node.</li>
+     </ul>
+     </details>
   2. What was common to both of "Mastering the Game of Go Without Human Knowledge" 
   and "Thinking Fast and Slow with Deep Learning and Tree Search"?  
+  3. Will the system get stuck if the current neural network can’t beat the previous ones?
+     <details><summary>Solution</summary>
+     <p>No. The algorithm won’t accept a policy that is worse than the current best
+     and MCTS’s convergence properties imply that it will eventually tend towards 
+     the equilibrium solution in a zero-sum two player game
+     </p>
+     </details>
+  4. Why include both a policy and a value head in these algorithms? Why not just use policy?
+     <details><summary>Solution</summary>
+     <p>Value networks reduce the required search depth. This helps tremendously
+     because a rollout approach without the value network is innacurate and spends
+     too much time on low-value directions.
+     </p>
+     </details>
+  
+
