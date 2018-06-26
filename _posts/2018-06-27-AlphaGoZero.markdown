@@ -459,18 +459,28 @@ AlphaGo Zero.
      <details><summary>Solution</summary>
      <p>Some differences between the former (AG0) and the latter (ExIt) are:</p>
      <ul>
-     <li>AG0 uses MC value estimates from the expert for the value networks
+     <li>AG0 uses MC value estimates from the expert for the value network
      where ExIt uses estimates from the apprentice. This requires more computation 
      by AG0 but produces better estimates.</li>
-     <li>AG0 uses an MSE loss with L2 regularization for the value function; ExIt
-     uses a cross entropy loss and early stopping.</li>
+     <li>The losses were different. For the value network, AG0 uses an MSE loss 
+     with L2 regularization and ExIt uses a cross entropy loss with early stopping. 
+     For the policy part, AG0 used cross entropy while ExIt uses a weighted 
+     cross-entropy that takes into account how confident MCTS is in the action 
+     based on the state count.</li>
      <li>AG0 uses the value network to evaluate moves; ExIt uses RAVE and rollouts,
      plus warm starts from the MCTS.</li>
      <li>AG0 adds in Dirichlet noise to the prior probability at the root node.</li>
+     <li>AG0 elevates a new network as champion only when it's markedly better than 
+     the prior champion; ExIt replaces the old network without verification of if
+     it is better.</li>
      </ul>
      </details>
   2. What was common to both of "Mastering the Game of Go Without Human Knowledge" 
   and "Thinking Fast and Slow with Deep Learning and Tree Search"?  
+     <details><summary>Solution</summary>
+     <p>The most important commonality is that they both use MCTS as an expert
+     guide to help a neural network learn through self-play.</p>
+     </details>
   3. Will the system get stuck if the current neural network can’t beat the previous ones?
      <details><summary>Solution</summary>
      <p>No. The algorithm won’t accept a policy that is worse than the current best
