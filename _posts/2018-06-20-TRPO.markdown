@@ -12,7 +12,7 @@ hidden: false
 feedback: true
 ---
 
-Thank you to Avital Oliver, Nic Ford, Ethan Holly, Matthew Johnson, John Schulman, George Tucker, and Charles Weill for contributing to this guide.
+Thank you to Nic Ford, Ethan Holly, Matthew Johnson, Avital Oliver, John Schulman, George Tucker, and Charles Weill for contributing to this guide.
 
 <div class="deps-graph">
   <iframe class="deps" src="/assets/trpo-deps.svg" width="200"></iframe>
