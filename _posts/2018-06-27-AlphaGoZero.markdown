@@ -10,7 +10,7 @@ hidden: true
 feedback: true
 ---
 
-Thank you to Marc Lanctot, Tim Lillicrap, and Hugo Larochelle for contributions to this guide.
+Thank you to Marc Lanctot, Hugo Larochelle and Tim Lillicrap for contributions to this guide.
 
 Additionally, this would not have been possible without the generous support of
 Prof. Joan Bruna and his class at NYU, [The Mathematics of Deep Learning](https://github.com/joanbruna/MathsDL-spring18).
@@ -29,7 +29,7 @@ Roberta Raileanu, Ryan Saxe, and Liang Zhuo.
 AlphaGoZero was a big splash when it debuted and for good reason. The grand effort
 was led by David Silver at DeepMind and was an extension of work that he started
 during his PhD. The main idea is to solve the game of Go and the approach taken
-is to use an algorithm called Monte Carlo Tree Search (MCTS) as an expert guide to teach
+is to use an algorithm called Monte Carlo Tree Search (MCTS). This algorithm acts as an expert guide to teach
 a deep neural network how to approximate the value of each state. The convergence
 properties of MCTS provides the neural network with a founded way to reduce the
 search space.
@@ -41,7 +41,7 @@ AlphaGoZero.
 <br />
 # Common Resources:
 1. Knuth: [An Analysis of Alpha-Beta Pruning](https://pdfs.semanticscholar.org/dce2/6118156e5bc287bca2465a62e75af39c7e85.pdf)
-2. SB: [Sutton & Barto](http://incompleteideas.net/book/bookdraft2017nov5.pdf).
+2. SB: [Reinforcement Learning: An Introduction, Sutton & Barto](http://incompleteideas.net/book/bookdraft2017nov5.pdf).
 3. Kun: [Jeremy Kun: Optimizing in the Face of Uncertainty](https://jeremykun.com/2013/10/28/optimism-in-the-face-of-uncertainty-the-ucb1-algorithm/).
 4. Vodopivec: [On Monte Carlo Tree Search and Reinforcement Learning](https://pdfs.semanticscholar.org/3d78/317f8aaccaeb7851507f5256fdbc5d7a6b91.pdf).
 
@@ -148,7 +148,7 @@ AlphaGoZero.
   **Questions**:
   1. SB: Exercises 2.3, 2.4, 2.6.
   2. SB: What are the pros and cons of the optimistic initial values method? (Section 2.6)
-  3. Kun: In the proof for the expected cumulative regret of UCB1, why is delta(T)
+  3. Kun: In the proof for the expected cumulative regret of UCB1, why is $$\delta *T$$
   a trivial regret bound if the deltas are all the same?
      <details><summary>Solution</summary>
      <p>\(
@@ -166,7 +166,7 @@ AlphaGoZero.
      fifth line from the definition of \(\delta\).
      </p>
      </details>
-  4. Kun: Do you understand the argument for why the regret bound is O(sqrt(KTlog(T)))?
+  4. Kun: Do you understand the argument for why the regret bound is $$O(\sqrt{KT\log(T)})$$?
      <details><summary>Hint</summary>
      <p>
      What happens if you break the arms into those with regret \(< \sqrt{K\log{T}/T}\)
@@ -224,11 +224,14 @@ AlphaGoZero.
   Give a complete algorithm for computing $$q^{*}$$, analogous to that on page 65
   for computing $$v^{*}$$.
        <details><summary>Solution</summary>
+    <p> The solution follows the proof (in page 65) for \(v^{*}\), with following modifications:
        <ol>
         <li>Consider a randomly initialized Q(s, a) for all (s, a) pairs, and random policy \( \pi(s) \). </li>
-        <li><b> Policy Evaluation </b> : Update Q(s, a) \( \leftarrow \sum_{s'} P_{ss'}^{a} R_{ss'}^{a} + \gamma \sum_{s'} \sum_{a'} P_{ss'}^{a} Q^{\pi}(s', a') \pi(a' | s') \) </li>
-        <li><b> Policy Improvement </b> :   Update \( \pi(s) = {argmax}_{a} Q^{\pi}(s, a) \). If \(unstable\), go to step 2. </li>
-       </ol>
+        <li><b> Policy Evaluation </b> : Update Q(s, a) \( \leftarrow \sum_{s'} P_{ss'}^{a} R_{ss'}^{a} + \gamma \sum_{s'} \sum_{a'} P_{ss'}^{a} Q^{\pi}(s', a') \pi(a' | s') \) <br /> 
+                                         Here, \( P_{ss'}^{a} \leftarrow P(s' |s, a) , R_{ss'}^{a} \leftarrow R(s, a, s').\)</li>
+        <li><b> Policy Improvement </b> :   Update \( \pi(s) = {argmax}_{a} Q^{\pi}(s, a) \). If \(unstable\), go to step 2. Here, \( unstable \), implies \( \pi_{before\_update}(s) = \pi_{after\_update}(s) \)</li>
+        <li> \( q^{*} \leftarrow Q(s, a) \) </li>
+       </ol> </p>
        </details>
   5. SB: Exercise 13.2 - Prove that the eligibility vector 
   $$\nabla_{\theta} \ln \pi (a | s, \theta) = x(s, a) - \sum_{b} \pi (b | s, \theta)x(s, b)$$ 
@@ -279,10 +282,10 @@ AlphaGoZero.
   1. Can you detail each of the four parts of the MCTS algorithm?
      <details><summary>Solution</summary>
      <ol>
-     <li>Selection: Select child node from the current node based on the tree policy.</li>
-     <li>Expansion: Expand the child node based on the exploration / exploitation trade-off.</li>
-     <li>Simulation: Simulate from the child node until termination or upon reaching a suitably small future reward (like from reward decay).</li>
-     <li>Backup: Backup the reward along the path taken according to the tree policy.</li>
+     <li><b>Selection</b>: Select child node from the current node based on the tree policy.</li>
+     <li><b>Expansion</b>: Expand the child node based on the exploration / exploitation trade-off.</li>
+     <li><b>Simulation</b>: Simulate from the child node until termination or upon reaching a suitably small future reward (like from reward decay).</li>
+     <li><b>Backup</b>: Backup the reward along the path taken according to the tree policy.</li>
      </ol>
      </details>
   2. What happens to the information gained from the Tree Search after each run?
@@ -340,7 +343,7 @@ AlphaGoZero.
        <li>Play a random move.</li>
        </ol>
      </li>
-     </li>The second version of Crazy Stone used an algorithm learned from actual
+     <li>The second version of Crazy Stone used an algorithm learned from actual
      game play to learn a library of strong patterns. It incorporated this into
      its default policy.
      </li>
