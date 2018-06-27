@@ -15,7 +15,7 @@ Thank you to Marc Lanctot, Tim Lillicrap, and Hugo Larochelle for contributions 
 Additionally, this would not have been possible without the generous support of
 Prof. Joan Bruna and his class at NYU, [The Mathematics of Deep Learning](https://github.com/joanbruna/MathsDL-spring18).
 Special thanks to him, as well as Martin Arjovsky, my colleague in leading this
-recitation, as well as my fellow students Ojas Deshpande, Anant Gupta, Xintian Han,
+recitation, and my fellow students Ojas Deshpande, Anant Gupta, Xintian Han,
 Sanyam Kapoor, Chen Li, Yixiang Luo, Chirag Maheshwari, Zsolt Pajor-Gyulai,
 Roberta Raileanu, Ryan Saxe, and Liang Zhuo.
 
@@ -237,8 +237,8 @@ AlphaGoZero.
        <p align="center">
         By definition, we have \( \pi( a| s, \theta) = \frac{e^{ \theta^{T}
         \mathbf{x}( s, a) }}{ \sum_b e^{ \theta^{T}\mathbf{x}(s, b)) }} \), where
-        \( \mathbf{x}(s, a) \) is the state-action feature representation. Following
-        this, we have: <br />
+        \( \mathbf{x}(s, a) \) is the state-action feature representation. Consequently:
+        <br />
         \(
         \begin{align}
          \nabla_{\theta} \ln \pi (a | s, \theta) &= \nabla_\theta \Big( \theta^{T}\mathbf{x}(s, a) - \ln \sum_b e^{ \theta^{T}\mathbf{x}(s, b) } \Big) \\
