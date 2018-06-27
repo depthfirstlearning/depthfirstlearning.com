@@ -224,14 +224,28 @@ AlphaGo Zero.
   Give a complete algorithm for computing $$q^{*}$$, analogous to that on page 65 
   for computing $$v^{*}$$.
        <details><summary>Solution</summary>
-       <p>
-       </p>
+       <ol>
+        <li>Consider a randomly initialized Q(s, a) for all (s, a) pairs, and random policy \( \pi(s) \). </li>
+        <li><b> Policy Evaluation </b> : Update Q(s, a) \( \leftarrow \sum_{s'} P_{ss'}^{a} R_{ss'}^{a} + \gamma \sum_{s'} \sum_{a'} P_{ss'}^{a} Q^{\pi}(s', a') \pi(a' | s') \) </li>
+        <li><b> Policy Improvement </b> :   Update \( \pi(s) = {argmax}_{a} Q^{\pi}(s, a) \). If \(unstable\), go to step 2. </li>
+       </ol>
        </details>
   5. SB: Exercise 13.2 - Prove that the eligibility vector 
   $$\nabla_{\theta} \ln \pi (a | s, \theta) = x(s, a) - \sum_{b} \pi (b | s, \theta)x(s, b)$$ 
-  using the definitions and elementary calculus.
+  using the definitions and elementary calculus. Here, $$\pi (a | s, \theta)$$ = softmax( $$\theta^{T}x(s, a)$$ ).
        <details><summary>Solution</summary>
-       <p>
+       <p align="center">
+        By definition, we have \( \pi( a| s, \theta) = \frac{e^{ \theta^{T}
+        \mathbf{x}( s, a) }}{ \sum_b e^{ \theta^{T}\mathbf{x}(s, b)) }} \), where
+        \( \mathbf{x}(s, a) \) is the state-action feature representation. Following
+        this, we have: <br />
+        \(
+        \begin{align}
+         \nabla_{\theta} \ln \pi (a | s, \theta) &= \nabla_\theta \Big( \theta^{T}\mathbf{x}(s, a) - \ln \sum_b e^{ \theta^{T}\mathbf{x}(s, b) } \Big) \\
+          &= \mathbf{x}(s, a) - \sum_b \mathbf{x}(s, b) \frac{ e^{ \theta^{T}\mathbf{x}(s, b) } }{ \sum_b e^{ \theta^{T}\mathbf{x}(s, b) } } \\
+          &= \mathbf{x}(s, a) - \sum_{b} \pi (b | s, \theta)\mathbf{x}(s, b) \\
+        \end{align}
+        \)
        </p>
        </details>
 
