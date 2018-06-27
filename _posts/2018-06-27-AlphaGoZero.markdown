@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "AlphaGoZero"
-date:   2018-06-27 12:00:00 -0400
+date:   2018-06-26 12:00:00 -0400
 categories: games
 author: cinjon
 blurb: "In this curriculum, you will learn about two-person zero-sum perfect 
@@ -94,7 +94,7 @@ AlphaGoZero.
      loop as desired.
      </p>
      </details>
-  2. Knuth: For Theorem 1.(1), why are the successor positions of type 2? (p. 305)
+  2. Knuth: For Theorem 1.1, why are the successor positions of type 2? (p. 305)
      <details><summary>Solution</summary>
      <p>By the definition of being type 1, \(p = a_{1} a_{2} \ldots a_{l}\), where
      each \(a_{k} = 1\). Its successor positions \(p_{l+1} = p (l+1)\) all have length
@@ -102,7 +102,7 @@ AlphaGoZero.
      Consequently, \((l+1) - (l+1) = 0\) is even and they are type 2.
      </p>
      </details>
-  3. Knuth: For Theorem 1.(2), why is it that p’s successor position is of type 3
+  3. Knuth: For Theorem 1.2, why is it that p’s successor position is of type 3
      if p is not terminal?
      <details><summary>Solution</summary>
      <p>If \(p\) is type 2 and size \(l\), then for \(j\) s.t. \(a_j\) is the first entry where
@@ -112,12 +112,12 @@ AlphaGoZero.
      type 3.
      </p>
      </details>
-  4. Knuth: For Theorem 1.(3), why is it that p’s successor positions are of type 2
+  4. Knuth: For Theorem 1.3, why is it that p’s successor positions are of type 2
      if p is not terminal?
      <details><summary>Hint</summary>
      <p>This is similar to the above two.</p>
      </details>
-  5. Knuth: Show that Theorem 2.(1, 2, 3) are correct.
+  5. Knuth: Show that the three inductive steps of Theorem 2 are correct.
 
 <br />
 # 2 Multi-Armed Bandits & Upper Confidence Bounds
