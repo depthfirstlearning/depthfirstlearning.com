@@ -15,7 +15,7 @@ what to start searching to clarify parts of the paper.
 We at DFL share an interest in developing a deeper understanding. Together, we 
 chose a few modern papers that we believed were important in inspiring new ideas 
 and research. We spent some time understanding each paper and writing down the 
-core concepts on which they were is built. We then found the best material to 
+core concepts on which they were built. We then found the best material to 
 learn each concept, added exercises to practice our understanding, and met 
 weekly to discuss each of the previous week's readings so that we could 
 rigorously understand the content. 
@@ -28,7 +28,7 @@ of depth-first study plans is the outcome of that genesis.
 
 DFL was designed to be shared with and grown by the community. It is not limited
 to people at Google or at NYU. If you are interested in developing your own 
-curriculum for a paper that we do not already host, we will help you! Check out out
+curriculum for a paper that we do not already host, we will help you! Check out our
 <a href="https://github.com/depthfirstlearning/depthfirstlearning.com#contributing">github</a>
 for examples and open an <a href="https://github.com/depthfirstlearning/depthfirstlearning.com/issues">issue</a>
 detailing which paper you want to study. We want your help in growing this resource
