@@ -10,7 +10,7 @@ hidden: false
 feedback: true
 ---
 
-Thank you to Marc Lanctot, Hugo Larochelle and Tim Lillicrap for contributions to this guide.
+Thank you to Marc Lanctot, Hugo Larochelle, Katherine Lee, and Tim Lillicrap for contributions to this guide.
 
 Additionally, this would not have been possible without the generous support of
 Prof. Joan Bruna and his class at NYU, [The Mathematics of Deep Learning](https://github.com/joanbruna/MathsDL-spring18).
