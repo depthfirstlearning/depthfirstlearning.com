@@ -4,7 +4,7 @@ title:  "AlphaGo Zero"
 date:   2018-06-20 12:00:00 -0400
 categories: games
 author: cinjon
-blurb: "In this curriculum, you will learn about two person zero-sum perfect 
+blurb: "In this curriculum, you will learn about two-person zero-sum perfect
         information games and develop understanding to completely grok AlphaGo Zero."
 hidden: true
 feedback: true
@@ -12,11 +12,11 @@ feedback: true
 
 Thank you to Marc Lanctot, Tim Lillicrap, and Hugo Larochelle for contributions to this guide.
 
-Additionally, this would not have been possible without the generous support of 
+Additionally, this would not have been possible without the generous support of
 Prof. Joan Bruna and his class at NYU, [The Mathematics of Deep Learning](https://github.com/joanbruna/MathsDL-spring18).
 Special thanks to him, as well as Martin Arjovsky, my colleague in leading this
-recitation, as well as my fellow students Ojas Deshpande, Anant Gupta, Xintian Han, 
-Sanyam Kapoor, Chen Li, Yixiang Luo, Chirag Maheshwari, Zsolt Pajor-Gyulai, 
+recitation, as well as my fellow students Ojas Deshpande, Anant Gupta, Xintian Han,
+Sanyam Kapoor, Chen Li, Yixiang Luo, Chirag Maheshwari, Zsolt Pajor-Gyulai,
 Roberta Raileanu, Ryan Saxe, and Liang Zhuo.
 
 <div class="deps-graph">
@@ -26,16 +26,16 @@ Roberta Raileanu, Ryan Saxe, and Liang Zhuo.
 
 # Why
 
-AlphaGo Zero was a big splash when it debuted and for good reason. The grand effort 
+AlphaGo Zero was a big splash when it debuted and for good reason. The grand effort
 was led by David Silver at DeepMind and was an extension of work that he started
 during his PhD. The main idea is to solve the game of Go and the approach taken
 is to use an algorithm called Monte Carlo Tree Search (MCTS) as an expert guide to teach
 a deep neural network how to approximate the value of each state. The convergence
-properties of MCTS provides the neural network with a founded way to reduce the 
+properties of MCTS provides the neural network with a founded way to reduce the
 search space.
 
-In this curriculum, you will focus on the study of two person zero-sum perfect 
-information games and develop understanding so that you can completely grok 
+In this curriculum, you will focus on the study of two person zero-sum perfect
+information games and develop understanding so that you can completely grok
 AlphaGo Zero.
 
 <br />
@@ -47,9 +47,9 @@ AlphaGo Zero.
 
 <br />
 # 1 Minimax & Alpha Beta Pruning
-  **Motivation**: Minimax and Alpha-Beta Pruning are original ideas that blossomed
-  from the study of games starting in the 50s. To this day, they have mindshare 
-  in how to build a strong game-playing computer engine, including in popular chess 
+  **Motivation**: Minimax and alpha-beta pruning are original ideas that blossomed
+  from the study of games starting in the 1950s. To this day, they have mindshare
+  in how to build a strong game-playing computer engine, including in popular chess
   programs like Stockfish. In this class, we will go over these foundations, learn
   from Prof. Knuth's work analyzing their properties, and prove that these
   algorithms are theoretically sound solutions to two-player games.
@@ -59,60 +59,60 @@ AlphaGo Zero.
   1. Minimax.
   2. Alpha-Beta Pruning.
 
-  **Required Reading**: 
+  **Required Reading**:
   1. [Cornell Recitation on Minimax & AB Pruning](https://www.cs.cornell.edu/courses/cs312/2002sp/lectures/rec21.htm).
   2. Knuth: Section 6 (Theorems 1&2, Corollaries 1&3).
-    
+
   **Optional Reading**:
   1. [CMU's Mathematical Foundations of AI Lecture 1](https://www.cs.cmu.edu/~arielpro/mfai_papers/lecture1.pdf).
   2. Knuth: Sections 1-3.
   3. [Chess Programming on Minimax](https://chessprogramming.wikispaces.com/Minimax).
   4. [Chess Programming on AB Pruning](https://chessprogramming.wikispaces.com/Alpha-Beta).
-    
+
   **Questions**:
   1. Knuth: Show that $$AlphaBetaMin = G2(p, alpha, beta) = -F2(p, -beta, -alpha) = -AlphaBetaMax$$. (p. 300)
      <details><summary>Solution</summary>
-     <p>If \(d = 0\), then \(F2(p, a, b) = f(p)\) and \(G2(p, -b, -a) = g(p) = -f(p)\) 
+     <p>If \(d = 0\), then \(F2(p, a, b) = f(p)\) and \(G2(p, -b, -a) = g(p) = -f(p)\)
      as desired, where the last step follows from equation 2 on p. 295.
      </p>
      <p>Otherwise, \(d > 0\) and we proceed by induction on the height \(h\). The
      base case of \(h = 0\) is trivial because then the tree is a single root and
-     consequently is the \(d = 0\) case. Assume it is true for height \(< h\), 
-     then for \(p\) of height \(h\), we have that \(m = a\) at the start of 
+     consequently is the \(d = 0\) case. Assume it is true for height \(< h\),
+     then for \(p\) of height \(h\), we have that \(m = a\) at the start of
      \(F2(p, a, b)\) and \(m\prime = -a\) at the start of \(G2(p, -b, -a)\). So
      \(m = -m\prime\).
      </p>
      <p>In the i-th iteration of the loop, let's label the resulting value of \(m\)
      as \(m_{n}\). We have that \(t = G2(p_{i}, m , b) = -F2(p_i, -b, -m) = -t\)
-     by the inductive assumption. Then, 
+     by the inductive assumption. Then,
      \(t > m \iff -t < -m \iff t\prime < m\prime \iff m_{n} = t = -m_{n}\prime\),
      which means that every time there is an update to the value of \(m\), it will
-     be preserved across both functions. Further, because 
-     \(m \geq b \iff -m \leq -b \iff m\prime \leq -b\), we have that \(G2\) and 
+     be preserved across both functions. Further, because
+     \(m \geq b \iff -m \leq -b \iff m\prime \leq -b\), we have that \(G2\) and
      \(F2\) will have the same stopping criterion. Together, these imply that
-     \(G2(p, alpha, beta) = -F2(p, -beta, -alpha)\) after each iteration of the 
+     \(G2(p, alpha, beta) = -F2(p, -beta, -alpha)\) after each iteration of the
      loop as desired.
      </p>
      </details>
   2. Knuth: For Theorem 1.(1), why are the successor positions of type 2? (p. 305)
      <details><summary>Solution</summary>
      <p>By the definition of being type 1, \(p = a_{1} a_{2} \ldots a_{l}\), where
-     each \(a_{k} = 1\). Its successor positions \(p_{l+1} = p (l+1)\) all have length 
-     \(l + 1\) and their first term \(> 1\) is at position \(l+1\), the last entry. 
+     each \(a_{k} = 1\). Its successor positions \(p_{l+1} = p (l+1)\) all have length
+     \(l + 1\) and their first term \(> 1\) is at position \(l+1\), the last entry.
      Consequently, \((l+1) - (l+1) = 0\) is even and they are type 2.
      </p>
      </details>
-  3. Knuth: For Theorem 1.(2), why is it that p’s successor position is of type 3 
+  3. Knuth: For Theorem 1.(2), why is it that p’s successor position is of type 3
      if p is not terminal?
      <details><summary>Solution</summary>
      <p>If \(p\) is type 2 and size \(l\), then for \(j\) s.t. \(a_j\) is the first entry where
      \(a_j > 1\), we have that \(l - j\) is even. When it's not terminal, then its
      successor position \(p_1 = a_{1} \ldots a_{j} \dots a_{l} 1\) has a length of
-     size \(l + 1\), which implies that \(l + 1 - j\) is odd and so \(p_1\) is 
+     size \(l + 1\), which implies that \(l + 1 - j\) is odd and so \(p_1\) is
      type 3.
      </p>
      </details>
-  4. Knuth: For Theorem 1.(3), why is it that p’s successor positions are of type 2 
+  4. Knuth: For Theorem 1.(3), why is it that p’s successor positions are of type 2
      if p is not terminal?
      <details><summary>Hint</summary>
      <p>This is similar to the above two.</p>
@@ -125,30 +125,30 @@ AlphaGo Zero.
 
 <br />
 # 2 Multi-Armed Bandits & Upper Confidence Bounds
-  **Motivation**: The Multi-Armed Bandits problem is a framework for understanding 
-  the Exploitation vs Exploration tradeoff. Upper Confidence Bounds, or UCB, is 
+  **Motivation**: The Multi-Armed Bandits problem is a framework for understanding
+  the Exploitation vs Exploration tradeoff. Upper Confidence Bounds, or UCB, is
   an algorithmically tight approach to addressing that tradeoff under certain
-  constraints. Together, they are important components of how Monte Carlo Tree 
-  Search (MCTS), a key aspect of Alpha Go Zero, was originally formalized. For 
-  example, in MCTS there is a notion of node selection where UCB is used extensively. 
+  constraints. Together, they are important components of how Monte Carlo Tree
+  Search (MCTS), a key aspect of Alpha Go Zero, was originally formalized. For
+  example, in MCTS there is a notion of node selection where UCB is used extensively.
   In this section, we will cover Bandits and UCB.
-  
+
   **Topics**:
   1. Basics of Reinforcement Learning.
   2. Multi-Armed Bandit algorithms and their bounds.
 
-  **Required Reading**: 
+  **Required Reading**:
   1. SB: Sections 2.1 - 2.7.
   2. Kun.
-    
+
   **Optional Reading**:
   1. [Original UCB1 Paper](https://homes.di.unimi.it/~cesabian/Pubblicazioni/ml-02.pdf)
   2. [UW Lecture Notes](https://courses.cs.washington.edu/courses/cse599s/14sp/scribes/lecture15/lecture15_draft.pdf)
-    
+
   **Questions**:
   1. SB: Exercises 2.3, 2.4, 2.6.
   2. SB: What are the pros and cons of the optimistic initial values method? (Section 2.6)
-  3. Kun: In the proof for the expected cumulative regret of UCB1, why is delta(T) 
+  3. Kun: In the proof for the expected cumulative regret of UCB1, why is delta(T)
   a trivial regret bound if the deltas are all the same?
      <details><summary>Solution</summary>
      <p>\(
@@ -162,14 +162,14 @@ AlphaGo Zero.
      \end{align}
      \)
      </p>
-     <p>The third line follows from \(sum_{i} \mathbb{E}[P_{i}(T)] = T\) and the 
+     <p>The third line follows from \(sum_{i} \mathbb{E}[P_{i}(T)] = T\) and the
      fifth line from the definition of \(\delta\).
      </p>
      </details>
   4. Kun: Do you understand the argument for why the regret bound is O(sqrt(KTlog(T)))?
      <details><summary>Hint</summary>
      <p>
-     What happens if you break the arms into those with regret \(< \sqrt{K\log{T}/T}\) 
+     What happens if you break the arms into those with regret \(< \sqrt{K\log{T}/T}\)
      and those with regret \(\geq \sqrt{K\log{T}/T}\)? Can we use this to bound
      the total regret?
      </p>
@@ -177,12 +177,12 @@ AlphaGo Zero.
   5. Reproduce the UCB1 algorithm in code with minimal supervision.
 
 <br />
-# 3 Policy & Value Functions  
-  **Motivation**: Policy and Value Functions are at the core of Reinforcement 
+# 3 Policy & Value Functions
+  **Motivation**: Policy and Value Functions are at the core of Reinforcement
   Learning. The Policy function is the representative probabilities that our
-  policy assigns to each action. When we sample from these, we would like for 
-  better actions to have higher probability. The Value function is our estimate 
-  of the strength of the current state. In AlphaGoZero, a single network 
+  policy assigns to each action. When we sample from these, we would like for
+  better actions to have higher probability. The Value function is our estimate
+  of the strength of the current state. In AlphaGoZero, a single network
   calculates both a value and a policy, then later updates its weights according
   to how well the agent performs in the game.
 
@@ -192,43 +192,43 @@ AlphaGo Zero.
   3. On-Policy / Off-Policy.
   4. Policy Iteration.
   5. Value Iteration.
-  
-  **Required Reading**: 
+
+  **Required Reading**:
   1. Value Function:
      1. SB: Sections 3.5, 3.6, 3.7.
      2. SB: Sections 9.1, 9.2, 9.3*.
   2. Policy Function:
      1. SB: Sections 4.1, 4.2, 4.3.
      2. SB: Sections 13.1, 13.2*, 13.3, 13.4.
-    
+
   **Optional Reading**:
   1. Sergey Levine: [Berkeley Fall'17: Policy Gradients](https://www.youtube.com/watch?v=tWNpiNzWuO8&feature=youtu.be) →  This is really good.
   2. Sergey Levine: [Berkeley Fall'17: Value Functions](https://www.youtube.com/watch?v=k1vNh4rNYec&feature=youtu.be) → This is really good.
   3. [Karpathy does Pong](http://karpathy.github.io/2016/05/31/rl/).
   4. [David Silver on PG](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching_files/pg.pdf).
   5. [David Silver on Value](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching_files/FA.pdf).
-  
+
   **Questions**:
   1. Why does policy gradient have such high variance?
   2. What is the difference between off-policy and on-policy?
      <details><summary>Solution</summary>
      <p>
-     On-policy algorithms learn from the current policy's action decisions. 
-     Off-policy algorithms learn from another arbitrary policy's actions. An 
-     example of an on-policy algorithm is SARSA or REINFORCE. An example of an 
+     On-policy algorithms learn from the current policy's action decisions.
+     Off-policy algorithms learn from another arbitrary policy's actions. An
+     example of an on-policy algorithm is SARSA or REINFORCE. An example of an
      off-policy algorithm is Q-Learning.
      </p>
      </details>
   3. SB: Exercises 3.13, 3.14, 3.15, 3.20, 4.3.
-  4. SB: Exercise 4.6 - How would policy iteration be defined for action values? 
-  Give a complete algorithm for computing $$q^{*}$$, analogous to that on page 65 
+  4. SB: Exercise 4.6 - How would policy iteration be defined for action values?
+  Give a complete algorithm for computing $$q^{*}$$, analogous to that on page 65
   for computing $$v^{*}$$.
        <details><summary>Solution</summary>
        <p>
        </p>
        </details>
-  5. SB: Exercise 13.2 - Prove that the eligibility vector 
-  $$\nabla_{\theta} \ln \pi (a | s, \theta) = x(s, a) - \sum_{b} \pi (b | s, \theta)x(s, b)$$ 
+  5. SB: Exercise 13.2 - Prove that the eligibility vector
+  $$\nabla_{\theta} \ln \pi (a | s, \theta) = x(s, a) - \sum_{b} \pi (b | s, \theta)x(s, b)$$
   using the definitions and elementary calculus.
        <details><summary>Solution</summary>
        <p>
@@ -238,8 +238,8 @@ AlphaGo Zero.
 
 <br />
 # 4 MCTS & UCT
-  **Motivation**: Monte Carlo Tree Search (MCTS) forms the backbone of AlphaGoZero. 
-  It is what lets the algorithm reliably explore and then hone in on the best policy. 
+  **Motivation**: Monte Carlo Tree Search (MCTS) forms the backbone of AlphaGoZero.
+  It is what lets the algorithm reliably explore and then hone in on the best policy.
   UCT (UCB for Trees) combines MCTS and UCB so that we get reliable convergence
   guarantees. In this section, we will explore how MCTS works and how to make
   it excel for our purposes in solving Go, a game with an enormous branching factor.
@@ -252,15 +252,15 @@ AlphaGo Zero.
   1. SB: Section 8.11
   2. [Browne](https://gnunet.org/sites/default/files/Browne%20et%20al%20-%20A%20survey%20of%20MCTS%20methods.pdf): Sections 2.2, 2.4, 3.1-3.5, 8.2-8.4.
   3. [Silver Thesis](http://papersdb.cs.ualberta.ca/~papersdb/uploaded_files/1029/paper_thesis.pdf): Sections 1.4.2 and 3.
-  
+
   **Optional Reading**:
   1. [Jess Hamrick on Browne](http://jhamrick.github.io/quals/planning%20and%20decision%20making/2015/12/16/Browne2012.html).
   2. [Original MCTS Paper](https://hal.archives-ouvertes.fr/file/index/docid/116992/filename/CG2006.pdf).
   3. [Original UCT Paper](http://ggp.stanford.edu/readings/uct.pdf).
-  4. Browne: 
+  4. Browne:
      1. Section 4.8: MCTS applied to Stochastic or Imperfect Information Games.
      2. Sections 7.2, 7.3, 7.5, 7.7: Applications of MCTS.
-    
+
   **Questions**:
   1. Can you detail each of the four parts of the MCTS algorithm?
      <details><summary>Solution</summary>
@@ -291,9 +291,9 @@ AlphaGo Zero.
      MCTS can incorporate it and will improve dramatically.
      </li>
      <li>
-     If the target domain needs actions online, then MCTS is a good choice as all 
-     values are always up to date. Go does not have this property but digital games 
-     like in the <a href="http://ggp.stanford.edu/">General Game Playing</a> suite 
+     If the target domain needs actions online, then MCTS is a good choice as all
+     values are always up to date. Go does not have this property but digital games
+     like in the <a href="http://ggp.stanford.edu/">General Game Playing</a> suite
      may.
      </li>
      If the target domain's game tree is of a nontrivial size, then MCTS may be
@@ -301,8 +301,8 @@ AlphaGo Zero.
      trees that explore the more promising routes rather than consider all routes.
      </li>
      <li>
-     If there is noise or delayed rewards in the target domain, then MCTS is a 
-     good choice because it is robust to these effects which can gravely impact 
+     If there is noise or delayed rewards in the target domain, then MCTS is a
+     good choice because it is robust to these effects which can gravely impact
      other algorithms such as modern Deep Reinforcement Learning.
      </li>
      </ul>
@@ -311,8 +311,8 @@ AlphaGo Zero.
      <details><summary>Solution</summary>
      <ul>
      <li>Crazy Stone, an early program that won the 2006 9x9 Computer Go Olympiad,
-     used an 
-     <a href="https://www.researchgate.net/figure/Examples-of-move-urgency_fig2_220174551">urgency</a> 
+     used an
+     <a href="https://www.researchgate.net/figure/Examples-of-move-urgency_fig2_220174551">urgency</a>
      heuristic value for each of the moves on the board.
      </li>
      <li>
@@ -320,14 +320,14 @@ AlphaGo Zero.
      sequence:
        <ol>
        <li>Respond to ataris by playing a saving move at random.</li>
-       <li>If one of the eight intersections surrounding the last move matches a 
+       <li>If one of the eight intersections surrounding the last move matches a
        simple pattern for cutting or <i>hane</i>, randomly play one.</li>
        <li>If there are capturing moves, play one at random.</li>
        <li>Play a random move.</li>
        </ol>
      </li>
      </li>The second version of Crazy Stone used an algorithm learned from actual
-     game play to learn a library of strong patterns. It incorporated this into 
+     game play to learn a library of strong patterns. It incorporated this into
      its default policy.
      </li>
      </ul>
@@ -337,25 +337,25 @@ AlphaGo Zero.
   to zero at a polynomial rate in the number of games simulated?
      <details><summary>Hint</summary>
      <p>
-     Try using induction on \(D\), the horizon of the MDP. At \(D=1\), to what 
+     Try using induction on \(D\), the horizon of the MDP. At \(D=1\), to what
      result does this correspond?
      </p>
      </details>
      <details><summary>Hint 2</summary>
      <p>
-     Assume that the result holds for a horizon up to depth  \(D - 1\) and 
-     consider a tree of depth \(D\). We can keep the cumulative rewards bounded 
+     Assume that the result holds for a horizon up to depth  \(D - 1\) and
+     consider a tree of depth \(D\). We can keep the cumulative rewards bounded
      in the interval by dividing by \(D\). Now can you show that the UCT payoff
      sequences at the root satisfy the drift conditions, repeated below?
      </p>
      <ul>
-     <li>The payoffs are bounded - \(0 \leq X_{it} \leq 1\), where \(i\) is the 
+     <li>The payoffs are bounded - \(0 \leq X_{it} \leq 1\), where \(i\) is the
      arm number and \(t\) is the time step.</li>
-     <li>The expected values of the averages, \(\overline{X_{it}} = 
+     <li>The expected values of the averages, \(\overline{X_{it}} =
      \frac{1}{n} \sum_{t=1}^{n} X_{it}\), converge.</li>
      <li>Define \(\mu_{in} = \mathbb{E}[\overline{X_{in}}]\) and \(\mu_{i} = \lim_{n\to\inf} \mu_{in}\).
-     Then, for \(c_{t, s} = 2C_{p}\sqrt{\frac{\ln{t}}{s}}\), where \(C_p\) is a 
-     suitable constant, both 
+     Then, for \(c_{t, s} = 2C_{p}\sqrt{\frac{\ln{t}}{s}}\), where \(C_p\) is a
+     suitable constant, both
      \(\mathbb{P}(\overline{X_{is}} \geq \mu_{i} + c_{t, s}) \leq t^{-4}\) and
      \(\mathbb{P}(\overline{X_{is}} \leq \mu_{i} - c_{t, s}) \leq t^{-4}\) hold.
      </li>
@@ -363,7 +363,7 @@ AlphaGo Zero.
      </details>
      <details><summary>Solution</summary>
      <p>
-     For a complete detail of the proof, see the original 
+     For a complete detail of the proof, see the original
      <a href="http://ggp.stanford.edu/readings/uct.pdf">UCT</a> paper.
      </p>
      </details>
@@ -372,56 +372,56 @@ AlphaGo Zero.
 <br />
 # 5 MCTS & RL
   **Motivation**: Up to this point, we have learned a lot about how games can be
-  solved and how Reinforcement Learning works on a foundational level. Before we 
-  jump into the paper, one last foray contrasting and unifying the games vs 
-  learning perspective is worthwhile for understanding the domain more fully. In 
-  particular, we will focus on a paper from Vodopivec et al. After completing 
+  solved and how Reinforcement Learning works on a foundational level. Before we
+  jump into the paper, one last foray contrasting and unifying the games vs.
+  learning perspective is worthwhile for understanding the domain more fully. In
+  particular, we will focus on a paper from Vodopivec et al. After completing
   this section, you should have an understanding of what research directions in
   this field are mostly harvested and which have miles of green field ahead.
 
   **Topics**:
   1. Integrating MCTS and RL.
-  
+
   **Required Reading**:
   1. Vodopivec:
     1. Section 3.1-3.4: Connection between MCTS and RL.
     2. Section 4.1-4.3: Integrating MCTS and RL.
   2. [Why did TD-Gammon Work?](https://papers.nips.cc/paper/1292-why-did-td-gammon-work.pdf)
-  
+
   **Optional Reading**:
   1. Vodopivec: Section 5: Survey of research inspired by both fields.
-  
+
   **Questions**:
   1. What are key differences between MCTS and RL?
-  2. UCT can be described in RL terms as the following "The original UCT searches 
-  identically as an offline on-policy every-visit MC control algorithm that uses 
+  2. UCT can be described in RL terms as the following "The original UCT searches
+  identically as an offline on-policy every-visit MC control algorithm that uses
   UCB1 as the policy." What do each of these terms mean?
      <details><summary>Solution</summary>
      <ul>
      <li>
      UCT is trained on-policy, which means it improves the policy used to make the
-     action decisions, i.e. UCB1. 
+     action decisions, i.e. UCB1.
      </li>
      <li>
-     The offline means that we can't learn until after the episode is completed. 
-     An alternative online algorithm would learn while the episode was running. 
+     The offline means that we can't learn until after the episode is completed.
+     An alternative online algorithm would learn while the episode was running.
      </li>
      <li>
-     Every-visit versus first-visit decides if we are going to update a state for 
+     Every-visit versus first-visit decides if we are going to update a state for
      every time it's accessed in an episode or just the first time. The original
      UCT algorithm did every-visit. Subsequent versions relaxed this.
      </li>
      <li>
      MC control means that we are using Monte Carlo as the policy, i.e. we use
-     the average value of the state as the true value. 
+     the average value of the state as the true value.
      </li>
      </ul>
      </details>
   3. What is a Representation Policy? Give an example not described in the text.
      <details><summary>Solution</summary>
      <p>A Representation Policy defines the model of the state space (e.g. in
-     the form of a value function) and the boundary between memorized and 
-     non-memorized parts of the space. 
+     the form of a value function) and the boundary between memorized and
+     non-memorized parts of the space.
      </p>
      </details>
   4. What is a Control Policy? Give an example not described in the text.
@@ -437,7 +437,7 @@ AlphaGo Zero.
   so let's delve into the apex result. Note that we don't just focus on the final
   AlphaGo Zero paper but also explore a related paper written coincidentally by
   a team at UCL using Hex as the game of choice. Their algorithm is very similar
-  to the AlphaGo Zero algorithm and considering both in context is important to 
+  to the AlphaGo Zero algorithm and considering both in context is important to
   gauging what was really the most important aspects of this research.
 
   **Topics**:
@@ -446,37 +446,37 @@ AlphaGo Zero.
   **Required Reading**:
   1. [Mastering the Game of Go Without Human Knowledge](https://deepmind.com/documents/119/agz_unformatted_nature.pdf)
   2. [Thinking Fast and Slow with Deep Learning and Tree Search](https://arxiv.org/pdf/1705.08439.pdf)
-  
+
   **Optional Reading**:
   1. [Deep Learning for Real-Time Atari Game Play Using Offline Monte-Carlo Tree Search Planning](http://papers.nips.cc/paper/5421-deep-learning-for-real-time-atari-game-play-using-offline-monte-carlo-tree-search-planning.pdf)
   2. [Silver Thesis](http://papersdb.cs.ualberta.ca/~papersdb/uploaded_files/1029/paper_thesis.pdf): Section 4.6
   3. [Mastering the game of Go with deep neural networks and tree search](https://storage.googleapis.com/deepmind-media/alphago/AlphaGoNaturePaper.pdf)
   4. [Mastering Chess and Shogi by Self-Play with a General Reinforcement Learning Algorithm](https://arxiv.org/abs/1712.01815)
-  
+
   **Questions**:
-  1. What were the differences between the two papers "Mastering the Game of Go 
+  1. What were the differences between the two papers "Mastering the Game of Go
   Without Human Knowledge" and "Thinking Fast and Slow with Deep Learning and Tree Search"?
      <details><summary>Solution</summary>
      <p>Some differences between the former (AG0) and the latter (ExIt) are:</p>
      <ul>
      <li>AG0 uses MC value estimates from the expert for the value network
-     where ExIt uses estimates from the apprentice. This requires more computation 
+     where ExIt uses estimates from the apprentice. This requires more computation
      by AG0 but produces better estimates.</li>
-     <li>The losses were different. For the value network, AG0 uses an MSE loss 
-     with L2 regularization and ExIt uses a cross entropy loss with early stopping. 
-     For the policy part, AG0 used cross entropy while ExIt uses a weighted 
-     cross-entropy that takes into account how confident MCTS is in the action 
+     <li>The losses were different. For the value network, AG0 uses an MSE loss
+     with L2 regularization and ExIt uses a cross entropy loss with early stopping.
+     For the policy part, AG0 used cross entropy while ExIt uses a weighted
+     cross-entropy that takes into account how confident MCTS is in the action
      based on the state count.</li>
      <li>AG0 uses the value network to evaluate moves; ExIt uses RAVE and rollouts,
      plus warm starts from the MCTS.</li>
      <li>AG0 adds in Dirichlet noise to the prior probability at the root node.</li>
-     <li>AG0 elevates a new network as champion only when it's markedly better than 
+     <li>AG0 elevates a new network as champion only when it's markedly better than
      the prior champion; ExIt replaces the old network without verification of if
      it is better.</li>
      </ul>
      </details>
-  2. What was common to both of "Mastering the Game of Go Without Human Knowledge" 
-  and "Thinking Fast and Slow with Deep Learning and Tree Search"?  
+  2. What was common to both of "Mastering the Game of Go Without Human Knowledge"
+  and "Thinking Fast and Slow with Deep Learning and Tree Search"?
      <details><summary>Solution</summary>
      <p>The most important commonality is that they both use MCTS as an expert
      guide to help a neural network learn through self-play.</p>
@@ -484,7 +484,7 @@ AlphaGo Zero.
   3. Will the system get stuck if the current neural network can’t beat the previous ones?
      <details><summary>Solution</summary>
      <p>No. The algorithm won’t accept a policy that is worse than the current best
-     and MCTS’s convergence properties imply that it will eventually tend towards 
+     and MCTS’s convergence properties imply that it will eventually tend towards
      the equilibrium solution in a zero-sum two player game
      </p>
      </details>
@@ -495,5 +495,5 @@ AlphaGo Zero.
      too much time on low-value directions.
      </p>
      </details>
-  
+
 
