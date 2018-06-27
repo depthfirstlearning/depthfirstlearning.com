@@ -1,11 +1,11 @@
 ---
 layout: post
-title:  "AlphaGo Zero"
+title:  "AlphaGoZero"
 date:   2018-06-20 12:00:00 -0400
 categories: games
 author: cinjon
-blurb: "In this curriculum, you will learn about two-person zero-sum perfect
-        information games and develop understanding to completely grok AlphaGo Zero."
+blurb: "In this curriculum, you will learn about two-person zero-sum perfect 
+        information games and develop understanding to completely grok AlphaGoZero."
 hidden: true
 feedback: true
 ---
@@ -21,12 +21,12 @@ Roberta Raileanu, Ryan Saxe, and Liang Zhuo.
 
 <div class="deps-graph">
   <iframe class="deps" src="/assets/ag0-deps.svg" width="200"></iframe>
-  <div>Concepts used in AlphaGo Zero. Click to navigate.</div>
+  <div>Concepts used in AlphaGoZero. Click to navigate.</div>
 </div>
 
 # Why
 
-AlphaGo Zero was a big splash when it debuted and for good reason. The grand effort
+AlphaGoZero was a big splash when it debuted and for good reason. The grand effort
 was led by David Silver at DeepMind and was an extension of work that he started
 during his PhD. The main idea is to solve the game of Go and the approach taken
 is to use an algorithm called Monte Carlo Tree Search (MCTS) as an expert guide to teach
@@ -34,9 +34,9 @@ a deep neural network how to approximate the value of each state. The convergenc
 properties of MCTS provides the neural network with a founded way to reduce the
 search space.
 
-In this curriculum, you will focus on the study of two person zero-sum perfect
+In this curriculum, you will focus on the study of two-person zero-sum perfect
 information games and develop understanding so that you can completely grok
-AlphaGo Zero.
+AlphaGoZero.
 
 <br />
 # Common Resources:
@@ -47,12 +47,12 @@ AlphaGo Zero.
 
 <br />
 # 1 Minimax & Alpha Beta Pruning
-  **Motivation**: Minimax and alpha-beta pruning are original ideas that blossomed
-  from the study of games starting in the 1950s. To this day, they have mindshare
-  in how to build a strong game-playing computer engine, including in popular chess
-  programs like Stockfish. In this class, we will go over these foundations, learn
-  from Prof. Knuth's work analyzing their properties, and prove that these
-  algorithms are theoretically sound solutions to two-player games.
+  **Motivation**: Minimax and Alpha-Beta Pruning are original ideas that blossomed
+  from the study of games starting in the 50s. To this day, they are components in 
+  strong game-playing computer engines like Stockfish. In this class, we will go
+  over these foundations, learn from Prof. Knuth's work analyzing their properties,
+  and prove that these algorithms are theoretically sound solutions to two-player
+  games.
 
   **Topics**:
   1. Perfect Information Games.
@@ -125,17 +125,17 @@ AlphaGo Zero.
 
 <br />
 # 2 Multi-Armed Bandits & Upper Confidence Bounds
-  **Motivation**: The Multi-Armed Bandits problem is a framework for understanding
-  the Exploitation vs Exploration tradeoff. Upper Confidence Bounds, or UCB, is
+  **Motivation**: The multi-armed bandits problem is a framework for understanding 
+  the exploitation vs exploration tradeoff. Upper Confidence Bounds, or UCB, is 
   an algorithmically tight approach to addressing that tradeoff under certain
-  constraints. Together, they are important components of how Monte Carlo Tree
-  Search (MCTS), a key aspect of Alpha Go Zero, was originally formalized. For
-  example, in MCTS there is a notion of node selection where UCB is used extensively.
-  In this section, we will cover Bandits and UCB.
-
+  constraints. Together, they are important components of how Monte Carlo Tree 
+  Search (MCTS), a key aspect of AlphaGoZero, was originally formalized. For 
+  example, in MCTS there is a notion of node selection where UCB is used extensively. 
+  In this section, we will cover bandits and UCB.
+  
   **Topics**:
-  1. Basics of Reinforcement Learning.
-  2. Multi-Armed Bandit algorithms and their bounds.
+  1. Basics of reinforcement learning.
+  2. Multi-armed bandit algorithms and their bounds.
 
   **Required Reading**:
   1. SB: Sections 2.1 - 2.7.
@@ -177,23 +177,23 @@ AlphaGo Zero.
   5. Reproduce the UCB1 algorithm in code with minimal supervision.
 
 <br />
-# 3 Policy & Value Functions
-  **Motivation**: Policy and Value Functions are at the core of Reinforcement
-  Learning. The Policy function is the representative probabilities that our
-  policy assigns to each action. When we sample from these, we would like for
-  better actions to have higher probability. The Value function is our estimate
-  of the strength of the current state. In AlphaGoZero, a single network
+# 3 Policy & Value Functions  
+  **Motivation**: Policy and value functions are at the core of reinforcement 
+  learning. The policy function is the representative probabilities that our
+  policy assigns to each action. When we sample from these, we would like for 
+  better actions to have higher probability. The value function is our estimate 
+  of the strength of the current state. In AlphaGoZero, a single network 
   calculates both a value and a policy, then later updates its weights according
   to how well the agent performs in the game.
 
   **Topics**:
-  1. Bellman Equation.
-  2. Policy Gradient.
-  3. On-Policy / Off-Policy.
-  4. Policy Iteration.
-  5. Value Iteration.
-
-  **Required Reading**:
+  1. Bellman equation.
+  2. Policy gradient.
+  3. On-policy / off-policy.
+  4. Policy iteration.
+  5. Value iteration.
+  
+  **Required Reading**: 
   1. Value Function:
      1. SB: Sections 3.5, 3.6, 3.7.
      2. SB: Sections 9.1, 9.2, 9.3*.
@@ -386,16 +386,16 @@ AlphaGo Zero.
 <br />
 # 5 MCTS & RL
   **Motivation**: Up to this point, we have learned a lot about how games can be
-  solved and how Reinforcement Learning works on a foundational level. Before we
-  jump into the paper, one last foray contrasting and unifying the games vs.
-  learning perspective is worthwhile for understanding the domain more fully. In
-  particular, we will focus on a paper from Vodopivec et al. After completing
+  solved and how reinforcement learning works on a foundational level. Before we 
+  jump into the paper, one last foray contrasting and unifying the games vs 
+  learning perspective is worthwhile for understanding the domain more fully. In 
+  particular, we will focus on a paper from Vodopivec et al. After completing 
   this section, you should have an understanding of what research directions in
-  this field are mostly harvested and which have miles of green field ahead.
+  this field have been thoroughly explored and which still have open directions.
 
   **Topics**:
-  1. Integrating MCTS and RL.
-
+  1. Integrating MCTS and reinforcement learning.
+  
   **Required Reading**:
   1. Vodopivec:
     1. Section 3.1-3.4: Connection between MCTS and RL.
@@ -449,9 +449,9 @@ AlphaGo Zero.
 # 6 The Paper
   **Motivation**: Let's read the paper! We have a deep understanding of the background,
   so let's delve into the apex result. Note that we don't just focus on the final
-  AlphaGo Zero paper but also explore a related paper written coincidentally by
+  AlphaGoZero paper but also explore a related paper written coincidentally by
   a team at UCL using Hex as the game of choice. Their algorithm is very similar
-  to the AlphaGo Zero algorithm and considering both in context is important to
+  to the AlphaGoZero algorithm and considering both in context is important to 
   gauging what was really the most important aspects of this research.
 
   **Topics**:
@@ -509,5 +509,3 @@ AlphaGo Zero.
      too much time on low-value directions.
      </p>
      </details>
-
-
