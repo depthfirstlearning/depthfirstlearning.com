@@ -117,11 +117,7 @@ AlphaGoZero.
      <details><summary>Hint</summary>
      <p>This is similar to the above two.</p>
      </details>
-  5. Knuth: Show that Theorem 2.(1, 2, 3) are correct. TODO
-     <details><summary>Solution</summary>
-     <p>
-     </p>
-     </details>
+  5. Knuth: Show that Theorem 2.(1, 2, 3) are correct.
 
 <br />
 # 2 Multi-Armed Bandits & Upper Confidence Bounds
@@ -224,12 +220,12 @@ AlphaGoZero.
   Give a complete algorithm for computing $$q^{*}$$, analogous to that on page 65
   for computing $$v^{*}$$.
        <details><summary>Solution</summary>
-    <p> The solution follows the proof (in page 65) for \(v^{*}\), with following modifications:
+    <p> The solution follows the proof (page 65) for \(v^{*}\), with the following modifications:
        <ol>
-        <li>Consider a randomly initialized Q(s, a) for all (s, a) pairs, and random policy \( \pi(s) \). </li>
+        <li>Consider a randomly initialized Q(s, a) and a random policy \( \pi(s) \). </li>
         <li><b> Policy Evaluation </b> : Update Q(s, a) \( \leftarrow \sum_{s'} P_{ss'}^{a} R_{ss'}^{a} + \gamma \sum_{s'} \sum_{a'} P_{ss'}^{a} Q^{\pi}(s', a') \pi(a' | s') \) <br /> 
-                                         Here, \( P_{ss'}^{a} \leftarrow P(s' |s, a) , R_{ss'}^{a} \leftarrow R(s, a, s').\)</li>
-        <li><b> Policy Improvement </b> :   Update \( \pi(s) = {argmax}_{a} Q^{\pi}(s, a) \). If \(unstable\), go to step 2. Here, \( unstable \), implies \( \pi_{before\_update}(s) = \pi_{after\_update}(s) \)</li>
+                                         Note that \( P_{ss'}^{a} \leftarrow P(s' |s, a) , R_{ss'}^{a} \leftarrow R(s, a, s').\)</li>
+        <li><b> Policy Improvement </b> :   Update \( \pi(s) = {argmax}_{a} Q^{\pi}(s, a) \). If \(unstable\), go to step 2. Here, \( unstable \), implies \( \pi_{before\_update}(s) != \pi_{after\_update}(s) \)</li>
         <li> \( q^{*} \leftarrow Q(s, a) \) </li>
        </ol> </p>
        </details>
@@ -508,7 +504,7 @@ AlphaGoZero.
   4. Why include both a policy and a value head in these algorithms? Why not just use policy?
      <details><summary>Solution</summary>
      <p>Value networks reduce the required search depth. This helps tremendously
-     because a rollout approach without the value network is innacurate and spends
-     too much time on low-value directions.
+     because a rollout approach without the value network is inaccurate and spends
+     too much time on sub-optimal directions.
      </p>
      </details>
