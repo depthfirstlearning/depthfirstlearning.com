@@ -1,12 +1,12 @@
 ---
 layout: post
 title:  "AlphaGoZero"
-date:   2018-06-20 12:00:00 -0400
+date:   2018-06-27 12:00:00 -0400
 categories: games
 author: cinjon
 blurb: "In this curriculum, you will learn about two-person zero-sum perfect 
         information games and develop understanding to completely grok AlphaGoZero."
-hidden: true
+hidden: false
 feedback: true
 ---
 
@@ -70,27 +70,27 @@ AlphaGoZero.
   4. [Chess Programming on AB Pruning](https://chessprogramming.wikispaces.com/Alpha-Beta).
 
   **Questions**:
-  1. Knuth: Show that $$AlphaBetaMin = G2(p, alpha, beta) = -F2(p, -beta, -alpha) = -AlphaBetaMax$$. (p. 300)
+  1. Knuth: Show that AlphaBetaMin $$= G2(p, \alpha, \beta) = -F2(p, -\beta, -\alpha) = -$$AlphaBetaMax. (p. 300)
      <details><summary>Solution</summary>
-     <p>If \(d = 0\), then \(F2(p, a, b) = f(p)\) and \(G2(p, -b, -a) = g(p) = -f(p)\)
+     <p>If \(d = 0\), then \(F2(p, \alpha, \beta) = f(p)\) and \(G2(p, -\alpha, -\beta) = g(p) = -f(p)\)
      as desired, where the last step follows from equation 2 on p. 295.
      </p>
      <p>Otherwise, \(d > 0\) and we proceed by induction on the height \(h\). The
      base case of \(h = 0\) is trivial because then the tree is a single root and
      consequently is the \(d = 0\) case. Assume it is true for height \(< h\),
      then for \(p\) of height \(h\), we have that \(m = a\) at the start of
-     \(F2(p, a, b)\) and \(m\prime = -a\) at the start of \(G2(p, -b, -a)\). So
+     \(F2(p, \alpha, \beta)\) and \(m\prime = -\alpha\) at the start of \(G2(p, -\beta, -\alpha)\). So
      \(m = -m\prime\).
      </p>
      <p>In the i-th iteration of the loop, let's label the resulting value of \(m\)
-     as \(m_{n}\). We have that \(t = G2(p_{i}, m , b) = -F2(p_i, -b, -m) = -t\)
+     as \(m_{n}\). We have that \(t = G2(p_{i}, m , \beta) = -F2(p_i, -\beta, -m) = -t\)
      by the inductive assumption. Then,
      \(t > m \iff -t < -m \iff t\prime < m\prime \iff m_{n} = t = -m_{n}\prime\),
      which means that every time there is an update to the value of \(m\), it will
      be preserved across both functions. Further, because
-     \(m \geq b \iff -m \leq -b \iff m\prime \leq -b\), we have that \(G2\) and
+     \(m \geq \beta \iff -m \leq -\beta \iff m\prime \leq -\beta\), we have that \(G2\) and
      \(F2\) will have the same stopping criterion. Together, these imply that
-     \(G2(p, alpha, beta) = -F2(p, -beta, -alpha)\) after each iteration of the
+     \(G2(p, \alpha, \beta) = -F2(p, -\beta, -\alpha)\) after each iteration of the
      loop as desired.
      </p>
      </details>
@@ -165,8 +165,8 @@ AlphaGoZero.
   4. Kun: Do you understand the argument for why the regret bound is $$O(\sqrt{KT\log(T)})$$?
      <details><summary>Hint</summary>
      <p>
-     What happens if you break the arms into those with regret \(< \sqrt{K\log{T}/T}\)
-     and those with regret \(\geq \sqrt{K\log{T}/T}\)? Can we use this to bound
+     What happens if you break the arms into those with regret \(< \sqrt{K(\log{T})/T}\)
+     and those with regret \(\geq \sqrt{K(\log{T})/T}\)? Can we use this to bound
      the total regret?
      </p>
      </details>
@@ -225,7 +225,7 @@ AlphaGoZero.
         <li>Consider a randomly initialized Q(s, a) and a random policy \( \pi(s) \). </li>
         <li><b> Policy Evaluation </b> : Update Q(s, a) \( \leftarrow \sum_{s'} P_{ss'}^{a} R_{ss'}^{a} + \gamma \sum_{s'} \sum_{a'} P_{ss'}^{a} Q^{\pi}(s', a') \pi(a' | s') \) <br /> 
                                          Note that \( P_{ss'}^{a} \leftarrow P(s' |s, a) , R_{ss'}^{a} \leftarrow R(s, a, s').\)</li>
-        <li><b> Policy Improvement </b> :   Update \( \pi(s) = {argmax}_{a} Q^{\pi}(s, a) \). If \(unstable\), go to step 2. Here, \( unstable \), implies \( \pi_{before\_update}(s) != \pi_{after\_update}(s) \)</li>
+        <li><b> Policy Improvement </b> :   Update \( \pi(s) = {argmax}_{a} Q^{\pi}(s, a) \). If \(unstable\), go to step 2. Here, \( unstable \), implies \( \pi_{before\_update}(s) \neq \pi_{after\_update}(s) \)</li>
         <li> \( q^{*} \leftarrow Q(s, a) \) </li>
        </ol> </p>
        </details>
