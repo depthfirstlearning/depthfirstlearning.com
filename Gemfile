@@ -2,4 +2,4 @@
 
 source "https://rubygems.org"
 gemspec
-gem "jekyll-feed", :path => "vendor/jekyll-feed-0.10.0"
+gem "jekyll-feed"
