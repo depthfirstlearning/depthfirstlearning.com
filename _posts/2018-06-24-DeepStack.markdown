@@ -1,27 +1,44 @@
 ---
 layout: post
 title:  "Deep Stack"
-date:   2018-05-24 18:50:23 -0400
+date:   2018-07-10 12:00:00 -0400
 categories: games
 author: cinjon
-blurb: "In this curriculum, you will explore game theory and counterfactual
-        regret minimization in order to understand techniques for solving two 
+blurb: "In this curriculum, you will explore Game Theory and Counterfactual
+        Regret Minimization in order to understand techniques for solving two 
         person zero-sum games of incomplete information."
+hidden: true
 feedback: true
 ---
 
-(Thank you to Marc Lanctot, Michael (DeepStack), Michael Bowling, Joan Bruna, Martin Arjovsky, and <students> for contributing to this guide.)
+Thank you to Michael Bowling, Michael Johanson, and Marc Lanctot for contributions to this guide.
+
+Additionally, this would not have been possible without the generous support of
+Prof. Joan Bruna and his class at NYU, [The Mathematics of Deep Learning](https://github.com/joanbruna/MathsDL-spring18).
+Special thanks to him, as well as Martin Arjovsky, my colleague in leading this
+recitation, and my fellow students Ojas Deshpande, Anant Gupta, Xintian Han,
+Sanyam Kapoor, Chen Li, Yixiang Luo, Chirag Maheshwari, Zsolt Pajor-Gyulai,
+Roberta Raileanu, Ryan Saxe, and Liang Zhuo.
 
 # Why
 
 Along with Libratus, DeepStack is one of two approaches to solving No-Limit 
 Texas Hold-em that debuted coincidentally. This game was notoriously difficult
 to solve as it has just as large a branching factor as Go, but additionally is a
-game of imperfect information.
+game of imperfect information. 
 
-In this curriculum, you will wander down another branch of the study of games
-with a tour through game theory and counterfactual regret minimization while
-building up the requisite understanding to tackle DeepStack.
+The main idea behind both DeepStack and Libratus is to use Counterfactual Regret 
+Minimization (CFR) to find a mixed strategy that approximates a Nash Equilibrium 
+strategy. CFR's convergence properties guarantee that we will yield such a strategy
+and the closer we are to it, the better our outcome will be. They differ in how
+they implement this approach. In particular, DeepStack uses deep neural networks
+to approximate the counterfactual value of each hand at specific points in the
+game. In a founded way, this lets it cut short the necessary computation to reach 
+convergence.
+
+In this curriculum, you will explore the study of games with a tour through 
+game theory and counterfactual regret minimization while building up the 
+requisite understanding to tackle DeepStack.
 
 <br>
 # Common Resources:
@@ -32,7 +49,10 @@ building up the requisite understanding to tackle DeepStack.
 
 <br>
 # 1 Normal-Form Games & Poker
-  **Motivation**: Normal-Form games are the backbone for many of the techniques that later were used in DeepStack and Libratus. Understanding them will be a necessary foundation to understanding the innovations they presented.
+  **Motivation**: Normal-Form games are the backbone for many of the techniques 
+  that later were used in DeepStack and Libratus. Most of Game Theory is built on
+  top of the understanding that this framework illuminates. In addition, we go
+  over the rules of Poker and why it had proved so difficult to solve.
   
   **Required Reading**:
   1. MAS sections 3.1 & 3.2
@@ -51,7 +71,13 @@ building up the requisite understanding to tackle DeepStack.
 
 <br>
 # 2 Optimality and Equilibrium 
-  **Motivation**: How do you reason about games? The best strategy in multi-agent scenario depends on the choices of others. Game theory deals with this problem by identifying subsets of outcomes called solution concepts, of which fundamental ones are the Nash Equilibrium, Pareto Optimality, and Correlated Equilibrium.
+  **Motivation**: How do you reason about games? The best strategy in multi-agent 
+  scenario depends on the choices of others. Game theory deals with this problem 
+  by identifying subsets of outcomes called solution concepts, of which 
+  fundamental ones are the Nash Equilibrium, Pareto Optimality, and Correlated 
+  Equilibrium. In this section, we learn about these concepts and understand games
+  in terms of what they imply and how easy or hard it is to discover represenative
+  strategies.
   
   **Required Reading**:
   1. MAS Sections 3.3, 3.4.5, 3.4.7, 4.1, 4.2.4, 4.3, 4.6
@@ -70,7 +96,12 @@ building up the requisite understanding to tackle DeepStack.
 
 <br>
 # 3 Extensive-Form Games
-  **Motivation**: What happens when players don't act simultaneously? Extensive-Form Games are an answer to this question. While this representation of a game always has a comparable Normal-Form, it's much more natural to reason about in this format.
+  **Motivation**: What happens when players don't act simultaneously? 
+  Extensive-Form Games are an answer to this question. While this representation 
+  of a game always has a comparable Normal-Form, it's much more natural to reason 
+  about sequential games in this format. Examples include familiar ones like Go, 
+  but also more exotic games like Magic: The Gathering and Civilization. This 
+  section is imperative as Poker is best described as an Extensive-Form Game.
   
   **Required Reading**:
   1. MAS 5.1.{1,2,3}
@@ -89,8 +120,8 @@ building up the requisite understanding to tackle DeepStack.
 # 4 Counterfactual Regret Minimization #1
   **Motivation**: Counterfactual Regret Minimization (CFR) is only a decade old 
   but has already achieved huge success as the foundation underlying DeepStack 
-  and Libratus. In the first of two weeks dedicated to CFR, we learn how it 
-  works algorithmically.
+  and Libratus. In the first of two weeks dedicated to CFR, we learn how the
+  algorithm works practically and get our hands dirty coding up our implementation.
   
   **Required Reading**:
   1. ICRM: 2.1-2.4, 3.1-3.4
@@ -109,9 +140,10 @@ building up the requisite understanding to tackle DeepStack.
 <br>
 # 5 Counterfactual Regret Minimization #2
   **Motivation**: We saw last week the practical side of CFR and how effective it 
-  can be. This week we’ll be diving more into the theory underlying it. This 
-  will culminate with Blackwell’s Approachability Theorem, a generalization of 
-  repeated two-player zero-sum games.
+  can be. This week we’ll understand the theory underlying it. This will culminate 
+  with Blackwell’s Approachability Theorem, a generalization of repeated two-player 
+  zero-sum games. This is a challenging session but the payoff will be a much 
+  keener understanding of CFR's strengths.
   
   **Required**:
   1. PLG: Section 7.3-7.7, 7.9
@@ -129,7 +161,11 @@ building up the requisite understanding to tackle DeepStack.
 
 <br>
 # 6 DeepStack
-  **Motivation**: Let’s read the paper!
+  **Motivation**: Let’s read the paper! In addition to DeepStack, we also include 
+  Libratus as an optional reading. It's important to keep this paper in mind as 
+  it highlights that the really important concepts in this curriculum are the 
+  Game Theory and CFR. Deep Learning is not necessary to build a champion Poker 
+  bot.
   
   **Required Reading**:
   1. [DeepStack: Expert-Level Artificial Intelligence in Heads-Up No-Limit Poker](https://static1.squarespace.com/static/58a75073e6f2e1c1d5b36630/t/58b7a3dce3df28761dd25e54/1488430045412/DeepStack.pdf)
