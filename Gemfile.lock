@@ -5,6 +5,12 @@ PATH
       jekyll (~> 3.6)
       jekyll-paginate (~> 1.1)
 
+PATH
+  remote: vendor/jekyll-feed-0.10.0
+  specs:
+    jekyll-feed (0.10.0)
+      jekyll (~> 3.3)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -34,8 +40,6 @@ GEM
       pathutil (~> 0.9)
       rouge (>= 1.7, < 4)
       safe_yaml (~> 1.0)
-    jekyll-feed (0.10.0)
-      jekyll (~> 3.3)
     jekyll-paginate (1.1.0)
     jekyll-sass-converter (1.5.2)
       sass (~> 3.4)
@@ -69,7 +73,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.12)
-  jekyll-feed
+  jekyll-feed!
   rake (~> 10.0)
   tale!
 
