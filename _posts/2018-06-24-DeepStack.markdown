@@ -55,19 +55,50 @@ requisite understanding to tackle DeepStack.
   over the rules of Poker and why it had proved so difficult to solve.
   
   **Required Reading**:
-  1. MAS sections 3.1 & 3.2
-  2. LT pages 5-7
-  3. [The Game of Poker](https://arxiv.org/pdf/1701.01724.pdf) (Supplementary #1 on pages 16-17)
+  1. MAS: Sections 3.1 & 3.2.
+  2. LT: Pages 5-7.
+  3. [The Game of Poker](https://arxiv.org/pdf/1701.01724.pdf): Supplementary #1 on pages 16-17.
   
   **Optional Reading**:
   1. [The State of Solving Large Incomplete-Information Games, and Application to Poker](https://www.cs.cmu.edu/~sandholm/solving%20games.aimag11.pdf) (2010)
-  2. [Why Poker is Difficult](https://www.youtube.com/watch?v=2dX0lwaQRX0) (very good video by Noam Brown, the main author on Libratus. The first 18 minutes are most relevant for now.)
+  2. [Why Poker is Difficult](https://www.youtube.com/watch?v=2dX0lwaQRX0) 
+  Very good video by Noam Brown, the main author of Libratus. The first eighteen 
+  minutes are the most relevant.
   
   **Questions**:
-  1. Prove that in a zero-sum game, the nash equilibrium strategies are interchangeable. (LT)
-  2. Prove that in a zero-sum game, the expected payoff to each player is the same for every equilibrium. (LT)
-  3. Can you prove Lemma 3.1.6?
-  4. Can you prove Theorem 3.1.8 (which is a really cool result)? 
+  1. LT: Prove that in a zero-sum game, the Nash Equilibrium strategies are interchangeable.
+     <details><summary>Hint</summary>
+     <p>Use the definition of a Nash Equilibria along with the fact that 
+     \(\mu_{i}(\sigma_{i}, \sigma_{-i}) + \mu_{-i}(\sigma_{i}, \sigma_{-i}) = c\).
+     </p>
+     </details>
+  2. LT: Prove that in a zero-sum game, the expected payoff to each player is the same for every equilibrium.
+     <details><summary>Solution</summary>
+     <p>We will solve both this problem and the one above here. We have that if
+     \(\mu_{i}(\sigma) = \mu(\sigma_{i}, \sigma_{-i})\) and
+     \(\mu_{i}(\sigma\prime) = \mu(\sigma_{i}\prime, \sigma_{-i}\prime)\) are both 
+     Nash Equilibria, then:</p>
+     <p>\(
+     \begin{align}
+     \mu_{i}(\sigma_{i}, \sigma_{-i}) &\geq \mu_{i}(\sigma_{i}\prime, \sigma_{-i}) \\
+     &= c - \mu_{-i}(\sigma_{i}\prime, \sigma_{-i}) \\
+     &\geq c - \mu_{-i}(\sigma_{i}\prime, \sigma_{-i}\prime) \\
+     &= \mu_{i}(\sigma_{i}\prime, \sigma_{-i}\prime)
+     \end{align}
+     \)
+     </p>
+     <p>In a similar fashion, we can show that 
+     \(\mu(\sigma_{i}\prime, \sigma_{-i}prime) \geq \mu(\sigma_{i}, \sigma_{-i})\).
+     </p>
+     Consequently, \(\mu(\sigma_{i}\prime, \sigma_{-i}prime) = \mu(\sigma_{i}, \sigma_{-i})\),
+     which also implies that the strategies are interchangeable, i.e.
+     \(\mu(\sigma_{i}\prime, \sigma_{-i}prime) = \mu(\sigma_{i}\prime, \sigma_{-i})\).
+     </details>
+  3. MAS: Prove Lemma 3.1.6 (page 51) without consulting the book.
+  4. MAS: Prove Theorem 3.1.8 (page 52) without consulting the book. This theorem
+  ensures that rational agents need only maximize the expectation of 
+  single-dimensional utility functions. Proving this result is a good test of 
+  your understanding.
 
 <br>
 # 2 Optimality and Equilibrium 
@@ -80,17 +111,40 @@ requisite understanding to tackle DeepStack.
   strategies.
   
   **Required Reading**:
-  1. MAS Sections 3.3, 3.4.5, 3.4.7, 4.1, 4.2.4, 4.3, 4.6
-  2. LT Section 2.1.1
+  1. MAS: Sections 3.3, 3.4.5, 3.4.7, 4.1, 4.2.4, 4.3, & 4.6.
+  2. LT: Section 2.1.1
   
   **Optional Reading**:
-  1. The rest of section 3.4 in MAS.
+  1. MAS: Section 3.4.
   
   **Questions**:
   1. Why must every game have a Pareto Optimal strategy?
-  2. Why must there always exist at least one Pareto Optimal Strategy in which all players adopt pure strategies?
+     <details><summary>Solution</summary>
+     <p>Say that a game did not have a Pareto optimal outcome. Then, for every 
+     outcome \(O\), there was another \(O\prime\) that Pareto-dominated \(O\).
+     Say \(O_2 > O_1\). Because \(O_2\) is not Pareto optimal, there is some 
+     \(O_k > O_2\). There cannot be a max in this chain (because that max would
+     be Pareto optimal) and thus there must be some cycle. Consequently, there
+     exists for some agent a strategy \(O_j\) s.t. \(O_j > O_j\), which is a 
+     contradiction.
+     </p>
+     </details>
+  2. Why must there always exist at least one Pareto Optimal Strategy in which 
+  all players adopt pure strategies?
   3. Why in common-payoff games do all Pareto optimal strategies have the same payoff?
-  4. Why does definition 3.3.12 imply that the vertices of a simplex must all receive different labels?
+     <details><summary>Solution</summary>
+     <p>Say two strategies \(S\) and \(S\prime\) are Pareto optimal. Then neither
+     dominates the other, so either \(\forall i \mu_{i}(S) = \mu_{i}(S\prime)\)
+     or there are two players \(i, j\) for which \(mu_{i}(S) < \mu_{i}(S\prime)\)
+     and \(mu_{j}(S) > \mu_{j}(S\prime)\). In the former case, we see that the
+     two strategies have the same payoff as desired. In the latter case, we have
+     a contradiction because \(\mu_{j}(S\prime) = \mu_{i}(S\prime) > \mu_{i}(S) 
+     = \mu_{j}(S) > \mu_{j}(S\prime)\). Thus, all of the Pareto optimal strategies 
+     must have the same payoff.
+     </p>
+     </details>
+  4. Why does definition 3.3.12 imply that the vertices of a simplex must all 
+  receive different labels?
   5. Why in definition 3.4.12 does it not matter that the mapping is to pure strategies rather than a mixed strategy?
   6. Take your favorite normal-form game, find a Nash Equilibrium, and then find a corresponding Correlated Equilibrium.
 
@@ -104,15 +158,17 @@ requisite understanding to tackle DeepStack.
   section is imperative as Poker is best described as an Extensive-Form Game.
   
   **Required Reading**:
-  1. MAS 5.1.{1,2,3}
-  2. MAS 5.2.{1,2,3}
-  3. [Accelerating Best Response Calculation in Large Extensive Games](http://martin.zinkevich.org/publications/ijcai2011_rgbr.pdf) --> Important for understanding how to evaluate Poker algorithms.
+  1. MAS: Sections 5.1.1 - 5.1.3.
+  2. MAS: Sections 5.2.1 - 5.2.3.
+  3. [Accelerating Best Response Calculation in Large Extensive Games](http://martin.zinkevich.org/publications/ijcai2011_rgbr.pdf): 
+  This is important for understanding how to evaluate Poker algorithms.
   
   **Optional Reading**: 
-  1. LT Section 2.1.2
+  1. LT: Section 2.1.2.
 
   **Questions**:
-  1. What is the intuition for why not all normal form games can be transformed into perfect-form extensive games?
+  1. What is the intuition for why not all normal form games can be transformed 
+  into perfect-form extensive games?
   2. How are the set of behavioral strategies different from the set of mixed strategies?
   3. Succinctly describe the technique demonstrated in the Accelerating Best Response paper.
 
@@ -124,18 +180,21 @@ requisite understanding to tackle DeepStack.
   algorithm works practically and get our hands dirty coding up our implementation.
   
   **Required Reading**:
-  1. ICRM: 2.1-2.4, 3.1-3.4
-  2. LT: 2.2
-  3. Original Paper --> [Regret Minimization in Games with Incomplete Information](http://poker.cs.ualberta.ca/publications/NIPS07-cfr.pdf)
+  1. ICRM: Sections 2.1-2.4.
+  2. ICRM: Sections 3.1-3.4.
+  2. LT: Section 2.2.
+  3. [Regret Minimization in Games with Incomplete Information](http://poker.cs.ualberta.ca/publications/NIPS07-cfr.pdf).
   
-  **Optional Reading**: The two below are CFR extensions used in DeepStack.
-  1. CFR-D --> [Solving Imperfect Information Games Using Decomposition](https://pdfs.semanticscholar.org/8216/0cbdcbeb13d53db85da928d8c42a789fdd69.pdf)
-  2. CFR+ --> [Solving Large Imperfect Information Games Using CFR+](https://arxiv.org/pdf/1407.5042.pdf)
+  **Optional Reading**: These two papers are CFR extensions used in DeepStack.
+  1. [Solving Imperfect Information Games Using Decomposition](https://pdfs.semanticscholar.org/8216/0cbdcbeb13d53db85da928d8c42a789fdd69.pdf): CFR-D.
+  2. [Solving Large Imperfect Information Games Using CFR+](https://arxiv.org/pdf/1407.5042.pdf): CFR+.
   
   **Questions**:
-  1. What is the difference between internal regret, external regret, and counterfactual regret?
-  2. Implement CFR (or CFR+ / CFR-D) in your favorite programming language to play Leduc Poker or Liar’s Dice. 
-  3. How do you know if you’ve implemented CFR correctly?
+  1. What is the difference between internal regret, external regret, and counterfactual 
+  regret?
+  2. Implement CFR (or CFR+ / CFR-D) in your favorite programming language to play 
+  Leduc Poker or Liar’s Dice. 
+  3. How do you know if you've implemented CFR correctly?
 
 <br>
 # 5 Counterfactual Regret Minimization #2
@@ -146,18 +205,19 @@ requisite understanding to tackle DeepStack.
   keener understanding of CFR's strengths.
   
   **Required**:
-  1. PLG: Section 7.3-7.7, 7.9
+  1. PLG: Sections 7.3 - 7.7, 7.9.
   
   **Optional**:
-  1. [A Simple Adaptive Procedure Leading to Correlated Equilibrium](http://wwwf.imperial.ac.uk/~dturaev/Hart0.pdf) --> Important originating paper.
-  2. [Prof. Johari's 2007 Class - 11](http://web.stanford.edu/~rjohari/teaching/notes/336_lecture11_2007.pdf)
-  3. [Prof. Johari's 2007 Class - 13](http://web.stanford.edu/~rjohari/teaching/notes/336_lecture13_2007.pdf)
-  4. [Prof. Johari's 2007 Class - 14](http://web.stanford.edu/~rjohari/teaching/notes/336_lecture14_2007.pdf)
-  5. [Prof. Johari's 2007 Class - 15](http://web.stanford.edu/~rjohari/teaching/notes/336_lecture15_2007.pdf)
+  1. [A Simple Adaptive Procedure Leading to Correlated Equilibrium](http://wwwf.imperial.ac.uk/~dturaev/Hart0.pdf).
+  2. [Prof. Johari's 2007 Class - 11](http://web.stanford.edu/~rjohari/teaching/notes/336_lecture11_2007.pdf).
+  3. [Prof. Johari's 2007 Class - 13](http://web.stanford.edu/~rjohari/teaching/notes/336_lecture13_2007.pdf).
+  4. [Prof. Johari's 2007 Class - 14](http://web.stanford.edu/~rjohari/teaching/notes/336_lecture14_2007.pdf).
+  5. [Prof. Johari's 2007 Class - 15](http://web.stanford.edu/~rjohari/teaching/notes/336_lecture15_2007.pdf).
   
   **Questions**:
   1. Prove Lemma 7.1.
-  2. It’s brushed over in the proof of Theorem 7.5 (PLG), but prove that if set S is approachable, then every halfspace H containing S is approachable.
+  2. It's brushed over in the proof of Theorem 7.5 in PLG, but prove that if set 
+  \(S\) is approachable, then every halfspace \(H\) containing \(S\) is approachable.
 
 <br>
 # 6 DeepStack
