@@ -169,8 +169,21 @@ requisite understanding to tackle DeepStack.
   **Questions**:
   1. What is the intuition for why not all normal form games can be transformed 
   into perfect-form extensive games?
-  2. How are the set of behavioral strategies different from the set of mixed strategies?
-  3. Succinctly describe the technique demonstrated in the Accelerating Best Response paper.
+     <details><summary>Solution</summary>
+     <p>The problem is one of modeling simultaneity. Perfect information 
+     extensive form games have trouble modeling concurrent moves because they
+     have an an explicit temporal structure of moves.
+     </p>
+     </details>
+  2. Why does that change when the transformation is to imperfect extensive games?  
+  3. How are the set of behavioral strategies different from the set of mixed strategies?
+     <details><summary>Solution</summary>
+     <p>The set of Mixed Strategies are each distributions over pure strategies. 
+     The set of Behavioral Strategies are each vectors of distributions over the
+     actions and assign that distribution independently at each Information Set.
+     </p>
+     </details>
+  4. Succinctly describe the technique demonstrated in the Accelerating Best Response paper.
 
 <br>
 # 4 Counterfactual Regret Minimization #1
@@ -217,7 +230,7 @@ requisite understanding to tackle DeepStack.
   **Questions**:
   1. Prove Lemma 7.1.
   2. It's brushed over in the proof of Theorem 7.5 in PLG, but prove that if set 
-  \(S\) is approachable, then every halfspace \(H\) containing \(S\) is approachable.
+  $$S$$ is approachable, then every halfspace $$H$$ containing $$S$$ is approachable.
 
 <br>
 # 6 DeepStack
