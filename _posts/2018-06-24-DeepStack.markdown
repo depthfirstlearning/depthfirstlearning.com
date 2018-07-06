@@ -143,10 +143,13 @@ requisite understanding to tackle DeepStack.
      must have the same payoff.
      </p>
      </details>
-  4. Why does definition 3.3.12 imply that the vertices of a simplex must all 
-  receive different labels?
-  5. Why in definition 3.4.12 does it not matter that the mapping is to pure strategies rather than a mixed strategy?
-  6. Take your favorite normal-form game, find a Nash Equilibrium, and then find a corresponding Correlated Equilibrium.
+  4. In MAS, why does definition 3.3.12 imply that the vertices of a simplex must
+  all receive different labels?
+     TODO
+  5. In MAS, why in definition 3.4.12 does it not matter that the mapping is to 
+  pure strategies rather than a mixed strategy?
+  6. Take your favorite normal-form game, find a Nash Equilibrium, and then find 
+  a corresponding Correlated Equilibrium.
 
 <br>
 # 3 Extensive-Form Games
@@ -203,11 +206,38 @@ requisite understanding to tackle DeepStack.
   2. [Solving Large Imperfect Information Games Using CFR+](https://arxiv.org/pdf/1407.5042.pdf): CFR+.
   
   **Questions**:
-  1. What is the difference between internal regret, external regret, and counterfactual 
-  regret?
-  2. Implement CFR (or CFR+ / CFR-D) in your favorite programming language to play 
+  1. What is the difference between external regret, internal regret, swap regret,
+  and counterfactual regret?
+     <details><summary>Hint</summary>
+     <p>The definitions of the three are the following:</p>
+     <ul>
+     <li><b>External Regret</b>: How much the algorithm regrets not taking the best
+     single decision in hindsight. We compare to a policy that performs a single
+     action in all timesteps.</li>
+     <li><b>Internal Regret</b>: How much the algorithm regrets making one choice
+     over another in all instances. An example is whenever you bought Amazon stock,
+     you instead bought Microsoft stock.</li>
+     <li><b>Swap Regret</b>: Similar to Internal Regret but instead of one categorical
+     action being replaced wholesale with another categorical action, now we allow
+     for any number of categorical swaps.</li>
+     <li><b>Counterfactual Regret</b>: Assuming that your actions take you to a 
+     node, this is the expectation of that node over your opponents' strategies.
+     The counterfactual component is that we assume you get to that node with a
+     probability of one.</li>
+     </ul>
+     </details>
+  2. Why is Swap Regret important?
+     <details><summary>Hint</summary>
+     <p>Swap Regret is connected to Correlated Equilibrium. Can you see why?</p>
+     </details>
+  3. Implement CFR (or CFR+ / CFR-D) in your favorite programming language to play 
   Leduc Poker or Liar’s Dice. 
-  3. How do you know if you've implemented CFR correctly?
+  4. How do you know if you've implemented CFR correctly?
+     <details><summary>Solution</summary>
+     <p>One way is to test it by implementing Local Best Response. It should 
+     perform admirably against that algorithm, which is meant to best it.</p>
+     </details>
+    
 
 <br>
 # 5 Counterfactual Regret Minimization #2
@@ -228,9 +258,11 @@ requisite understanding to tackle DeepStack.
   5. [Prof. Johari's 2007 Class - 15](http://web.stanford.edu/~rjohari/teaching/notes/336_lecture15_2007.pdf).
   
   **Questions**:
-  1. Prove Lemma 7.1.
+  1. Prove Lemma 7.1 in PLG.
+     TODO
   2. It's brushed over in the proof of Theorem 7.5 in PLG, but prove that if set 
   $$S$$ is approachable, then every halfspace $$H$$ containing $$S$$ is approachable.
+     TODO
 
 <br>
 # 6 DeepStack
@@ -252,5 +284,6 @@ requisite understanding to tackle DeepStack.
   
   **Questions**:
   1. What are the differences between the approaches taken in DeepStack and in Libratus?
+     TODO
   2. Do you understand "Continual Re-solving"?
   3. Do you understand AIVAT?
