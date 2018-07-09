@@ -20,6 +20,11 @@ recitation, and my fellow students Ojas Deshpande, Anant Gupta, Xintian Han,
 Sanyam Kapoor, Chen Li, Yixiang Luo, Chirag Maheshwari, Zsolt Pajor-Gyulai,
 Roberta Raileanu, Ryan Saxe, and Liang Zhuo.
 
+<div class="deps-graph">
+  <iframe class="deps" src="/assets/deepstack-deps.svg" width="200"></iframe>
+  <div>Concepts used in DeepStack. Click to navigate.</div>
+</div>
+
 # Why
 
 Along with Libratus, DeepStack is one of two approaches to solving No-Limit 
@@ -42,14 +47,14 @@ requisite understanding to tackle DeepStack.
 
 <br>
 # Common Resources:
-1. MAS: [Multi Agent Systems](http://www.masfoundations.org/mas.pdf)
-2. LT: [Marc Lanctot’s Thesis](http://mlanctot.info/files/papers/PhD_Thesis_MarcLanctot.pdf)
-3. ICRM: [Introduction to Counterfactual Regret Minimization](http://modelai.gettysburg.edu/2013/cfr/cfr.pdf**)
-4. PLG: [Prediction, Learning, and Games](http://www.ii.uni.wroc.pl/~lukstafi/pmwiki/uploads/AGT/Prediction_Learning_and_Games.pdf)
+1. MAS: [Multi Agent Systems](http://www.masfoundations.org/mas.pdf).
+2. LT: [Marc Lanctot’s Thesis](http://mlanctot.info/files/papers/PhD_Thesis_MarcLanctot.pdf).
+3. ICRM: [Introduction to Counterfactual Regret Minimization](http://modelai.gettysburg.edu/2013/cfr/cfr.pdf**).
+4. PLG: [Prediction, Learning, and Games](http://www.ii.uni.wroc.pl/~lukstafi/pmwiki/uploads/AGT/Prediction_Learning_and_Games.pdf).
 
 <br>
-# 1 Normal-Form Games & Poker
-  **Motivation**: Normal-Form games are the backbone for many of the techniques 
+# 1 Normal Form Games & Poker
+  **Motivation**: Normal Form games are the backbone for many of the techniques 
   that later were used in DeepStack and Libratus. Most of Game Theory is built on
   top of the understanding that this framework illuminates. In addition, we go
   over the rules of Poker and why it had proved so difficult to solve.
@@ -94,25 +99,34 @@ requisite understanding to tackle DeepStack.
      which also implies that the strategies are interchangeable, i.e.
      \(\mu(\sigma_{i}\prime, \sigma_{-i}prime) = \mu(\sigma_{i}\prime, \sigma_{-i})\).
      </details>
-  3. MAS: Prove Lemma 3.1.6 (page 51) without consulting the book.
-  4. MAS: Prove Theorem 3.1.8 (page 52) without consulting the book. This theorem
-  ensures that rational agents need only maximize the expectation of 
-  single-dimensional utility functions. Proving this result is a good test of 
-  your understanding.
+  3. MAS: Prove Lemma 3.1.6. If a preference relation $$\succeq$$ satifies the axioms
+     completeness, transitivity, decomposability, and monotonicity, and if $$o_1 \succ o_2$$
+     and $$o_2 \succ o_1$$, then there exists probability $$p$$ s.t. $$\forall p' < p$$,
+     $$o_2 \succ [p': o_1; (1 - p'): o_3]$$ and $$\forall p'' > p$$,
+     $$[p'': o_1; (1 - p''): o_3] \succ o_2.$$
+  4. MAS: Theorem 3.1.8 ensures that rational agents need only maximize the expectation
+  of single-dimensional utility functions. Prove this result as a good test of your
+  understanding. If a preference relation $$\succeq$$ satifies the axioms completeness,
+  transitivity, substitutability, decomposability, monotonicity, and continuity, then
+  there exists a function $$u: \mathbb{L} \mapsto [0, 1]$$ with the properties that:
+  <ol>
+  <li>\(u(o_1) \geq u(o_2)\) iff \(o_1 \succeq o_2\).</li>
+  <li>\(u([p_1 : o_1, ..., p_k: o_k]) = \sum_{i=1}^k p_{i}u(o_i)\).</li>
+  </ol>
 
 <br>
-# 2 Optimality and Equilibrium 
+# 2 Optimality & Equilibrium 
   **Motivation**: How do you reason about games? The best strategy in multi-agent 
   scenario depends on the choices of others. Game theory deals with this problem 
-  by identifying subsets of outcomes called solution concepts, of which 
-  fundamental ones are the Nash Equilibrium, Pareto Optimality, and Correlated 
-  Equilibrium. In this section, we learn about these concepts and understand games
-  in terms of what they imply and how easy or hard it is to discover represenative
-  strategies.
+  by identifying subsets of outcomes called solution concepts. Fundamentally, these
+  are the Nash Equilibrium, Pareto Optimality, and Correlated Equilibrium. In this
+  section, we learn about these concepts and understand games in terms of what
+  the individual solution concepts imply and how difficult it is to discover
+  representative strategies for each of them.
   
   **Required Reading**:
   1. MAS: Sections 3.3, 3.4.5, 3.4.7, 4.1, 4.2.4, 4.3, & 4.6.
-  2. LT: Section 2.1.1
+  2. LT: Section 2.1.1.
   
   **Optional Reading**:
   1. MAS: Section 3.4.
@@ -143,22 +157,28 @@ requisite understanding to tackle DeepStack.
      must have the same payoff.
      </p>
      </details>
-  4. In MAS, why does definition 3.3.12 imply that the vertices of a simplex must
+  4. MAS: Why does definition 3.3.12 imply that the vertices of a simplex must
   all receive different labels?
-     TODO
-  5. In MAS, why in definition 3.4.12 does it not matter that the mapping is to 
+     <details><summary>Solution</summary>
+     <p>This follows from the definiitions of \(\mathbb{L}(v)\) and \(\chi(v)\).
+     At the vertices of the simplex, \(\chi\) will only have singular values in
+     its range defined by the vertice itself. Consequently, \(\mathbb{L}\) must
+     as well.
+     </p>
+     </details>
+  5. MAS: Why in definition 3.4.12 does it not matter that the mapping is to 
   pure strategies rather than a mixed strategy?
   6. Take your favorite normal-form game, find a Nash Equilibrium, and then find 
   a corresponding Correlated Equilibrium.
 
 <br>
-# 3 Extensive-Form Games
+# 3 Extensive Form Games
   **Motivation**: What happens when players don't act simultaneously? 
-  Extensive-Form Games are an answer to this question. While this representation 
-  of a game always has a comparable Normal-Form, it's much more natural to reason 
+  Extensive Form Games are an answer to this question. While this representation 
+  of a game always has a comparable Normal Form, it's much more natural to reason 
   about sequential games in this format. Examples include familiar ones like Go, 
   but also more exotic games like Magic: The Gathering and Civilization. This 
-  section is imperative as Poker is best described as an Extensive-Form Game.
+  section is imperative as Poker is best described as an Extensive Form Game.
   
   **Required Reading**:
   1. MAS: Sections 5.1.1 - 5.1.3.
@@ -194,6 +214,9 @@ requisite understanding to tackle DeepStack.
   but has already achieved huge success as the foundation underlying DeepStack 
   and Libratus. In the first of two weeks dedicated to CFR, we learn how the
   algorithm works practically and get our hands dirty coding up our implementation.
+
+  The optional readings are the two papers introducing CFR-D and CFR+, further
+  iterations upon CFR. These are both used in DeepStack.
   
   **Required Reading**:
   1. ICRM: Sections 2.1-2.4.
@@ -238,7 +261,6 @@ requisite understanding to tackle DeepStack.
      perform admirably against that algorithm, which is meant to best it.</p>
      </details>
     
-
 <br>
 # 5 Counterfactual Regret Minimization #2
   **Motivation**: We saw last week the practical side of CFR and how effective it 
@@ -258,32 +280,64 @@ requisite understanding to tackle DeepStack.
   5. [Prof. Johari's 2007 Class - 15](http://web.stanford.edu/~rjohari/teaching/notes/336_lecture15_2007.pdf).
   
   **Questions**:
-  1. Prove Lemma 7.1 in PLG.
-     TODO
+  1. PLG: Prove Lemma 7.1. A probability distribution $$P$$ over the set of all $$K$$-tuples
+     $$i = (i_{1}, ..., i_{K})$$ of actions is a correlated equilibrium if and only if, for every
+     player $$k \in {1, ..., K}$$ and actions $$j, j' \in {1, ..., N_{k}}$$, we have that
+
+     $$
+     \begin{center}
+     \sum_{i: i_{k} = j} P(i)\big(\mathcal{l}(i) - \mathcal{l}(i^{-}, j')\big) \leq 0
+     \end{center}
+     $$
+
+     where $$(i^{-}, j') = (i_{1}, ..., i_{k-1}, j', i_{k+1}, ..., i_{K})$$.
   2. It's brushed over in the proof of Theorem 7.5 in PLG, but prove that if set 
   $$S$$ is approachable, then every halfspace $$H$$ containing $$S$$ is approachable.
-     TODO
+     <details><summary>Solution</summary>
+     <p>Because \(S \in H\) is approachable, we can always find a strategy for player one s.t.
+     the necessary approachability clauses hold (see Johari's Lecture 13). Namely, choose
+     the strategy in \(S\) that asserts \(S\) as being approachable.</p>
+     </details>
 
 <br>
 # 6 DeepStack
-  **Motivation**: Let’s read the paper! In addition to DeepStack, we also include 
-  Libratus as an optional reading. It's important to keep this paper in mind as 
-  it highlights that the really important concepts in this curriculum are the 
-  Game Theory and CFR. Deep Learning is not necessary to build a champion Poker 
-  bot.
+  **Motivation**: Let’s read the paper! A summary of what's going on to help with your
+  understanding is the following:
+
+  DeepStack runs counterfactual regret minimization at every decision. However, it uses
+  two separate neural networks, one for after the flop and one for after the turn, to
+  estimate the counterfactual values without having to continue running CFR after those
+  moments. This approach is trained beforehand and helps greatly with cutting short the
+  search space at inference time. Each of the networks take as input the size of the pot
+  and the current bayesian ranges for each player across all hands. They output the
+  counterfactual values for each hand for each player.
+
+  In addition to DeepStack, we also include Libratus as required reading. It's important
+  to grok this paper as well as it highlights that the really important concepts in this
+  curriculum are the Game Theory and CFR; Deep Learning is not necessary to build a champion
+  Poker bot.
   
   **Required Reading**:
-  1. [DeepStack: Expert-Level Artificial Intelligence in Heads-Up No-Limit Poker](https://static1.squarespace.com/static/58a75073e6f2e1c1d5b36630/t/58b7a3dce3df28761dd25e54/1488430045412/DeepStack.pdf)
-  2. [DeepStack Supplementary Materials](https://static1.squarespace.com/static/58a75073e6f2e1c1d5b36630/t/58bed28de3df287015e43277/1488900766618/DeepStackSupplement.pdf)
-  3. [Michael Bowling on DeepStack](https://vimeo.com/212288252)
+  1. [DeepStack: Expert-Level Artificial Intelligence in Heads-Up No-Limit Poker](https://static1.squarespace.com/static/58a75073e6f2e1c1d5b36630/t/58b7a3dce3df28761dd25e54/1488430045412/DeepStack.pdf).
+  2. [DeepStack Supplementary Materials](https://static1.squarespace.com/static/58a75073e6f2e1c1d5b36630/t/58bed28de3df287015e43277/1488900766618/DeepStackSupplement.pdf).
+  3. [Libratus](http://www.cs.cmu.edu/~sandholm/safeAndNested.aaa17WS.pdf).
+  4. [Michael Bowling on DeepStack](https://vimeo.com/212288252).
   
   **Optional Reading**:
-  1. [DeepStack Implementation for Leduc Hold’em](https://github.com/lifrordi/DeepStack-Leduc)
-  2. [Libratus](http://www.cs.cmu.edu/~sandholm/safeAndNested.aaa17WS.pdf)
-  3. [Noam Brown on Libratus](https://www.youtube.com/watch?v=2dX0lwaQRX0)
+  1. [DeepStack Implementation for Leduc Hold’em](https://github.com/lifrordi/DeepStack-Leduc).
+  2. [Noam Brown on Libratus](https://www.youtube.com/watch?v=2dX0lwaQRX0).
+  3. [Depth-Limited Solving for Imperfect-Information Games](https://arxiv.org/abs/1805.08195): This paper is fascinating because it is achieves a poker-playing bot almost as good as Libratus but using a fraction of the necessary computation and disk space.
   
   **Questions**:
   1. What are the differences between the approaches taken in DeepStack and in Libratus?
-     TODO
-  2. Do you understand "Continual Re-solving"?
-  3. Do you understand AIVAT?
+     <details><summary>Solution</summary>
+     <p>Here are some differences:</p>
+     <ul>
+     <li>A clear difference is that DeepStack uses a deep neural network to reduce the necessary search space, and Libratus does not.</li>
+     <li>DeepStack does not use any action abstraction and instead melds those considerations into the pot size input. Libratus does use a dense action abstraction but adapts it each game and additionally constructs new sub-games on the fly for actions not in its abstraction.</li>
+     <li>DeepStack uses card abstraction by first clustering the hands into 1000 buckets and then considering probabilities over that range. Libratus does not use any card abstraction preflop or on the flop, but does use it on later rounds such that the game's \(10^{61}\) decision points are reduced to \(10^{12}\).</li>
+     <li>DeepStack does not have a way to learn from recent games without further neural network training. On the other hand, Libratus improves via a background process that adds novel opponent actions to its action abstraction.</li>
+     </ul>
+     </details>
+  2. Can you succinctly explain "Continual Re-solving"?
+  3. Can you succinctly explain AIVAT?
