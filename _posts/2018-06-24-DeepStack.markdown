@@ -81,23 +81,23 @@ requisite understanding to tackle DeepStack.
      <details><summary>Solution</summary>
      <p>We will solve both this problem and the one above here. We have that if
      \(\mu_{i}(\sigma) = \mu(\sigma_{i}, \sigma_{-i})\) and
-     \(\mu_{i}(\sigma\prime) = \mu(\sigma_{i}\prime, \sigma_{-i}\prime)\) are both 
+     \(\mu_{i}(\sigma') = \mu(\sigma_{i}', \sigma_{-i}')\) are both 
      Nash Equilibria, then:</p>
      <p>\(
      \begin{align}
-     \mu_{i}(\sigma_{i}, \sigma_{-i}) &\geq \mu_{i}(\sigma_{i}\prime, \sigma_{-i}) \\
-     &= c - \mu_{-i}(\sigma_{i}\prime, \sigma_{-i}) \\
-     &\geq c - \mu_{-i}(\sigma_{i}\prime, \sigma_{-i}\prime) \\
-     &= \mu_{i}(\sigma_{i}\prime, \sigma_{-i}\prime)
+     \mu_{i}(\sigma_{i}, \sigma_{-i}) &\geq \mu_{i}(\sigma_{i}', \sigma_{-i}) \\
+     &= c - \mu_{-i}(\sigma_{i}', \sigma_{-i}) \\
+     &\geq c - \mu_{-i}(\sigma_{i}', \sigma_{-i}') \\
+     &= \mu_{i}(\sigma_{i}', \sigma_{-i}')
      \end{align}
      \)
      </p>
      <p>In a similar fashion, we can show that 
-     \(\mu(\sigma_{i}\prime, \sigma_{-i}prime) \geq \mu(\sigma_{i}, \sigma_{-i})\).
+     \(\mu(\sigma_{i}', \sigma_{-i}prime) \geq \mu(\sigma_{i}, \sigma_{-i})\).
      </p>
-     Consequently, \(\mu(\sigma_{i}\prime, \sigma_{-i}prime) = \mu(\sigma_{i}, \sigma_{-i})\),
+     Consequently, \(\mu(\sigma_{i}', \sigma_{-i}prime) = \mu(\sigma_{i}, \sigma_{-i})\),
      which also implies that the strategies are interchangeable, i.e.
-     \(\mu(\sigma_{i}\prime, \sigma_{-i}prime) = \mu(\sigma_{i}\prime, \sigma_{-i})\).
+     \(\mu(\sigma_{i}', \sigma_{-i}prime) = \mu(\sigma_{i}', \sigma_{-i})\).
      </details>
   3. MAS: Prove Lemma 3.1.6. If a preference relation $$\succeq$$ satifies the axioms
      completeness, transitivity, decomposability, and monotonicity, and if $$o_1 \succ o_2$$
@@ -135,7 +135,7 @@ requisite understanding to tackle DeepStack.
   1. Why must every game have a Pareto Optimal strategy?
      <details><summary>Solution</summary>
      <p>Say that a game did not have a Pareto optimal outcome. Then, for every 
-     outcome \(O\), there was another \(O\prime\) that Pareto-dominated \(O\).
+     outcome \(O\), there was another \(O'\) that Pareto-dominated \(O\).
      Say \(O_2 > O_1\). Because \(O_2\) is not Pareto optimal, there is some 
      \(O_k > O_2\). There cannot be a max in this chain (because that max would
      be Pareto optimal) and thus there must be some cycle. Consequently, there
@@ -147,13 +147,13 @@ requisite understanding to tackle DeepStack.
   all players adopt pure strategies?
   3. Why in common-payoff games do all Pareto optimal strategies have the same payoff?
      <details><summary>Solution</summary>
-     <p>Say two strategies \(S\) and \(S\prime\) are Pareto optimal. Then neither
-     dominates the other, so either \(\forall i \mu_{i}(S) = \mu_{i}(S\prime)\)
-     or there are two players \(i, j\) for which \(mu_{i}(S) < \mu_{i}(S\prime)\)
-     and \(mu_{j}(S) > \mu_{j}(S\prime)\). In the former case, we see that the
+     <p>Say two strategies \(S\) and \(S'\) are Pareto optimal. Then neither
+     dominates the other, so either \(\forall i \mu_{i}(S) = \mu_{i}(S')\)
+     or there are two players \(i, j\) for which \(mu_{i}(S) < \mu_{i}(S')\)
+     and \(mu_{j}(S) > \mu_{j}(S')\). In the former case, we see that the
      two strategies have the same payoff as desired. In the latter case, we have
-     a contradiction because \(\mu_{j}(S\prime) = \mu_{i}(S\prime) > \mu_{i}(S) 
-     = \mu_{j}(S) > \mu_{j}(S\prime)\). Thus, all of the Pareto optimal strategies 
+     a contradiction because \(\mu_{j}(S') = \mu_{i}(S') > \mu_{i}(S) 
+     = \mu_{j}(S) > \mu_{j}(S')\). Thus, all of the Pareto optimal strategies 
      must have the same payoff.
      </p>
      </details>
