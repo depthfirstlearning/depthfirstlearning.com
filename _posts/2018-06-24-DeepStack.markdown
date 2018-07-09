@@ -285,9 +285,7 @@ requisite understanding to tackle DeepStack.
      player $$k \in {1, ..., K}$$ and actions $$j, j' \in {1, ..., N_{k}}$$, we have that
 
      $$
-     \begin{center}
      \sum_{i: i_{k} = j} P(i)\big(\mathcal{l}(i) - \mathcal{l}(i^{-}, j')\big) \leq 0
-     \end{center}
      $$
 
      where $$(i^{-}, j') = (i_{1}, ..., i_{k-1}, j', i_{k+1}, ..., i_{K})$$.
