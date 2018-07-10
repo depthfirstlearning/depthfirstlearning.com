@@ -323,7 +323,7 @@ all of the necessary topics, including what is the
   **Required Reading**:
   1. [DeepStack: Expert-Level Artificial Intelligence in Heads-Up No-Limit Poker](https://static1.squarespace.com/static/58a75073e6f2e1c1d5b36630/t/58b7a3dce3df28761dd25e54/1488430045412/DeepStack.pdf).
   2. [DeepStack Supplementary Materials](https://static1.squarespace.com/static/58a75073e6f2e1c1d5b36630/t/58bed28de3df287015e43277/1488900766618/DeepStackSupplement.pdf).
-  3. [Libratus](http://www.cs.cmu.edu/~sandholm/safeAndNested.aaa17WS.pdf).
+  3. [Libratus](https://arxiv.org/pdf/1705.02955.pdf).
   4. [Michael Bowling on DeepStack](https://vimeo.com/212288252).
   
   **Optional Reading**:
