@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Deep Stack"
-date:   2018-07-10 12:00:00 -0400
+date:   2018-07-8 12:00:00 -0400
 categories: games
 author: cinjon
 blurb: "In this curriculum, you will explore Game Theory and Counterfactual
@@ -99,20 +99,22 @@ all of the necessary topics, including what is the
      \)
      </p>
      <p>In a similar fashion, we can show that 
-     \(\mu(\sigma_{i}', \sigma_{-i}prime) \geq \mu(\sigma_{i}, \sigma_{-i})\).
+     \(\mu(\sigma_{i}', \sigma_{-i}') \geq \mu(\sigma_{i}, \sigma_{-i})\).
      </p>
-     Consequently, \(\mu(\sigma_{i}', \sigma_{-i}prime) = \mu(\sigma_{i}, \sigma_{-i})\),
+     Consequently, \(\mu(\sigma_{i}', \sigma_{-i}') = \mu(\sigma_{i}, \sigma_{-i})\),
      which also implies that the strategies are interchangeable, i.e.
-     \(\mu(\sigma_{i}', \sigma_{-i}prime) = \mu(\sigma_{i}', \sigma_{-i})\).
+     \(\mu(\sigma_{i}', \sigma_{-i}') = \mu(\sigma_{i}', \sigma_{-i})\).
      </details>
-  3. MAS: Prove Lemma 3.1.6. If a preference relation $$\succeq$$ satifies the axioms
+  3. MAS: Prove Lemma 3.1.6. <br />
+     $$\textit{Lemma}$$: If a preference relation $$\succeq$$ satisfies the axioms
      completeness, transitivity, decomposability, and monotonicity, and if $$o_1 \succ o_2$$
      and $$o_2 \succ o_1$$, then there exists probability $$p$$ s.t. $$\forall p' < p$$,
-     $$o_2 \succ [p': o_1; (1 - p'): o_3]$$ and $$\forall p'' > p$$,
+     $$o_2 \succ [p': o_1; (1 - p'): o_3]$$ and for all $$p'' > p$$,
      $$[p'': o_1; (1 - p''): o_3] \succ o_2.$$
   4. MAS: Theorem 3.1.8 ensures that rational agents need only maximize the expectation
   of single-dimensional utility functions. Prove this result as a good test of your
-  understanding. If a preference relation $$\succeq$$ satifies the axioms completeness,
+  understanding. <br />
+  $$\textit{Theorem}$$: If a preference relation $$\succeq$$ satisfies the axioms completeness,
   transitivity, substitutability, decomposability, monotonicity, and continuity, then
   there exists a function $$u: \mathbb{L} \mapsto [0, 1]$$ with the properties that:
      1. $$u(o_1) \geq u(o_2)$$ iff $$o_1 \succeq o_2$$.
@@ -124,7 +126,7 @@ all of the necessary topics, including what is the
   scenarios depend on the choices of others. Game theory deals with this problem 
   by identifying subsets of outcomes called solution concepts. In this section, we
   discuss the fundamental solution concepts: Nash Equilibrium, Pareto Optimality, 
-  and Correlated Equilibrium. For each solution concept, We cover what it implies 
+  and Correlated Equilibrium. For each solution concept, we cover what it implies 
   for a given game and how difficult it is to discover a representative strategy.
   
   **Required Reading**:
@@ -135,7 +137,7 @@ all of the necessary topics, including what is the
   1. MAS: Section 3.4.
   
   **Questions**:
-  1. Why must every game have a Pareto Optimal strategy?
+  1. Why must every game have a Pareto optimal strategy?
      <details><summary>Solution</summary>
      <p>Say that a game did not have a Pareto optimal outcome. Then, for every 
      outcome \(O\), there was another \(O'\) that Pareto-dominated \(O\).
@@ -146,7 +148,7 @@ all of the necessary topics, including what is the
      contradiction.
      </p>
      </details>
-  2. Why must there always exist at least one Pareto Optimal Strategy in which 
+  2. Why must there always exist at least one Pareto optimal strategy in which 
   all players adopt pure strategies?
   3. Why in common-payoff games do all Pareto optimal strategies have the same payoff?
      <details><summary>Solution</summary>
@@ -163,14 +165,14 @@ all of the necessary topics, including what is the
   4. MAS: Why does definition 3.3.12 imply that the vertices of a simplex must
   all receive different labels?
      <details><summary>Solution</summary>
-     <p>This follows from the definiitions of \(\mathbb{L}(v)\) and \(\chi(v)\).
+     <p>This follows from the definitions of \(\mathbb{L}(v)\) and \(\chi(v)\).
      At the vertices of the simplex, \(\chi\) will only have singular values in
      its range defined by the vertice itself. Consequently, \(\mathbb{L}\) must
      as well.
      </p>
      </details>
   5. MAS: Why in definition 3.4.12 does it not matter that the mapping is to 
-  pure strategies rather than a mixed strategy?
+  pure strategies rather than mixed strategies?
   6. Take your favorite normal-form game, find a Nash Equilibrium, and then find 
   a corresponding Correlated Equilibrium.
 
@@ -198,14 +200,14 @@ all of the necessary topics, including what is the
      <details><summary>Solution</summary>
      <p>The problem is one of modeling simultaneity. Perfect information 
      extensive form games have trouble modeling concurrent moves because they
-     have an an explicit temporal structure of moves.
+     have an explicit temporal structure of moves.
      </p>
      </details>
   2. Why does that change when the transformation is to imperfect extensive games?  
   3. How are the set of behavioral strategies different from the set of mixed strategies?
      <details><summary>Solution</summary>
-     <p>The set of Mixed Strategies are each distributions over pure strategies. 
-     The set of Behavioral Strategies are each vectors of distributions over the
+     <p>The set of mixed strategies are each distributions over pure strategies. 
+     The set of behavioral strategies are each vectors of distributions over the
      actions and assign that distribution independently at each Information Set.
      </p>
      </details>
@@ -218,7 +220,7 @@ all of the necessary topics, including what is the
   and Libratus. In the first of two weeks dedicated to CFR, we learn how the
   algorithm works practically and get our hands dirty coding up our implementation.
 
-  The optional readings are the two papers introducing CFR-D and CFR+, further
+  The optional readings are papers introducing CFR-D and CFR+, further
   iterations upon CFR. These are both used in DeepStack.
   
   **Required Reading**:
@@ -283,9 +285,10 @@ all of the necessary topics, including what is the
   5. [Prof. Johari's 2007 Class - 15](http://web.stanford.edu/~rjohari/teaching/notes/336_lecture15_2007.pdf).
   
   **Questions**:
-  1. PLG: Prove Lemma 7.1. A probability distribution $$P$$ over the set of all $$K$$-tuples
-     $$i = (i_{1}, ..., i_{K})$$ of actions is a correlated equilibrium if and only if, for every
-     player $$k \in {1, ..., K}$$ and actions $$j, j' \in {1, ..., N_{k}}$$, we have that
+  1. PLG: Prove Lemma 7.1. <br />
+     $$\textit{Lemma}$$: A probability distribution $$P$$ over the set of all $$K$$-tuples
+     $$i = (i_{1}, ..., i_{K})$$ of actions is a correlated equilibrium iff, for every
+     player $$k \in {1, ..., K}$$ and actions $$j, j' \in {1, ..., N_{k}}$$, we have
 
      $$
      \sum_{i: i_{k} = j} P(i)\big(\mathcal{l}(i) - \mathcal{l}(i^{-}, j')\big) \leq 0
@@ -303,7 +306,7 @@ all of the necessary topics, including what is the
 <br>
 # 6 DeepStack
   **Motivation**: Let’s read the paper! A summary of what's going on to help with your
-  understanding is the following:
+  understanding:
 
   DeepStack runs counterfactual regret minimization at every decision. However, it uses
   two separate neural networks, one for after the flop and one for after the turn, to
@@ -313,10 +316,9 @@ all of the necessary topics, including what is the
   and the current Bayesian ranges for each player across all hands. They output the
   counterfactual values for each hand for each player.
 
-  In addition to DeepStack, we also include Libratus as required reading. It's important
-  to grok this paper as well as it highlights that the really important concepts in this
-  curriculum are the Game Theory and CFR; Deep Learning is not necessary to build a champion
-  Poker bot.
+  In addition to DeepStack, we also include Libratus as required reading. This paper
+  highlights Game Theory and CFR as the really important concepts in this curriculum; 
+  deep learning is not necessary to build a champion Poker bot.
   
   **Required Reading**:
   1. [DeepStack: Expert-Level Artificial Intelligence in Heads-Up No-Limit Poker](https://static1.squarespace.com/static/58a75073e6f2e1c1d5b36630/t/58b7a3dce3df28761dd25e54/1488430045412/DeepStack.pdf).
