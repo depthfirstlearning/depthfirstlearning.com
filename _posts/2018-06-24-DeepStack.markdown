@@ -54,9 +54,10 @@ requisite understanding to tackle DeepStack.
 
 <br>
 # 1 Normal Form Games & Poker
-  **Motivation**: Normal Form games are the backbone for many of the techniques 
-  that later were used in DeepStack and Libratus. Most of Game Theory is built on
-  top of the understanding that this framework illuminates. In addition, we go
+  **Motivation**: Most of Game Theory, as well as the particular techniques used in
+  DeepStack and Libratus, is built on top of the framework of Normal Form 
+  Games. (TODO: One sentence explanation of normal form games).
+  In this section, we cover the basics of Normal Form Games. In addition, we go
   over the rules of Poker and why it had proved so difficult to solve.
   
   **Required Reading**:
@@ -117,11 +118,11 @@ requisite understanding to tackle DeepStack.
 <br>
 # 2 Optimality & Equilibrium 
   **Motivation**: How do you reason about games? The best strategy in multi-agent 
-  scenario depends on the choices of others. Game theory deals with this problem 
-  by identifying subsets of outcomes called solution concepts. Fundamentally, these
-  are the Nash Equilibrium, Pareto Optimality, and Correlated Equilibrium. In this
-  section, we learn about these concepts and understand games in terms of what
-  the individual solution concepts imply and how difficult it is to discover
+  scenarios depends on the choices of others. Game theory deals with this problem 
+  by identifying subsets of outcomes called solution concepts. In this section, we
+  discuss these important solution concepts:
+  Nash Equilibrium, Pareto Optimality, and Correlated Equilibrium. We cover what
+  each solution concept implies for each game, and how difficult it is to discover
   representative strategies for each of them.
   
   **Required Reading**:
@@ -263,8 +264,8 @@ requisite understanding to tackle DeepStack.
     
 <br>
 # 5 Counterfactual Regret Minimization #2
-  **Motivation**: We saw last week the practical side of CFR and how effective it 
-  can be. This week we’ll understand the theory underlying it. This will culminate 
+  **Motivation**: In the last section, we saw the practical side of CFR and how effective it 
+  can be. In this section, we’ll understand the theory underlying it. This will culminate 
   with Blackwell’s Approachability Theorem, a generalization of repeated two-player 
   zero-sum games. This is a challenging session but the payoff will be a much 
   keener understanding of CFR's strengths.
@@ -307,7 +308,7 @@ requisite understanding to tackle DeepStack.
   estimate the counterfactual values without having to continue running CFR after those
   moments. This approach is trained beforehand and helps greatly with cutting short the
   search space at inference time. Each of the networks take as input the size of the pot
-  and the current bayesian ranges for each player across all hands. They output the
+  and the current Bayesian ranges for each player across all hands. They output the
   counterfactual values for each hand for each player.
 
   In addition to DeepStack, we also include Libratus as required reading. It's important
