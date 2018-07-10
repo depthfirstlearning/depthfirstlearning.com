@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Deep Stack"
-date:   2018-07-8 12:00:00 -0400
+date:   2018-07-10 12:00:00 -0400
 categories: games
 author: cinjon
 blurb: "In this curriculum, you will explore Game Theory and Counterfactual
@@ -35,8 +35,8 @@ as Go, but additionally is a game of imperfect information.
 The main idea behind both DeepStack and Libratus is to use Counterfactual Regret 
 Minimization (CFR) to find a mixed strategy that approximates a Nash Equilibrium 
 strategy. CFR's convergence properties guarantee that we will yield such a strategy
-and the closer we are to it, the better our outcome will be. They differ in how
-they implement this approach. In particular, DeepStack uses deep neural networks
+and the closer we are to it, the better our outcome will be. They differ in
+their implementation. In particular, DeepStack uses deep neural networks
 to approximate the counterfactual value of each hand at specific points in the
 game. While still being mathematically tight, this lets it cut short 
 the necessary computation to reach convergence.
@@ -59,9 +59,9 @@ all of the necessary topics, including what is the
 <br>
 # 1 Normal Form Games & Poker
   **Motivation**: Most of Game Theory, as well as the particular techniques used in
-  DeepStack and Libratus, is built on top of the framework of Normal Form 
-  Games. These are game descriptions and are familiarly represented as a matrix, 
-  with a famous example being the Prisoner's Dilemma. In this section, we cover 
+  DeepStack and Libratus, is built on the framework of Normal Form 
+  Games. These are game descriptions and are familiarly represented as a matrix; 
+  a famous example being the Prisoner's Dilemma. In this section, we cover 
   the basics of Normal Form Games. In addition, we go over the rules of Poker and 
   why it had proved so difficult to solve.
   
@@ -79,7 +79,7 @@ all of the necessary topics, including what is the
   **Questions**:
   1. LT: Prove that in a zero-sum game, the Nash Equilibrium strategies are interchangeable.
      <details><summary>Hint</summary>
-     <p>Use the definition of a Nash Equilibria along with the fact that 
+     <p>Use the definition of a Nash Equilibrium along with the fact that 
      \(\mu_{i}(\sigma_{i}, \sigma_{-i}) + \mu_{-i}(\sigma_{i}, \sigma_{-i}) = c\).
      </p>
      </details>
@@ -139,7 +139,7 @@ all of the necessary topics, including what is the
   **Questions**:
   1. Why must every game have a Pareto optimal strategy?
      <details><summary>Solution</summary>
-     <p>Say that a game did not have a Pareto optimal outcome. Then, for every 
+     <p>Say that a game does not have a Pareto optimal outcome. Then, for every 
      outcome \(O\), there was another \(O'\) that Pareto-dominated \(O\).
      Say \(O_2 > O_1\). Because \(O_2\) is not Pareto optimal, there is some 
      \(O_k > O_2\). There cannot be a max in this chain (because that max would
@@ -171,7 +171,7 @@ all of the necessary topics, including what is the
      as well.
      </p>
      </details>
-  5. MAS: Why in definition 3.4.12 does it not matter that the mapping is to 
+  5. MAS: Why in definition 3.4.12 does it matter that the mapping is to 
   pure strategies rather than mixed strategies?
   6. Take your favorite normal-form game, find a Nash Equilibrium, and then find 
   a corresponding Correlated Equilibrium.
@@ -182,7 +182,7 @@ all of the necessary topics, including what is the
   Extensive Form Games are an answer to this question. While this representation 
   of a game always has a comparable Normal Form, it's much more natural to reason 
   about sequential games in this format. Examples include familiar ones like Go, 
-  but also more exotic games like Magic: The Gathering and Civilization. This 
+  but also more exotic games like Magic: The Gathering, and Civilization. This 
   section is imperative as Poker is best described as an Extensive Form Game.
   
   **Required Reading**:
