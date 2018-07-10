@@ -7,7 +7,7 @@ author: cinjon
 blurb: "In this curriculum, you will explore Game Theory and Counterfactual
         Regret Minimization in order to understand techniques for solving two 
         person zero-sum games of incomplete information."
-hidden: true
+hidden: false
 feedback: true
 ---
 
@@ -29,8 +29,8 @@ Roberta Raileanu, Ryan Saxe, and Liang Zhuo.
 
 Along with Libratus, DeepStack is one of two approaches to solving No-Limit 
 Texas Hold-em that debuted coincidentally. This game was notoriously difficult
-to solve as it has just as large a branching factor as Go, but additionally is a
-game of imperfect information. 
+to solve as it has just as large a branching factor
+as Go, but additionally is a game of imperfect information.
 
 The main idea behind both DeepStack and Libratus is to use Counterfactual Regret 
 Minimization (CFR) to find a mixed strategy that approximates a Nash Equilibrium 
@@ -38,12 +38,16 @@ strategy. CFR's convergence properties guarantee that we will yield such a strat
 and the closer we are to it, the better our outcome will be. They differ in how
 they implement this approach. In particular, DeepStack uses deep neural networks
 to approximate the counterfactual value of each hand at specific points in the
-game. In a founded way, this lets it cut short the necessary computation to reach 
-convergence.
+game. While still being mathematically tight, this lets it cut short 
+the necessary computation to reach convergence.
 
 In this curriculum, you will explore the study of games with a tour through 
 game theory and counterfactual regret minimization while building up the 
-requisite understanding to tackle DeepStack.
+requisite understanding to tackle DeepStack. Along the way, you will learn
+all of the necessary topics, including what is the 
+[branching factor](https://en.wikipedia.org/wiki/Branching_factor), all about
+[Nash Equilibria](https://en.wikipedia.org/wiki/Nash_equilibrium), and 
+[CFR](https://www.quora.com/What-is-an-intuitive-explanation-of-counterfactual-regret-minimization).
 
 <br>
 # Common Resources:
@@ -56,9 +60,10 @@ requisite understanding to tackle DeepStack.
 # 1 Normal Form Games & Poker
   **Motivation**: Most of Game Theory, as well as the particular techniques used in
   DeepStack and Libratus, is built on top of the framework of Normal Form 
-  Games. (TODO: One sentence explanation of normal form games).
-  In this section, we cover the basics of Normal Form Games. In addition, we go
-  over the rules of Poker and why it had proved so difficult to solve.
+  Games. These are game descriptions and are familiarly represented as a matrix, 
+  with a famous example being the Prisoner's Dilemma. In this section, we cover 
+  the basics of Normal Form Games. In addition, we go over the rules of Poker and 
+  why it had proved so difficult to solve.
   
   **Required Reading**:
   1. MAS: Sections 3.1 & 3.2.
@@ -110,20 +115,17 @@ requisite understanding to tackle DeepStack.
   understanding. If a preference relation $$\succeq$$ satifies the axioms completeness,
   transitivity, substitutability, decomposability, monotonicity, and continuity, then
   there exists a function $$u: \mathbb{L} \mapsto [0, 1]$$ with the properties that:
-  <ol>
-  <li>\(u(o_1) \geq u(o_2)\) iff \(o_1 \succeq o_2\).</li>
-  <li>\(u([p_1 : o_1, ..., p_k: o_k]) = \sum_{i=1}^k p_{i}u(o_i)\).</li>
-  </ol>
+     1. $$u(o_1) \geq u(o_2)$$ iff $$o_1 \succeq o_2$$.
+     2. $$u([p_1 : o_1, ..., p_k: o_k]) = \sum_{i=1}^k p_{i}u(o_i)$$.
 
 <br>
 # 2 Optimality & Equilibrium 
-  **Motivation**: How do you reason about games? The best strategy in multi-agent 
-  scenarios depends on the choices of others. Game theory deals with this problem 
+  **Motivation**: How do you reason about games? The best strategies in multi-agent 
+  scenarios depend on the choices of others. Game theory deals with this problem 
   by identifying subsets of outcomes called solution concepts. In this section, we
-  discuss these important solution concepts:
-  Nash Equilibrium, Pareto Optimality, and Correlated Equilibrium. We cover what
-  each solution concept implies for each game, and how difficult it is to discover
-  representative strategies for each of them.
+  discuss the fundamental solution concepts: Nash Equilibrium, Pareto Optimality, 
+  and Correlated Equilibrium. For each solution concept, We cover what it implies 
+  for a given game and how difficult it is to discover a representative strategy.
   
   **Required Reading**:
   1. MAS: Sections 3.3, 3.4.5, 3.4.7, 4.1, 4.2.4, 4.3, & 4.6.
