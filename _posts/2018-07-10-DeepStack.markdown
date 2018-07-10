@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Deep Stack"
-date:   2018-07-10 12:00:00 -0400
+date:   2018-07-09 12:00:00 -0400
 categories: games
 author: cinjon
 blurb: "In this curriculum, you will explore Game Theory and Counterfactual
@@ -60,7 +60,7 @@ all of the necessary topics, including what is the
 # 1 Normal Form Games & Poker
   **Motivation**: Most of Game Theory, as well as the particular techniques used in
   DeepStack and Libratus, is built on the framework of Normal Form 
-  Games. These are game descriptions and are familiarly represented as a matrix; 
+  Games. These are game descriptions and are familiarly represented as a matrix,
   a famous example being the Prisoner's Dilemma. In this section, we cover 
   the basics of Normal Form Games. In addition, we go over the rules of Poker and 
   why it had proved so difficult to solve.
@@ -171,8 +171,8 @@ all of the necessary topics, including what is the
      as well.
      </p>
      </details>
-  5. MAS: Why in definition 3.4.12 does it matter that the mapping is to 
-  pure strategies rather than mixed strategies?
+  5. MAS: Why in definition 3.4.12 does it not matter that the mapping is to 
+  pure strategies rather than to mixed strategies?
   6. Take your favorite normal-form game, find a Nash Equilibrium, and then find 
   a corresponding Correlated Equilibrium.
 
@@ -182,7 +182,7 @@ all of the necessary topics, including what is the
   Extensive Form Games are an answer to this question. While this representation 
   of a game always has a comparable Normal Form, it's much more natural to reason 
   about sequential games in this format. Examples include familiar ones like Go, 
-  but also more exotic games like Magic: The Gathering, and Civilization. This 
+  but also more exotic games like Magic: The Gathering and Civilization. This 
   section is imperative as Poker is best described as an Extensive Form Game.
   
   **Required Reading**:
