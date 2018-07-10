@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "Deep Stack"
-date:   2018-07-09 12:00:00 -0400
+title:  "DeepStack"
+date:   2018-07-10 12:00:00 -0400
 categories: games
 author: cinjon
 blurb: "In this curriculum, you will explore Game Theory and Counterfactual
