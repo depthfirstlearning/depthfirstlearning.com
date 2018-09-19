@@ -40,7 +40,7 @@ algorithms.
   action and state spaces, and on-policy vs off-policy approaches. This leads to the
   REINFORCE algorithm, the simplest instantiation of the policy gradient method.
 
-  <a href="https://colab.research.google.com/drive/1KFQ-NvcYHL0Pi9TUM96iTEGZzt9GLffO" class="colab-root">Reproduce in a <span>Notebook</span></a>
+  <a href="https://drive.google.com/file/d/1KFQ-NvcYHL0Pi9TUM96iTEGZzt9GLffO/view?usp=sharing" class="colab-root">Reproduce in a <span>Notebook</span></a>
 
   **Topics**:
   1. Markov Decision Processes.
