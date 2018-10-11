@@ -2,6 +2,18 @@
 layout: default
 ---
 
+<div class="welcome">
+  <div class="inner">
+    <h2>Welcome to Depth First Learning!</h2>
+    <p class="welcome-blurb">DFL is a compendium of curricula to help you deeply understand Machine Learning.</p>
+    <p class="welcome-blurb">Each of our posts are a self-contained lesson plan targeting a significant research paper and complete with readings, questions, and answers.</p>
+    <p class="welcome-blurb">We can guarantee that honestly engaging the material
+    will leave you with a thorough understanding of the methods, background, and
+    significance of that paper.</p>
+  </div>
+</div>
+
+    
 <div class="catalogue">
   {% for post in paginator.posts %}
     <a href="{{ post.url | prepend: site.baseurl }}" class="catalogue-item">
@@ -10,7 +22,7 @@ layout: default
         <h1 class="catalogue-title">{{ post.title }}</h1>
         <div class="catalogue-line"></div>
 
-        <p> {{ post.blurb | strip_html }} </p>
+        <p> {{ post.blurb | strip_html }} &nbsp; <span class="more-arrow">&#10233;</span> </p>
 
       </div>
     </a>

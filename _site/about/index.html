@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Depth First Learning" />
+
   <title>
     
        &middot; Depth First Learning
@@ -20,12 +22,62 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-96119946-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-120448221-1');
+  </script>
+
   <script type="text/javascript">
     window.onload = function() {
       Array.prototype.slice.call(document.querySelectorAll("a")).forEach(function(a) {
         if (a.getAttribute('href').startsWith("http")) {
           a.target = "_blank";
         }
+      });
+
+
+      Array.prototype.slice.call(document.querySelectorAll("iframe.deps")).forEach(function(iframe) {
+        // Add CSS to all deps iframes
+        css = 'a { cursor: pointer; } div { color: #4a9ae1; } div:hover { text-decoration: underline; }';
+        var style = document.createElement('style');
+        style.appendChild(document.createTextNode(css));
+        iframe.contentDocument.children[0].appendChild(style);
+
+        // Fix size of SVG container
+        svg = iframe.contentDocument.querySelector("svg");
+        if (svg) {
+          scale = parseInt(iframe.width) / parseInt(svg.getAttribute("width"));
+          transform = "scale(" + scale + ")";
+          gElement = svg.querySelector("g");
+
+          gElement.style["transform"] = transform;
+          gElement.style["-ms-transform"] = transform;
+          gElement.style["-moz-transform"] = transform;
+          gElement.style["-o-transform"] = transform;
+          gElement.style["-webkit-transform"] = transform;
+
+          gElement.style["transform-origin"] = "0 0";
+          gElement.style["-ms-transform-origin"] = "0 0";
+          gElement.style["-moz-transform-origin"] = "0 0";
+          gElement.style["-o-transform-origin"] = "0 0";
+          gElement.style["-webkit-transform-origin"] = "0 0";
+
+          iframe.height = svg.height.baseVal.value * scale;
+          iframe.scrolling = "no";
+        }
+
+        // Fix links in embedded SVG files, used to navigate between dependencies
+        Array.prototype.slice.call(iframe.contentDocument.querySelectorAll("a")).forEach(function(a) {
+          if (a.getAttribute("xlink:href")) {
+            a.setAttribute("xlink:href", window.location.href.split("#")[0] + a.getAttribute("xlink:href"));  
+            a.setAttribute("target", "_parent");
+          }
+        });
       });
     };
   </script>
@@ -36,11 +88,12 @@
     <nav class="nav">
       <div class="nav-container">
         <a href="/">
-          <img class="nav-title" src="/assets/title-img.png " />
+          <img class="nav-title" src="/assets/title-img.svg " width=158 height=89/>
         </a>
         <ul>
           <li><a href="/about">About</a></li>
           <li><a href="/">Curriculums</a></li>
+          <li><a href="https://twitter.com/DepthFirstLearn">Follow on Twitter</a></li>
         </ul>
       </div>
     </nav>
@@ -48,15 +101,17 @@
     <main>
       
 
+
+
 <div class="post">
 
   <script type="text/javascript"
-    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
   </script>
 
   <div class="post-info">
-    <span>Written by</span>
     
+      <span>Written by</span>
       <a href="http://twitter.com/depthfirstlearning" target="_blank">Depth First Learning</a> 
     
 
@@ -78,24 +133,29 @@ what to start searching to clarify parts of the paper.</p>
 <p>We at DFL share an interest in developing a deeper understanding. Together, we 
 chose a few modern papers that we believed were important in inspiring new ideas 
 and research. We spent some time understanding each paper and writing down the 
-core concepts on which they were is built. We then found the best material to 
+core concepts on which they were built. We then found the best material to 
 learn each concept, added exercises to practice our understanding, and met 
 weekly to discuss each of the previous week’s readings so that we could 
 rigorously understand the content.</p>
 
 <p>We did this across two locations, one at Google AI in Mountain View as part of 
 the Google AI Residency and the other at New York University as part of Joan 
-Bruna’s class on The Mathematics of Deep Learning.</p>
-
-<p>We realized that the resources we were compiling would be useful to a much 
-broader community, and this repository of depth-first study plans is the outcome<br />
-of that genesis.</p>
+Bruna’s class on The Mathematics of Deep Learning. We realized that the resources 
+we had compiled would be useful to a much broader community, and this repository 
+of depth-first study plans is the outcome of that genesis.</p>
 
 <p>DFL was designed to be shared with and grown by the community. It is not limited
 to people at Google or at NYU. If you are interested in developing your own 
-curriculum for a paper that we do not already host, we will help you! Reach out
-to us at depthfirstlearning@gmail.com. We want your help in growing this resource
+curriculum for a paper that we do not already host, we will help you! Check out our
+<a href="https://github.com/depthfirstlearning/depthfirstlearning.com#contributing">github</a>
+for examples and open an <a href="https://github.com/depthfirstlearning/depthfirstlearning.com/issues">issue</a>
+detailing which paper you want to study. We want your help in growing this resource
 and making it richer.</p>
+
+<ul>
+  <li><a href="http://twitter.com/avitaloliver">Avital</a>, <a href="http://twitter.com/suryabhupa">Surya</a>, 
+<a href="http://twitter.com/kumarkagrawal">Kumar</a>, <a href="http://twitter.com/cinjoncin">Cinjon</a></li>
+</ul>
 
 
 </div>

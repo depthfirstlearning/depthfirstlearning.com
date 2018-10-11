@@ -2,6 +2,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  {% feed_meta %}
+
   <title>
     {% if page.title == "Home" %}
       {{ site.title }}
@@ -19,12 +21,62 @@
   <link rel="icon" type="image/png" sizes="16x16" href="{{ "/assets/favicon-16x16.png" | relative_url }}">
   <link rel="apple-touch-icon" sizes="180x180" href="{{ "/assets/apple-touch-icon.png" | relative_url }}">
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-96119946-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-120448221-1');
+  </script>
+
   <script type="text/javascript">
     window.onload = function() {
       Array.prototype.slice.call(document.querySelectorAll("a")).forEach(function(a) {
         if (a.getAttribute('href').startsWith("http")) {
           a.target = "_blank";
         }
+      });
+
+
+      Array.prototype.slice.call(document.querySelectorAll("iframe.deps")).forEach(function(iframe) {
+        // Add CSS to all deps iframes
+        css = 'a { cursor: pointer; } div { color: #4a9ae1; } div:hover { text-decoration: underline; }';
+        var style = document.createElement('style');
+        style.appendChild(document.createTextNode(css));
+        iframe.contentDocument.children[0].appendChild(style);
+
+        // Fix size of SVG container
+        svg = iframe.contentDocument.querySelector("svg");
+        if (svg) {
+          scale = parseInt(iframe.width) / parseInt(svg.getAttribute("width"));
+          transform = "scale(" + scale + ")";
+          gElement = svg.querySelector("g");
+
+          gElement.style["transform"] = transform;
+          gElement.style["-ms-transform"] = transform;
+          gElement.style["-moz-transform"] = transform;
+          gElement.style["-o-transform"] = transform;
+          gElement.style["-webkit-transform"] = transform;
+
+          gElement.style["transform-origin"] = "0 0";
+          gElement.style["-ms-transform-origin"] = "0 0";
+          gElement.style["-moz-transform-origin"] = "0 0";
+          gElement.style["-o-transform-origin"] = "0 0";
+          gElement.style["-webkit-transform-origin"] = "0 0";
+
+          iframe.height = svg.height.baseVal.value * scale;
+          iframe.scrolling = "no";
+        }
+
+        // Fix links in embedded SVG files, used to navigate between dependencies
+        Array.prototype.slice.call(iframe.contentDocument.querySelectorAll("a")).forEach(function(a) {
+          if (a.getAttribute("xlink:href")) {
+            a.setAttribute("xlink:href", window.location.href.split("#")[0] + a.getAttribute("xlink:href"));  
+            a.setAttribute("target", "_parent");
+          }
+        });
       });
     };
   </script>

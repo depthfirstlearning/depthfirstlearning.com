@@ -1,0 +1,394 @@
+---
+layout: post
+title:  "Trust Region Policy Optimization"
+date:   2018-06-19 12:00:00 -0400
+categories: reinforcement-learning
+authors: ['surya', 'krishna']
+blurb: "TRPO is a model-free algorithm for optimizing policies in reinforcement
+       learning by gradient descent. It represents a significant improvement over
+       previous methods in its scalability and consequently has enjoyed widespread
+       success."
+hidden: false
+feedback: true
+---
+
+Thank you to Nic Ford, Ethan Holly, Matthew Johnson, Avital Oliver, John Schulman, George Tucker, and Charles Weill for contributing to this guide.
+
+<div class="deps-graph">
+  <iframe class="deps" src="/assets/trpo-deps.svg" width="200"></iframe>
+  <div>Concepts used in TRPO. Click to navigate.</div>
+</div>
+
+# Why
+
+TRPO is a scalable algorithm for optimizing policies in reinforcement learning by
+gradient descent. Model-free algorithms such as policy gradient methods do not
+require access to a model of the environment and often enjoy better
+practical stability. Consequently, while straightforward to apply to new
+problems, they have trouble scaling to large, nonlinear policies. TRPO couples
+insights from reinforcement learning and optimization theory to develop an
+algorithm which, under certain assumptions, provides guarantees for monotonic
+improvement. It is now commonly used as a strong baseline when developing new
+algorithms.
+
+<br />
+
+# 1 Policy Gradient
+  **Motivation**: Policy gradient methods (e.g. TRPO) are a class
+  of algorithms that allow us to directly optimize the parameters of a policy by
+  gradient descent. In this section, we formalize the notion of Markov Decision Processes (MDP),
+  action and state spaces, and on-policy vs off-policy approaches. This leads to the
+  REINFORCE algorithm, the simplest instantiation of the policy gradient method.
+
+  <a href="https://drive.google.com/file/d/1KFQ-NvcYHL0Pi9TUM96iTEGZzt9GLffO/view?usp=sharing" class="colab-root">Reproduce in a <span>Notebook</span></a>
+
+  **Topics**:
+  1. Markov Decision Processes.
+  2. Continuous action spaces.
+  3. On-policy and off-policy algorithms.
+  4. REINFORCE / likelihood ratio methods.
+
+  **Required Readings**:
+  1. Deep RL Course at UC Berkeley (CS 294); Policy Gradient Lecture
+      1. [Slides](http://rail.eecs.berkeley.edu/deeprlcourse-fa17/f17docs/lecture_4_policy_gradient.pdf)
+      2. [Video](https://www.youtube.com/watch?v=tWNpiNzWuO8&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3&index=4)
+  2. David Silver’s course at UCL; Policy Gradient Lecture
+      1. [Slides](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching_files/pg.pdf)
+      2. [Video](https://www.youtube.com/watch?v=KHZVXao4qXs&index=7&list=PL7-jPKtc4r78-wCZcQn5IqyuWhBZ8fOxT)
+  3. Reinforcement Learning by Sutton and Barto, 2nd Edition; pages 265 - 273
+  4. [Simple statistical gradient-following algorithms for connectionist reinforcement learning](http://www-anw.cs.umass.edu/~barto/courses/cs687/williams92simple.pdf)
+
+  **Optional Readings**:
+  1. [John Schulman introduction at MLSS Cadiz](http://rl-gym-doc.s3-website-us-west-2.amazonaws.com/mlss/2016-MLSS-RL.pdf)
+  2. [Lecture on Variance Reduction for Policy Gradient](http://rail.eecs.berkeley.edu/deeprlcoursesp17/docs/lec6.pdf)
+  3. [Introduction to policy gradient and motivations by Andrej Karpathy](http://karpathy.github.io/2016/05/31/rl/)
+  4. [Connection Between Importance Sampling and Likelihood Ratio](https://papers.nips.cc/paper/3922-on-a-connection-between-importance-sampling-and-the-likelihood-ratio-policy-gradient.pdf)
+
+  **Questions**:
+  1. At its core, REINFORCE computes an
+    approximate gradient of the reward with respect to the parameters. Why
+    can't we just use the familiar stochastic gradient descent?
+     <details><summary>Hint</summary>
+     <p>
+    Just as in reinforcement learning, when we use stochastic gradient descent, we also compute an estimate of the gradient, which looks something like $$\nabla_{\theta} \mathbb{E}_{x \sim p(x)} [ f_{\theta}(x) ] = \mathbb{E}_{x \sim p(x)} [\nabla_{\theta} f_{\theta}(x)]$$ where we move the gradient into the expectation (an operation made precise by the <a href=""> Leibniz integral rule</a>). In other words, the objective we're trying to take the gradient of is indeed differentiable with respect to the inputs. In reinforcement learning, our objective is non-differentiable -- we actually <b>select</b> an action and act on it. To convince yourself that this isn't something we can differentiate through, write out explicitly the full expansion of the training objective for policy gradient before we move the gradient into the expectation. Is sampling an action really non-differentiable? (spoiler: yes, but we can work around it in various ways, such as using REINFORCE or <a href="https://arxiv.org/abs/1611.01144">other methods</a>).
+     </p>
+     </details>
+  2. Does the REINFORCE gradient estimator resemble maximum likelihood estimation (MLE)?
+    Why or why not?
+     <details><summary>Solution</summary>
+     <p>
+     The term \( \log \pi (a | s) \) should look like a very familiar tool in
+     statistical learning: the likelihood function! When we think of what happens
+     when we do MLE, we are trying to maximize the likelihood of \( \log p(D | \theta) \)
+     or as in supervised learning, we try to maximize $$\log p(y_i^* | x_i, \theta).$$
+     Normally, because we have the true label \( y_i^* \), this paradigm aligns
+     perfectly with what we are ultimately trying to do with MLE. However, this
+     naive strategy of maximizing the likelihood \( \pi(a | s) \) won't work in
+     reinforcement learning, because we do not have a label for the correct action
+     to be taken at a given time step (if we did, we should just do supervised
+     learning!). If we tried doing this, we would find that we would simply
+     maximize the probability of every action; make sure you convince yourself
+     this to be true. Instead, the only (imperfect) evidence we have of good or
+     bad actions is the reward we receive at that time step. Thus, a reasonable
+     thing to do seems like scaling the log-likelihood by how good or bad the
+     action by the reward. Thus, we would then maximize $$r(a, s) \log \pi (a | s).$$
+     Look familiar? This is just the REINFORCE term in our
+     expectation: $$ \mathbb{E}_{s,a} [ \nabla r(a, s) \log \pi (a | s) ] $$
+     </p>
+     </details>
+  3. In its original formulation, REINFORCE is an on-policy algorithm. Why?
+    Can we make REINFORCE work off-policy as well?
+     <details><summary>Solution</summary>
+     <p>
+    We can tell that REINFORCE is on-policy by looking at the expectation a bit
+    closer: $$ \mathbb{E}_{s,a} [ \nabla \log \pi (a | s) r(a, s). ]$$ When we
+    see any expectation in an equation, we should always ask what exactly is the
+    expectation <b>over</b>? In this case, if we expand the expectation, we
+    have: $$\mathbb{E}_{s \sim p_{\theta}(s), a \sim \pi_{\theta}(a|s)}
+    [ \nabla_{\theta} \log \pi_{\theta} (a | s) r(a, s), ]$$ and we see that
+    while the states are being sampled from the empirical state visitation
+    distribution induced by the current policy, and the actions \( a \) are
+    coming directly from the current policy. Because we learn from the current
+    policy, and not some arbitrary policy, REINFORCE is an on-policy. To change
+    REINFORCE to use data, we simply change the sampling distribution to some
+    other policy \( \pi_{\beta} \) and use importance sampling to correct for
+    this disparity. For more details, see
+    <a href="https://scholarworks.umass.edu/cgi/viewcontent.cgi?referer=https://www.google.com/&httpsredir=1&article=1079&context=cs_faculty_pubs">a classic paper</a>
+    on this subject and <a href="https://arxiv.org/abs/1606.02647">a recent paper</a>
+    with new insights on off-policy learning with policy gradient methods.
+     </p>
+     </details>
+  4. Do policy gradient methods work for discrete and continuous action spaces?
+    If not, why not?
+
+<br />
+
+# 2 Variance Reduction and Advantage Estimate
+  **Motivation**: One major shortcoming of policy gradient methods is that the
+  simplest instantation of REINFORCE suffers from high variance in the gradients
+  it computes. This results from the fact that rewards are sparse, we only visit a finite
+  set of states, and that we only take one action at each state rather than try all actions.
+  In order to properly scale our methods to harder problems, we need to reduce this variance.
+  In this section, we study common tools for reducing variance for REINFORCE. These include
+  a causality result, baselines, and advantages. Note that the TRPO paper does not introduce
+  new methods for variance reduction, but we cover it here for complete understanding.
+
+  **Topics**:
+  1. Causality for REINFORCE.
+  2. Baselines and control variates.
+  2. Advantage estimation.
+
+  **Required Readings**:
+  1. Deep RL Course at UC Berkeley (CS 294); Actor-Critic Methods Lecture
+      1. [Slides](http://rail.eecs.berkeley.edu/deeprlcourse-fa17/f17docs/lecture_5_actor_critic_pdf.pdf)
+      2. [Video](https://www.youtube.com/watch?v=PpVhtJn-iZI&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3&index=5)
+  2. [George Tucker’s notes on Variance Reduction](/assets/gjt-var-red-notes.pdf)
+
+  **Optional Readings**:
+  1. Reinforcement Learning by Sutton and Barto, 2nd Edition; pages 273 - 275
+  2. [High-dimensional continuous control using generalized advantage estimation](https://arxiv.org/abs/1506.02438)
+  3. [Asynchronous Methods for Deep Reinforcement Learning](https://arxiv.org/abs/1602.01783)
+  4. [Monte Carlo theory, methods, and examples by Art B. Owen; Chapter 8](https://statweb.stanford.edu/~owen/mc/Ch-var-basic.pdf)
+    (in-depth treatment of variance reduction; suitable for independent study)
+
+  **Questions**:
+  1. What is the intuition for using advantages instead of rewards as the
+    learning signal? Note on terminology: the learning signal is the factor by
+    which we multiply $$\log \pi (a | s)$$ inside the expectation in REINFORCE.
+  2. What are some assumptions we make by using baselines as a variance
+    reduction method?
+  3. What are other methods of variance reduction?
+     <details><summary>Solution</summary>
+     <p>
+     Check out the optional reading <a href="https://statweb.stanford.edu/~owen/mc/Ch-var-basic.pdf">Monte Carlo theory, methods, and examples by Art B. Owen; Chapter 8</a> if you're interested! Broadly speaking, other techniques for doing variance reduction for Monte Carlo integration include stratified sampling, antithetic sampling, common random variables, conditioning.
+     </p>
+     </details>
+  4. The theory of control variates tells us that our control variate should
+    be correlated with the quantity we are trying to lower the variance of.
+    Can we construct a better control variate that is even more correlated
+    than a learned state-dependent value function? Why or why not?
+     <details><summary>Hint</summary>
+     <p>
+     Right now, the typical control variate \( b(s) \) depends only on the state. Can we also have the control variate depend on the action? What extra work do we have to do to make sure this is okay? Check <a href="https://arxiv.org/abs/1611.02247">this paper</a> if you're interested in one way to extend this, and <a href="https://arxiv.org/abs/1802.10031">this paper</a> if you're interested in why adding dependence on more than just the state can be tricky and hard to implement in practice.
+     </p>
+     </details>
+  5. We use control variates as a method to reduce variance in our gradient
+    estimate. Why don't we use these for supervised learning problems such as
+    classification? Are we implicitly using them?
+     <details><summary>Solution</summary>
+     <p>
+      Reducing variance in our gradient estimates seems like an important thing
+      to do, but we don't often see explicit variance reduction methods when we
+      do supervised learning. However, there is a line of work around
+      <b>stochastic variance reduced gradient</b> descent called
+      <a href="https://papers.nips.cc/paper/4937-accelerating-stochastic-gradient-descent-using-predictive-variance-reduction.pdf">SVRG</a>
+      that tries to construct gradient estimators with reduced variance. See
+      <a href="http://ranger.uta.edu/~heng/CSE6389_15_slides/SGD2.pdf">these
+      slides</a> and <a href="https://arxiv.org/abs/1202.6258">these</a>
+      <a href="https://arxiv.org/abs/1209.1873">papers</a> for more on this topic.
+     </p>
+     <p>
+     The reason that we don't often see these being used in the supervised
+     learning setting is because we're not necessarily looking to reduce the variance
+     of SGD and smoothly converge to a minima. This is
+     because we're actually interested in looking for minima that have low
+     <b>generalization error</b> and don't want to overfit to solutions with very
+     small training error. In fact, we often rely on the noise introduced by
+     using minibatches in SGD to help us to escape premature minima.
+     On the other hand, in reinforcement learning, the variance of our gradient
+     estimates is so high that it's often the foremost problem.
+     </p>
+      <p>
+      Beyond supervised learning, control variates are used often in Monte Carlo
+      integration, which is ubiquitous throughout Bayesian methods. They are also
+      used for problems in hard attention, discrete latent random variables, and
+      general stochastic computation graphs.
+      </p>
+     </details>
+
+<br />
+
+# 3 Fisher Information Matrix and Natural Gradient Descent
+  <img src="/assets/fisher-steepest.png" />
+
+  **Motivation**: While gradient descent is able to solve many optimization problems,
+  it suffers from a basic problem - performance is dependent on the model's parameterization.
+  Natural gradient descent, on the other hand, is invariant to model parameterization.
+  This is achieved by multiplying gradient vectors by the inverse of the Fisher
+  information matrix, which is a measure of how much model predictions change with
+  local parameter changes.
+
+  **Topics**:
+  1. Fisher information matrix.
+  2. Natural gradient descent.
+  3. (Optional) K-Fac.
+
+  **Required Readings**:
+  1. [Matt Johnson’s Natural Gradient Descent and K-Fac Tutorial](/assets/k-fac-tutorial.pdf): Sections 1-7, Section A, B
+  2. [New insights and perspectives on the natural gradient method](https://arxiv.org/pdf/1412.1193.pdf): Sections 1-11.
+  3. [Fisher Information Matrix](https://web.archive.org/web/20170807004738/https://hips.seas.harvard.edu/blog/2013/04/08/fisher-information/)
+
+  **Optional Readings**:
+  1. [8-page intro to natural gradients](http://ipvs.informatik.uni-stuttgart.de/mlr/wp-content/uploads/2015/01/mathematics_for_intelligent_systems_lecture12_notes_I.pdf)
+  2. [Why Natural Gradient Descent / Amari and Douglas](http://www.yaroslavvb.com/papers/amari-why.pdf)
+  3. [Natural Gradient Works Efficiently in Learning / Amari](https://personalrobotics.ri.cmu.edu/files/courses/papers/Amari1998a.pdf)
+
+  **Questions**:
+  1. Consider classifiers $$p(y | x; \theta_{1})$$ and $$p(y | x; \theta_{2})$$,
+     such that $$l_2(\theta_1, \theta_2)$$ is large, where $$l_2$$ indicates the
+     Euclidean distance metric. Does this imply the difference in accuracy of the
+     classifiers is high?
+     <details><summary>Solution</summary>
+     The accuracy of the classifier depends on the function defined by
+     \(p(y|x;\theta) \). The distance between the parameters do not inform us
+     about distance between the two functions. Hence, we cannot draw any conclusions
+     about the difference in accuracy of the classifiers.
+     </details>
+  2. How is the Fisher matrix similar and different from the Hessian?
+  3. How does natural gradient descent compare to Newton’s method?
+  4. Why is the natural gradient slow to compute?
+  5. How can one efficiently compute the product of the Fisher information matrix with an arbitrary vector?
+
+<br />
+
+# 4 Conjugate Gradient
+  **Motivation**: The conjugate gradient method (CG) is an iterative algorithm for finding
+  approximate solutions to $$Ax=b$$, where $$A$$ is a symmetric and positive-definite matrix (such
+  as the Fisher information matrix). The method works by iteratively computing matrix-vector
+  products $$Ax_i$$ and is particularly well-suited for matrices with computationally
+  tractable matrix-vector products.
+
+  **Topics**:
+  1. Solving system of linear equations.
+  2. Efficiently computing matrix-vector products.
+  3. Computational complexities of second order methods optimization methods.
+
+  **Required Readings**:
+  1. [An Introduction to the Conjugate Gradient Method Without the Agonizing Pain](https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf): Section 7-9
+  2. [Convex Optimization and
+     Approximation](https://ee227c.github.io/notes/ee227c-notes.pdf), UC Berkeley, Section 7.4
+  3. Convex Optimization II by Stephen Boyd:
+      1. [Lecture 12, from 37:10 to 1:05:00](https://www.youtube.com/watch?feature=player_embedded&v=cHVpwyYU_LY#t=2230)
+      2. [Lecture 13, from 21:20 to 29:30](https://www.youtube.com/watch?feature=player_embedded&v=E4gl91l0l40#t=1266)
+
+  **Optional Readings**:
+  1. Numerical Optimization by Nocedal and Wright; Section 5.1, pages 101-120
+  2. [Metacademy](https://metacademy.org/graphs/concepts/conjugate_gradient)
+
+  **Questions**:
+  1. Remember that the natural gradient of a model is the Fisher information matrix of that model times the
+     vanilla gradient ($$F^{-1}g$$). How does CG allow us to approximate the natural gradient?
+      1. What is the naive way to compute $$F^{-1}g$$? How much memory and time would it take?
+         <details><summary>Solution</summary>
+         Assume we have an estimate of \(F\) (by the process
+         in section 7 of <a href="/assets/k-fac-tutorial.pdf">Matt Johnson's tutorial</a>).
+         Storing \(F\) would take space proportional to \(n^2\), and inverting \(F\) would take
+         time proportional to \(n^3\) (or slightly lower with the Strassen algorithm)
+         </details>
+      2. How long would a run of CG to *exactly* compute $$F^{-1}g$$ take? How does that compare
+         to the naive process?
+         <details><summary>Solution</summary>
+         Each iteration of CG computes \(Fv\) for some vector \(v\), which would take time
+         proportional to \(n^2\). CG converges to the true answer after \(n\) steps, so in total
+         it would take time proportional to \(n^3\). This process ends up being slower than directly inverting
+         the Fisher naively and uses the same amount of memory.
+         </details>
+      3. How can we use CG and bring down the time and memory to compute the natural gradient $$F^{-1}g$$?
+         <details><summary>Solution</summary>
+         <ol>
+           <li>
+             Use the closed form estimate of \(Fv\) for arbitrary \(v\), as described in section A of <a href="/assets/k-fac-tutorial.pdf">Matt Johnson's tutorial</a>)
+           </li>
+           <li>
+             Take fewer CG iteration steps, which leads to an approximation of the natural gradient that may be sufficient.
+           </li>
+         </ol>
+  2. In pre-conditioned conjugate gradient, how does scaling the pre-conditioner
+     matrix $$M$$ by a constant $$c$$ impact the convergence?
+  3. Exercises 5.1 to 5.10 in Chapter 5, Numerical Optimization
+     (<b>Exercises 5.2 and 5.9 are particularly recommended.</b>)
+
+<br />
+
+# 5 Trust Region Methods
+  **Motivation**: Trust region methods are a class of methods used in general
+  optimization problems to constrain the update size. While
+  TRPO does not use the full gamut of tools from the trust region literature,
+  studying them provides good intuition for the problem that TRPO
+  addresses and how we might improve the algorithm even more. In this
+  section, we focus on understanding trust regions and line search methods.
+
+  **Topics**:
+  1. Trust regions and subproblems.
+  2. Line search methods.
+
+  **Required Readings**:
+  1. [A friendly introduction to Trust Region Methods](https://optimization.mccormick.northwestern.edu/index.php/Trust-region_methods)
+  2. Numerical Optimization by Nocedal and Wright: Chapter 2, Chapter 4, Section 4.1, 4.2
+
+  **Optional Readings**:
+  1. Numerical Optimization by Nocedal and Wright: Chapter 4, Section 4.3
+
+  **Questions**:
+  1. Instead of directly imposing constraints on the updates, what would be
+     alternatives to enforce an algorithm to make bounded updates?
+     <details><summary>Hint</summary>
+     <p>
+     Recall the methods of <a href="https://en.wikipedia.org/wiki/Lagrange_multiplier">Lagrange multipliers</a>. How does this method move between two types of optimization problems?
+     </p>
+    </details>
+  2. Each step of a trust region optimization method updates parameters to
+     the optimal setting given some constraint. Can we solve this in closed
+     form using Lagrange multipliers? In what way would this be similar, or
+     different, from the trust region methods we just discussed?
+  3. Exercises 4.1 to 4.10 in Chapter 4, Numerical Optimization.
+     (<b>Exercise 4.10 is particularly recommended</b>)
+
+<br />
+
+# 6 The Paper
+  **Motivation**: Let's read the [paper](https://arxiv.org/abs/1502.05477).
+  We've built a good foundation for the various tools and mathematical ideas
+  used by TRPO. In this section, we focus on the parts of the paper that aren't
+  explicitly covered by the above topics and together result in the practical
+  algorithm used by many today. These are monotonic policy improvement and the
+  two different implementation approaches: vine and single-path.
+
+  **Topics**:
+  1. What is the problem with policy gradients that TRPO addresses?
+  2. What are the bottlenecks to addressing that problem in the existing approaches when it debuted?
+  3. Policy improvement bounds and theory.
+
+  **Required Readings**:
+  1. [Trust Region Policy Optimization](https://arxiv.org/abs/1502.05477)
+  2. Deep RL Course at UC Berkeley (CS 294); Advanced Policy Gradient Methods (TRPO)
+      1. [Slides](http://rail.eecs.berkeley.edu/deeprlcourse-fa17/f17docs/lecture_13_advanced_pg.pdf)
+      2. [Video](https://www.youtube.com/watch?v=ycCtmp4hcUs&feature=youtu.be&list=PLkFD6_40KJIznC9CDbVTjAF2oyt8_VAe3)
+  3. [Approximately Optimal Approximate Reinforcement Learning](https://people.eecs.berkeley.edu/~pabbeel/cs287-fa09/readings/KakadeLangford-icml2002.pdf)
+
+  **Optional Readings**:
+  2. [TRPO Tutorial](https://reinforce.io/blog/end-to-end-computation-graphs-for-reinforcement-learning/)
+  3. [ACKTR](https://arxiv.org/abs/1708.05144)
+  4. [A Natural Policy Gradient](https://papers.nips.cc/paper/2073-a-natural-policy-gradient.pdf)
+
+  **Questions**:
+  1. How is the trust region set in TRPO? Can we do better? Under what
+     assumptions is imposing the trust region constraint not required?
+  2. Why do we use conjugate gradient methods for optimization in TRPO? Can we
+    exploit the fact the conjugate gradient optimization is differentiable?
+  3. How is line search used in TRPO?
+  4. How does TRPO differ from natural policy gradient?
+     <details><summary>Solution</summary>
+     <p> See slides 30-34 from <a href="http://rail.eecs.berkeley.edu/deeprlcourse-fa17/f17docs/lecture_13_advanced_pg.pdf">this lecture</a>. </p>
+    </details>
+  5. What are the pros and cons of using the vine and single-path methods?
+  6. In practice, TRPO is really slow. What is the main computational
+    bottleneck and how might we remove it? Can we approximate this bottleneck?
+  7. TRPO makes a series of approximations that deviate from the policy
+    improvement theory that is cited. What are the assumptions that are made
+    that allow these approximations to be reasonable? Should we still expect
+    monotonic improvement in our policy?
+  8. TRPO is a general procedure to directly optimize parameters from rewards,
+    even though the procedure is "non-differentiable". Does it make sense to
+    apply TRPO to other non-differentiable problems, like problems involving
+    hard attention or discrete random variables?

@@ -23,12 +23,12 @@ details[open] {
 
 a.colab-root {
   display: inline-block;
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 120, 0.75);
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 11px!important;
   text-decoration: none;
-  color: #aaa;
+  color: $blue;
   border: none;
   font-weight: 300;
   border: solid 1px rgba(0, 0, 0, 0.08);
@@ -38,7 +38,7 @@ a.colab-root {
 
   &:hover {
     color: #666;
-    background: white;
+    background: rgba(255, 255, 0, 1);
     border-color: rgba(0, 0, 0, 0.2);
     text-decoration: none;
   }
@@ -55,7 +55,7 @@ a.colab-root {
   } 
 }
 
-.request-feedback {
+.request-feedback, .welcome {
   border: 1px solid #bbb;
   background: #eee;
   padding-left: 12px;
@@ -73,10 +73,53 @@ a.colab-root {
   } 
 }
 
+.welcome {
+  margin-top: 25px;
+  margin-bottom: 25px;
+
+  .welcome-blurb {
+    text-align: left;
+  }
+}
+
 @media only screen and (min-width: 680px) {
-  .request-feedback {
+  .request-feedback, .welcome {
     .inner {
       width: 500px;
     }
   }
+}
+
+iframe.deps {
+  border: 0;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+div.deps-graph {
+  text-align: center;
+  font-size: 75%;
+}
+
+@media only screen and (max-width: 599px) {
+  div.deps-graph {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  div.deps-graph {
+    float: right;
+    margin-left: 40px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+}
+
+span.more-arrow {
+  color: $blue;
 }

@@ -15,21 +15,24 @@ what to start searching to clarify parts of the paper.
 We at DFL share an interest in developing a deeper understanding. Together, we 
 chose a few modern papers that we believed were important in inspiring new ideas 
 and research. We spent some time understanding each paper and writing down the 
-core concepts on which they were is built. We then found the best material to 
+core concepts on which they were built. We then found the best material to 
 learn each concept, added exercises to practice our understanding, and met 
 weekly to discuss each of the previous week's readings so that we could 
 rigorously understand the content. 
 
 We did this across two locations, one at Google AI in Mountain View as part of 
 the Google AI Residency and the other at New York University as part of Joan 
-Bruna's class on The Mathematics of Deep Learning.
-
-We realized that the resources we were compiling would be useful to a much 
-broader community, and this repository of depth-first study plans is the outcome  
-of that genesis.
+Bruna's class on The Mathematics of Deep Learning. We realized that the resources 
+we had compiled would be useful to a much broader community, and this repository 
+of depth-first study plans is the outcome of that genesis.
 
 DFL was designed to be shared with and grown by the community. It is not limited
 to people at Google or at NYU. If you are interested in developing your own 
-curriculum for a paper that we do not already host, we will help you! Reach out
-to us at depthfirstlearning@gmail.com. We want your help in growing this resource
+curriculum for a paper that we do not already host, we will help you! Check out our
+<a href="https://github.com/depthfirstlearning/depthfirstlearning.com#contributing">github</a>
+for examples and open an <a href="https://github.com/depthfirstlearning/depthfirstlearning.com/issues">issue</a>
+detailing which paper you want to study. We want your help in growing this resource
 and making it richer.
+
+- <a href="{{site["avital"].web}}">Avital</a>, <a href="{{site["surya"].web}}">Surya</a>, 
+<a href="{{site["krishna"].web}}">Kumar</a>, <a href="{{site["cinjon"].web}}">Cinjon</a>

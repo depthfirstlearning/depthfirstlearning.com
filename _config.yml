@@ -19,6 +19,14 @@ cinjon:
     name: Cinjon Resnick
     email: cinjon.resnick@gmail.com
     web: http://twitter.com/cinjoncin
+surya:
+    name: Surya Bhupatiraju
+    email: sbhupatiraju@google.com
+    web: http://twitter.com/suryabhupa
+krishna:
+    name: Kumar Krishna Agrawal
+    email: kumarkagrawal@gmail.com
+    web: http://twitter.com/kumarkagrawal
 
 # Build settings
 markdown:       kramdown
@@ -31,8 +39,9 @@ sass:
 # Gems
 plugins:
   - jekyll-paginate
+  - jekyll-feed
   # - jemoji #Uncomment this to allow emoji in your post
 
 # Permalinks
-permalink:      /:year-:month-:day/:title
+permalink:      /:year/:title
 paginate:       5
