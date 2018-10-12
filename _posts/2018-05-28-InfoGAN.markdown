@@ -127,7 +127,10 @@ observing each variable separately.
        <p><a href="/assets/gan_gradient.pdf">Understanding the vanishing generator gradients point in the GAN paper</a></p>
      </details>
   4. Implement a [Colab](https://colab.research.google.com/) that trains a GAN for MNIST. Try both the saturating and non-saturating discriminator loss. (Please [let us know](https://github.com/depthfirstlearning/depthfirstlearning.com/issues/3) if you do this!)
-
+    <details><summary>Solution</summary>
+    <p>An implementation can be found <a href="https://colab.research.google.com/drive/1joM97ITFowvWU_qgRjQRiOKajHQKKH80#forceEdit=true&offline=tru&sandboxMode=true">here</a>.
+    </p>
+    </details>
 
 <br />
 
