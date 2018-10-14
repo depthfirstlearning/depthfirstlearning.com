@@ -1,4 +1,5 @@
-![title_pic](/assests/title-img.png)
+<img src="./assets/title-img.png" alt="drawing" width="300"/>
+
 # Depth First Learning
 
 This is the open source code repository running [Depth First Learning](http://www.depthfirstlearning.com/about/), powered by [Jekyll](https://jekyllrb.com/) and the [Tale](http://jekyllthemes.org/themes/tale/) theme.
