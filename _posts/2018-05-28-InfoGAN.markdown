@@ -62,7 +62,7 @@ observing each variable separately.
   3. [Visual Information Theory](https://colah.github.io/posts/2015-09-Visual-Information/)
 
   **Questions**:
-  1. From PRML: 1.28, 1.31, 1.36, 1.37, 1.38, 1.39, 1.41.
+  1. From PRML: 1.31, 1.36, 1.37, 1.38, 1.39, 1.41.
   2. How is Mutual Information similar to correlation? How are they different? Are they directly related under some conditions?
   3. In classification problems, [minimizing cross-entropy loss is the same as minimizing the KL divergence 
      of the predicted class distribution from the true class distribution](https://ai.stackexchange.com/questions/3065/why-has-cross-entropy-become-the-classification-standard-loss-function-and-not-k/4185). Why do we minimize the KL, rather
