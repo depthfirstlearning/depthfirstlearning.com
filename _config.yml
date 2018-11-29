@@ -41,6 +41,7 @@ plugins:
   - jekyll-paginate
   - jekyll-feed
   # - jemoji #Uncomment this to allow emoji in your post
+  - jekyll-redirect-from
 
 # Permalinks
 permalink:      /:year/:title
