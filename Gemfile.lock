@@ -37,6 +37,8 @@ GEM
     jekyll-feed (0.10.0)
       jekyll (~> 3.3)
     jekyll-paginate (1.1.0)
+    jekyll-redirect-from (0.14.0)
+      jekyll (~> 3.3)
     jekyll-sass-converter (1.5.2)
       sass (~> 3.4)
     jekyll-watch (2.0.0)
@@ -70,6 +72,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 1.12)
   jekyll-feed
+  jekyll-redirect-from
   rake (~> 10.0)
   tale!
 
