@@ -32,7 +32,7 @@ be very rewarding, but also time-consuming and difficult. We wanted to make sure
 that the people compiling the content understood that their efforts were well
 worth their time and consequently decided to launch a fellowship program.
 
-**Thanks to the generosity of <a href="janestreet.com">Jane Street</a>, we will provide 4 fellows
+**Thanks to the generosity of <a href="http://www.janestreet.com">Jane Street</a>, we will provide 4 fellows
 with a $4000 grant each to build a 6 week curriculum and run weekly on-line discussions.**
 
 If you'd like to lead a class about an important paper in machine learning, please visit <a href="fellowship.depthfirstlearning.com">http://fellowship.depthfirstlearning.com</a> to apply. We look forward to hearing from you!
