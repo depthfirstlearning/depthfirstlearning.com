@@ -35,7 +35,11 @@ worth their time and consequently decided to launch a fellowship program.
 **Thanks to the generosity of <a href="http://www.janestreet.com">Jane Street</a>, we will provide 4 fellows
 with a $4000 grant each to build a 6 week curriculum and run weekly on-line discussions.**
 
+<del>
 If you'd like to lead a class about an important paper in machine learning, please visit <a href="http://fellowship.depthfirstlearning.com">http://fellowship.depthfirstlearning.com</a> to apply. We look forward to hearing from you!
+</del>
+
+<b>Thanks for all of the applications! We received interest from an astounding 113 people, and we are now going over the list. If you applied, you should have received an email from us. Applications are now closed.</b>
 
 
 - <a href="{{site["avital"].web}}">Avital</a>, <a href="{{site["surya"].web}}">Surya</a>, 
