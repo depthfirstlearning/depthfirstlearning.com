@@ -63,7 +63,22 @@ observing each variable separately.
 
   **Questions**:
   1. From PRML: 1.31, 1.36, 1.37, 1.38, 1.39, 1.41.
+     <details><summary>Solution</summary>
+     <p>
+     PRML 1.31 Consider two variables x and y having joint distribution p(x, y). Show that the differential entropy of this pair of variables satisfies H(x,y) <= H(x) + H(y) with equality if, and only if, x and y are statistically independent.
+     
+     If \(p(x)\) and \(p(y)\) are independent: \(p(x,y) = p(x)p(y)\)
+     \(H(x|y) = H(x) and \(H(y|x) = H(y)\)\
+     \(H(x) + H(y|x) = H(y) + H(x|y) = H(x) + H(y)\)\
+     \(H(x,y) = H(x) + H(y)\)\
+     
+     No mutual information if \(p(x)\) and \(p(y)\) are independent: \(I(x,y) = H(x) + H(y) - H(x,y)\) because \(H(x,y) = H(x) + H(y)\)
+     </p>
   2. How is Mutual Information similar to correlation? How are they different? Are they directly related under some conditions?
+     <details><summary>Solution</summary>
+     <p>Start <a href="https://stats.stackexchange.com/questions/81659/mutual-information-versus-correlation">here</a>.
+     </p>
+     </details>
   3. In classification problems, [minimizing cross-entropy loss is the same as minimizing the KL divergence 
      of the predicted class distribution from the true class distribution](https://ai.stackexchange.com/questions/3065/why-has-cross-entropy-become-the-classification-standard-loss-function-and-not-k/4185). Why do we minimize the KL, rather
      than other measures, such as L2 distance?
@@ -114,6 +129,9 @@ observing each variable separately.
   **Required Reading**:
   1. [JS Divergence](https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence)
   2. [The original GAN paper](https://arxiv.org/abs/1406.2661)
+  
+  **Optional Reading**:
+  1. [NIPS 2016 Tutorial: Generative Adversarial Networks](https://arxiv.org/abs/1701.00160)
 
   **Questions**:
   1. Prove that $$0 \leq JSD(P||Q) \leq 1$$ bit for all P, Q. When are the bounds achieved?
@@ -122,6 +140,19 @@ observing each variable separately.
      </p>
      </details>
   2. What are the bounds for KL divergence? When are those bounds achieved?
+     <details><summary>Solution</summary>
+     <p>Start <a href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence">here</a>.
+     </p><p>
+     \(D_{KL}(P||Q) =  \sum_{x}P(x) log_2\left(\frac{P(x)}{Q(x)}\right)\)
+     </p><p>
+     The lower bound is reached when P(x) = Q(x):
+     \(D_{KL}(P||Q) =  \sum_{x}P(x) log_2\left(\frac{P(x)}{Q(x)}\right) = \sum_{x}P(x) log_2(1) = \sum_{x}P(x) 0 = 0\)
+     </p><p>
+     The upper bound is reached when P(x) is maximally different from Q(x):
+     Then the cross entropy is infinite, because the number of bits needed to encode the signal would be infinite.
+     \(H_P(Q) = \infty \to D_{KL}(P||Q) =  H_P(Q) - H(Q) = \infty\)
+     \(H_P(Q) = - \sum_{x} Q(x) log_2(P(x)) = \infty \to D_{KL}(P||Q) = H_P(Q) - H(Q) = \infty\)
+     </details>
   3. In the paper, why do they say “In practice, equation 1 may not provide sufficient gradient for G to learn well. Early in learning, when G is poor, D can reject samples with high confidence because they are clearly different from the training data. In this case, $$log(1 − D(G(z)))$$ saturates”?
      <details><summary>Solution</summary>
        <p><a href="/assets/gan_gradient.pdf">Understanding the vanishing generator gradients point in the GAN paper</a></p>
