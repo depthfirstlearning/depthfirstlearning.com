@@ -27,6 +27,10 @@ krishna:
     name: Kumar Krishna Agrawal
     email: kumarkagrawal@gmail.com
     web: http://twitter.com/kumarkagrawal
+james:
+    name: James Allingham
+    email: 
+    web: https://twitter.com/JamesAllingham
 
 # Build settings
 markdown:       kramdown
