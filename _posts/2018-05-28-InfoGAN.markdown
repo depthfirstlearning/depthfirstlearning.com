@@ -50,7 +50,7 @@ observing each variable separately.
   6. Mutual Information
 
   **Required Reading**:
-  1. Chapter 1.6 from Pattern Recognition and Machine Learning / Bishop. ("PRML")
+  1. Chapter 1.6 from [Pattern Recognition and Machine Learning / Bishop. ("PRML")](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)
   2. A good [intuitive explanation of Entropy](https://www.quora.com/What-is-an-intuitive-explanation-of-the-concept-of-entropy-in-information-theory/answer/Peter-Gribble), from Quora.
   
   **Optional Reading**:
