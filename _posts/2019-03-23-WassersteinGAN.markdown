@@ -26,21 +26,21 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
 <br />
 
 # 1 Basics of Probability & Information Theory
-  **Motivation**: To understand GAN training (and eventually WGAN & WGAN-GP) we need to first have some understanding of probability and information theory. In particular we will focus on Maximum Likelihood Estimation and the KL-Divergence. This week we will make sure that we understand the basics so that we can build upon them in the following weeks.  
+  **Motivation**: To understand GAN training (and eventually WGAN & WGAN-GP) we need to first have some understanding of probability and information theory. In particular, we will focus on Maximum Likelihood Estimation and the KL-Divergence. This week we will make sure that we understand the basics so that we can build upon them in the following weeks.  
 
-  _This week contains some fairly introductory material, if everyone participating in this curriculum is comfortable with this material you may wish to treat this week as optional or as a pre-requisite. However, this week still covers some very interesting and cool topics, and it is important to have a solid grasp of these concepts in order to build towards understanding the Wasserstein GAN, so skip with caution._
+  _This week contains some fairly introductory material. If everyone participating in this curriculum is comfortable with this material you may wish to treat this week as optional or as a pre-requisite. However, this week still covers some very interesting and cool topics, and it is important to have a solid grasp of these concepts in order to build towards understanding the Wasserstein GAN, so skip with caution._
 
   **Topics**:
 
   1. Probability Theory
   2. Information Theory
-  3. Mean Squared Error
-  4. Maximum Likelihood Estimation
+  3. Mean Squared Error (MSE)
+  4. Maximum Likelihood Estimation (MLE)
 
   **Required Reading**:
 
-  1. Chs 3.1 - 3.5 of [Deep Learning](https://www.deeplearningbook.org/) by Goodfellow _et. al_ (the DL book).
-     * These chapters are here to introduce fundamental concepts such as random variables, probability distributions, marginal probability and conditional probability. If you have the time, reading the whole of chapter 3 is highly recommended. A solid grasp of these concepts will be important foundations for what we will cover over the next 5 weeks.
+  1. Chs 3.1 - 3.5 of [Deep Learning](https://www.deeplearningbook.org/) by Goodfellow _et. al_ (the DL book)
+     * These chapters are here to introduce fundamental concepts such as random variables, probability distributions, marginal probability, and conditional probability. If you have the time, reading the whole of chapter 3 is highly recommended. A solid grasp of these concepts will be important foundations for what we will cover over the next 5 weeks.
   2. Ch 3.13 of the DL book
       * This chapter covers KL-Divergence & the idea of distances between probability distributions which will also be a key concept going forward.
   3. Chs 5.1.4 and 5.5 of the DL book
@@ -51,7 +51,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
 
   1. Ch 2 from [Information Theory, Inference & Learning Algorithms by David MacKay](http://www.inference.org.uk/itprnn/book.pdf) (MacKay's book)
       * This is worth reading if you feel like you didn’t quite grok the probability and information theory content in the DL book. MacKay provides a different perspective on these ideas which might help make things click. These concepts are going to be crucial going forward so it is definitely worth making sure you are comfortable with them.
-  2. Chs 1.6 and 10.1 of [Pattern Recognition and Machine Learning by Chrisopher M. Bishop](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf) (PRML)
+  2. Chs 1.6 and 10.1 of [Pattern Recognition and Machine Learning by Christopher M. Bishop](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf) (PRML)
      * Similarly, this is worth reading if you don’t feel comfortable with the KL-Divergence and want another perspective.
   3. Aurélien Géron's video [A Short Introduction to Entropy, Cross-Entropy and KL-Divergence](https://www.youtube.com/watch?v=ErfnhcEV1O8)
      * An introductory, but interesting video that describes the KL-Divergence.
@@ -60,12 +60,12 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
   5. The first 37ish minutes of Arthur Gretton's MLSS Africa talk on comparing probability distributions &#8212; [video](https://www.youtube.com/watch?v=5sijxSg8P14), [slides](https://drive.google.com/file/d/1RNrgDs5xw-9HTjikFU1L0iO1PBMDaGwE/view)
      * An interesting take on comparing probability distributions. The first 37 minutes are fairly general and give some nice insights as well as some foreshadowing of what we will be covering in the following weeks. The rest of the talk is also very interesting and ends up covering another GAN called the MMD-GAN, but it isn’t all that relevant for us.
   6. [On Integral Probability Metrics, φ-Divergences and Binary Classification](https://pdfs.semanticscholar.org/6af2/fa8887a2cb0386f79e3a2822b661e2dc8369.pdf)
-     * For those of you who’s curiosity was peaked by Arthur’s talk, this paper goes into depth describing IPMs (such as MMD and the 1-Wasserstein distance) and comparing them the φ-divergences (such as the KL-Divergence). *This paper is fairly heavy mathematically so don't be discouraged if you struggle to follow it*.
+     * For those of you whose curiosity was peaked by Arthur’s talk, this paper goes into depth describing IPMs (such as MMD and the 1-Wasserstein distance) and comparing them the φ-divergences (such as the KL-Divergence). *This paper is fairly heavy mathematically so don't be discouraged if you struggle to follow it*.
 
   **Questions**:
 
-  1. Examples/Exercises 2.3, 2.4, 2.5, 2.6, and 2.26 in MacKay's book.
-      * Bonus: 2.35, and 2.36.
+  1. Examples/Exercises 2.3, 2.4, 2.5, 2.6, and 2.26 in MacKay's book
+      * Bonus: 2.35, and 2.36
      <details><summary>Solutions</summary>
      <p>
      Examples 2.3, 2.5, and 2.6 have their solutions directly following them.
@@ -80,7 +80,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
      Exercise 2.36: 1/2 and 2/3.
      </p>
      <p>
-     (Page numbers from Version 7.2 (fourth printing) March 28, 2005 of MacKay's book.)
+     (Page numbers from Version 7.2 (fourth printing) March 28, 2005, of MacKay's book.)
      </p>
      </details>
 
@@ -103,7 +103,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
       </p>
       </details>
 
-  3. Exercise 1.30 in PRML.
+  3. Exercise 1.30 in PRML
        <details><summary>Solution</summary>
        <p>
        <a href="https://stats.stackexchange.com/questions/7440/kl-divergence-between-two-univariate-gaussians?rq=1">Here</a> is a solution.
@@ -114,7 +114,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
        </details>
        
 
-  4. Prove that minimising MSE is equivalent to maximising likelihood (assuming Gaussian distributed data).
+  4. Prove that minimizing MSE is equivalent to maximizing likelihood (assuming Gaussian distributed data).
        <details><summary>Solution</summary>
        <p>
        Mean squared error is defined as 
@@ -123,11 +123,11 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
        
        where \(N\) is the number of examples, \(y_n\) are the true labels, and \(\hat{y}_n\) are the predicted labels.
 
-       Log-likelihood is defined as \(LL = \log(p(\mathbf{y}|\mathbf{x}))\).       Assuming that the examples are independant and identically distrubtued (i.i.d.) we get 
+       Log-likelihood is defined as \(LL = \log(p(\mathbf{y}|\mathbf{x}))\). Assuming that the examples are independent and identically distributed (i.i.d.) we get 
 
        $$ LL = \log\prod_{n=1}^Np(y_n|x_n) = \sum_{n=1}^{N}\log p(y_n|x_n). $$
 
-       Now, substituting in the definition of the normal ditribution 
+       Now, substituting in the definition of the normal distribution 
 
        $$ \mathcal{N}(y;\mu,\sigma) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp{-\frac{(y - \mu)^2}{2\sigma^2}}$$
 
@@ -135,7 +135,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
 
        $$ LL = \sum_{n=1}^{N} -\frac{1}{2}\log(2\pi) - \log\sigma - \frac{(y_n - \mu_n)^2}{2\sigma^2}.$$
 
-       Finally, replacing \(\mu\) with \(\hat{y}\) (because we use the mean as our prediction), and noticing that maximising the expression above depends only on the third term (because the others are constants), we arrive at the conclusion that to maximise the log-likelihood we must minimize
+       Finally, replacing \(\mu\) with \(\hat{y}\) (because we use the mean as our prediction), and noticing that maximizing the expression above depends only on the third term (because the others are constants), we arrive at the conclusion that to maximize the log-likelihood we must minimize
 
        $$ \frac{(y_n - \hat{y}_n)^2}{2\sigma^2} $$
 
@@ -143,7 +143,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
        </p>
        </details>
 
-  5. Prove that maximising likelihood is equivalent to minimizing KL-Divergence.
+  5. Prove that maximizing likelihood is equivalent to minimizing KL-Divergence.
      <details><summary>Solution</summary>
      <p>
      KL-Divergence is defined as 
@@ -154,7 +154,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
 
      $$ D_{KL}(p||q) = \mathbb{E}_p[\log p(x)] - \mathbb{E}_p[\log q(x|\bar{\theta})]$$
 
-     where the notation \(\mathbb{E}_p[f(x)]\) means that we are taking the expected value of \(f(x)\) by sampling \(x\) from \(p(x)\). We notice that minimising \(D_{KL}(p||q)\) means maximising \(\mathbb{E}_p[\log q(x|\bar{\theta})]\) since the first term in the expression above is constant (we can't change the true data distribution). Now, to maximise the likelihood of our model, we need to maximise
+     where the notation \(\mathbb{E}_p[f(x)]\) means that we are taking the expected value of \(f(x)\) by sampling \(x\) from \(p(x)\). We notice that minimizing \(D_{KL}(p||q)\) means maximizing \(\mathbb{E}_p[\log q(x|\bar{\theta})]\) since the first term in the expression above is constant (we can't change the true data distribution). Now, to maximize the likelihood of our model, we need to maximize
      
      $$q(\bar{x}|\bar{\theta}) = \prod_{n=1}^Nq(x_n|\bar{\theta}).$$
 
@@ -171,7 +171,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
 <br />
 
 # 2 Generative Models
-  **Motivation**: This week we’ll take a look at generative models. We will aim to understand how they are similar and how they differ from discriminative models. In particular we want to understand the challenges that come with training generative models.
+  **Motivation**: This week we’ll take a look at generative models. We will aim to understand how they are similar and how they differ from discriminative models. In particular, we want to understand the challenges that come with training generative models.
 
   **Topics**:
 
@@ -180,7 +180,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
 
   **Required Reading**:
 
-  1. The "Overview", "What are generative models?", and "Differentiable inference" sections of the webpage for David Duvenaud’s [course on Differentiable Inference and Generative Models](https://www.cs.toronto.edu/~duvenaud/courses/csc2541/index.html)
+  1. The "Overview", "What are generative models?", and "Differentiable inference" sections of the webpage for David Duvenaud’s [course on Differentiable Inference and Generative Models](https://www.cs.toronto.edu/~duvenaud/courses/csc2541/index.html).
       * Here we want to get a sense of the big picture of what generative models are all about. There are also some fantastic resources here for further reading if you are interested.
   2. [A note on the evaluation of generative models](https://arxiv.org/pdf/1511.01844.pdf)
       * This paper is the real meat of this week’s content. After reading this paper you should have a good idea of the challenges involved in evaluating (and therefore training) generative models. Understanding these issues will be important for appreciating what the WGAN is all about. Don’t worry too much if some sections don’t completely make sense yet - we’ll be returning to the key ideas in the coming weeks.
@@ -189,7 +189,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
 
   1. Ch 20 of the DL book, particularly:
       * Differentiable Generator Networks (Ch 20.10.2)
-          * Description of a broad class of generative models to which GANs belong which will help contextualise GANs when we look at them next week.
+          * Description of a broad class of generative models to which GANs belong which will help contextualize GANs when we look at them next week.
       * Variational Autoencoders (Ch 20.10.3)
           * Description of another popular class of differentiable generative model which might be nice to contrast to GANs next week.
       * Evaluating Generative Models (Ch 20.14)
@@ -203,7 +203,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
       1. Determine the probability of seeing a flower with a sepal length of 7.9, a sepal width of 4.4, a petal length of 6.9, and a petal width of 2.5.
       2. Determine the distribution of flowers with a sepal length of 6.3, a sepal width of 4.8, and a petal length of 6.0 (see section 2.3.2 of PRML for help). 
       3. Generate 20 flower measurements.
-      4. Generate 20 flower measurements with a sepal length of 6.3
+      4. Generate 20 flower measurements with a sepal length of 6.3.
 
       (congrats you’ve just trained and used a generative model)
       <details><summary>Solution</summary>
@@ -217,21 +217,21 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
       <p>
       This is an open ended question but here are some of the differences:
       <ul>
-        <li>In the generative setting we usually model \(p(x)\), our models are usually non-deterministic, and we can sample from them.</li>
-        <li>In the discriminative setting we usually model \(p(y|x)\), our models are often deterministic, and we can't necessarily sample from them.</li>
+        <li>In the generative setting, we usually model \(p(x)\), our models are usually non-deterministic, and we can sample from them.</li>
+        <li>In the discriminative setting, we usually model \(p(y|x)\), our models are often deterministic, and we can't necessarily sample from them.</li>
       </ul>
       </p>
       </details>
  
   _These last two questions are a good barometer for determining your understanding of the challenges involved in training generative models._ 
 
-  3. Theis _et al._’s paper claims “a model with zero KL divergence will produce perfect samples” &#8212; why is this the case?
+  3. Theis _et al._ claim that “a model with zero KL divergence will produce perfect samples” &#8212; why is this the case?
       <details><summary>Solution</summary>
       <p>
       As we showed last week, \(D_{KL}(p||q) = 0\) if and only if \(p(x)\), the true data distribution, and \(q(x)\) the model distribution, are the same. 
       </p>
       <p>
-      Therefore, if \(D_{KL}(p||q) = 0\) samples from our model will be indistinguishable from the real data.
+      Therefore, if \(D_{KL}(p||q) = 0\), samples from our model will be indistinguishable from the real data.
       </p>
       </details>
 
@@ -240,7 +240,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
       <p>
       Theis <i>et al.</i> outlined two scenarios where this is the case:
       <ul>      
-      <li><b>Low likelihood & good samples</b>: our model can overfit to the training data and produce good samples, however, because the model has overfit it will have a low likelihood for unseen test data.</li>
+      <li><b>Low likelihood & good samples</b>: our model can overfit to the training data and produce good samples, however, because the model has overfitted it will have a low likelihood for unseen test data.</li>
       <li><b>High likelihood & poor samples</b>: here the issue is that high dimensional data will tend to have higher log-likelihoods than low dimensional data. </li>
       </ul>
       </p>
@@ -267,17 +267,17 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
   1. [Goodfellow's GAN paper](https://arxiv.org/pdf/1406.2661.pdf)
       * This is the paper the started it all and if we want to understand WGAN & WGAN-GP we’d better understand the original GAN.
   2. [Toward Principled Methods for Generative Adversarial Network Training](https://arxiv.org/pdf/1701.04862.pdf)
-      * This paper explores the difficulties in training GANs and is a precursor to the WGAN paper that we will look at next week. The paper is quite math heavy so unless math is your cup of tea you shouldn’t spend too much time trying to understand the details of the proofs, corollaries and lemmas. The important things to understand here are: what is the problem, and how do the proposed solutions solve the problem. Focus on the introduction, the English descriptions of the theorems and the figures. **Don't spend too much time on this paper**.
+      * This paper explores the difficulties in training GANs and is a precursor to the WGAN paper that we will look at next week. The paper is quite math heavy so unless math is your cup of tea you shouldn’t spend too much time trying to understand the details of the proofs, corollaries, and lemmas. The important things to understand here are: what is the problem, and how do the proposed solutions solve the problem. Focus on the introduction, the English descriptions of the theorems and the figures. **Don't spend too much time on this paper**.
 
   **Optional Reading**:
 
   1. [Goodfellow's tutorial on GANs](https://arxiv.org/pdf/1701.00160.pdf)
       * A more in-depth explanation of GANs from the man himself.
   2. The GAN chapter in the DL book (20.10.4) 
-      * A summary of what a GAN is and some the issues involved in GAN training.
+      * A summary of what a GAN is and some of the issues involved in GAN training.
   3. Coursera (Stanford) course on game theory videos: [1-05](https://www.youtube.com/watch?v=-j44yHK0nn4&index=5&list=PLGdMwVKbjVQ8DhP8dgrBO1B5etE81Hxxh), [2-01](https://www.youtube.com/watch?v=BsgnKTfOxTs&list=PLGdMwVKbjVQ8DhP8dgrBO1B5etE81Hxxh&index=11), [2-02](https://www.youtube.com/watch?v=FU6ax5K9HIA&list=PLGdMwVKbjVQ8DhP8dgrBO1B5etE81Hxxh&index=12), and [3-04b](https://www.youtube.com/watch?v=RIneClCKgAw&list=PLGdMwVKbjVQ8DhP8dgrBO1B5etE81Hxxh&index=22)
       * This is really here just for people who are interested in the game theory ideas such as minmax. 
-  4. Finish reading [GANs and Divergence Minimization](https://colinraffel.com/blog/gans-and-divergence-minimization.html#citation-gulrajani2018)
+  4. Finish reading [GANs and Divergence Minimization](https://colinraffel.com/blog/gans-and-divergence-minimization.html#citation-gulrajani2018).
       * Now that we know what a GAN is it will be worth it to go back and finish reading this blog. It should help to tie together many of the concepts we’ve covered so far. It also has some great resources for extra reading at the end.
   5. [Overview: Generative Adversarial Networks – When Deep Learning Meets Game Theory](https://ahmedhanibrahim.wordpress.com/2017/01/17/generative-adversarial-networks-when-deep-learning-meets-game-theory/comment-page-1/)
       * A short blog post which briefly summarises many of the topics we’ve covered so far.
@@ -288,7 +288,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
 
   **Questions**:
 
-  1. Prove that minimizing the optimal discriminator loss, with respect to the generator model parameters, is equivalent to minimising the JSD.
+  1. Prove that minimizing the optimal discriminator loss, with respect to the generator model parameters, is equivalent to minimizing the JSD.
       * Hint, it may help to somehow introduce the distribution $$p_m(x) = \frac{p_d(x) + p_g(x)}{2}$$.
       <details><summary>Solution</summary>
       <p>
@@ -325,7 +325,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
   2. Explain why Goodfellow says that $$D$$ and $$G$$ are playing a two-player minmax game and derive the definition of the value function $$V(G,D)$$.
      <details><summary>Solution</summary>
       <p>
-      \(G\) wants to maximise the probability that \(D\) thinks the generated samples are real \(\mathbb{E}_{z \sim p_z(z)}[D(G(z))]\). This is the same as minimizing the probability that \(D\) thinks the generated samples are not fake \(\mathbb{E}_{z \sim p_z(z)}[1 - D(G(z))]\). 
+      \(G\) wants to maximize the probability that \(D\) thinks the generated samples are real \(\mathbb{E}_{z \sim p_z(z)}[D(G(z))]\). This is the same as minimizing the probability that \(D\) thinks the generated samples are not fake \(\mathbb{E}_{z \sim p_z(z)}[1 - D(G(z))]\). 
       </p>
       <p>
       On the other hand, \(D\) wants to maximise the probability that it assigns the labels correctly \(\mathbb{E}_{x \sim p_d(x)}[D(x)] + \mathbb{E}_{z \sim p_z(z)}[1 - D(G(z))]\). Note that \(D(x)\) should be 1 if \(x\) is real, and 0 if \(x\) is fake.
@@ -350,9 +350,9 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
         </details>
 
   4. Implement a GAN and train it on Fashion MNIST.
-      * [This notebook](https://colab.research.google.com/drive/1OWZEeF-SB0r1f6mHm-7-hfxd2zsecEwq#scrollTo=Q8YoJ4mejp97) contains a skeleton with boilerplate code and hints
+      * [This notebook](https://colab.research.google.com/drive/1OWZEeF-SB0r1f6mHm-7-hfxd2zsecEwq#scrollTo=Q8YoJ4mejp97) contains a skeleton with boilerplate code and hints.
       * Try various settings of hyper-parameters, other than those suggested, and see if the model converges.
-      * Examine samples from various stages of the training. Rank them without looking at the corresponding loss and see if your ranking agrees with the loss
+      * Examine samples from various stages of the training. Rank them without looking at the corresponding loss and see if your ranking agrees with the loss.
       <details><summary>Solution</summary>
         <p>
         <a href="https://github.com/eriklindernoren/Keras-GAN/blob/master/dcgan/dcgan.py">Here</a> is a GAN implementation using Keras.
@@ -375,12 +375,12 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
   **Required Reading**:
 
   1. [The WGAN paper](https://arxiv.org/pdf/1701.07875.pdf)
-      * This should be pretty self explanatory! We’re doing a DFL on Wasserstein GANs so we’d better read the paper! (This isn’t the end of the road however, next week we’ll look at WGAN-GP.) The paper builds upon an intuitive idea: the family of Wasserstein distances is a nice distance between probability distributions, that is well grounded in theory. The authors propose to use the 1-Wasserstein distance to estimate generative models. They show that the 1-Wasserstein distance is an IPM with a meaningful set of constraints (1-Lipschitz functions), and can therefore be optimized by focusing on discriminators that are “well behaved” (meaning that their output does not change to much if you perturb the input, i.e. they are Lipschitz!).
+      * This should be pretty self-explanatory! We’re doing a DFL on Wasserstein GANs so we’d better read the paper! (This isn’t the end of the road, however, next week we’ll look at WGAN-GP.) The paper builds upon an intuitive idea: the family of Wasserstein distances is a nice distance between probability distributions, that is well grounded in theory. The authors propose to use the 1-Wasserstein distance to estimate generative models. They show that the 1-Wasserstein distance is an IPM with a meaningful set of constraints (1-Lipschitz functions), and can, therefore, be optimized by focusing on discriminators that are “well behaved” (meaning that their output does not change to much if you perturb the input, i.e. they are Lipschitz!).
 
   **Optional Reading**:
 
-  1. [Summary blog for paper](https://www.alexirpan.com/2017/02/22/wasserstein-gan.html)
-      * This is a brilliant blog post that summarises almost all of the key points we’ve covered over the last 4 weeks and puts them in the context of the WGAN paper. In particular if any of the more theoretic aspects of the WGAN paper were a bit much for you then this post is worth reading.
+  1. [Summary blog for the paper](https://www.alexirpan.com/2017/02/22/wasserstein-gan.html)
+      * This is a brilliant blog post that summarises almost all of the key points we’ve covered over the last 4 weeks and puts them in the context of the WGAN paper. In particular, if any of the more theoretic aspects of the WGAN paper were a bit much for you then this post is worth reading.
   2. [Another good summary of the paper](https://mindcodec.ai/2018/09/23/an-intuitive-guide-to-optimal-transport-part-ii-the-wasserstein-gan-made-easy/)
   3. Wasserstein / Earth Mover distance [blog](https://vincentherrmann.github.io/blog/wasserstein/) [posts](https://mindcodec.ai/2018/09/19/an-intuitive-guide-to-optimal-transport-part-i-formulating-the-problem/)
   4. [Set of](https://www.youtube.com/watch?v=6iR1E6t1MMQ) [three](https://www.youtube.com/watch?v=1ZiP_7kmIoc) [lectures](https://www.youtube.com/watch?v=SZHumKEhgtA) by Marco Cuturi on optimal transport (with accompanying [slides](https://drive.google.com/file/d/1oYX41dIAXhU6EShcid6eYrrK7svi5NXW/view))
@@ -402,11 +402,11 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
   2. With this in mind, how does using the Wasserstein distance, rather than JSD, reduce the  sensitivity to careful scheduling of the generator and discriminator?
      <details><summary>Solution</summary>
       <p>
-      The Wasserstein distance does not saturate or blow up for distributions with different supports. This means that we still get signals in these cases which in turn means that we don’t have to worry about training the discriminator (or critic) to optimality &#8212; in fact we <i>want</i> to train it to optimality since it will give better signals.
+      The Wasserstein distance does not saturate or blow up for distributions with different supports. This means that we still get signals in these cases which in turn means that we don’t have to worry about training the discriminator (or critic) to optimality &#8212; in fact, we <i>want</i> to train it to optimality since it will give better signals.
       </p>
      </details>
 
-  3. Let’s compare the 1-Wasserstein Distance (aka Earth Mover’s Distance - EMD) with the KLD for a few simple discrete distributions. We want to build up an intuition for the differences between theses two metrics and why one might be better than another in certain scenarios. You might find it useful to use the Scipy implementations for [1-Wasserstein](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.wasserstein_distance.html) and [KLD](https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.kl_div.html).
+  3. Let’s compare the 1-Wasserstein Distance (aka Earth Mover’s Distance - EMD) with the KLD for a few simple discrete distributions. We want to build up an intuition for the differences between these two metrics and why one might be better than another in certain scenarios. You might find it useful to use the Scipy implementations for [1-Wasserstein](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.wasserstein_distance.html) and [KLD](https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.kl_div.html).
       1. Let $$P(x)$$, $$Q(x)$$ and $$R(x)$$ be discrete distributions on $$Z$$ with:
           * $$P(0) = 0.5$$, $$P(1) = 0.5$$,
           * $$Q(0) = 0.75$$, $$Q(1) = 0.25$$, and
@@ -475,7 +475,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
   **Optional Reading**:
 
   1. [On the Regularization of Wasserstein GANs](https://arxiv.org/pdf/1709.08894.pdf)
-      * This paper came out after the WGAN-GP paper but gives a thorough discussion of why the weight clipping in the original WGAN was an issue (see Appendix B). In addition they propose other solutions for how to get around doing so and provide other interesting discussions of GANs and WGANs.  
+      * This paper came out after the WGAN-GP paper but gives a thorough discussion of why the weight clipping in the original WGAN was an issue (see Appendix B). In addition, they propose other solutions for how to get around doing so and provide other interesting discussions of GANs and WGANs.  
   2. [Wasserstein GAN & WGAN-GP blog post](https://medium.com/@jonathan_hui/gan-wasserstein-gan-wgan-gp-6a1a2aa1b490)
       * Another blog that summarises many of the key points we’ve covered and includes WGAN-GP.
   3. [GAN — How to measure GAN performance?](https://medium.com/@jonathan_hui/gan-how-to-measure-gan-performance-64b988c47732)
@@ -487,24 +487,24 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
   1. Why does weight clipping lead to instability in the training of a WGAN & how does the gradient penalty avoid this problem?
      <details><summary>Solution</summary>
       <p>
-      The instability comes from the fact that if we choose the weight clipping hyper-parameter poorly we end up with either exploding or vanishing gradients. This is because weight clipping encourages the optimizer to push the absolute all of the weights very close to the clipping value. Figure 1b in the paper shows this happening. To explain this phenomenon, consider a simple logistic regression model. Here if any of the features are highly predictive of a particular class it will be assigned as positive a weight as possible, similarly if a feature is not predictive of a particular class, it will be assigned as negative a weight as possible. Now depending on our choice of the weight clipping value we either get exploding or vanishing gradients. 
+      The instability comes from the fact that if we choose the weight clipping hyper-parameter poorly we end up with either exploding or vanishing gradients. This is because weight clipping encourages the optimizer to push the absolute all of the weights very close to the clipping value. Figure 1b in the paper shows this happening. To explain this phenomenon, consider a simple logistic regression model. Here if any of the features are highly predictive of a particular class it will be assigned as positive a weight as possible, similarly, if a feature is not predictive of a particular class, it will be assigned as negative a weight as possible. Now depending on our choice of the weight clipping value, we either get exploding or vanishing gradients. 
       <ul>
       <li> Vanishing gradients: this is similar to the issues if vanishing gradients in a vanilla RNN, or a very deep feed-forward NN without residual connections. If we choose the weight clipping value to be too small, during back-propagation, the error signal going to each layer will be multiplied by small values before being propagated to the previous layer. This results in exponential decay in the error signal as it propagates farther backward. </li>
       <li> Exploding gradients: similarly, if we choose a weight clipping value that is too large, the error signals will get repeatedly multiplied by large numbers as the propagate backward &#8212; resulting in exponential growth. </li>
       </ul>
       </p>
       <p>
-      This phenomena also related to the reason we use weight initilization schemes such as Xavier and He and also why batch normalization is important &#8212; both of these methods help to ensure that information is propgated through the network without decaying or exploding.
+      This phenomena also related to the reason we use weight initialization schemes such as Xavier and He and also why batch normalization is important &#8212; both of these methods help to ensure that information is propagated through the network without decaying or exploding.
       </p>
      </details>
 
   2. Explain how WGAN-GP addresses issues of overfitting in GANs.
      <details><summary>Solution</summary>
       <p>
-      Both WGAN-GP, and indeed the original weight-clipped WGAN, have the property that the discriminator/critic loss corresponds to the sample quality from the discriminator, which lets us use the loss to detect overfitting (we can compare the negative discriminator/critic loss for a validation set to that of the training set of real images &#8212; when the two diverge we have overfit). The correspondence between the loss and the sample quality can be explained by a number of factors.
+      Both WGAN-GP, and indeed the original weight-clipped WGAN, have the property that the discriminator/critic loss corresponds to the sample quality from the discriminator, which lets us use the loss to detect overfitting (we can compare the negative discriminator/critic loss for a validation set to that of the training set of real images &#8212; when the two diverge we have overfitted). The correspondence between the loss and the sample quality can be explained by a number of factors.
       <ul>
       <li> With a WGAN we can train our discriminator to optimality. This means that if the critic is struggling to tell the difference between real and generated images we can conclude that the real and generated images are similar. In other words, the loss is meaningful.</li>
-      <li> In addition, in a standard GAN where we cannont train the discrimiantor to optimality, our loss no longer approximates the JSD. We do not know what function our loss is actually approximating and as a result we cannot say (and in practise we do not see) that the loss is a meaningful meansire of sample quality. </li>
+      <li> In addition, in a standard GAN where we cannot train the discriminator to optimality, our loss no longer approximates the JSD. We do not know what function our loss is actually approximating and as a result we cannot say (and in practise we do not see) that the loss is a meaningful measure of sample quality. </li>
       <li> Finally, there are arguments to be made that even if the loss for a standard GAN was approximating the JSD, the Wasserstein distance is a better distance measure for images distributions than the JSD. </li>
       </ul>
       </p>
