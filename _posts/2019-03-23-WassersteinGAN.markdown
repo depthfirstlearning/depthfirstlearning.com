@@ -28,7 +28,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
 # 1 Basics of Probability & Information Theory
   **Motivation**: To understand GAN training (and eventually WGAN & WGAN-GP) we need to first have some understanding of probability and information theory. In particular, we will focus on Maximum Likelihood Estimation and the KL-Divergence. This week we will make sure that we understand the basics so that we can build upon them in the following weeks.  
 
-  _This week contains some fairly introductory material. If everyone participating in this curriculum is comfortable with this material you may wish to treat this week as optional or as a pre-requisite. However, this week still covers some very interesting and cool topics, and it is important to have a solid grasp of these concepts in order to build towards understanding the Wasserstein GAN, so skip with caution._
+  _This week contains some fairly introductory material so you may want to treat it as optional. However, this week still covers interesting and important topics, that are important for understanding the Wasserstein GAN, so skip with caution._
 
   **Topics**:
 
@@ -63,6 +63,8 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
      * For those of you whose curiosity was peaked by Arthur’s talk, this paper goes into depth describing IPMs (such as MMD and the 1-Wasserstein distance) and comparing them the φ-divergences (such as the KL-Divergence). *This paper is fairly heavy mathematically so don't be discouraged if you struggle to follow it*.
 
   **Questions**:
+
+  _The questions this week are here to make sure that you can put all the theory you've been reading about to a little practice. For example, do you understand how to perform calculations on probabilities, or, what Bayes' rule is and how to use it?_ 
 
   1. Examples/Exercises 2.3, 2.4, 2.5, 2.6, and 2.26 in MacKay's book
       * Bonus: 2.35, and 2.36
@@ -197,7 +199,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
 
   **Questions**:
 
-  _These first two questions are here to make sure that you understand what a generative model is and how it differs from a discriminative model_ 
+  _The first two questions are here to make sure that you understand what a generative model is and how it differs from a discriminative model. The last two questions are a good barometer for determining your understanding of the challenges involved in training generative models._ 
 
   1. Fit a [multivariate Gaussian distribution](https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.stats.multivariate_normal.html) to the [Fisher Iris dataset](https://scikit-learn.org/stable/datasets/index.html#iris-plants-dataset) using maximum likelihood estimation (see Section 2.3.4 of PRML for help) then:
       1. Determine the probability of seeing a flower with a sepal length of 7.9, a sepal width of 4.4, a petal length of 6.9, and a petal width of 2.5.
@@ -222,8 +224,6 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
       </ul>
       </p>
       </details>
- 
-  _These last two questions are a good barometer for determining your understanding of the challenges involved in training generative models._ 
 
   3. Theis _et al._ claim that “a model with zero KL divergence will produce perfect samples” &#8212; why is this the case?
       <details><summary>Solution</summary>
@@ -254,7 +254,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
 
   **Motivation**: Let’s read the original GAN paper. Our main goal this week is to understand how GANs solve some of the problems with training generative models, as well as, some of the new issues that come with training GANs.
 
-  _This week has a fairly heavy workload and could plausibly be split over two weeks. This is due to having two papers for required reading. However, it should be noted that the second paper is really somewhere between required and optional &#8212; we think that it contains some  interesting material and sets the state well for looking at WGAN in week 4, but the most important points are covered again in week 4. Depending on your study group you might want to focus on this paper more or less based on your interest (we recommend that most groups don't spend too much time on this paper)._
+  _The second paper this week is actually optional but **highly** recommended &#8212; we think that it contains some interesting material and sets the stage for looking at WGAN in week 4, however, the core concepts will be repeated again. Depending on your interest you might want to spend more or less time on this paper (we recommend that most people don't spend too much time)._
 
   **Topics**:
 
@@ -287,6 +287,8 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
       * This example illustrates how simple GANs are to implement by doing it in 145 lines of Python using Numpy and a simple autograd library.
 
   **Questions**:
+
+  _The first three questions this week are here to make sure that you understand some of the most important points in the GAN paper. The last question is to make sure you understood the overall picture of what a GAN is, and to get your hands dirty with some of the practical difficulties of training GANs._
 
   1. Prove that minimizing the optimal discriminator loss, with respect to the generator model parameters, is equivalent to minimizing the JSD.
       * Hint, it may help to somehow introduce the distribution $$p_m(x) = \frac{p_d(x) + p_g(x)}{2}$$.
@@ -392,6 +394,8 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
 
   **Questions**:
 
+  _The first two questions are here to highlight the key difference between the WGAN and the original GAN formulation. As before, the last question is to make sure you understood the overall picture of what a WGAN is and to get your hands dirty with how they differ from standard GANs in practice._
+
   1. What happens to the KLD/JSD when the real data and the generator's data lie on low dimensional manifolds?
      <details><summary>Solution</summary>
       <p>
@@ -483,6 +487,8 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
 
 
   **Questions**:
+
+  _This week's questions follow the same pattern as last week's. How does the formulation of WGAN-GP differ from that of the original GAN or WGAN (and how is it similar)? What does this mean in practice?_
 
   1. Why does weight clipping lead to instability in the training of a WGAN & how does the gradient penalty avoid this problem?
      <details><summary>Solution</summary>
