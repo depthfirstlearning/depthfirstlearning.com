@@ -67,16 +67,26 @@ observing each variable separately.
      <p>
      PRML 1.31: Consider two variables \(x\) and \(y\) having joint distribution \(p(x,y)\). Show that the differential entropy of this pair of variables satisfies \(H(x,y) \le H(x) + H(y)\) with equality if, and only if, \(x\) and \(y\) are statistically independent.
      </p><p>
-     If \(p(x)\) and \(p(y)\) are independent there joint distribution is given by:<br>
-     \(p(x,y) = p(x)p(y)\)<br>
-     From that the joint entropy can be derived:
-     \(H(x|y) = H(x)\) and \(H(y|x) = H(y)\)<br>
-     \(H(x) + H(y|x) = H(y) + H(x|y) = H(x) + H(y)\)<br>
+     If \(p(x)\) and \(p(y)\) are independent then the joint distribution is given by:<br>
+     \(p(x,y) = p(x)p(y)\)
+     </p><p>
+     Based on the independent \(p(x)\) and \(p(y)\) the joint entropy can be derived from the conditional entropies \(H(x|y)\) and \(H(y|x)\):<br>
+     \(H(x|y) = H(x)\)<br>
+     \(H(y|x) = H(y) \to\)<br>
+     \(H(x,y) = H(x) + H(y|x) = H(y) + H(x|y) \to\)<br>
      \(H(x,y) = H(x) + H(y)\)
      </p><p>
-     Therefore, there is no mutual information if \(p(x)\) and \(p(y)\) are independent:<br>
+     Therefore, there is no mutual information \(I(x,y)\) if \(p(x)\) and \(p(y)\) are independent:<br>
      \(H(x,y) = H(x) + H(y)\ \to\)<br>
      \(I(x,y) = H(x) + H(y) - H(x,y) = H(x,y) - H(x,y) = 0\)
+     </p><p>
+     If \(p(x)\) and \(p(y)\) are dependent:<br>
+     \(H(x,y) < H(x) + H(y)\ \to\)<br>
+     \(I(x,y) = H(x) + H(y) - H(x,y) > 0\)
+     </p><p>
+     The indepent and dependent case can be combined to a general form:<br>
+     \(H(x,y) \le H(x) + H(y)\ \to\)<br>
+     \(I(x,y) = H(x) + H(y) - H(x,y) \ge 0\)
      </p>
      </details>
   2. How is Mutual Information similar to correlation? How are they different? Are they directly related under some conditions?
@@ -149,15 +159,16 @@ observing each variable separately.
      <p>Start <a href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence">here</a>.
      </p><p>
      The Kullback–Leibler divergence \(D_{KL}(P||Q)\) between \(P\) and \(Q\) is defined as:<br>
-     \(D_{KL}(P||Q) =  \sum_{x}P(x) log_2\left(\frac{P(x)}{Q(x)}\right)\)
+     \(D_{KL}(P||Q) =  \sum_{x}P(x) \log_2\left(\frac{P(x)}{Q(x)}\right)\)
      </p><p>
-     The lower bound is reached when \(P(x) = Q(x)\):<br>
-     \(D_{KL}(P||Q) =  \sum_{x}P(x) log_2\left(\frac{P(x)}{Q(x)}\right) = \sum_{x}P(x) log_2(1) = \sum_{x}P(x) 0 = 0\)
+     The lower bound is reached when \(P(x) = Q(x)\) because \(\left(\frac{P(x)}{Q(x)}\right) = 1\):<br>
+     \(D_{KL}(P||Q) = \sum_{x}P(x) \log_2(1) = \sum_{x}P(x) 0 = 0\)
      </p><p>
-     The upper bound is reached when \(P(x)\) is maximally different from \(Q(x)\):<br>
-     Then the cross entropy \(H_P(Q)\) is infinite, because the number of bits needed to encode the signal would be infinite.<br>
-     \(H_P(Q) = - \sum_{x} Q(x) log_2(P(x)) = \infty \to\)<br>
-     \(D_{KL}(P||Q) = H_P(Q) - H(Q) = \infty\)
+     The upper bound is reached when \(P(x)\) is maximally different from \(Q(x)\). 
+     This is achieved if the support of \(Q(x)\) is not included in the support of \(P(x)\), i.e., \(Q(x)\) is zero  where \(P(x)\) is not zero:<br>
+     \(x_i \in x\)<br>
+     \(P(x_i) \log_2\left(\frac{P(x_i)}{Q(x_i)}\right) = P(x_i) \log_2\left(\frac{P(x_i)}{0}\right) = \infty \to\)<br>
+     \(D_{KL}(P||Q) =  \sum_{x}P(x) \log_2\left(\frac{P(x)}{Q(x)}\right) = \infty\)
      </p>
      </details>
   3. In the paper, why do they say “In practice, equation 1 may not provide sufficient gradient for G to learn well. Early in learning, when G is poor, D can reject samples with high confidence because they are clearly different from the training data. In this case, $$log(1 − D(G(z)))$$ saturates”?
