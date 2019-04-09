@@ -164,8 +164,7 @@ observing each variable separately.
      The lower bound is reached when \(P(x) = Q(x)\) because \(\left(\frac{P(x)}{Q(x)}\right) = 1\):<br>
      \(D_{KL}(P||Q) = \sum_{x}P(x) \log_2(1) = \sum_{x}P(x) 0 = 0\)
      </p><p>
-     The upper bound is reached when \(P(x)\) is maximally different from \(Q(x)\). 
-     This is achieved if the support of \(Q(x)\) is not included in the support of \(P(x)\), i.e., \(Q(x)\) is zero  where \(P(x)\) is not zero:<br>
+     The upper bound is reached when \(Q(x)\) is disjoint from \(P(x)\), i.e., \(Q(x)\) is zero  where \(P(x)\) is not zero, because then the log-ratio \(\log_2\left(\frac{P(x)}{Q(x)}\right)\) becomes \(\infty\):<br>
      \(x_i \in x\)<br>
      \(P(x_i) \log_2\left(\frac{P(x_i)}{Q(x_i)}\right) = P(x_i) \log_2\left(\frac{P(x_i)}{0}\right) = \infty \to\)<br>
      \(D_{KL}(P||Q) =  \sum_{x}P(x) \log_2\left(\frac{P(x)}{Q(x)}\right) = \infty\)
