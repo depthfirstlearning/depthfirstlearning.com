@@ -4,7 +4,12 @@ title:  "Announcing the 2019 DFL Fellows"
 date:   2019-04-15 16:00:00 +0000
 categories: introduction
 author: dfl
-blurb: "xcxc."
+blurb: "After we launched Depth First Learning last year, we wanted to keep the momentum
+and continue outputting high-quality study guides for machine learning.
+Subsequently, we launched the Depth First Learning Fellowship with funding provided by Jane Street.
+
+We were blown away by the response. With over 100 applicants from 5 continents, we had a tremendously hard time selecting only four proposals.
+"
 feedback: false
 ---
 
