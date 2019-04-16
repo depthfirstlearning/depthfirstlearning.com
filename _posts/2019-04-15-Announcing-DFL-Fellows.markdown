@@ -48,7 +48,7 @@ Association, the South African Statistical Association, and the South African In
 
 <img src="/assets/prabhakaran.jpeg" style="width: 42%; padding-left: 20px; padding-bottom: 20px;" align="right" />
 
-<b>Target paper:</b> “<a href="https://arxiv.org/abs/1801.10130">Spherical CNNs</a>” by Cohen, Geigger, Koeler and Welling (ICLR 2018)
+<b>Target paper:</b> “<a href="https://arxiv.org/abs/1801.10130">Spherical CNNs</a>” by Cohen, Geiger, Köhler and Welling (ICLR 2018)
 
 Dr. Sandhya Prabhakaran is a Research Fellow at Memorial Sloan Kettering Cancer Centre, NYC. Before that she was a Research Scientist at Columbia University in the City of New York.
 
