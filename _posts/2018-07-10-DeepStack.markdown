@@ -72,9 +72,6 @@ all of the necessary topics, including what is the
   
   **Optional Reading**:
   1. [The State of Solving Large Incomplete-Information Games, and Application to Poker](https://www.cs.cmu.edu/~sandholm/solving%20games.aimag11.pdf) (2010)
-  2. [Why Poker is Difficult](https://www.youtube.com/watch?v=2dX0lwaQRX0) 
-  Very good video by Noam Brown, the main author of Libratus. The first eighteen 
-  minutes are the most relevant.
   
   **Questions**:
   1. LT: Prove that in a zero-sum game, the Nash Equilibrium strategies are interchangeable.
