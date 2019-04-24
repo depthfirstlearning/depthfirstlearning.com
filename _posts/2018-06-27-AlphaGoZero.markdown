@@ -66,8 +66,8 @@ AlphaGoZero.
   **Optional Reading**:
   1. [CMU's Mathematical Foundations of AI Lecture 1](https://www.cs.cmu.edu/~arielpro/mfai_papers/lecture1.pdf).
   2. Knuth: Sections 1-3.
-  3. [Chess Programming on Minimax](https://chessprogramming.wikispaces.com/Minimax).
-  4. [Chess Programming on AB Pruning](https://chessprogramming.wikispaces.com/Alpha-Beta).
+  3. [Chess Programming on Minimax](https://www.chessprogramming.org/index.php?title=Minimax).
+  4. [Chess Programming on AB Pruning](https://www.chessprogramming.org/Alpha-Beta).
 
   **Questions**:
   1. Knuth: Show that AlphaBetaMin $$= G2(p, \alpha, \beta) = -F2(p, -\beta, -\alpha) = -$$AlphaBetaMax. (p. 300)
