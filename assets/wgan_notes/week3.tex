@@ -1,0 +1,213 @@
+% 
+% This message contains the LaTeX template for scribe notes
+% in EE597.  You are free to use other means of producing
+% your notes, but you are encouraged to use LaTeX: you will
+% need to learn it some day.
+% 
+% Many thanks to Alistair Sinclair@cs.berkeley.edu for providing the basis for
+% the first version of this template.
+% 
+% %************************************************************
+%
+% This is the LaTeX template file for lecture notes for EE596
+% Pattern Recognition II: Introduction to Graphical Models.  When preparing 
+% LaTeX notes for this class you must use this template.
+%
+% To familiarize yourself with this template, the body contains
+% some examples of its use.  Look them over.  Then you can
+% run LaTeX on this file.  After you have LaTeXed this file then
+% you can look over the result either by printing it out with
+% dvips or using xdvi.
+%
+
+\documentclass{article}
+\usepackage{times,amsmath,amsthm,amsfonts,eucal,graphicx}
+
+% This scribe template not only uses latex, but also
+% the American Mathematical Society (AMS) latex macros.
+% Detailed documentation on how to use them to produce good
+% math formating can be obtained here: http://www.ams.org/tex/
+% I've also placed a copy of the AMS-Latex documentation
+% on the web page at:
+%     http://www.ee.washington.edu/class/596/patrec/scribes/amsguide_2p.ps
+% Latex documentation can be obtained from 
+%
+% Publications related to latex are listed here:
+%     http://www.ams.org/tex/publications.html
+%
+
+\usepackage{tikz}
+
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% A few symbols that we will be using often in this course.
+\newcommand{\indep}{{\bot\negthickspace\negthickspace\bot}}
+\newcommand{\notindep}{{\not\negthickspace\negthinspace{\bot\negthickspace\negthickspace\bot}}}
+\newcommand{\definedtobe}{\stackrel{\Delta}{=}}
+\renewcommand{\choose}[2]{{{#1}\atopwithdelims(){#2}}}
+\newcommand{\argmax}[1]{{\hbox{$\underset{#1}{\mbox{argmax}}\;$}}}
+\newcommand{\argmin}[1]{{\hbox{$\underset{#1}{\mbox{argmin}}\;$}}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[3]{
+	\pagestyle{myheadings}
+	\thispagestyle{plain}
+	\newpage
+	\setcounter{lecnum}{#1}
+	\setcounter{page}{1}
+	\noindent
+	\begin{center}
+		\framebox{
+			\vbox{\vspace{2mm}
+				\hbox to 6.58in { {\bf Depth First Learning
+						\hfill Wasserstein GAN} }
+				\vspace{4mm}
+				\hbox to 6.28in { {\Large \hfill Week #1:  #2 \hfill} }
+				\vspace{2mm}
+				\hbox to 6.28in { \hfill Scribed by: #3 }
+				\vspace{2mm}}
+		}
+	\end{center}
+	\markboth{Week #1: #2}{Week #1: #2}
+	\vspace*{4mm}
+}
+
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{CAPTION}{.eps FILE TO INCLUDE}{WIDTH-IN-INCHES}
+\newcommand{\fig}[4]{
+			\begin{center}
+	                \includegraphics[width=#4,clip=true]{#3} \\
+			Figure \thelecnum.#1:~#2
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+% \newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{3}{17 Feb, 2019}{Sasha Naidoo \& Julia Rozanova}
+%\footnotetext{These notes are partially based on those of Nigel Mansell.}
+
+% **** YOUR NOTES GO HERE:
+
+% Some general latex examples and examples making use of the
+% macros follow.  
+%**** IN GENERAL, BE BRIEF AND COMPLETE.
+\section{Maxing out JSD}
+It was mentioned in the paper this week that as we decrease noise, $\mathbb{P}_X $ and $\mathbb{P}_{X + \epsilon} $ become more similar. However, we see that $JSD (\mathbb{P}_X || \mathbb{P}_{X + \epsilon})$ is maxed out, despite the amount of noise. 
+
+In order to understand, we first think of $\mathbb{P}_X $ lying in a low dimensional manifold. Once we add some noise $\epsilon$, $\mathbb{P}_{X + \epsilon} $ is now no longer in this low dimensional manifold. $JSD (\mathbb{P}_X || \mathbb{P}_{X + \epsilon})$ is therefore maxed out (when $\epsilon$ is non-zero) as one distribution lies on a low dimensional manifold while the other does not. The JSD is typically upper bounded by $2log2$ so the phrase ``maxed out" refers to reaching this bound.  
+
+\section{Questions on Terminology}
+
+\subsection{What is a manifold?}
+
+Some intuitive descriptions were discussed, with the core idea being that it is a subspace of a higher dimensional real space that locally (on a small patch around any given contained point) resembles the Euclidean plane. Examples: sphere, torus (donut) etc. 
+
+\subsection{What is the ``support" of a distribution?}
+
+The intersection of all closed sets for which the probability measure is equal to 1 (equivalently, the smallest closed set which has probability 1).
+There was some confusion between distributions, densities and the definition of support. It was thus resolved: in the case where the distribution \emph{has} a density function (not the case for lower dimensional manifolds), the idea of the ``support" of a function (as defined on wikipedia) is equivalent. Otherwise, we need to use Martin's definition of ``support"; he also suggests avoiding saying that ``the support IS" but rather ``the support is contained in".
+	
+	
+\subsection{Integrals}
+Lebesgue integrals were a cause of some confusion. It was suggested that we think of them as expectations instead. For the example at the bottom of page 9 of ``Towards Principled Methods for Training Adversarial Networks", it was advised that we see it as an expectation over ``$y$ sampled from $\mathbb{P}_X$". 
+This integral cannot be written as the integrand times a probability density times $dx$, as this distribution does not have a density; this is the main reason we are required to work with Lebesgue integration rather than ordinary calculus.  
+
+
+\section{On Min/Max and Max/Min Games}
+\begin{itemize}
+	\item It was established that MinMax and MaxMin games are not the same, with a helpful example from Martin in the same context in which we are currently working: he suggested that it was helpful to consider a probability distribution with two point masses, for example valued $\frac{1}{3}$ and $\frac{2}{3}$. The difference between treating the training as a MinMax game as opposed to a MaxMin game could be seen as the difference between training a discriminator to optimality and training the generator in small steps, or on the other hand training the generator to optimality and training the discriminator in small steps.
+	\item Martin answered a question regarding Nash equilibria, clarifying that both the MinMax and the MaxMin have the same Nash equilibrium here. 
+	
+\end{itemize}
+
+\section{Change of Variables}
+In the first step of the derivation on page 4 of the above-mentioned paper, it seemed that a Jacobian was ``missing" in the interchange of variables from one step to the next. This was briefly discussed: the first suggestion was that it is implicitly included in the ``$dx$" term, and secondly it was suggested that the transformation from the first line to the next was intuitive if considered in terms of expectations. 
+
+\section{Using GANs to minimise divergences we cannot compute}
+It was found that in practise you cannot use the reverse KL divergence or the JSD because we need the true data distribution. When training GANs, however, we are able to approximate the JSD without knowing the true data distribution. Refer to a blog post in the optional reading for this week for more detail.
+
+\section{Generalisation/Overfitting of GANs}
+While it is possible for a GAN to learn a data distribution, it essentially is learning based on samples. In the realistic case where we do not know the true data distribution, the only real solution for evaluating GANs is to compare to a hold out set. We then have to consider the likelihood of getting images that a GAN hasn't seen as the GAN will assign 0 probability to these new images.
+
+Additional solutions, such as Parzen windows, allow the GAN to determine how similar or non-similar the new images are to existing images to avoid returning 0 probability results. Alternatively, interpolating in the latent space could also help identify whether or not the GAN has just ``memorised" the training set as it should be able to smoothly move between images. We also note that pure image quality doesn't necessarily mean that the GAN was able to learn a good distribution of the data.
+
+Furthermore, while humans are capable of identifying whether a generated image is ``good" or not, when it comes to other types of data, we do not necessarily have an independent technique/score for evaluating the GANs ability to generalise. 
+
+Despite these techniques, generalisation of GANs as well as a concrete way of determining whether you are overfitting, is still a fairly unsolved problem. 
+
+\section{Scheduling of the Generator and Discriminator}
+When we have low dimensional data manifolds, you can have a discriminator that perfectly differentiates between the two distributions. If the discriminator is always correct, then this leads to vanishing gradients. This is a problem with over-training the discriminator. Conversely, if you do not train the discriminator enough, this results in a lack of clarity around what is being minimised, which can cause poor quality feedback for the generator.
+
+%A suggestion highlighted the possibility of combining techniques used for Variational Autoencoders with GANs to assist with determining log-likelihoods and evaluating the quality of the models.
+
+%\section{Practical question}
+%We want to minimise $E_{x\sim p_{data}} log (D^{*}(x))  + E_{z\sim p(z)} log (1-D^{*}(G(z)))$, once we have found the optimal discriminator, and show that this is equivalent to minimising the JSD.
+%
+%\begin{enumerate}
+%	\item First, you want to replace $G(z)$ with $x$ and replace $z\sim p(z)$ with $x\sim p_{g}$.
+%	\item Then, we note that $D^*(x) = \frac{p_{data}(x)}{p_{data}(x)+p_{g}(x)}$
+%	\item By doing these replacements, we get:
+%	$\text{min} [E_{x\sim p_{data}}log(\frac{p_{data}(x)}{p_{data}(x)+p_{g}(x)}) + E_{x\sim p_{g}} log(\frac{p_{g}(x)}{p_{data}(x)+p_{g}(x)})]$
+%	\item Then we introduce a factor of 1 into each $log$ subject as so: \newline	$\text{min} [E_{x\sim p_{data}}log(\frac{\frac{1}{2}p_{data}(x)}{\frac{1}{2} p_{data}(x)+p_{g}(x)}) + E_{x\sim p_{g}} log(\frac{\frac{1}{2}p_{g}(x)}{\frac{1}{2}p_{data}(x)+p_{g}(x)})]$
+%	\item We then use the rule $log(ab) = log(a) + log(b)$ as well as remove the $\frac{1}{2}$ from the top of both fractions as it does not depend on $x$
+%	\item This gives us: 
+%	$\text{min} [KL (p_{data}(x)|| \frac{p_{data}(x) + p_{g}(x)}{2}) + KL (p_{g}(x)|| \frac{p_{data}(x) + p_{g}(x)}{2})] - 2log2$
+%	\item This can now be simplified to:
+%	$\text{min} [JSD(p_{data}(x) || p_{g}(x) - log4]$ 
+%	\item As we are minimising, Step 7 equates to: $\text{min} [JSD(p_{data}(x) || p_{g}(x)]$
+%\end{enumerate}
+%
+%This proves the above question.
+ 
+
+
+\end{document}
+
+
