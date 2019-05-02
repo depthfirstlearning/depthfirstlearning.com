@@ -1,0 +1,320 @@
+% 
+% This message contains the LaTeX template for scribe notes
+% in EE597.  You are free to use other means of producing
+% your notes, but you are encouraged to use LaTeX: you will
+% need to learn it some day.
+% 
+% Many thanks to Alistair Sinclair@cs.berkeley.edu for providing the basis for
+% the first version of this template.
+% 
+% %************************************************************
+%
+% This is the LaTeX template file for lecture notes for EE596
+% Pattern Recognition II: Introduction to Graphical Models.  When preparing 
+% LaTeX notes for this class you must use this template.
+%
+% To familiarize yourself with this template, the body contains
+% some examples of its use.  Look them over.  Then you can
+% run LaTeX on this file.  After you have LaTeXed this file then
+% you can look over the result either by printing it out with
+% dvips or using xdvi.
+%
+
+\documentclass{article}
+\usepackage{times,amsmath,amsthm,amsfonts,eucal,graphicx}
+\usepackage{amssymb}
+\usepackage[table]{xcolor}
+
+% This scribe template not only uses latex, but also
+% the American Mathematical Society (AMS) latex macros.
+% Detailed documentation on how to use them to produce good
+% math formating can be obtained here: http://www.ams.org/tex/
+% I've also placed a copy of the AMS-Latex documentation
+% on the web page at:
+%     http://www.ee.washington.edu/class/596/patrec/scribes/amsguide_2p.ps
+% Latex documentation can be obtained from 
+%
+% Publications related to latex are listed here:
+%     http://www.ams.org/tex/publications.html
+%
+
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% A few symbols that we will be using often in this course.
+\newcommand{\indep}{{\bot\negthickspace\negthickspace\bot}}
+\newcommand{\notindep}{{\not\negthickspace\negthinspace{\bot\negthickspace\negthickspace\bot}}}
+\newcommand{\definedtobe}{\stackrel{\Delta}{=}}
+\renewcommand{\choose}[2]{{{#1}\atopwithdelims(){#2}}}
+\newcommand{\argmax}[1]{{\hbox{$\underset{#1}{\mbox{argmax}}\;$}}}
+\newcommand{\argmin}[1]{{\hbox{$\underset{#1}{\mbox{argmin}}\;$}}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[3]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.58in { {\bf Depth First Learning
+                        \hfill Wasserstein GAN} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Week #1:  #2 \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { \hfill Scribed by: #3 }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Week #1: #2}{Week #1: #2}
+   \vspace*{4mm}
+}
+
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{CAPTION}{.eps FILE TO INCLUDE}{WIDTH-IN-INCHES}
+\newcommand{\fig}[4]{
+			\begin{center}
+	                \includegraphics[width=#4,clip=true]{#3} \\
+			Figure \thelecnum.#1:~#2
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+% \newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+\lecture{2}{10 Feb, 2019}{James Allingham \& Taliesin Beynon}
+
+
+\section{Trade-offs between distance metrics}
+
+Refer to Figure 1 in \emph{A note on the evaluation of generative models}.
+
+\begin{itemize}
+	\item When choosing between different metrics (in a loose sense of the word) for probability distributions there are trade-offs.
+	\item For example, minimizing the KLD between our model and true data will result in a model that places probability density over all of the modes of the true data distribution, at the cost of also placing probability density in areas where the true data distribution does not.
+	\item On the other hand, JSD, Reverse KLD, and MMD do the opposite. The model will place all of its mass on the mode(s) that contains the most probability density in the true data distribution.
+	\item The choice of whether we want to cover all the modes but draw low probability samples from our model, or to miss modes but only draw high probability samples, will depend on the application.
+	\item The wording above has been slightly misleading since this issue can also come up with uni-modal data. For example, if the true data distribution has some interesting shape and we are trying to model it with a single isotropic Gaussian distribution.
+	\item There is active research into precision \& recall type metrics for measuring these trade-offs in practice.
+	\item Note that even if we choose a model that is complex enough, in theory, to capture all of the modes of the true data distribution, without penalizing the model for missing modes the model might still miss some of the modes. 
+	\item We can understand why KLD does not penalize the model for assigning probability density to areas which have zero probability density under the true data distribution but considering the definition of KLD:
+	\begin{equation}
+	D_{KL}(P||Q) = \int_x P(x) \log \frac{P(x)}{Q(x)} dx.
+	\end{equation}
+	The $P(x)$ term means that the ratio term involving $Q(x)$ is ignored when $P(x) = 0$. However, $Q(x)$ can still have an effect on the KLD in areas where $P(x) = 0$ because having a high probability density for $Q(x)$ in these areas necessarily (for a normalized distribution) means that we can have less probability density in areas where $P(x) > 0$.
+\end{itemize}
+
+\section{JSD}
+
+\begin{itemize}
+	\item JSD is a combination of forward and reverse KLDs. However, it is not a simple average of the two, but rather uses a distribution $M(x)$ that is defined as the average of $P(x)$ and $Q(x)$:
+	\begin{equation}
+	JSD(P,Q) = 0.5 KLD(P||M) + 0.5 KLD(Q||M).
+	\end{equation}
+	The reason for using this averaged distribution might be to reduce the sensitivity to areas where either $P(x)$ or $Q(x)$ are low -- as long as one of $P$ and $Q$ has non-zero density, the denominators in the KLD terms will not cause the KLDs to go to infinity.
+	\item The notation $||$ in the KLD is not related to the $|$ notation for describing conditional distributions.
+	\item The square root of JSD is a proper metric, which means that a number of properties (for example the triangle inequality) hold. This is not true for most divergences. 
+\end{itemize}
+
+\section{MMD}
+
+\begin{itemize}
+	\item MMD is related to moment matching.
+	\item An example to develop some understanding/intuition for MMD (adapted from Arthur Gretton's MLSS Africa talk on MMD-GANs):
+	\begin{itemize}
+		\item Suppose we have samples from two distributions $P$ and $Q$, $\{\square,\lozenge,\triangle\}$ and $\{\blacksquare,\blacklozenge,\blacktriangle\}$ respectively, as well as a distance metric between samples $k$, and that we want to measure the distance between the two distributions.
+		\item We can use $k$ to measure the distance between all of the samples from both $P$ and $Q$, creating the following distance matrix:
+		
+		\begin{center}
+		\begin{tabular}{ rcccccc }
+			\multicolumn{1}{r}{}
+			&  \multicolumn{1}{c}{$\square$}
+			& \multicolumn{1}{c}{$\lozenge$}
+			& \multicolumn{1}{c}{$\triangle$}
+			& \multicolumn{1}{c}{$\blacksquare$}
+			& \multicolumn{1}{c}{$\blacklozenge$}
+			& \multicolumn{1}{c}{$\blacktriangle$} \\
+			$\square$ &  & \cellcolor{black!15} & \cellcolor{black!10} & \cellcolor{black!40} & \cellcolor{black!45} & \cellcolor{black!30} \\
+			$\lozenge$ & \cellcolor{black!15} & & \cellcolor{black!12} & \cellcolor{black!20} & \cellcolor{black!55} & \cellcolor{black!43} \\
+			$\triangle$ & \cellcolor{black!10} & \cellcolor{black!12}  & & \cellcolor{black!23} & \cellcolor{black!30} & \cellcolor{black!60} \\
+			$\blacksquare$ & \cellcolor{black!40} & \cellcolor{black!20} & \cellcolor{black!23} & & \cellcolor{black!5} & \cellcolor{black!20} \\
+			$\blacklozenge$ & \cellcolor{black!45} & \cellcolor{black!55} & \cellcolor{black!30} & \cellcolor{black!5} & & \cellcolor{black!7}\\
+			$\blacktriangle$ & \cellcolor{black!30} & \cellcolor{black!43} & \cellcolor{black!60} & \cellcolor{black!20} & \cellcolor{black!7} & \\
+		\end{tabular}
+		\end{center}
+	
+		\item In the matrix above, the darker the cell, the higher the distance between two samples. Note that the diagonal elements are white because the distance between a sample and its self is zero. Also, note that samples from the same distributions are on average smaller than samples from different distributions:
+		
+		\begin{center}
+			\begin{tabular}{ rcccccc }
+				\multicolumn{1}{r}{}
+				&  \multicolumn{1}{c}{$\square$}
+				& \multicolumn{1}{c}{$\lozenge$}
+				& \multicolumn{1}{c}{$\triangle$}
+				& \multicolumn{1}{c}{$\blacksquare$}
+				& \multicolumn{1}{c}{$\blacklozenge$}
+				& \multicolumn{1}{c}{$\blacktriangle$} \\
+				$\square$ & \cellcolor{black!5} & \cellcolor{black!5} & \cellcolor{black!5} & \cellcolor{black!30} & \cellcolor{black!30} & \cellcolor{black!30} \\
+				$\lozenge$ & \cellcolor{black!5} & \cellcolor{black!5} & \cellcolor{black!5} & \cellcolor{black!30} & \cellcolor{black!30} & \cellcolor{black!30} \\
+				$\triangle$ & \cellcolor{black!5} & \cellcolor{black!5} & \cellcolor{black!5} & \cellcolor{black!30} & \cellcolor{black!30} & \cellcolor{black!30} \\
+				$\blacksquare$ & \cellcolor{black!30} & \cellcolor{black!30} & \cellcolor{black!30} & \cellcolor{black!10} & \cellcolor{black!10} & \cellcolor{black!10} \\
+				$\blacklozenge$ & \cellcolor{black!30} & \cellcolor{black!30} & \cellcolor{black!30} & \cellcolor{black!10} & \cellcolor{black!10} & \cellcolor{black!10} \\
+				$\blacktriangle$ & \cellcolor{black!30} & \cellcolor{black!30} & \cellcolor{black!30} & \cellcolor{black!10} & \cellcolor{black!10} & \cellcolor{black!10} \\
+			\end{tabular}
+		\end{center}
+	
+		\item We can consider the difference between the average distances of samples from the same distributions, and the average distances between samples from different distributions to be a measure of the distance between the two distributions themselves. 
+		
+		\item This is basically what MMD, defined as
+		\begin{equation}
+		MMD(P,Q) = \mathbb{E}_{PQ}[k(x,x') - 2k(x,y) + k(y,y')]^{0.5}
+		\end{equation}
+		where $x$ and $x'$ are samples from $P$, and $y$ and $y'$ are samples from $Q$, is doing. The first term in the expectation corresponds to the top left quadrant of the matrix above. Similarly, the second term corresponds to the top right and bottom left quadrants, and the last term corresponds to the bottom right quadrant. 
+		
+	\end{itemize}	
+\end{itemize}
+
+\section{Jensen's Inequality}
+
+\begin{itemize}
+	\item Jensen's inequality is used to derive equation 6 in \emph{A note on the evaluation of generative models}, but it might not be immediately clear how it is actually used. As a reminder, here is what Jensen's inequality says
+	\begin{equation}
+	\mathbb{E}[f(x)] \ge f(\mathbb{E}[x])
+	\end{equation}
+	if $f$ is a convex function and $x$ is a random variable.
+	
+	\item In the proof for equation 6, Jensen's is used to make the following inequality:
+	\begin{equation}
+	\sum_\mathbf{x}P(\mathbf{x})\int_{[0,1]^D}\log q(\mathbf{x} + \mathbf{u})d\mathbf{u} \le \sum_\mathbf{x}P(\mathbf{x})\log \int_{[0,1]^D} q(\mathbf{x} + \mathbf{u})d\mathbf{u}.
+	\end{equation} 
+	
+	\item It might not be clear that there are any expectations here, however, because the random variable is $\mathbf{u}$, which is distributed uniformly over the range $[0,1]^D$, we can say:
+	\begin{equation}
+	\int_{[0,1]^D}\log q(\mathbf{x} + \mathbf{u})d\mathbf{u} = \int P(\mathbf{u})\log q(\mathbf{x} + \mathbf{u})d\mathbf{u} = \mathbb{E}[\log q(\mathbf{x} + \mathbf{u})].
+	\end{equation}
+\end{itemize}
+
+\section{Log-likelihood}
+
+Near the start of section 3.1 of \emph{A note on the evaluation of generative models}, the following statement is made: `Since the discrete data distribution has differential entropy of negative infinity, this can lead to arbitrary high likelihoods even on test data'. This statement raised a number of questions.
+
+\begin{itemize}
+	\item Firstly, why does the discrete data distribution have a differential entropy of negative infinity? 
+	\begin{itemize}
+		\item Recall that differential entropy is simply the continuous version of entropy -- i.e. replacing the sum with an integral:
+		\begin{equation}
+		- \sum_x P(x) \log P(x) \rightarrow -\int_x p(x) \log p(x) dx. 
+		\end{equation}
+		\item Now consider what happens to the differential entropy as the variance of $p(x)$ goes to 0. More concretely, let us consider a normal distribution with arbitrarily low variance. In this case, the density at the mean becomes arbitrarily high and the integral tends to infinity, which means that the differential entropy tends to negative infinity. 
+	\end{itemize}
+	\item As an aside, this is why the KL-Divergence between any continuous and any discrete distribution is infinity. A discrete distribution can be viewed as a collection of Dirac deltas. Recall that the Dirac delta is defined as the limit of the Gaussian distribution as the variance tends to 0.
+	\begin{itemize}
+		\item This is another one of the reasons that we often see noise added to discrete valued data, e.g. in GAN training.
+		\item Perhaps this is related to other cases of adding noise to discrete data, such as label smoothing.
+	\end{itemize}
+	\item Secondly, how does differential entropy of negative infinity lead to arbitrarily high likelihoods (even for test data)?
+	\begin{itemize}
+		\item Consider some training data point. We can place a Gaussian with its mean at the data point and then make the variance smaller and smaller, which will make the likelihood larger and larger. (Recall that as the variance goes to zero, our Gaussian becomes a Dirac delta).
+		\item Let us consider a more realistic example might be one where we are modelling the pixels of images. Here we could model the value of each pixel with a Gaussian. Consider training dataset where each image has a black pixel in the top left corner. We can model this pixel as a Gaussian with a mean of zero, and again make the variance arbitrarily low. Now if any test example has an image with a black pixel in the top left, the likelihood for that image will be arbitrarily high!
+		\begin{itemize}
+			\item As an aside, this is why it is often beneficial to reduce the number of bits used to model an image, for example using 5 bits per colour channel of a pixel rather than 8, since it will effectively add more noise and prevent these arbitrarily high likelihoods from manifesting.
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+\section{Samples and applications}
+
+\begin{itemize}
+	\item The essence of this section (and the previous one) is that you have a model with two components. And one of the components is what matters when you care about the samples, and the other component is what matters when you care about the likelihood. That is basically what you is being shown here, with some technical details about how these models come about. 
+	
+	\item The point is that the quality of samples and the likelihood (as well as performance on actual applications) of a model are generally not necessarily related.
+\end{itemize}
+
+\section{Evaluation based on samples and nearest neighbours}
+
+\begin{itemize}
+	\item The main idea in this section is to show that it can be tricky to determine if the model is producing good samples. More specifically, testing whether or not the model has simply memorized the training dataset.
+	
+	\item In particular, this section shows that the nearest neighbour test can easily be fooled by a model which performs simple transformations to the examples in the training set. 	
+	\begin{itemize}
+		\item This is because nearest neighbours is based on Euclidean distance, which is not a good measure of the similarity between images, for example, and does not correspond to what the human eye/brain perceive as differences. 
+		
+		\item A potential solution to this problem might be to use other distance measures that correspond more closely with how the brain works, for example by looking at small patches of images or using convolutions.
+	\end{itemize}
+
+	\item Because judging the quality of samples from a model is difficult, this makes this a bad proxy for the overall quality of the model, even in applications where all we care about are the samples.
+\end{itemize}
+
+\section{Additional Comments}
+
+\begin{itemize}
+	\item The type of model you are using also has a big impact on how we should evaluate it, which isn't discussed in the paper.
+	\begin{itemize}
+		\item For example, if your model is \emph{correct}, then using maximum likelihood to estimate it will give a good result and log-likelihood will be a good measure of your model performance. However, if the model is wrong and you try use log-likelihood then you might run into the problems discussed in this paper.
+		
+		\item Another example is energy based models, which when estimated using maximum likelihood can be very similar to GANs. Auto-regressive models, on the other hand, do not look anything like GANs when trained with maximum likelihood.
+	\end{itemize}
+\end{itemize}
+
+\section{Summary}
+
+\begin{itemize}
+	\item This week was really about showing that it is difficult to evaluate generative models. We shouldn't necessarily just use evaluation metrics such as log-likelihood since they can be misleading. 
+	\item There are trade-offs to be made when choosing our evaluation metrics, and we should keep those in mind. For example, if your goal in learning a generative model is to produce good samples, then log-likelihood may not be the best choice of evaluation metric, however, if your goal is to minimize the KLD between the model and the true data distribution, then log-likelihood might be more reasonable.
+	\item The choice of our optimization objective is also not so straightforward and involves trade-offs. For example, if we want to cover all the modes of the true data distribution, KLD might be a good choice, but if we care more about our model assigning a high probability to only the data points which have high probability in the true data distribution, then JSD or MMD might be better.
+	\item Metrics such as sample quality and, in particular, Parzen window estimates can also be misleading.
+	\item This is still an active area of research! For example, the paper \emph{Improved Techniques for Training GANs} by Tim Salimans et. al. also contributed to this topic but did receive some criticisms so there is more to say here.
+\end{itemize}
+
+% **** THIS ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+
+\end{document}
+
+

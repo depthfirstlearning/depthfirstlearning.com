@@ -168,7 +168,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
      </p>
      </details>
 
-**Notes**: Here is a [link](todo:add_link) to our notes for the lesson. We were fortunate enough to have Martin Arjovsky sit in on the session!
+**Notes**: Here is a [link](/assets/wgan_notes/week1.pdf) to our notes for the lesson. We were fortunate enough to have Martin Arjovsky sit in on the session!
 
 <br />
 
@@ -246,7 +246,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
       </p>
       </details>
 
-  **Notes**: Here is a [link](todo:add_link) to our notes for the lesson. We were fortunate enough to have Tim Salimans sit in on the session!
+  **Notes**: Here is a [link](/assets/wgan_notes/week2.pdf) to our notes for the lesson. We were fortunate enough to have Tim Salimans sit in on the session!
 
   <br />
 
@@ -361,7 +361,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
         </p>
       </details>
   
-  **Notes**: Here is a [link](todo:add_link) to our notes for the lesson. We were fortunate enough to have Martin Arjovsky sit in on the session!
+  **Notes**: Here is a [link](/assets/wgan_notes/week3.pdf) to our notes for the lesson. We were fortunate enough to have Martin Arjovsky sit in on the session!
 
   <br />
 
@@ -456,7 +456,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
         </p>
       </details>
 
-  **Notes**: Here is a [link](todo:add_link) to our notes for the lesson. We were fortunate enough to have Martin Arjovsky sit in on the session!
+  **Notes**: Here is a [link](/assets/wgan_notes/week4.pdf) to our notes for the lesson. We were fortunate enough to have Martin Arjovsky sit in on the session!
 
   <br />
 
@@ -525,4 +525,4 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
       </p>
      </details>
 
-  **Notes**: Here is a [link](todo:add_link) to our notes for the lesson. We were fortunate enough to have Ishaan Gulrajani sit in on the session!
+  **Notes**: Here is a [link](/assets/wgan_notes/week5.pdf) to our notes for the lesson. We were fortunate enough to have Ishaan Gulrajani sit in on the session!
