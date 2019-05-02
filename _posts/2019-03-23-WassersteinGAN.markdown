@@ -44,7 +44,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
   2. Ch 3.13 of the DL book
       * This chapter covers KL-Divergence & the idea of distances between probability distributions which will also be a key concept going forward.
   3. Chs 5.1.4 and 5.5 of the DL book
-      * The aim of these chapters is to make sure that everyone understands Maximum Likelihood Estimation which is a fundamental concept in machine learning. It is used explicitly or implicitly in both supervised and unsupervised learning as well as in both discriminative and generative methods. In fact, many methods using gradient descent are doing approximate MLE. It is important to understanding MLE as a fundamental concept, and its use in machine learning in practice. Note that, if you are not familiar with the notation used in these chapters, you might want to start at the beginning of the chapter. Also note that, if you are not familiar with the concept of estimators, you might want to read Ch 5.4. However, you can probably get by simply knowing that minimizing MSE is a method for optimizing some approximation for a function we are trying to learn (an estimator).
+      * The aim of these chapters is to make sure that everyone understands maximum likelihood estimation (MLE) which is a fundamental concept in machine learning. It is used explicitly or implicitly in both supervised and unsupervised learning as well as in both discriminative and generative methods. In fact, many methods using gradient descent are doing approximate MLE. It is important to understanding MLE as a fundamental concept, and its use in machine learning in practice. Note that, if you are not familiar with the notation used in these chapters, you might want to start at the beginning of the chapter. Also note that, if you are not familiar with the concept of estimators, you might want to read Ch 5.4. However, you can probably get by simply knowing that minimizing mean squared error (MSE) is a method for optimizing some approximation for a function we are trying to learn (an estimator).
 
   
   **Optional Reading**:
@@ -60,7 +60,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
   5. The first 37ish minutes of Arthur Gretton's MLSS Africa talk on comparing probability distributions &#8212; [video](https://www.youtube.com/watch?v=5sijxSg8P14), [slides](https://drive.google.com/file/d/1RNrgDs5xw-9HTjikFU1L0iO1PBMDaGwE/view)
      * An interesting take on comparing probability distributions. The first 37 minutes are fairly general and give some nice insights as well as some foreshadowing of what we will be covering in the following weeks. The rest of the talk is also very interesting and ends up covering another GAN called the MMD-GAN, but it isn’t all that relevant for us.
   6. [On Integral Probability Metrics, φ-Divergences and Binary Classification](https://pdfs.semanticscholar.org/6af2/fa8887a2cb0386f79e3a2822b661e2dc8369.pdf)
-     * For those of you whose curiosity was peaked by Arthur’s talk, this paper goes into depth describing IPMs (such as MMD and the 1-Wasserstein distance) and comparing them the φ-divergences (such as the KL-Divergence). *This paper is fairly heavy mathematically so don't be discouraged if you struggle to follow it*.
+     * For those of you whose curiosity was piqued by Arthur’s talk, this paper goes into depth describing IPMs (such as MMD and the 1-Wasserstein distance) and comparing them the φ-divergences (such as the KL-Divergence). *This paper is fairly heavy mathematically so don't be discouraged if you struggle to follow it*.
 
   **Questions**:
 
@@ -173,7 +173,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
 <br />
 
 # 2 Generative Models
-  **Motivation**: This week we’ll take a look at generative models. We will aim to understand how they are similar and how they differ from discriminative models. In particular, we want to understand the challenges that come with training generative models.
+  **Motivation**: This week we’ll take a look at generative models. We will aim to understand how they are similar and how they differ from the discriminative models covered last week. In particular, we want to understand the challenges that come with training generative models.
 
   **Topics**:
 
@@ -377,7 +377,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
   **Required Reading**:
 
   1. [The WGAN paper](https://arxiv.org/pdf/1701.07875.pdf)
-      * This should be pretty self-explanatory! We’re doing a DFL on Wasserstein GANs so we’d better read the paper! (This isn’t the end of the road, however, next week we’ll look at WGAN-GP.) The paper builds upon an intuitive idea: the family of Wasserstein distances is a nice distance between probability distributions, that is well grounded in theory. The authors propose to use the 1-Wasserstein distance to estimate generative models. They show that the 1-Wasserstein distance is an IPM with a meaningful set of constraints (1-Lipschitz functions), and can, therefore, be optimized by focusing on discriminators that are “well behaved” (meaning that their output does not change to much if you perturb the input, i.e. they are Lipschitz!).
+      * This should be pretty self-explanatory! We’re doing a DFL on Wasserstein GANs so we’d better read the paper! (This isn’t the end of the road, however, next week we’ll look at WGAN-GP.) The paper builds upon an intuitive idea: the family of Wasserstein distances is a nice distance between probability distributions, that is well grounded in theory. The authors propose to use the 1-Wasserstein distance to estimate generative models. They show that the 1-Wasserstein distance is an integral probability metric (IPM) with a meaningful set of constraints (1-Lipschitz functions), and can, therefore, be optimized by focusing on discriminators that are “well behaved” (meaning that their output does not change to much if you perturb the input, i.e. they are Lipschitz!).
 
   **Optional Reading**:
 
