@@ -4,7 +4,7 @@ title:  "Wasserstein GAN"
 date:   2019-03-23 10:00:00 -0400
 categories: generative-adversarial-networks
 author: james
-blurb: "The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distance, rather than the KL-Divergence, to measure the difference between the model and target distributions. This seemingly simple change has big consequences! Not only does WGAN train more easily but it also achieves very impressive results &#8212; generating some stunning images."
+blurb: "The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distance, rather than the JS-Divergence, to measure the difference between the model and target distributions. This seemingly simple change has big consequences! Not only does WGAN train more easily but it also achieves very impressive results &#8212; generating some stunning images."
 feedback: true
 ---
 
@@ -12,7 +12,7 @@ A number of people need to be thanked for their parts in making this happen. Tha
 
 Of course, thank you to Sasha Naidoo, Egor Lakomkin, Taliesin Beynon, Sebastian Bodenstein, Julia Rozanova, Charline Le Lan, Paul Cresswell, Timothy Reeder, and Michał Królikowski for beta-testing the guide and giving invaluable feedback. A special thank you to Martin Arjovsky, Tim Salimans, and Ishaan Gulrajani for joining us for the weekly meetings.
 
-Finally, thank you to Ulrich Paquet and Stephan Gouws for introducing me to Cinjon.
+Finally, thank you to Ulrich Paquet and Stephan Gouws for introducing many of us to Cinjon.
 
 <div class="deps-graph">
   <iframe class="deps" src="/assets/wgan-deps.svg" width="400"></iframe>
@@ -21,14 +21,12 @@ Finally, thank you to Ulrich Paquet and Stephan Gouws for introducing me to Cinj
 
 # Why
 
-The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distance, rather than the KL-Divergence, to measure the difference between the model and target distributions. This seemingly simple change has big consequences! Not only does WGAN train more easily (a common struggle with GANs) but it also achieves very impressive results &#8212; generating some stunning images. By studying the WGAN, and its variant the WGAN-GP, we can learn a lot about GANs and generative models in general. After completing this curriculum you should have an intuitive grasp of why the WGAN and WGAN-GP work so well, as well as, a thorough understanding of the mathematical reasons for their success. You should be able to apply this knowledge to understanding cutting edge research into GANs and other generative models.
+The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distance, rather than the JS-Divergence, to measure the difference between the model and target distributions. This seemingly simple change has big consequences! Not only does WGAN train more easily (a common struggle with GANs) but it also achieves very impressive results &#8212; generating some stunning images. By studying the WGAN, and its variant the WGAN-GP, we can learn a lot about GANs and generative models in general. After completing this curriculum you should have an intuitive grasp of why the WGAN and WGAN-GP work so well, as well as, a thorough understanding of the mathematical reasons for their success. You should be able to apply this knowledge to understanding cutting edge research into GANs and other generative models.
 
 <br />
 
 # 1 Basics of Probability & Information Theory
   **Motivation**: To understand GAN training (and eventually WGAN & WGAN-GP) we need to first have some understanding of probability and information theory. In particular, we will focus on Maximum Likelihood Estimation and the KL-Divergence. This week we will make sure that we understand the basics so that we can build upon them in the following weeks.  
-
-  _This week contains some fairly introductory material so you may want to treat it as optional. However, this week still covers interesting and important topics, that are important for understanding the Wasserstein GAN, so skip with caution._
 
   **Topics**:
 
@@ -219,8 +217,10 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
       <p>
       This is an open ended question but here are some of the differences:
       <ul>
-        <li>In the generative setting, we usually model \(p(x)\), our models are usually non-deterministic, and we can sample from them.</li>
-        <li>In the discriminative setting, we usually model \(p(y|x)\), our models are often deterministic, and we can't necessarily sample from them.</li>
+        <li>In the generative setting, we usually model \(p(x)\), while in the discriminative setting we usually model \(p(y|x)\).</li>
+        <li>Generative models are usually non-deterministic, and we can sample from them, while discriminative models are often deterministic, and we can't necessarily sample from them.</li>
+        <li>Discriminative models need labels while generative models typically do not.</li>
+        <li>In generative modelling the goal is often to learn some latent variables that describe the data in a compact manner, this is not usually the case for discriminative models.</li>
       </ul>
       </p>
       </details>
@@ -377,7 +377,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
   **Required Reading**:
 
   1. [The WGAN paper](https://arxiv.org/pdf/1701.07875.pdf)
-      * This should be pretty self-explanatory! We’re doing a DFL on Wasserstein GANs so we’d better read the paper! (This isn’t the end of the road, however, next week we’ll look at WGAN-GP.) The paper builds upon an intuitive idea: the family of Wasserstein distances is a nice distance between probability distributions, that is well grounded in theory. The authors propose to use the 1-Wasserstein distance to estimate generative models. They show that the 1-Wasserstein distance is an integral probability metric (IPM) with a meaningful set of constraints (1-Lipschitz functions), and can, therefore, be optimized by focusing on discriminators that are “well behaved” (meaning that their output does not change to much if you perturb the input, i.e. they are Lipschitz!).
+      * This should be pretty self-explanatory! We’re doing a DFL on Wasserstein GANs so we’d better read the paper! (This isn’t the end of the road, however, next week we’ll look at WGAN-GP.) The paper builds upon an intuitive idea: the family of Wasserstein distances is a nice distance between probability distributions, that is well grounded in theory. The authors propose to use the 1-Wasserstein distance to estimate generative models. More specifically, they propose to use the 1-Wasserstein distance in place of the JSD in a standard GAN &#8212; that is to measure the difference between the true distribution and the model distribution of the data. They show that the 1-Wasserstein distance is an integral probability metric (IPM) with a meaningful set of constraints (1-Lipschitz functions), and can, therefore, be optimized by focusing on discriminators that are “well behaved” (meaning that their output does not change to much if you perturb the input, i.e. they are Lipschitz!).
 
   **Optional Reading**:
 
@@ -410,7 +410,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
       </p>
      </details>
 
-  3. Let’s compare the 1-Wasserstein Distance (aka Earth Mover’s Distance - EMD) with the KLD for a few simple discrete distributions. We want to build up an intuition for the differences between these two metrics and why one might be better than another in certain scenarios. You might find it useful to use the Scipy implementations for [1-Wasserstein](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.wasserstein_distance.html) and [KLD](https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.kl_div.html).
+  3. Let’s compare the 1-Wasserstein Distance (aka Earth Mover’s Distance &#8212; EMD) with the KLD for a few simple discrete distributions. We want to build up an intuition for the differences between these two metrics and why one might be better than another in certain scenarios. You might find it useful to use the Scipy implementations for [1-Wasserstein](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.wasserstein_distance.html) and [KLD](https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.kl_div.html).
       1. Let $$P(x)$$, $$Q(x)$$ and $$R(x)$$ be discrete distributions on $$Z$$ with:
           * $$P(0) = 0.5$$, $$P(1) = 0.5$$,
           * $$Q(0) = 0.75$$, $$Q(1) = 0.25$$, and
