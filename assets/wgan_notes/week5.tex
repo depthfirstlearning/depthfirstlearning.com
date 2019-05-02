@@ -1,0 +1,175 @@
+% 
+% This message contains the LaTeX template for scribe notes
+% in EE597.  You are free to use other means of producing
+% your notes, but you are encouraged to use LaTeX: you will
+% need to learn it some day.
+% 
+% Many thanks to Alistair Sinclair@cs.berkeley.edu for providing the basis for
+% the first version of this template.
+% 
+% %************************************************************
+%
+% This is the LaTeX template file for lecture notes for EE596
+% Pattern Recognition II: Introduction to Graphical Models.  When preparing 
+% LaTeX notes for this class you must use this template.
+%
+% To familiarize yourself with this template, the body contains
+% some examples of its use.  Look them over.  Then you can
+% run LaTeX on this file.  After you have LaTeXed this file then
+% you can look over the result either by printing it out with
+% dvips or using xdvi.
+%
+
+\documentclass{article}
+\usepackage{times,amsmath,amsthm,amsfonts,eucal,graphicx}
+
+% This scribe template not only uses latex, but also
+% the American Mathematical Society (AMS) latex macros.
+% Detailed documentation on how to use them to produce good
+% math formating can be obtained here: http://www.ams.org/tex/
+% I've also placed a copy of the AMS-Latex documentation
+% on the web page at:
+%     http://www.ee.washington.edu/class/596/patrec/scribes/amsguide_2p.ps
+% Latex documentation can be obtained from 
+%
+% Publications related to latex are listed here:
+%     http://www.ams.org/tex/publications.html
+%
+
+\usepackage{tikz}
+
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% A few symbols that we will be using often in this course.
+\newcommand{\indep}{{\bot\negthickspace\negthickspace\bot}}
+\newcommand{\notindep}{{\not\negthickspace\negthinspace{\bot\negthickspace\negthickspace\bot}}}
+\newcommand{\definedtobe}{\stackrel{\Delta}{=}}
+\renewcommand{\choose}[2]{{{#1}\atopwithdelims(){#2}}}
+\newcommand{\argmax}[1]{{\hbox{$\underset{#1}{\mbox{argmax}}\;$}}}
+\newcommand{\argmin}[1]{{\hbox{$\underset{#1}{\mbox{argmin}}\;$}}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[3]{
+	\pagestyle{myheadings}
+	\thispagestyle{plain}
+	\newpage
+	\setcounter{lecnum}{#1}
+	\setcounter{page}{1}
+	\noindent
+	\begin{center}
+		\framebox{
+			\vbox{\vspace{2mm}
+				\hbox to 6.58in { {\bf Depth First Learning
+						\hfill Wasserstein GAN} }
+				\vspace{4mm}
+				\hbox to 6.28in { {\Large \hfill Week #1:  #2 \hfill} }
+				\vspace{2mm}
+				\hbox to 6.28in { \hfill Scribed by: #3 }
+				\vspace{2mm}}
+		}
+	\end{center}
+	\markboth{Week #1: #2}{Week #1: #2}
+	\vspace*{4mm}
+}
+
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{CAPTION}{.eps FILE TO INCLUDE}{WIDTH-IN-INCHES}
+\newcommand{\fig}[4]{
+			\begin{center}
+	                \includegraphics[width=#4,clip=true]{#3} \\
+			Figure \thelecnum.#1:~#2
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+% \newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{5}{3 March, 2019}{Sasha Naidoo}
+%\footnotetext{These notes are partially based on those of Nigel Mansell.}
+
+% **** YOUR NOTES GO HERE:
+
+% Some general latex examples and examples making use of the
+% macros follow.  
+%**** IN GENERAL, BE BRIEF AND COMPLETE.
+
+\section{Momemtum Based Optimisers}
+An interesting improvement of WGAN-GP is its ability to use \texttt{Adam} and other momentum based optimisers as opposed to WGAN, which cannot (according to the paper). This is due to the critic loss being non-stationary i.e. the fundamental data distribution you are learning is changing over time. However, it was discussed that while WGAN-GP has been shown to work well with momentum based optimisers, WGAN is likely capable of working with momentum just generally not as well.  
+
+\section{Weight Clipping vs Exploding/Vanishing Gradients (WGAN)}
+
+Weight clipping is introduced to maintain the 1-Lipschitz constraint as this has been seen to affect the network gradients in two ways.
+
+\begin{itemize}
+	\item \textbf{Vanishing Gradients:} If you have a deep network and you clip all the weights (making them small or close to zero), the error signal propagated back through the network decays exponentially (as they are being multiplied by this small-valued weights matrix), which naturally results in vanishing gradients.
+	\item \textbf{Exploding Gradients:} 
+	When using weight clipping, the loss function typically results in the weights being very close to the upper/lower bounds of the clipping interval (Figure 1b WGAN-GP), which exhausts the clipping constraint. If this constraint is below the ideal weight initialisation then you get vanishing gradients (as explained above) but conversely, if they are larger than the ideal point this results in exploding gradients. 
+\end{itemize}
+
+In order to avoid issues with the gradients, the clipping constraint needs to be balanced between the vanishing case and the exploding case, which is typically very difficult.
+
+\section{Definition of $\hat{x}$} 
+For WGAN-GP, we need to have the penalty on the gradients for both the real data and the generated data. $\hat{x}$ defines an interpolation between these two things where $\hat{x} \leftarrow \epsilon x + (1- \epsilon) \tilde{x} $ with $x$ being the sampled data, $\tilde{x}$ being the generated data and $\epsilon$,  the mixing proportion. Based on Proposition 1 (in WGAN-GP paper), we note that if there is an optimal coupling between $\mathbb{P}_r$ (real data distribution) and $\mathbb{P}_g$ (generated data distribution), our optimal solution $f^*$ is differentiable and if $\hat{x} \leftarrow \epsilon x + (1- \epsilon) \tilde{x} $ then we can conclude that $f^*$ has gradient norm 1 everywhere under $\mathbb{P}_r$ and $\mathbb{P}_g$ and we have a 1-Lipschitz function $f^*$. In short, Proposition 1 tells you that the function that you are looking to recover $f^*$, exhausts the Lipschitz constraint at least on the straight lines between coupled points between the sampled data and the real data (which $\hat{x} \leftarrow \epsilon x + (1- \epsilon) \tilde{x} $ defines).
+
+\section{Batch Normalisation with WGAN-GP}
+Based on experiments done, it was highlighted that while batch-norm does seem to work with WGAN-GP (contrary to what is indicated in the paper), it does not seem to work reliably (i.e.  $\ sim$50\% of the time). An intuition into why it sometimes fails is that by using batch-norm it results in missing terms needed for the gradient penalty. This can cause certain terms to become arbitrarily large and as such the network could ``cheat".
+
+\section{Overfitting}
+With WGAN, it is possible to train the critic to optimality and therefore if the optimal critic is struggling to tell the difference between real images and generated images, this tells us that the generated images are becoming more similar to the real images. This substantiates the claim that the WGAN (using weigh clipping) loss correlates with the sample quality. Therefore, the loss value is used a metric to measure overfitting for the WGAN as when the sample quality starts to increase, the loss goes up.
+
+\section{General Comments}
+\begin{itemize}
+	\item The aim of the GP method is to approximate the Kantorovich potential function that compares the distributions. Imagine two functions that are arbitrarily close in terms of mean-squared-error but give you completely different gradients and in essence, weight clipping forces the worst case scenario to happen a large percentage of the time, which leads poorer generator gradients. This is due to the network being incentivised to maximise the difference in expectation between value of the critic at the fake point and the value of the critic at the real points.  
+	\item During implementation, it was found that WGAN-GP was typically easier to get working for various architectures and produced fairly good results, in comparison to a standard WGAN. Overall, WGAN was found to need more iterations to produce similar results to standard GANs. 
+\end{itemize}
+
+
+\end{document}
+
+
