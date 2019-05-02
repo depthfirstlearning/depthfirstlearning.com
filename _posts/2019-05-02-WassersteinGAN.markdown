@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Wasserstein GAN"
-date:   2019-03-23 10:00:00 -0400
+date:   2019-05-02 10:00:00 -0400
 categories: generative-adversarial-networks
 author: james
 blurb: "The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distance, rather than the JS-Divergence, to measure the difference between the model and target distributions. This seemingly simple change has big consequences! Not only does WGAN train more easily but it also achieves very impressive results &#8212; generating some stunning images."
