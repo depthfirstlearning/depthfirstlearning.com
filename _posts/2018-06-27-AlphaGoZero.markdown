@@ -60,7 +60,7 @@ AlphaGoZero.
   2. Alpha-Beta Pruning.
 
   **Required Reading**:
-  1. [Cornell Recitation on Minimax & AB Pruning](https://www.cs.cornell.edu/courses/cs312/2002sp/lectures/rec21.htm).
+  1. [Cornell Recitation on Minimax & AB Pruning](http://www.cs.cornell.edu/courses/cs4700/2019sp/lectures/Lecture9.pdf).
   2. Knuth: Section 6 (Theorems 1&2, Corollaries 1&3).
 
   **Optional Reading**:
