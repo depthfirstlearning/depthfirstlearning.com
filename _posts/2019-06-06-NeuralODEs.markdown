@@ -4,7 +4,7 @@ title:  "Neural ODEs"
 date:   2019-06-06 10:00:00 -0400
 categories: neural-nets
 author: luca
-blurb: "Neural ODEs are neural network models which generalize standard layer to layer propagation to continuous depth models. The forward propagation in many neural networks models can be seen as one step of discretation of an ODE; starting from this observation, one can construct and efficiently train models by numerically solving ODEs. On top of furnishing a new whole family of architectures, neural ODEs can be applied to gain memory efficiency in supervised learning tasks, construct a new class of invertible density models and model continuous time-series"
+blurb: "Neural ODEs are neural network models which generalize standard layer to layer propagation to continuous depth models. The forward propagation in many neural networks models can be seen as one step of discretation of an ODE; starting from this observation, one can construct and efficiently train models by numerically solving ODEs. On top of furnishing a new whole family of architectures, neural ODEs can be applied to gain memory efficiency in supervised learning tasks, construct a new class of invertible density models and model continuous time-series..."
 feedback: true
 ---
 
