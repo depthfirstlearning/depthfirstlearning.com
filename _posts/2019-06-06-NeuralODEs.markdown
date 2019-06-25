@@ -142,7 +142,7 @@ In this curriculum, we will go through all the background topics necessary to un
   1. [Prof. Trefethen's class ODEs and Nonlinear Dynamics 4.1](http://podcasts.ox.ac.uk/odes-and-nonlinear-dynamics-41)
   2. Predictor-corrector methods: Section 11.7 from (Quarteroni et al.)
   3. Richardson extrapolation: Section 16.4 from [Numerical Recipes](http://numerical.recipes/)
-  4. [Automatic Selection of Methods for Solving Stiff and Nonstiff Systems of Ordinary Differential Equations](https://epubs.siam.org/doi/pdf/10.1137/0904010?
+  4. [Automatic Selection of Methods for Solving Stiff and Nonstiff Systems of Ordinary Differential Equations](https://epubs.siam.org/doi/pdf/10.1137/0904010?)
   
   **Questions**:
 
