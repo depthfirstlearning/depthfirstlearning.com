@@ -57,7 +57,7 @@ In this curriculum, we will go through all the background topics necessary to un
   **Questions**:
 
   1. Exercise 1 in Section 11.12 of (Quarteroni et al.)
-     <details><summary>Solutions</summary>
+     <details><summary>Solution</summary>
      <p>
      Start from the hint in the book and notice that you can bound \(E_2\) as
      
@@ -68,7 +68,7 @@ In this curriculum, we will go through all the background topics necessary to un
      </details>
 
   2. Exercises 12.3,12.4, 12.7 in Section 12 of (Süli & Mayers)
-     <details><summary>Solution</summary>
+     <details><summary>Solutions</summary>
      <p>
      Exercise 12.3: Notice that we can write
      
