@@ -4,7 +4,7 @@ title:  "Neural ODEs"
 date:   2019-06-06 10:00:00 -0400
 categories: neural-nets
 author: luca
-blurb: "Neural ODEs are neural network models which generalize standard layer to layer propagation to continuous depth models. The forward propagation in many neural networks models can be seen as one step of discretation of an ODE; starting from this observation, one can construct and efficiently train models by numerically solving ODEs. On top of furnishing a new whole family of architectures, neural ODEs can be applied to gain memory efficiency in supervised learning tasks, construct a new class of invertible density models and model continuous time-series..."
+blurb: "Neural ODEs are neural network models which generalize standard layer to layer propagation to continuous depth models. Starting from the observation that the forward propagation in neural networks is equivalent to one step of discretation of an ODE, we can construct and efficiently train models by via ODEs. On top of providing a novel family of architectures, notably for invertible density models and continuous time series, neural ODEs also provide a memory efficiency gain in supervised learning tasks. In this curriculum, we will go through all the background topics necessary to understand these models. At the end, you should be able to implement neural ODEs and apply them to different tasks."
 feedback: true
 ---
 
@@ -21,15 +21,20 @@ Finally, thank you to all my fellow students who attended the recitations and pr
 
 # Why
 
-Neural ODEs are neural network models which generalize standard layer to layer propagation to continuous depth models. The forward propagation in many neural networks models can be seen as one step of discretation of an ODE; starting from this observation, one can construct and efficiently train models by numerically solving ODEs. On top of furnishing a new whole family of architectures, neural ODEs can be applied to gain memory efficiency in supervised learning tasks, construct a new class of invertible density models and model continuous time-series.
+Neural ODEs are neural network models which generalize standard layer to layer propagation to continuous depth models. Starting from the observation that the forward propagation in neural networks is equivalent to one step of discretation of an ODE, we can construct and efficiently train models by via ODEs. On top of providing a novel family of architectures, notably for invertible density models and continuous time series, neural ODEs also provide a memory efficiency gain in supervised learning tasks.
 
 In this curriculum, we will go through all the background topics necessary to understand these models. At the end, you should be able to implement neural ODEs and apply them to different tasks.
 
 <br />
 
+# Common resources:
+
+1. (Süli & Mayers): [An Introduction to Numerical Analysis](https://www.cambridge.org/core/books/an-introduction-to-numerical-analysis/FD8BCAD7FE68002E2179DFF68B8B7237#)
+2. (Quarteroni et al.): [Numerical Mathematics](https://www.springer.com/us/book/9783540346586?token=holiday18&utm_campaign=3_fjp8312_us_dsa_springer_holiday18&gclid=Cj0KCQiAvebhBRD5ARIsAIQUmnlViB7VsUn-2tABSAhIvYaJgSEqmJXD7F4A7EgyDQtY9v_GeUsNif8aArGAEALw_wcB)
+
 # 1 Numerical solution of ODEs - Part 1
   **Motivation**: ODEs are used to mathematically model a number of natural processes and phenomena. The study of their numerical 
-    simulations is one of the main topics in numerical analysis and of fundamental importance in applied sciences. A first step to understand Neural ODEs is their definition and basic numerical techniques to solve them.
+    simulations is one of the main topics in numerical analysis and of fundamental importance in applied sciences. To understand Neural ODEs, we need to first understand how ODEs are solved with numerical techniques.
 
   **Topics**:
 
@@ -39,13 +44,14 @@ In this curriculum, we will go through all the background topics necessary to un
 
   **Required Reading**:
 
-  1. Sections 12.1-4 from [An Introduction to Numerical Analysis](https://www.cambridge.org/core/books/an-introduction-to-numerical-analysis/FD8BCAD7FE68002E2179DFF68B8B7237#) (S\"uli & Mayers)
-  2. Sections 11.1-3 from [Numerical Mathematics](https://www.springer.com/us/book/9783540346586?token=holiday18&utm_campaign=3_fjp8312_us_dsa_springer_holiday18&gclid=Cj0KCQiAvebhBRD5ARIsAIQUmnlViB7VsUn-2tABSAhIvYaJgSEqmJXD7F4A7EgyDQtY9v_GeUsNif8aArGAEALw_wcB) (Quarteroni et al.)
-
+  1. Sections 12.1-4 from (Süli & Mayers)
+  2. Sections 11.1-3 from (Quarteroni et al.)
+  
+  **Notes**: Here is a [link](/assets/nodes_notes/week1.pdf) to our notes for the lesson.
   
   **Optional Reading**:
 
-  1. Runge-Kutta methods: Section 12.5 from (S\"uli & Mayers)
+  1. Runge-Kutta methods: Section 12.5 from (Süli & Mayers)
   2. [Prof. Trefethen's class ODEs and Nonlinear Dynamics 4.2](http://podcasts.ox.ac.uk/odes-and-nonlinear-dynamics-42)
 
   **Questions**:
@@ -53,14 +59,36 @@ In this curriculum, we will go through all the background topics necessary to un
   1. Exercise 1 in Section 11.12 of (Quarteroni et al.)
      <details><summary>Solutions</summary>
      <p>
-     ...
+     Start from the hint in the book and notice that you can bound \(E_2\) as
+     
+     $$|E_2|\leq \frac{hL}{2}|y_{n+1}-y_{n} - hf(t_n,y_n)| = \frac{hL}{2}O(h^2) = O(h^3)$$
+     
+     where \(L\) is the Lipschitz constant of \(f\). On the other hand, \(E_1 = O(h**3)\) (see [link](https://en.wikipedia.org/wiki/Trapezoidal_rule#Error_analysis)).
      </p>
      </details>
 
-  2. Exercises 12.3,12.4, 12.7 in Section 12 of (S\"uli & Mayers)
+  2. Exercises 12.3,12.4, 12.7 in Section 12 of (Süli & Mayers)
      <details><summary>Solution</summary>
      <p>
-     ...
+     Exercise 12.3: Notice that we can write
+     
+     $$(y + q/p)'=p(y + q/p)$$
+     
+     It follows that \(y(t) = Ce^{pt} - q/p\) for some constant \(C\). Imposing the initial condition \(y(0)=1\), we get \(y(t)=e^{pt} + q/p(e^{pt}-1)\). In particular, we expand \(y\) in its Taylor series : \(y(t) = 1 + (1+q/p)\sum_{k=1}^\infty \frac{(pt)^k}{k!}\). To conclude the exercise we only need to notice that \(y_n(t) = q/p + (1+q/p)\sum_{k=1}^n \frac{(pt)^k}{k!}\) satisfies Picard's iteration: \(y_0 \equiv 1\), \(y_{n+1}(t) = y_0 + \int_0^t (py_n(s) + q)\,ds\).
+     </p>
+     <p>
+     Exercise 12.4: Applying Euler's method with step-size \(h\), we get \(\hat{y}(0) = 0\), \(\hat{y}(h) = \hat{y}(0) + h \hat{y}(0)^{1/5} = 0\), \(\hat{y}(2h) = \hat{y}(h) + h \hat{y}(h)^{1/5} =0\). Iterating, we see that it holds \(y(nh)=0\) for all \(n\geq 0\). Instead, the implicit Euler's method reads
+     
+     $$\hat{y}_{n+1} = \hat{y}_n + h \hat{y}_{n+1}^{1/5}$$
+     
+     for \(n \geq 0\) and \(\hat{y}_0 = 0\). After substituting \(\hat{y}_{n} = (C_nh)^{5/4}\) in the above relation, we only need that there exists a sequence \(C_n\) satisying the requirements.
+     </p>
+     <p>
+     Exercise 12.7: First, notice that
+     
+     $$e_{n+1} = y(x_{n+1}) - y_{n} - \frac{1}{2}h(f_{n+1} + f_n)= e_n - \frac{1}{2}h (f_{n+1}+f_n) + \int_{x_n}^{x_{n+1}} f(s,y(s))\,ds$$
+     
+     and that the second component of the RHS is the same as \(E_1\) in Exercise 1 above. Therefore the first bound follows. The last inequality is simply obtained by re-arranging the terms.  
      </p>
      </details>
 
@@ -71,19 +99,24 @@ In this curriculum, we will go through all the background topics necessary to un
      Assuming sufficient smoothness of \(y\) and \(f\), for what value of \(0 \leq\theta\leq 1\) is the truncation error the smallest? What does this mean about the accuracy of the method?
      <details><summary>Solution</summary>
      <p>
-     ...
+     By definition, it holds
+     
+     $$h\tau_n = y_{n+1} - y_n - h (\theta f_n + (1-\theta) f_{n+1}) = y_{n+1} - y_n - h \theta y_n' - h(1-\theta) y_{n+1}'$$
+     
+     Taylor-expanding, we get
+     
+     $$h\tau_n = y_{n} + hy_n' + h^2/2y_n'' + O(h^3) - y_n - h \theta y_n' - h(1-\theta) y_{n}' - h^2(1-\theta) y_{n}'' + O(h^3) = h^2(\theta - 1/2)y_n''+O(h^3)$$
+     
+     It follows that the truncation error is the smallest for \(\theta=1/2\). For \(\theta = 1/2\) the method has order \(2\), otherwise it has order \(1\).
      </p>
      </details>
-       
 
   4. [Colab Notebook](https://colab.research.google.com/drive/1bNg-RzZoelB3w8AUQ6mefRQuN3AdrIqX)
      <details><summary>Solution</summary>
      <p>
-     ...
+     [Solution](https://colab.research.google.com/drive/1wTQXy2_4InQH51rEmiCtvl5Q7MiyrC4k)
      </p>
-     </details>
-
-**Notes**: Here is a [link](/assets/nodes_notes/week1.pdf) to our notes for the lesson. 
+     </details> 
 
 <br />
 
@@ -98,10 +131,11 @@ In this curriculum, we will go through all the background topics necessary to un
 
   **Required Reading**:
 
-  1. Runge-Kutta methods: Section 11.8 from (Quarteroni et al.) or Sections 12.{5,12} from (S\"uli & Mayers)
-  2. Multi-step methods: Sections 12.6-9 from (Quarteroni et al.) or Section 11.5-6 from (S\"uli & Mayers)
-  3. System of ODEs: Sections 12.10-11 from (Quarteroni et al.) or Sections 11.9-10 from (S\"uli & Mayers)
+  1. Runge-Kutta methods: Section 11.8 from (Quarteroni et al.) or Sections 12.{5,12} from (Süli & Mayers)
+  2. Multi-step methods: Sections 12.6-9 from (Quarteroni et al.) or Section 11.5-6 from (Süli & Mayers)
+  3. System of ODEs: Sections 12.10-11 from (Quarteroni et al.) or Sections 11.9-10 from (Süli & Mayers)
 
+  **Notes**: Here is a [link](/assets/nodes_notes/week2.pdf) to our notes for the lesson. 
   
   **Optional Reading**:
 
@@ -112,14 +146,12 @@ In this curriculum, we will go through all the background topics necessary to un
   
   **Questions**:
 
-  1. Exercises 12.11, 12.12, 12.19 in Section 12 of (S\"uli & Mayers)
+  1. Exercises 12.11, 12.12, 12.19 in Section 12 of (Süli & Mayers)
      <details><summary>Solution</summary>
      <p>
      ...
      </p>
      </details>
-
-**Notes**: Here is a [link](/assets/nodes_notes/week2.pdf) to our notes for the lesson. 
 
 <br />
 
@@ -139,6 +171,8 @@ In this curriculum, we will go through all the background topics necessary to un
   2. ResNets and ODEs: 
      * Sections 1-3 from [Multi-level Residual Networks from Dynamical Systems View](https://arxiv.org/pdf/1710.10348.pdf)
      * [Reversible Architectures for Arbitrarily Deep Residual Neural Networks](https://arxiv.org/abs/1709.03698)
+     
+  **Notes**: Here is a [link](/assets/nodes_notes/week3.pdf) to our notes for the lesson.
   
   **Optional Reading**:
 
@@ -170,9 +204,7 @@ In this curriculum, we will go through all the background topics necessary to un
      </p>
      </details>
 
-  4. Implement your favourite ResNet variant
-
-**Notes**: Here is a [link](/assets/nodes_notes/week3.pdf) to our notes for the lesson. 
+  4. Implement your favourite ResNet variant 
 
 <br />
 
@@ -189,6 +221,8 @@ In this curriculum, we will go through all the background topics necessary to un
   1. [Density Estimation by Dual Ascent of the Log-likelihood](https://math.nyu.edu/faculty/tabak/publications/CMSV8-1-10.pdf) (you can skip Section 3) (DE)
   2. [A family of non-parametric density estimation algorithms](https://math.nyu.edu/faculty/tabak/publications/Tabak-Turner.pdf) 
   3. [A post on Normalising flow](http://akosiorek.github.io/ml/2018/04/03/norm_flows.html)
+  
+  **Notes**: Here is a [link](/assets/nodes_notes/week4.pdf) to our notes for the lesson. 
   
   **Optional Reading**:
 
@@ -218,8 +252,6 @@ In this curriculum, we will go through all the background topics necessary to un
      </p>
      </details>
 
-**Notes**: Here is a [link](/assets/nodes_notes/week4.pdf) to our notes for the lesson. 
-
 <br />
 
 # 5 The adjoint method (and auto-diff)
@@ -235,6 +267,7 @@ In this curriculum, we will go through all the background topics necessary to un
   1. Section 8.7 from [Computational Science and Engineering](http://math.mit.edu/~gs/cse/) (CSE)
   2. Sections 2,3 from [Automatic Differentiation in Machine Learning: a Survey](http://www.jmlr.org/papers/volume18/17-468/17-468.pdf)
 
+  **Notes**: Here is a [link](/assets/nodes_notes/week5.pdf) to our notes for the lesson. 
   
   **Optional Reading**:
 
@@ -263,8 +296,6 @@ In this curriculum, we will go through all the background topics necessary to un
      </p>
      </details>
 
-**Notes**: Here is a [link](/assets/nodes_notes/week5.pdf) to our notes for the lesson. 
-
 <br />
 
 # 6 Neural ODEs
@@ -280,10 +311,10 @@ In this curriculum, we will go through all the background topics necessary to un
   1. [Neural Ordinary Differential Equations](https://arxiv.org/abs/1806.07366)
   2. [A blog post on NeuralODEs](https://rkevingibson.github.io/blog/neural-networks-as-ordinary-differential-equations/)
   
+  **Notes**: Here is a [link](/assets/nodes_notes/week6.pdf) to our notes for the lesson. 
+  
   **Optional Reading**:
 
   1. A follow-up paper by the authors on scalable continuous normalizing flows: [Free-form Continuous Dynamics for Scalable Reversible Generative Models](https://arxiv.org/abs/1810.01367)
-
-**Notes**: Here is a [link](/assets/nodes_notes/week6.pdf) to our notes for the lesson. 
 
 <br />
