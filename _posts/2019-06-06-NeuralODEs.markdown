@@ -70,21 +70,24 @@ In this curriculum, we will go through all the background topics necessary to un
   2. Exercises 12.3,12.4, 12.7 in Section 12 of (Süli & Mayers)
      <details><summary>Solutions</summary>
      <p>
-     Exercise 12.3: Notice that we can write
+     Exercise 12.3: 
+     Notice that we can write
      
      $$(y + q/p)'=p(y + q/p)$$
      
      It follows that \(y(t) = Ce^{pt} - q/p\) for some constant \(C\). Imposing the initial condition \(y(0)=1\), we get \(y(t)=e^{pt} + q/p(e^{pt}-1)\). In particular, we expand \(y\) in its Taylor series : \(y(t) = 1 + (1+q/p)\sum_{k=1}^\infty \frac{(pt)^k}{k!}\). To conclude the exercise we only need to notice that \(y_n(t) = q/p + (1+q/p)\sum_{k=1}^n \frac{(pt)^k}{k!}\) satisfies Picard's iteration: \(y_0 \equiv 1\), \(y_{n+1}(t) = y_0 + \int_0^t (py_n(s) + q)\,ds\).
      </p>
      <p>
-     Exercise 12.4: Applying Euler's method with step-size \(h\), we get \(\hat{y}(0) = 0\), \(\hat{y}(h) = \hat{y}(0) + h \hat{y}(0)^{1/5} = 0\), \(\hat{y}(2h) = \hat{y}(h) + h \hat{y}(h)^{1/5} =0\). Iterating, we see that it holds \(y(nh)=0\) for all \(n\geq 0\). Instead, the implicit Euler's method reads
+     Exercise 12.4:
+     Applying Euler's method with step-size \(h\), we get \(\hat{y}(0) = 0\), \(\hat{y}(h) = \hat{y}(0) + h \hat{y}(0)^{1/5} = 0\), \(\hat{y}(2h) = \hat{y}(h) + h \hat{y}(h)^{1/5} =0\). Iterating, we see that it holds \(y(nh)=0\) for all \(n\geq 0\). Instead, the implicit Euler's method reads
      
      $$\hat{y}_{n+1} = \hat{y}_n + h \hat{y}_{n+1}^{1/5}$$
      
      for \(n \geq 0\) and \(\hat{y}_0 = 0\). After substituting \(\hat{y}_{n} = (C_nh)^{5/4}\) in the above relation, we only need that there exists a sequence \(C_n\) satisying the requirements.
      </p>
      <p>
-     Exercise 12.7: First, notice that
+     Exercise 12.7: 
+     First, notice that
      
      $$e_{n+1} = y(x_{n+1}) - y_{n} - \frac{1}{2}h(f_{n+1} + f_n)= e_n - \frac{1}{2}h (f_{n+1}+f_n) + \int_{x_n}^{x_{n+1}} f(s,y(s))\,ds$$
      
@@ -121,7 +124,7 @@ In this curriculum, we will go through all the background topics necessary to un
 <br />
 
 # 2 Numerical solution of ODEs - Part 2
-  **Motivation**: In the previous class we introduced some simple schemes to numerically solve ODEs. In this class we go through some more involved schemes and their convergence analysis. 
+  **Motivation**: In the previous class we introduced some simple schemes to numerically solve ODEs. In order to understand which numerical scheme is more proper to apply, it is important to know and understand their different properties. For this reason, in this class, we go through some more involved schemes and their convergence analysis, as well as stability analysis. 
 
   **Topics**:
 
@@ -149,7 +152,73 @@ In this curriculum, we will go through all the background topics necessary to un
   1. Exercises 12.11, 12.12, 12.19 in Section 12 of (Süli & Mayers)
      <details><summary>Solution</summary>
      <p>
-     ...
+     Exercise 12.11:
+     By definition, the truncation error is given by
+     
+     $$h\tau_n = y_{n+3} + \alpha y_{n+2} -\alpha y_{n+1} - y_n -h\beta y_{n+2}' - h\beta y_{n+1}'$$
+     
+     Taylor-expanding, we have that
+     
+     $$y_{n+3} = y_n + 3hy_n' + 9/2h^2 y_n'' + 9/2h^3 y_n''' + 27/8h^4 y_n^{(4)} + O(h^5)$$
+     
+     $$y_{n+2} = y_n + 2hy_n' + 2h^2 y_n'' + 4/3h^3 y_n''' + 2/3h^4 y_n^{(4)} + O(h^5)$$
+     
+     $$y_{n+1} = y_n + hy_n' + h^2 y_n'' + h^3 y_n''' + h^4y_n^{(4)} + O(h^5)$$
+     
+     $$y_{n+2}' = y_n' + 2hy_n'' + 2h^2y_n''' + 4/3 h^3 y_{n}^{(4)}$$
+     
+     $$y_{n+1}' = y_n' + hy_n'' + h^2y_n''' + h^3 y_{n}^{(4)}$$
+     
+     Substituting these in the first equation and imposing the terms in \(h^i\), \(i = 0,1,2,3,4\), to be \(0\), we get the equations
+     
+     $$3 + \alpha - 2\beta = 0$$
+     
+     $$27 + 7\alpha - 15\beta = 0$$
+     
+     $$27 + 5\alpha - 12\beta = 0$$
+     
+     Solving for these, we find \(\alpha = 9\) and \(\beta = 6\). The resulting method reads
+     
+     $$y_{n+3} + 9(y_{n+2} - y_{n+1}) - y_n = 6h(f_{n+2} + f_{n+1})$$
+     
+     The characteristic polynomial is given by
+     
+     $$\rho(z) = z^3 +9z^2 - 9z -1$$
+     
+     One of the roots of this polynomial satisfies \(|z|>1\) and this implies that the method is not zero-stable.
+     </p>
+     <p>
+     Exercise 12.12:
+     By definition, the truncation error is given by
+     
+     $$h\tau_n = y_{n+1} + b y_{n-1} +a y_{n-2} -h y_{n}'$$
+     
+     Taylor-expanding, we have that
+     
+     $$y_{n+1} = y_n + hy_n' + 1/2h^2 y_n'' + O(h^3)$$
+     
+     $$y_{n-1} = y_n - hy_n' + 1/2h^2 y_n'' + O(h^3)$$
+     
+     $$y_{n-2} = y_n - 2hy_n' + 2h^2 y_n'' +  O(h^3)$$
+     
+     Substituting these in the first equation and solving for the terms in \(h^i\), \(i = 0,1\), to be \(0\), we get \(a=1\) and \(b=-2\). In particular
+     
+     $$\tau_n = 3/2h + O(h^2)$$
+     
+     and thus the method has order of accuracy \(1\).
+     The resulting method reads
+     
+     $$y_{n+1} -2 y_{n-1} + y_{n-2} = h f_{n}$$
+     
+     The characteristic polynomial is given by
+     
+     $$\rho(z) = z^3 -2z -1$$
+     
+     One of the roots of this polynomial satisfies \(|z|>1\) and this implies that the method is not zero-stable.
+     </p>
+     <p>
+     Exercise 12.19:
+     The first equation can be found by substituting \(f(t,y) = \lambda y\) in equation (12.51) in the book and by solving for \(k_1,k_2\) (it is a \(2\times 2\) linear system). Substituting the values of \(A\) and \(b\) from the Butcher tableau in this formula and in the one right before equation (12.51) in the book, and simplifying, we get the formula for \(R(\lambda h)\). Finally, \(p\) and \(q\) are given by \(p,q=-3\pm i \sqrt{3}\). One can see that this implies \(|R(z)|<1\) if \(Re(z) <0\) and thus the method is A-stable.
      </p>
      </details>
 
