@@ -225,7 +225,7 @@ In this curriculum, we will go through all the background topics necessary to un
 <br />
 
 # 3 ResNets
-  **Motivation**: The introduction of Residual Networks (ResNets) made possible to train very deep networks. In this section we study some residual architectures variants and their properties. We then look into how ResNets approximates ODEs and how this interpretation can motivate neural net architectures and new training approaches. 
+  **Motivation**: The introduction of Residual Networks (ResNets) made possible to train very deep networks. In this section we study some residual architectures variants and their properties. We then look into how ResNets approximates ODEs and how this interpretation can motivate neural net architectures and new training approaches.  This is important in order to understand the basic models underlying Neural ODEs and gain some insights on their connection to numerical solutions of ODEs.
 
   **Topics**:
 
@@ -240,6 +240,8 @@ In this curriculum, we will go through all the background topics necessary to un
   2. ResNets and ODEs: 
      * Sections 1-3 from [Multi-level Residual Networks from Dynamical Systems View](https://arxiv.org/pdf/1710.10348.pdf)
      * [Reversible Architectures for Arbitrarily Deep Residual Neural Networks](https://arxiv.org/abs/1709.03698)
+     * Invertible ResNets: [The Reversible Residual Network: Backpropagation Without Storing Activations](https://arxiv.org/pdf/1707.04585.pdf)
+     * [Stable Architectures for Deep Neural Networks](https://arxiv.org/pdf/1705.03341.pdf)
      
   **Notes**: Here is a [link](/assets/nodes_notes/week3.pdf) to our notes for the lesson.
   
@@ -247,33 +249,24 @@ In this curriculum, we will go through all the background topics necessary to un
 
   1. The original ResNets paper: [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385)
   2. Another blog post on ResNets: [Understanding and Implementing Architectures of ResNet and ResNeXt for state-of-the-art Image Classification](https://medium.com/@14prakash/understanding-and-implementing-architectures-of-resnet-and-resnext-for-state-of-the-art-image-cf51669e1624)
-  3. Invertible ResNets: [The Reversible Residual Network: Backpropagation Without Storing Activations](https://arxiv.org/pdf/1707.04585.pdf)
-  4. [Stable Architectures for Deep Neural Networks](https://arxiv.org/pdf/1705.03341.pdf)
   
   **Questions**:
 
-  1. Can you think of any other neural network architectures which can be seen as discretisations of some ODE?
+  1. Do you understand why adding ‘residual layers’ should not degrade the network performance?
      <details><summary>Solution</summary>
      <p>
-     ...
+     See the notes from this week.
      </p>
      </details>
 
-  2. Do you understand why adding ‘residual layers’ should not degrade the network performance?
+  2. How do the authors of (Multi-level Residual Networks from Dynamical Systems View) explain the phenomena of still having almost as good performances in residual networks when removing a layer?
      <details><summary>Solution</summary>
      <p>
-     See the notes below.
+     See section 3.3 in the paper.
      </p>
      </details>
 
-  3. How do the authors of the (Multi-level Residual Networks from Dynamical Systems View) explain the phenomena of still having almost as good performances in residual networks when removing a layer?
-     <details><summary>Solution</summary>
-     <p>
-     ...
-     </p>
-     </details>
-
-  4. Implement your favourite ResNet variant 
+  3. Implement your favourite ResNet variant 
 
 <br />
 
