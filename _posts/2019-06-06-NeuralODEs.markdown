@@ -271,7 +271,7 @@ In this curriculum, we will go through all the background topics necessary to un
 <br />
 
 # 4 Normalising Flows
-  **Motivation**: In this class we take a little detour through the topic of Normalising Flows. This is used for density estimation and generative modeling, and it is another model which can be seen a time-discretisation of its continuous-time counterpart.
+  **Motivation**: In this class we take a little detour through the topic of Normalising Flows. This is used for density estimation and generative modeling, and it is another model which can be seen a time-discretisation of its continuous-time counterpart. Understanding it is necessary to understand continuous normalizing flows, one of the applications of neural ODEs.
 
   **Topics**:
 
@@ -296,21 +296,21 @@ In this curriculum, we will go through all the background topics necessary to un
   1. In DE, what is the difference between \(rho_t\) and \(\tilde{\rho}_t\), i.e. what do they represent?
      <details><summary>Solution</summary>
      <p>
-     ...
+     The function \(\tilde{\rho}_t\) is the density of the distribution of the random variable \(\phi_t^{-1}(y)\) where \(y\sim \mu\). The function \(\rho_t\) is the density of the distribution of the random variable \(\phi_t(x)\) where \(x\sim \rho\).
      </p>
      </details>
 
   2. In DE, why does eq. (4.2) imply convergence \(\rho_t\to\mu\) as \(t\to\infty\) ?
      <details><summary>Solution</summary>
      <p>
-     ...
+     
      </p>
      </details>
 
   3. What is the computational complexity of evaluating a determinant of a \(N\times N\) matrix, and why is that relevant in this context?
      <details><summary>Solution</summary>
      <p>
-     ...
+     In general, the cost of computing the determinant of a \(N\times N\) matrix is \(O(N^3)\). To compute densities  transported by normalising flows, we need to compute the determinants of the Jacobians; therefore, an important feature of practical normalising flows, is that the Jacobian structure must allow an efficient computation of its determinant. See this week notes for more discussion on this.  
      </p>
      </details>
 
