@@ -18,6 +18,10 @@ Thank you to Tinghao Li, Chandra Prakash Konkimalla, Manikanta Srikar Yellapraga
 
 Finally, thank you to all my fellow students who attended the recitations and provided valuable feedback.
 
+<div class="deps-graph">
+<iframe class="deps" src="/assets/nodes-deps.svg" width="200"></iframe>
+<div>Concepts used in Neural ODEs. Click to navigate.</div>
+</div>
 
 # Why
 
@@ -293,21 +297,14 @@ In this curriculum, we will go through all the background topics necessary to un
   
   **Questions**:
 
-  1. In DE, what is the difference between \(rho_t\) and \(\tilde{\rho}_t\), i.e. what do they represent?
+  1. In (DE), what is the difference between \(rho_t\) and \(\tilde{\rho}_t\), i.e. what do they represent?
      <details><summary>Solution</summary>
      <p>
      The function \(\tilde{\rho}_t\) is the density of the distribution of the random variable \(\phi_t^{-1}(y)\) where \(y\sim \mu\). The function \(\rho_t\) is the density of the distribution of the random variable \(\phi_t(x)\) where \(x\sim \rho\).
      </p>
      </details>
 
-  2. In DE, why does eq. (4.2) imply convergence \(\rho_t\to\mu\) as \(t\to\infty\) ?
-     <details><summary>Solution</summary>
-     <p>
-     
-     </p>
-     </details>
-
-  3. What is the computational complexity of evaluating a determinant of a \(N\times N\) matrix, and why is that relevant in this context?
+  2. . What is the computational complexity of evaluating a determinant of a \(N\times N\) matrix, and why is that relevant in this context?
      <details><summary>Solution</summary>
      <p>
      In general, the cost of computing the determinant of a \(N\times N\) matrix is \(O(N^3)\). To compute densities  transported by normalising flows, we need to compute the determinants of the Jacobians; therefore, an important feature of practical normalising flows, is that the Jacobian structure must allow an efficient computation of its determinant. See this week notes for more discussion on this.  
@@ -340,7 +337,16 @@ In this curriculum, we will go through all the background topics necessary to un
   1. Exercises 1,2,3 from Section 8.7 of CSE
      <details><summary>Solution</summary>
      <p>
-     ...
+     Exercise 1:
+     This follows immediatly by noticing that the number of multiply-add operations of multiplying a \(N\times M\) matrix with a \(M\times P\) matrix is given by \(O(NMP)\). 
+     </p>
+     <p>
+     Exercise 2:
+     We simply need to apply the chain rule. Since \(\frac{\partial C}{\partial S} = 2S\) and \(\frac{dT}{dS} = \frac{\partial T}{\partial S} + \frac{\partial T}{\partial C}\frac{\partial C}{\partial S}\), we get \(\frac{d T}{d S} = 1 -2S\).  
+     </p>
+     <p>
+     Exercise 3:
+     This follows by Exercise 1 by seeing \(u^T\) and \(w^T\) as \(1\times N\) matrices and \(v\) as a \(N\times 1\) matrix. 
      </p>
      </details>
 
