@@ -352,12 +352,12 @@ In this curriculum, we will go through all the background topics necessary to un
   1. Adjoint Method.
   2. Auto-Diff.
 
+  **Notes**: In this [class](/assets/nodes_notes/week5.pdf), we discussed the adjoint method. We started from the case of linear system and went through non-linear equations and recurrent relations. We concluded by discussing their application to ODE constrained optimization problems, which is the case of interest for Neural ODEs.
+
   **Required Reading**:
 
-1. Section 8.7 from *CSE*: [Computational Science and Engineering](http://math.mit.edu/~gs/cse/).
+  1. Section 8.7 from *CSE*: [Computational Science and Engineering](http://math.mit.edu/~gs/cse/).
   2. Sections 2,3 from [Automatic Differentiation in Machine Learning: a Survey](http://www.jmlr.org/papers/volume18/17-468/17-468.pdf).
-
-  **Notes**: Here is a [link](/assets/nodes_notes/week5.pdf) to our notes for the lesson. 
   
   **Optional Reading**:
 
@@ -433,19 +433,21 @@ In this curriculum, we will go through all the background topics necessary to un
 <br />
 
 # 6 The Paper
-  **Motivation**: Let’s read the paper!
+  **Motivation**: Let’s read the paper! A summary of what’s going on to help with your understanding:
+  
+  Any residual network can be seen as the Explicit Euler's method discretisation of a certain ODE; given the network parameters, any numerical ODE solver can be used to evaluate the output layer. The application of the adjoint method makes it possible to efficiently back-propagate (and thus train) these models. The same idea can be used to train time-continuous normalising flows. In this case, moving to the continuous formulation allows to avoid the computation of the determinant of the Jacobian, one of the major bottlenecks of normalising flows. Neural ODEs can also be used to model latent dynamics in time-series modeling, allowing to easily tackle irregularly sampled data.
 
   **Topics**:
 
   1. Normalising Flows.
   2. End-to-end implementations with neural nets.
 
+  **Notes**: In this [class](/assets/nodes_notes/week6.pdf), we defined Neural ODEs and derived the rispective adjoint method, essential for their implementation. We then discussed continuous normalising flows and understood the computational advantages offered by Neural ODEs in this setting.
+  
   **Required Reading**:
 
   1. [Neural Ordinary Differential Equations](https://arxiv.org/abs/1806.07366).
   2. [A blog post on NeuralODEs](https://rkevingibson.github.io/blog/neural-networks-as-ordinary-differential-equations/).
-  
-  **Notes**: Here is a [link](/assets/nodes_notes/week6.pdf) to our notes for the lesson. 
   
   **Optional Reading**:
 
