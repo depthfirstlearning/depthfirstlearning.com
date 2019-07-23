@@ -134,7 +134,7 @@ In this curriculum, we will go through all the background topics necessary to un
   4. [Colab notebook](https://colab.research.google.com/drive/1bNg-RzZoelB3w8AUQ6mefRQuN3AdrIqX).
      <details><summary>Solution</summary>
      <p>
-     See the [Colab](https://colab.research.google.com/drive/1wTQXy2_4InQH51rEmiCtvl5Q7MiyrC4k) notebook.
+     See this [Colab](https://colab.research.google.com/drive/1wTQXy2_4InQH51rEmiCtvl5Q7MiyrC4k)  for the solution.
      </p>
      </details> 
 
@@ -306,7 +306,7 @@ In this curriculum, we will go through all the background topics necessary to un
 <br />
 
 # 4 Normalising Flows
-  **Motivation**: In this class we take a little detour through the topic of Normalising Flows. This is used for density estimation and generative modeling, and it is another model which can be seen a time-discretisation of its continuous-time counterpart. Understanding it is necessary to understand continuous normalizing flows, one of the applications of neural ODEs.
+  **Motivation**:  In this class, we take a little detour to learn about Normalising Flows. These are used for density estimation and generative modeling, and their implementation is motivated by an ODE discretisation. Understanding it at a basic level is necessary to understanding continuous normalizing flows, a central application of neural ODEs.
 
   **Topics**:
 
@@ -357,7 +357,7 @@ In this curriculum, we will go through all the background topics necessary to un
   **Required Reading**:
 
   1. Section 8.7 from *CSE*: [Computational Science and Engineering](http://math.mit.edu/~gs/cse/).
-  2. Sections 2,3 from [Automatic Differentiation in Machine Learning: a Survey](http://www.jmlr.org/papers/volume18/17-468/17-468.pdf).
+  2. Sections 2 and 3 from [Automatic Differentiation in Machine Learning: a Survey](http://www.jmlr.org/papers/volume18/17-468/17-468.pdf).
   
   **Optional Reading**:
 
@@ -368,7 +368,7 @@ In this curriculum, we will go through all the background topics necessary to un
   1. Exercises 1,2,3 from Section 8.7 of *CSE*
      <details><summary>Solution to Exercise 1</summary>
      <p>
-     This follows immediatly by noticing that the number of multiply-add operations of multiplying a \(N\times M\) matrix with a \(M\times P\) matrix is given by \(O(NMP)\). 
+     This follows immediatly by noticing that the number of multiply-add operations of multiplying an \(N\times M\) matrix with an \(M\times P\) matrix is given by \(O(NMP)\). 
      </p>
      </details>
      <details><summary>Solution to Exercise 2</summary>
