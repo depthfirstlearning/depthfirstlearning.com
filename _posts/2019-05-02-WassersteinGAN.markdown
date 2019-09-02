@@ -284,7 +284,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
   5. [Overview: Generative Adversarial Networks – When Deep Learning Meets Game Theory](https://ahmedhanibrahim.wordpress.com/2017/01/17/generative-adversarial-networks-when-deep-learning-meets-game-theory/comment-page-1/)
       * A short blog post which briefly summarises many of the topics we’ve covered so far.
   6. [How to Train your Generative Models? And why does Adversarial Training work so well?](https://www.inference.vc/how-to-train-your-generative-models-why-generative-adversarial-networks-work-so-well-2/) and [An Alternative Update Rule for Generative Adversarial Networks](https://www.inference.vc/an-alternative-update-rule-for-generative-adversarial-networks/)
-      * Two great blog posts from Ferenc Huszar that discuss the challenges in training GANs as well as the differences between the JSD, KLD and reverse KLD.
+      * Two great blog posts from Ferenc Huszár that discuss the challenges in training GANs as well as the differences between the JSD, KLD and reverse KLD.
   7. [Simple Python GAN example](https://github.com/HIPS/autograd/blob/master/examples/generative_adversarial_net.py)
       * This example illustrates how simple GANs are to implement by doing it in 145 lines of Python using Numpy and a simple autograd library.
 
@@ -312,7 +312,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
 
       $$ \mathbb{E}_{x \sim p_d(x)}[\log \frac{0.5 p_d(x)}{0.5(p_d(x) + p_g(x))}] + \mathbb{E}_{x \sim p_g(x)}[\log \frac{0.5 p_g(x)}{0.5(p_d(x) + p_g(x))}]. $$
 
-      Recall that \(\log(ab) = \log(a + b)\) and define \(p_m(x) = \frac{p_d(x) + p_g(x)}{2}\), we now get
+      Recall that \(\log(ab) = \log(a) + \log(b)\) and define \(p_m(x) = \frac{p_d(x) + p_g(x)}{2}\), we now get
 
       $$ \mathbb{E}_{x \sim p_d(x)}[\log \frac{p_d(x)}{p_m(x)}] + \mathbb{E}_{x \sim p_g(x)}[\log \frac{p_g(x)}{p_m(x)}] - 2\log2. $$
 
@@ -388,7 +388,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
   2. [Another good summary of the paper](https://mindcodec.ai/2018/09/23/an-intuitive-guide-to-optimal-transport-part-ii-the-wasserstein-gan-made-easy/)
   3. Wasserstein / Earth Mover distance [blog](https://vincentherrmann.github.io/blog/wasserstein/) [posts](https://mindcodec.ai/2018/09/19/an-intuitive-guide-to-optimal-transport-part-i-formulating-the-problem/)
   4. [Set of](https://www.youtube.com/watch?v=6iR1E6t1MMQ) [three](https://www.youtube.com/watch?v=1ZiP_7kmIoc) [lectures](https://www.youtube.com/watch?v=SZHumKEhgtA) by Marco Cuturi on optimal transport (with accompanying [slides](https://drive.google.com/file/d/1oYX41dIAXhU6EShcid6eYrrK7svi5NXW/view))
-      * If you are interested in the history of optimal transport and would like to see where the KR duality comes from (that’s the crucial argument in the WGAN paper which connects the 1-Wasserstein distance to an IPM with a Lipschitz constraint) the Wasserstein distance, or if you feel like you need a different explanation of what the Wasserstein distance and the Kantorovich-Rubinstein duality are, then watching these lectures is recommended. There are some really cool applications of optimal transport here too, and a more exhaustive description of other families of Wasserstein distances (such as the quadratic one) and their dual formulation.
+      * If you are interested in the history of optimal transport and would like to see where the KR duality comes from (that’s the crucial argument in the WGAN paper which connects the 1-Wasserstein distance to an IPM with a Lipschitz constraint), the Wasserstein distance, or if you feel like you need a different explanation of what the Wasserstein distance and the Kantorovich-Rubinstein duality are, then watching these lectures is recommended. There are some really cool applications of optimal transport here too, and a more exhaustive description of other families of Wasserstein distances (such as the quadratic one) and their dual formulation.
   5. The first 15 or so minutes of [this lecture on GANs](https://www.youtube.com/watch?v=eDWjfrD7nJY) by Sebastian Nowozin
       * Great description of WGAN, including Lipschitz and KR duality. This lecture is actually part 2 of a series of 3 lectures from MLSS Africa. Watching the whole series is also highly recommended if you are interested in knowing more about the bigger picture for GANs (including other interesting developments and future work) and how WGAN relates to other GAN variants. However, to avoid spoilers for next week, you should wait to watch the rest of part 2.
   6. [Computational Optimal Transport](https://arxiv.org/pdf/1803.00567.pdf) by Peyré and Cuturi (Chapters 2 and 3 in particular)
