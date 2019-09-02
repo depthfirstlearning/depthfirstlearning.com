@@ -79,7 +79,7 @@ In this curriculum, we will go through all the background topics necessary to un
      
      $$|E_2| = \frac{h}{2} \left| f(t_{n+1},y_{n+1}) - f(t_{n+1}, y_n + h f(t_n,y_n)) \right| \leq \frac{hL}{2}|y_{n+1}-y_{n} - hf(t_n,y_n)| = \frac{hL}{2}O(h^2) = O(h^3)$$
      
-     where \(L\) is the Lipschitz constant of \(f\). On the other hand we can bound \(E_1\) as \(E_1 = O(h^3)\) (see [link](https://en.wikipedia.org/wiki/Trapezoidal_rule#Error_analysis) for a proof). It follows that \(\tau_{n} = O(h^2)\).
+     where \(L\) is the Lipschitz constant of \(f\). On the other hand, \(E_1\) is bounded above by \(O(h^3)\); see this <a href="https://en.wikipedia.org/wiki/Trapezoidal_rule#Error_analysis">link</a> for a proof. It follows that \(\tau_{n} = O(h^2)\).
      </p>
      </details>
 
@@ -88,14 +88,22 @@ In this curriculum, we will go through all the background topics necessary to un
      <p>
      Notice that we can write
      
-     $$(y + q/p)'=p(y + q/p)$$
+     $$\left(y + \frac{q}{p}\right)'=p\left(y + \frac{q}{p}\right)$$
      
-     It follows that \(y(t) = Ce^{pt} - q/p\) for some constant \(C\). Imposing the initial condition \(y(0)=1\), we get \(y(t)=e^{pt} + q/p(e^{pt}-1)\). In particular, we expand \(y\) in its Taylor series : \(y(t) = 1 + (1+q/p)\sum_{k=1}^\infty \frac{(pt)^k}{k!}\). To conclude the exercise we only need to notice that \(y_n(t) = q/p + (1+q/p)\sum_{k=1}^n \frac{(pt)^k}{k!}\) satisfies Picard's iteration: \(y_0 \equiv 1\), \(y_{n+1}(t) = y_0 + \int_0^t (py_n(s) + q)\,ds\).
+     It follows that \(y(t) = Ce^{pt} - q/p\) for some constant \(C\). Imposing the initial condition \(y(0)=1\), we get \(y(t)=e^{pt} + q/p(e^{pt}-1)\). In particular, we expand \(y\) in its Taylor series: 
+     
+     $$y(t) = 1 + \left(y + \frac{q}{p}\right)\sum_{k=1}^\infty \frac{(pt)^k}{k!}$$
+     
+     To conclude the exercise we only need to notice that 
+     
+     $$y_n(t) = q/p + \left(y + \frac{q}{p}\right)\sum_{k=1}^n \frac{(pt)^k}{k!}$$
+     
+     satisfies Picard's iteration: \(y_0 \equiv 1\), \(y_{n+1}(t) = y_0 + \int_0^t (py_n(s) + q)\,ds\).
      </p>
      </details>
      <details><summary>Solution to Exercise 12.4</summary>
      <p>
-     Applying Euler's method with step-size \(h\), we get \(\hat{y}(0) = 0\), \(\hat{y}(h) = \hat{y}(0) + h \hat{y}(0)^{1/5} = 0\), \(\hat{y}(2h) = \hat{y}(h) + h \hat{y}(h)^{1/5} =0\). Iterating, we see that it holds \(y(nh)=0\) for all \(n\geq 0\). On the other hand, the implicit Euler's method reads
+     Applying Euler's method with step-size \(h\), we get \(\hat{y}(0) = 0\), \(\hat{y}(h) = \hat{y}(0) + h \hat{y}(0)^{1/5} = 0\), \(\hat{y}(2h) = \hat{y}(h) + h \hat{y}(h)^{1/5} =0\). Iterating, we see that \(y(nh) = 0\) for all \(n\geq 0\). On the other hand, the implicit Euler's method says that
      
      $$\hat{y}_{n+1} = \hat{y}_n + h \hat{y}_{n+1}^{1/5}$$
      
@@ -116,7 +124,7 @@ In this curriculum, we will go through all the background topics necessary to un
        
      $$y_{n+1} = y_n + h(\theta f(y_n) + (1-\theta) f(y_{n+1}))$$
     
-     Assuming sufficient smoothness of \(y\) and \(f\), for what value of \(0 \leq\theta\leq 1\) is the truncation error the smallest? What does this mean about the accuracy of the method?
+     Assuming sufficient smoothness of $$y$$ and $$f$$, for what value of $$0 \leq\theta\leq 1$$ is the truncation error the smallest? What does this mean about the accuracy of the method?
      <details><summary>Solution</summary>
      <p>
      By definition, it holds that
@@ -134,7 +142,7 @@ In this curriculum, we will go through all the background topics necessary to un
   4. [Colab notebook](https://colab.research.google.com/drive/1bNg-RzZoelB3w8AUQ6mefRQuN3AdrIqX).
      <details><summary>Solution</summary>
      <p>
-     See this [Colab](https://colab.research.google.com/drive/1wTQXy2_4InQH51rEmiCtvl5Q7MiyrC4k)  for the solution.
+     See this <a href="https://colab.research.google.com/drive/1wTQXy2_4InQH51rEmiCtvl5Q7MiyrC4k">Colab</a>  for the solution.
      </p>
      </details> 
 
@@ -243,14 +251,14 @@ In this curriculum, we will go through all the background topics necessary to un
 <br />
 
 # 3 ResNets
-  **Motivation**: The introduction of Residual Networks (ResNets) made it possible to train very deep networks. In this section, we study residual architectures and their properties. We then look into how ResNets approximates ODEs and how this interpretation can motivate neural net architectures and new training approaches.  This is important in order to understand the basic models underlying Neural ODEs and gain some insights into their connection to numerical solutions of ODEs.
+  **Motivation**: The introduction of Residual Networks (ResNets) made it possible to train very deep networks. In this section, we study residual architectures and their properties. We then look into how ResNets approximate ODEs and how this interpretation can motivate neural net architectures and new training approaches.  This is important in order to understand the basic models underlying Neural ODEs and gain some insights into their connection to numerical solutions of ODEs.
 
   **Topics**:
 
   1. ResNets.
   2. ResNets and ODEs.
 
-  **Notes**: In this [class](/assets/nodes_notes/week3.pdf), we defined and briefly discussed residual network architecture. We then looked at a stability notion for ResNets, derived from the connection with ODEs discretisation, and to a simple way to make such architectures reversible.
+  **Notes**: In this [class](/assets/nodes_notes/week3.pdf), we defined and briefly discussed residual network architecture. We then looked at a stability notion for ResNets, derived from the connection with discretisation of ODEs, and to a simple way to make such architectures reversible.
 
   **Required Reading**:
 
@@ -273,7 +281,11 @@ In this curriculum, we will go through all the background topics necessary to un
   1. Do you understand why adding ‘residual layers’ should not degrade the network performance?
      <details><summary>Solution</summary>
      <p>
-     Let $$x_k = x_{k-1} + f(W_k, x_{k-1})$$ be the output of the $$k$$-th layer of a residual net. Then, adding a residual layer consists of considering $$x_{k+1} = x_{k} + f(W_{k+1}, x_{k})$$ instead of \(x_k\). For most common architectures, it holds that $$f(W, x) \equiv 0$$ for $$W=0$$. This is why adding a layer should not degrade the performances: any residual network with \(k\) layers can be also written as a residual network with \(k+1\) layers, by simply taking $$W_{k+1}=0$$. 
+     Let 
+     
+     $$x_k = x_{k-1} + f(W_k, x_{k-1})$$
+     
+     be the output of the \(k\)-th layer of a residual net. Then, adding a residual layer consists of considering $$x_{k+1} = x_{k} + f(W_{k+1}, x_{k})$$ instead of \(x_k\). For most common architectures, it holds that \(f(W, x) \equiv 0\) for \(W=0\). This is why adding a layer should not degrade the performances: any residual network with \(k\) layers can be also written as a residual network with \(k+1\) layers, by simply taking \(W_{k+1}=0\). 
      </p>
      </details>
 
@@ -296,17 +308,17 @@ In this curriculum, we will go through all the background topics necessary to un
      </p>
      </details>
 
-  3. Implement your favourite ResNet variant
-  <details><summary>Colab Notebook</summary>
-  <p>
-  ...
-  </p>
-  </details>
+  3. Implement your favourite ResNet variant.
+     <details><summary>Example</summary>
+     <p>
+     See this <a href="https://keras.io/examples/cifar10_resnet/">tutorial</a> for an example of implementation of a ResNet.
+     </p>
+     </details>
 
 <br />
 
 # 4 Normalising Flows
-  **Motivation**:  In this class, we take a little detour to learn about Normalising Flows. These are used for density estimation and generative modeling, and their implementation is motivated by an ODE discretisation. Understanding it at a basic level is necessary to understanding continuous normalizing flows, a central application of neural ODEs.
+  **Motivation**:  In this class, we take a little detour to learn about Normalising Flows. These are used for density estimation and generative modeling, and their implementation is motivated by a discretisation of an ODE. Understanding it at a basic level is necessary to understanding continuous normalizing flows, a central application of neural ODEs.
 
   **Topics**:
 
@@ -323,19 +335,19 @@ In this curriculum, we will go through all the background topics necessary to un
   
   **Optional Reading**:
 
-  1. Variational Inference with Normalizing Flows](https://arxiv.org/pdf/1505.05770.pdf).
+  1. [Variational Inference with Normalizing Flows](https://arxiv.org/pdf/1505.05770.pdf).
   2. [High-Dimensional Probability Estimation with Deep Density Models](https://arxiv.org/pdf/1302.5125.pdf).
   
   **Questions**:
 
-  1. In *DE*, what is the difference between \(\rho_t\) and \(\tilde{\rho}_t\), i.e. what do they represent?
+  1. In *DE*, what is the difference between $$\rho_t$$ and $$\tilde{\rho}_t$$, i.e. what do they represent?
      <details><summary>Solution</summary>
      <p>
      The function \(\tilde{\rho}_t\) is the density of the distribution of the random variable \(\phi_t^{-1}(y)\) where \(y\sim \mu\). The function \(\rho_t\) is the density of the distribution of the random variable \(\phi_t(x)\) where \(x\sim \rho\).
      </p>
      </details>
 
-  2. . What is the computational complexity of evaluating a determinant of an \(N\times N\) matrix, and why is that relevant in this context?
+  2. What is the computational complexity of evaluating a determinant of an $$N\times N$$ matrix, and why is that relevant in this context?
      <details><summary>Solution</summary>
      <p>
      In general, the cost of computing the determinant of an \(N\times N\) matrix is \(O(N^3)\). To compute densities  transported by normalising flows, we need to compute the determinants of the Jacobians; therefore, an important feature of practical normalising flows, is that the Jacobian structure must allow an efficient computation of its determinant. See this week notes for more discussion on this.  
@@ -365,10 +377,10 @@ In this curriculum, we will go through all the background topics necessary to un
   
   **Questions**:
 
-  1. Exercises 1,2,3 from Section 8.7 of *CSE*
+  1. Exercises 1,2,3 from Section 8.7 of *CSE*.
      <details><summary>Solution to Exercise 1</summary>
      <p>
-     This follows immediatly by noticing that the number of multiply-add operations of multiplying an \(N\times M\) matrix with an \(M\times P\) matrix is given by \(O(NMP)\). 
+     This follows immediately by noticing that the number of multiply-add operations of multiplying an \(N\times M\) matrix with an \(M\times P\) matrix is given by \(O(NMP)\). 
      </p>
      </details>
      <details><summary>Solution to Exercise 2</summary>
@@ -382,7 +394,7 @@ In this curriculum, we will go through all the background topics necessary to un
      </p>
      </details>
 
-2. Consider the problem of optimizing a real-valued function \(g\) over the solution of the ODE \(y'(t) = A(p)y(t)\), \(y(0) = b(p)\) at time \(\tau>0\): \(\min_p\, g(T) \doteq g(y(T; p))\). Find \(\frac{dg}{dp}(T)\) by solving the ODE and by applying chain rule. Check the correctness of equations (16-17) in *CSE*.
+2. Consider the problem of optimizing a real-valued function $$g$$ over the solution of the ODE $$y'(t) = A(p)y(t)$$, $$y(0) = b(p)$$ at time $$T>0$$: $$\min_p\, g(T) \doteq g(y(T; p))$$. Find $$\frac{dg(T)}{dp}$$ by solving the ODE and by applying chain rule. Check the correctness of equations (16-17) in *CSE*.
      <details><summary>Solution</summary>
      <p>
      It holds that
@@ -397,7 +409,7 @@ In this curriculum, we will go through all the background topics necessary to un
      
      $$\lambda'(t) = -A(p)^T\lambda(t)$$
      
-     with the final condition \(\lambda(T) = \left(\frac{\partial g}{\partial y}\right)^T\), which gives \(\lambda(t) = e^{A(p)^T(T-t)}\left(\frac{\partial g}{\partial y}\right)^T\). Equation (17) from *CSE* gives
+     with the final condition \(\lambda(T) = \left(\frac{\partial g}{\partial y}\right)^T\), which gives \(\lambda(t) = e^{A(p)^T(T-t)}\left(\frac{\partial g}{\partial y}\right)^T\). Equation (17) from <i>CSE</i> gives
      
      $$\frac{dg}{dp} = \left(e^{TA(p)^T}\left(\frac{\partial g}{\partial y}\right)^T\right)^T\frac{\partial b}{\partial p} + \int_0^T \frac{\partial g}{\partial y} e^{A(p)(T-t)}\frac{\partial A}{\partial p}e^{tA(p)}b(p)\,dt$$
      
@@ -416,7 +428,7 @@ In this curriculum, we will go through all the background topics necessary to un
      
      $$\lambda(0)^T\frac{\partial u}{\partial p}(0) + \int_0^T\lambda^T \frac{\partial f}{\partial p}\,dt = \int_0^T \left( \lambda^T\frac{\partial f}{\partial p} -\frac{d}{dt}\left( \lambda^T \frac{\partial u}{\partial p}\right) \right)\,dt $$
      
-     Using equation (14) from *CSE* and the equality \(\frac{\partial u}{\partial p} = \frac{\partial f}{\partial p} + \frac{\partial f}{\partial u}\frac{\partial u}{\partial p}\), we get
+     Using equation (14) from <i>CSE</i> and the equality \(\frac{\partial u}{\partial p} = \frac{\partial f}{\partial p} + \frac{\partial f}{\partial u}\frac{\partial u}{\partial p}\), we get
      
      $$\int_0^T \left( \lambda^T\frac{\partial f}{\partial p} -\frac{d}{dt}\left( \lambda^T \frac{\partial u}{\partial p}\right) \right)\,dt = \int_0^T \left( \lambda^T\frac{\partial f}{\partial p} + \lambda^T \frac{\partial f}{\partial u}\frac{\partial u}{\partial p} + \frac{\partial g}{\partial u}\frac{\partial u}{\partial p} - \lambda^T \frac{\partial f}{\partial p} -\lambda^T \frac{\partial f}{\partial u}\frac{\partial u}{\partial p} \right)\,dt$$
      
@@ -433,16 +445,16 @@ In this curriculum, we will go through all the background topics necessary to un
 <br />
 
 # 6 The Paper
-  **Motivation**: Let’s read the paper! A summary of what’s going on to help with your understanding:
+  **Motivation**: Let’s read the paper! Here is a summary of what’s going on to help with your understanding:
   
-  Any residual network can be seen as the Explicit Euler's method discretisation of a certain ODE; given the network parameters, any numerical ODE solver can be used to evaluate the output layer. The application of the adjoint method makes it possible to efficiently back-propagate (and thus train) these models. The same idea can be used to train time-continuous normalising flows. In this case, moving to the continuous formulation allows to avoid the computation of the determinant of the Jacobian, one of the major bottlenecks of normalising flows. Neural ODEs can also be used to model latent dynamics in time-series modeling, allowing to easily tackle irregularly sampled data.
+  Any residual network can be seen as the Explicit Euler's method discretisation of a certain ODE; given the network parameters, any numerical ODE solver can be used to evaluate the output layer. The application of the adjoint method makes it possible to efficiently back-propagate (and thus train) these models. The same idea can be used to train time-continuous normalising flows. In this case, moving to the continuous formulation allows us to avoid the computation of the determinant of the Jacobian, one of the major bottlenecks of normalising flows. Neural ODEs can also be used to model latent dynamics in time-series modeling, allowing us to easily tackle irregularly sampled data.
 
   **Topics**:
 
   1. Normalising Flows.
   2. End-to-end implementations with neural nets.
 
-  **Notes**: In this [class](/assets/nodes_notes/week6.pdf), we defined Neural ODEs and derived the rispective adjoint method, essential for their implementation. We then discussed continuous normalising flows and understood the computational advantages offered by Neural ODEs in this setting.
+  **Notes**: In this [class](/assets/nodes_notes/week6.pdf), we defined Neural ODEs and derived the respective adjoint method, essential for their implementation. We then discussed continuous normalising flows and the computational advantages offered by Neural ODEs in this setting.
   
   **Required Reading**:
 
