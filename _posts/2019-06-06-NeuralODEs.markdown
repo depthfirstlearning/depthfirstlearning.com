@@ -46,7 +46,7 @@ In this curriculum, we will go through all the background topics necessary to un
   2. One-step methods.
   3. Consistency and convergence.
 
-  **Notes**: In this [class](/assets/nodes_notes/week1.pdf), we touched upon one-step method and their analysis. We also looked as some illustrative examples.
+  **Notes**: In this [class](/assets/nodes_notes/week1.pdf), we touched upon one-step method and their analysis. We also looked at some illustrative examples.
 
   **Required Reading**:
 
