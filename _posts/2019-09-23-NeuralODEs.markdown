@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Neural ODEs"
-date:   2019-06-06 10:00:00 -0400
+date:   2019-09-23 6:00:00 -0400
 categories: neural-nets
 author: luca
 blurb: "Neural Ordinary Differentiable Equations (Neural ODEs) are deep learning architectures which combine neural networks and ordinary differentiable equations, providing new models for the familiar litany of tasks ranging from supervised learning to generative modeling to time series forecasting. In this curriculum, we will dive deep into these models with an end goal of implementing them ourselves."
