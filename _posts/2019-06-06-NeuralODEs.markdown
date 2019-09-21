@@ -4,8 +4,7 @@ title:  "Neural ODEs"
 date:   2019-06-06 10:00:00 -0400
 categories: neural-nets
 author: luca
-blurb: "Neural ODEs are deep learning architectures which combine neural networks and ODEs, providing new models for different tasks, including supervised learning, generative modeling and time series forecasting.
-In this curriculum, we will go through all the tools needed to understand how they work."
+blurb: "Neural Ordinary Differentiable Equations (Neural ODEs) are deep learning architectures which combine neural networks and ordinary differentiable equations, providing new models for the familiar litany of tasks from supervised learning to generative modeling to time series forecasting. In this curriculum, we will dive deep into these models with an end goal of implementing them yourself."
 feedback: true
 ---
 
