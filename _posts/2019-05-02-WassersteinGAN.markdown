@@ -45,6 +45,8 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
       * This chapter covers KL-Divergence & the idea of distances between probability distributions which will also be a key concept going forward.
   3. Chs 5.1.4 and 5.5 of the DL book
       * The aim of these chapters is to make sure that everyone understands maximum likelihood estimation (MLE) which is a fundamental concept in machine learning. It is used explicitly or implicitly in both supervised and unsupervised learning as well as in both discriminative and generative methods. In fact, many methods using gradient descent are doing approximate MLE. It is important to understanding MLE as a fundamental concept, and its use in machine learning in practice. Note that, if you are not familiar with the notation used in these chapters, you might want to start at the beginning of the chapter. Also note that, if you are not familiar with the concept of estimators, you might want to read Ch 5.4. However, you can probably get by simply knowing that minimizing mean squared error (MSE) is a method for optimizing some approximation for a function we are trying to learn (an estimator).
+  4. The first 3 sections of [GANs and Divergence Minimization](https://colinraffel.com/blog/gans-and-divergence-minimization.html) (check out the rest after week 3)
+      * This blog gives a great description of the connections between the KL divergence and MLE. It also provides a nice teaser for what is to come in the following weeks, particularly with regards to the difficulties of training generative models.
 
   
   **Optional Reading**:
@@ -279,7 +281,7 @@ The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein distanc
       * A summary of what a GAN is and some of the issues involved in GAN training.
   3. Coursera (Stanford) course on game theory videos: [1-05](https://www.youtube.com/watch?v=-j44yHK0nn4&index=5&list=PLGdMwVKbjVQ8DhP8dgrBO1B5etE81Hxxh), [2-01](https://www.youtube.com/watch?v=BsgnKTfOxTs&list=PLGdMwVKbjVQ8DhP8dgrBO1B5etE81Hxxh&index=11), [2-02](https://www.youtube.com/watch?v=FU6ax5K9HIA&list=PLGdMwVKbjVQ8DhP8dgrBO1B5etE81Hxxh&index=12), and [3-04b](https://www.youtube.com/watch?v=RIneClCKgAw&list=PLGdMwVKbjVQ8DhP8dgrBO1B5etE81Hxxh&index=22)
       * This is really here just for people who are interested in the game theory ideas such as minmax. 
-  4. Finish reading [GANs and Divergence Minimization](https://colinraffel.com/blog/gans-and-divergence-minimization.html#citation-gulrajani2018).
+  4. Finish reading [GANs and Divergence Minimization](https://colinraffel.com/blog/gans-and-divergence-minimization.html).
       * Now that we know what a GAN is it will be worth it to go back and finish reading this blog. It should help to tie together many of the concepts we’ve covered so far. It also has some great resources for extra reading at the end.
   5. [Overview: Generative Adversarial Networks – When Deep Learning Meets Game Theory](https://ahmedhanibrahim.wordpress.com/2017/01/17/generative-adversarial-networks-when-deep-learning-meets-game-theory/comment-page-1/)
       * A short blog post which briefly summarises many of the topics we’ve covered so far.
