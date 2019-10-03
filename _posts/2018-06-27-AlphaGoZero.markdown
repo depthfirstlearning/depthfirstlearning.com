@@ -60,14 +60,14 @@ AlphaGoZero.
   2. Alpha-Beta Pruning.
 
   **Required Reading**:
-  1. [Cornell Recitation on Minimax & AB Pruning](https://www.cs.cornell.edu/courses/cs312/2002sp/lectures/rec21.htm).
+  1. [Cornell Recitation on Minimax & AB Pruning](http://www.cs.cornell.edu/courses/cs4700/2019sp/lectures/Lecture9.pdf).
   2. Knuth: Section 6 (Theorems 1&2, Corollaries 1&3).
 
   **Optional Reading**:
   1. [CMU's Mathematical Foundations of AI Lecture 1](https://www.cs.cmu.edu/~arielpro/mfai_papers/lecture1.pdf).
   2. Knuth: Sections 1-3.
-  3. [Chess Programming on Minimax](https://chessprogramming.wikispaces.com/Minimax).
-  4. [Chess Programming on AB Pruning](https://chessprogramming.wikispaces.com/Alpha-Beta).
+  3. [Chess Programming on Minimax](https://www.chessprogramming.org/index.php?title=Minimax).
+  4. [Chess Programming on AB Pruning](https://www.chessprogramming.org/Alpha-Beta).
 
   **Questions**:
   1. Knuth: Show that AlphaBetaMin $$= G2(p, \alpha, \beta) = -F2(p, -\beta, -\alpha) = -$$AlphaBetaMax. (p. 300)

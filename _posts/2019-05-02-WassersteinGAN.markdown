@@ -8,6 +8,8 @@ blurb: "The Wasserstein GAN (WGAN) is a GAN variant which uses the 1-Wasserstein
 feedback: true
 ---
 
+[Editor’s Note: We are especially proud of this one. James and his group went above and beyond the call of duty and made a guide from their class that we feel is especially superb for understanding their target paper. Moving forward, he has forced us to up our game because it will be hard to release a curriculum that is not as strong as this one. We highly recommend earnestly studying with this at hand.]
+
 A number of people need to be thanked for their parts in making this happen. Thank you to Martin Arjovsky, Avital Oliver, Cinjon Resnick, Marco Cuturi, Kumar Krishna Agrawal, and Ishaan Gulrajani for contributing to this guide. 
 
 Of course, thank you to Sasha Naidoo, Egor Lakomkin, Taliesin Beynon, Sebastian Bodenstein, Julia Rozanova, Charline Le Lan, Paul Cresswell, Timothy Reeder, and Michał Królikowski for beta-testing the guide and giving invaluable feedback. A special thank you to Martin Arjovsky, Tim Salimans, and Ishaan Gulrajani for joining us for the weekly meetings.

@@ -31,6 +31,10 @@ james:
     name: James Allingham
     email: 
     web: https://twitter.com/JamesAllingham
+luca:
+    name: Luca Venturi
+    email: venturi@cims.nyu.edu
+    web: https://cims.nyu.edu/~venturi/
 
 # Build settings
 markdown:       kramdown

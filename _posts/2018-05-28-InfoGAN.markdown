@@ -58,12 +58,42 @@ observing each variable separately.
   2. For more perspectives and deeper dependencies, see Metacademy:
       1. [Entropy](https://metacademy.org/graphs/concepts/entropy)
       2. [Mutual Information](https://metacademy.org/graphs/concepts/mutual_information)
-      3. [KL diverence](https://metacademy.org/graphs/concepts/kl_divergence)
+      3. [KL divergence](https://metacademy.org/graphs/concepts/kl_divergence)
   3. [Visual Information Theory](https://colah.github.io/posts/2015-09-Visual-Information/)
 
   **Questions**:
   1. From PRML: 1.31, 1.36, 1.37, 1.38, 1.39, 1.41.
+     <details><summary>Solution</summary>
+     <p>
+     PRML 1.31: Consider two variables \(x\) and \(y\) having joint distribution \(p(x,y)\). Show that the differential entropy of this pair of variables satisfies \(H(x,y) \le H(x) + H(y)\) with equality if, and only if, \(x\) and \(y\) are statistically independent.
+     </p><p>
+     If \(p(x)\) and \(p(y)\) are independent then the joint distribution is given by:<br>
+     \(p(x,y) = p(x)p(y)\)
+     </p><p>
+     Based on the independent \(p(x)\) and \(p(y)\) the joint entropy can be derived from the conditional entropies \(H(x|y)\) and \(H(y|x)\):<br>
+     \(H(x|y) = H(x)\)<br>
+     \(H(y|x) = H(y) \to\)<br>
+     \(H(x,y) = H(x) + H(y|x) = H(y) + H(x|y) \to\)<br>
+     \(H(x,y) = H(x) + H(y)\)
+     </p><p>
+     Therefore, there is no mutual information \(I(x,y)\) if \(p(x)\) and \(p(y)\) are independent:<br>
+     \(H(x,y) = H(x) + H(y)\ \to\)<br>
+     \(I(x,y) = H(x) + H(y) - H(x,y) = H(x,y) - H(x,y) = 0\)
+     </p><p>
+     If \(p(x)\) and \(p(y)\) are dependent:<br>
+     \(H(x,y) < H(x) + H(y)\ \to\)<br>
+     \(I(x,y) = H(x) + H(y) - H(x,y) > 0\)
+     </p><p>
+     The indepent and dependent case can be combined to a general form:<br>
+     \(H(x,y) \le H(x) + H(y)\ \to\)<br>
+     \(I(x,y) = H(x) + H(y) - H(x,y) \ge 0\)
+     </p>
+     </details>
   2. How is Mutual Information similar to correlation? How are they different? Are they directly related under some conditions?
+     <details><summary>Solution</summary>
+     <p>Start <a href="https://stats.stackexchange.com/questions/81659/mutual-information-versus-correlation">here</a>.
+     </p>
+     </details>
   3. In classification problems, [minimizing cross-entropy loss is the same as minimizing the KL divergence 
      of the predicted class distribution from the true class distribution](https://ai.stackexchange.com/questions/3065/why-has-cross-entropy-become-the-classification-standard-loss-function-and-not-k/4185). Why do we minimize the KL, rather
      than other measures, such as L2 distance?
@@ -114,6 +144,9 @@ observing each variable separately.
   **Required Reading**:
   1. [JS Divergence](https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence)
   2. [The original GAN paper](https://arxiv.org/abs/1406.2661)
+  
+  **Optional Reading**:
+  1. [NIPS 2016 Tutorial: Generative Adversarial Networks](https://arxiv.org/abs/1701.00160)
 
   **Questions**:
   1. Prove that $$0 \leq JSD(P||Q) \leq 1$$ bit for all P, Q. When are the bounds achieved?
@@ -122,6 +155,21 @@ observing each variable separately.
      </p>
      </details>
   2. What are the bounds for KL divergence? When are those bounds achieved?
+     <details><summary>Solution</summary>
+     <p>Start <a href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence">here</a>.
+     </p><p>
+     The Kullback–Leibler divergence \(D_{KL}(P||Q)\) between \(P\) and \(Q\) is defined as:<br>
+     \(D_{KL}(P||Q) =  \sum_{x}P(x) \log_2\left(\frac{P(x)}{Q(x)}\right)\)
+     </p><p>
+     The lower bound is reached when \(P(x) = Q(x)\) because \(\left(\frac{P(x)}{Q(x)}\right) = 1\):<br>
+     \(D_{KL}(P||Q) = \sum_{x}P(x) \log_2(1) = \sum_{x}P(x) 0 = 0\)
+     </p><p>
+     The upper bound is reached when \(Q(x)\) is disjoint from \(P(x)\), i.e., \(Q(x)\) is zero  where \(P(x)\) is not zero, because then the log-ratio \(\log_2\left(\frac{P(x)}{Q(x)}\right)\) becomes \(\infty\):<br>
+     \(x_i \in x\)<br>
+     \(P(x_i) \log_2\left(\frac{P(x_i)}{Q(x_i)}\right) = P(x_i) \log_2\left(\frac{P(x_i)}{0}\right) = \infty \to\)<br>
+     \(D_{KL}(P||Q) =  \sum_{x}P(x) \log_2\left(\frac{P(x)}{Q(x)}\right) = \infty\)
+     </p>
+     </details>
   3. In the paper, why do they say “In practice, equation 1 may not provide sufficient gradient for G to learn well. Early in learning, when G is poor, D can reject samples with high confidence because they are clearly different from the training data. In this case, $$log(1 − D(G(z)))$$ saturates”?
      <details><summary>Solution</summary>
        <p><a href="/assets/gan_gradient.pdf">Understanding the vanishing generator gradients point in the GAN paper</a></p>
