@@ -1,0 +1,97 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{scribe}
+\usepackage{listings}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\LectureNumber{2}
+\LectureDate{May 22, 2019}
+\LectureTitle{Stein's Method}
+
+\lstset{style=mystyle}
+
+\begin{document}
+	\MakeScribeTop
+
+%#############################################################
+%#############################################################
+%#############################################################
+%#############################################################
+
+Most of the theory we will see in this curriculum builds off the general theoretical framework of Stein's Method, a tool to obtain bounds on distances between distributions. In Machine Learning (as we shall later see), distances between distributions can be used to quantify how well (or poorly) a model is at approximating a certain distribution of interest. We shall start from Stein's Identity and Operator, while explaining their theoretical significance and working through some proofs to get an understanding of some terms (Steins Method, Stein's Discrepancy) we'll see in the coming weeks. Lastly, we will discuss why Stein's Method has historically been a theoretical tool, and hint at how ideas from Week 1 (particularly RKHS) can be used in combination with Stein's Method to build the tractable discrepancy measure at the center of Week 3's discussion.
+
+\section{Table of Contents}
+
+\begin{enumerate}
+    \item What is Stein's Method?
+    \item The Stein Operator
+    \item Stein's Equation (for normally-distributed RVs)
+    \item Stein's Identity
+    \item Discussion and Intuition
+\end{enumerate}
+
+\section{What is Stein's Method?}
+
+Stein's Method, while gaining popularity in the \href{https://steinworkshop.github.io/}{machine learning world}, was originally developed by \href{https://en.wikipedia.org/wiki/Charles_M._Stein}{Charles Stein} \cite{stein1972}, and has been used countless amounts of times to bound distances between distributions, prove generalized central limit theorems, and play important roles in other parts of theoretical statistics. Generally, Stein's Method can be seen as a way to \textbf{bound the distance between probability distributions}.
+
+\noindent Usually, we want to show that some arbitrary random variable $W$ is \textit{approximately} normal, meaning that, given $Z$ - a standard Gaussian random variable:
+
+\begin{equation}
+\mathbf{P}(W \leq x) \approx \mathbf{P}(Z \leq x)
+\end{equation}
+
+\noindent Generally, we're looking to show that $\mathbf{E}h(W) = \mathbf{E}h(Z) \; \forall h$ such that $\mathbf{E}(h'(Z)) < \infty$, where $\mathbf{E}[\cdot]$ is the usual expectation operator. In the following, we're going to be working probability measures $P$ and $Q$ on some measurable space $\mathcal{X}$, with random variables $W$ and $Y$ (which have distributions $P$ and $Q$ respectively). In our setting, $P$ will be a complicated distribution (in Week 3, we will define concretely on what is "complicated" about it), and $Q$ is some simpler distribution - which we take as the standard normal - that we hope to use to approximate $P$.
+
+\section{The Stein Operator} 
+
+\noindent Currently, our goal is to just decide if $P$ is approximately equal to $Q$ - in later weeks, when we discuss Stein's Method \textit{in} a machine learning context, we will discuss on \textit{how} to transform $P$ into $Q$.  We define an operator, called the \textit{Stein Operator} $\mathcal{A}: \mathcal{F} \rightarrow \mathbf{R}$, that requires, for all functions $f \in \mathcal{F}$, the following proposition to hold:
+
+\begin{equation}
+    \mathbf{E}[\mathcal{A}f(Y)] = 0 \quad \forall f \in \mathcal{F} \Leftrightarrow Y \sim Q
+\end{equation}
+
+\noindent  Basically, if the expectation of this operator acting on $f(Y)$ is zero for all functions in our family, we can say that the random variable $Y$ has distribution $Q$. \href{https://en.wikipedia.org/wiki/Stein\%27s_lemma}{Stein's Lemma} \cite{Ingersoll1987TheoryOF} for normally distributed random variables $X$ with expectation $\mu$ and variance $\sigma^2$ tells us that, for some proper choice of $g$ (where the expectation of $g$ is finite), we have:
+
+\begin{equation} 
+    \mathbf{E}[g(X)(X - \mu)] = \sigma^2\mathbf{E}[g'(X)]
+\end{equation}
+
+\noindent Since we've chosen $Q$ to be the standard normal, we can rewrite our original expectation as:
+
+\begin{equation}
+    \mathbf{E}[f'(Y) - Yf(Y)] = 0 \quad \forall f \in C^1 \Leftrightarrow Y \text{ is normally distributed}
+\end{equation} 
+
+\noindent This gives us an equivalent form of our operator, allowing us to write:
+
+\begin{equation}
+    \mathcal{A}f(x) = f'(x) - xf(x)
+\end{equation}
+
+\section{Stein's Identity}
+
+In our case, why do we care about this? The last form of the operator allows us to rewrite the operator as:
+
+\begin{equation}
+    \mathcal{A}f(x) = f'(x) + f(x)s_p(x)
+\end{equation}
+
+where $s_p(x)$ is the (Stein) score function of p: $s_p(x) = \nabla_x \log p(x) = \frac{\nabla_x p(x)}{p(x)}$. It's this form that will drive next week's analysis of the Kernelized Stein Discrepancy. 
+
+%%%%%%%%%%% If you don't have citations then comment the lines below:
+%
+\bibliographystyle{abbrv}           % if you need a bibliography
+\bibliography{w2ref}                % assuming yours is named mybib.bib
+
+
+%%%%%%%%%%% end of doc
+\end{document}

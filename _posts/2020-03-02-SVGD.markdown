@@ -1,0 +1,406 @@
+---
+layout: post
+title:  "Stein Variational Gradient Descent"
+date:   2020-03-02 6:00:00 -0400
+categories: steins-method, stein-variational-gradient-descent, bayesian-inference
+author: bhairav
+blurb: "Stein Variational Gradient Descent is a powerful, non-parameteric Bayesian Inference algorithm. It is based on its namesake, Stein's Method. In this guide, we work through the mathematics and fundamentals behind this approach, including Kernelized Stein Discrepancy, before fully understanding Stein Variational Gradient Descent. We end by considering two application areas for SVGD. One is Reinforcement Learning, the other is viewing SVGD from the lens of gradient flow."
+feedback: true
+---
+
+This guide is thanks to a many different people, all of whom took their time to give feedback, write reviews, and provide their own insights to the curriculum.
+
+Special thanks to Cinjon Resnick, who was incredibly helpful throughout the iterations of the class, curriculum, and final notes. A special thanks as well to Professor Qiang Liu, who took the time to help shape the curriculum. 
+
+Thank you to Calvin Woo, Sanyam Kapoor, Thomas Pinder, Swapneel Mehta, and Avital Oliver for useful contributions to this guide, as well as countless insights during our discussions.
+
+A special thanks to the many outside guests who offered to provide their time, including Dilin Wang, Tongzheng Ren, and Haoran Tang.
+
+Finally, thank you to all my fellow students who attended the recitations and provided valuable feedback.
+
+<div class="deps-graph">
+<iframe class="deps" src="/assets/svgd-deps.svg" width="200"></iframe>
+<div>Concepts used in SVGD. Click to navigate.</div>
+</div>
+
+# Why
+
+Stein's Method is a powerful statistical method, one that is at the disposal (and the focus) of many statisticians today. Recently, Stein's Method has made its way into machine learning and has already proved to be a fruitful research area. Stein's Method has deep connections to many machine learning problems of interest, and by the end of this guide, you should be able to understand the relevant mathematics behind this powerful tool.   
+
+<br />
+
+# 1 Basics Behind Kernelized Stein Discrepancy
+  **Motivation**: Before jumping into all the math and methodology, we have to be able to  understand the basics of what’s going on. Most importantly, we will review the basics of measure theory and reproducing kernel hilbert spaces. Measure theory allows us to understand the notion of discrepancy measures between distributions, which we will use later on to quantify the difference between two arbitrary distributions of interest. Our other topic, Reproducing Kernel Hilbert Spaces (RKHS), will serve as the connection between measure theory and a practical machine learning algorithm. With RKHS, we will be able to define and optimize intractable measures which previously, were only useful for theoretical analysis or a restrictive class of functions. These two together set the foundation for defining a tractable Kernelized Stein Discrepancy, which serves as the driving factor behind Stein Variational Gradient Descent. 
+
+
+  **Topics**:
+
+  1. Measure Theory
+  2. Kernels
+  3. Reproducing Kernel Hilbert Space
+  4. Machine Learning Basics
+
+  **Notes**: In this class, we went over the basic mathematical concepts we will need throughout the rest of the curriculum. See here for the notes in [Colab](https://colab.research.google.com/drive/1x3bgKtYWaYRTV1VGaf0bKRyQ_qxNZpjh) or here for the [PDF](/assets/svgd_notes/week01.pdf).
+
+  **Required Reading**:
+
+  1. [Reproducing Kernel Hilbert Spaces Tutorial, Section 1 - 3](http://www.gatsby.ucl.ac.uk/~gretton/coursefiles/lecture4_introToRKHS.pdf).
+  2. [A gentle introduction to Measure Theory (Chandalia)](https://www.win.tue.nl/~rvhassel/Onderwijs/Old-Onderwijs/2DE08-1011/ConTeXt-OWN-FA-201209-Bib/Literature/sigma-algebra/gc_06_measure_theory.pdf).
+  
+  **Optional Reading**:
+
+  1. [Slides on RKHS from Arthur Gretton](http://mlss.tuebingen.mpg.de/2015/slides/gretton/part_1.pdf).
+  2. [CS231n's Numpy and Python Tutorial](http://cs231n.github.io/python-numpy-tutorial/).
+  3. [CS229's Linear Algebra Refresher](http://cs229.stanford.edu/section/cs229-linalg.pdf).
+  4. [Xavier Bourret Sicotte's Blog on Kernels and Feature Maps](https://xavierbourretsicotte.github.io/Kernel_feature_map.html).
+
+  **Questions**:
+
+  1. "However, Cauchy sequences are not the same as convergent sequences", but a property of Cauchy sequences is that they are bounded. What's the difference?
+     <details><summary>Solution</summary>
+     <p>
+      Convergent sequences have a limit, but Cauchy sequences are only required to be bounded. But what exactly does bounded mean? Here's a proof that shows that they are bounded, which might shed some light on the definition itself:
+      <br />
+      <p>
+      <b>a.</b> There exists \(N\) such that \(|a_n - a_m| < 1 \quad \forall m, n \geq N\) (Property of Cauchy Sequence iterates getting closer)
+      <br />
+      <b>b.</b> \(\implies \forall n \geq N, |a_n - a_N| < 1\) 
+      <br />
+      <b>c.</b> \(a_n \in (a_N - 1, a_N + 1) \forall n \geq N\). (\(n \geq N\) is bounded)
+      <br />
+      <b>d.</b> Since the sequence is \(n < N\) is finite (since \(N\) is finite), it is also bounded.
+      </p>
+      Therefore the Cauchy sequence \(\{ a_n \}\) is bounded \(\square\)
+    </p>
+    </details>	
+  2. "The open interval (0, 1) is not complete whereas the closed interval [0, 1] is complete." Why? Can we use this example to get a intuitive definition of complete?
+     <details><summary>Solution</summary>
+     <p>
+      Intuitively, a space is complete if there are no "points missing" from it (inside or at the boundary). For instance, the set of rational numbers is not complete, because e.g. \(\sqrt{2}\) is "missing" from it, even though one can construct a Cauchy sequence of rational numbers that converges to it. More information can be found at <a href="https://en.wikipedia.org/wiki/Complete_metric_space">Wikipedia: Complete Metric Space.</a>
+     </p>
+     </details>
+  3. Explain the difference between a Banach and Hilbert Space. Is every Hilbert space a Banach space?
+     <details><summary>Solution</summary>
+     <p>
+      A Banach space is a vector space in which each vector has a non-negative length, or norm, and in which every Cauchy sequence converges to a point of the space. Also known as complete normed linear space.
+
+      A Hilbert space is a Banach space with inner product, which defines the norm.
+     </p>
+     </details>
+  4. In Machine Learning, kernels can be thought of as a "dot product" (a kind of similarity score) in high-dimensional space. Why would this be useful? Given a feature map, do we always have a corresponding kernel? Given any kernel, can we always explicitly write out the elements of the corresponding feature map?
+     <details><summary>Solution</summary>
+     <p>
+      Kernels (and the corresponding kernel trick) allow us to compute similarities in high-dimensional space without explicitly writing out and computing the dot product. 
+
+      However, not ever feature map corresponds to a kernel; there are certain properties a kernel must have, and not every feature map imbues it with those properties.
+
+      Likewise, given a kernel, it may be the case that we can never write out (explicitly) the corresponding feature map. A good example of this is the popular exponential kernel.
+     </p>
+     </details>
+  5. Assume that we just need the log-likeihood in many machine learning tasks so that we can compute  $$KL(q||p)$$ , and iteratively fit our model $$p$$ to the underlying, generating data distribution $$q$$. Why is this already too large of an assumption ("We assume that we have the ability to calculate the log-likelihood under the model that we specify")?
+     <details><summary>Solution</summary>
+     <p>
+      The dreaded normalization constant! Most models we see will give an unnormalized likelihood, and the normalization constant (which we will see in a few weeks, often denoted as \(Z\)) is intractable to compute. We need the normalization constant to bring a probability function to a probability density function.
+     </p>
+     </details>
+  6. What is the use of Monte-Carlo methods in machine learning?
+     <details><summary>Solution</summary>
+     <p>
+      They are a way to estimate quantities in the presence of complex, many-random-variable situations. They do so by repeatedly generating (via simulation) instances from which they estimate the quantities. 
+     </p>
+     </details>
+  7. Explain the reproducing property in your own words.
+     <details><summary>Solution</summary>
+     <p>
+      Sanyam Kapoor's answer from our class was: "Every feature map is a linear combination of the full Hilbert space weighted by the kernel evaluations."
+     </p>
+     </details>
+  
+<br />
+
+# 2 Stein's Method
+  **Motivation**: Most of the theory we will see in this curriculum builds off the general theoretical framework of Stein’s Method, a tool to obtain bounds on distances between distributions. In Machine Learning (as we shall later see), distances between distributions can be used to quantify how well (or poorly) a model is at approximating a certain distribution of interest. We shall start from Stein’s Identity and Operator, while explaining their theoretical significance and working through some proofs to get an understanding of some terms (Stein’s Method, Stein’s Discrepancy) we’ll see in the coming weeks. Lastly, we will discuss why Stein’s Method has historically been a theoretical tool, and hint at how ideas from Week 1 (particularly RKHS) can be used in combination with Stein’s Method to build the tractable discrepancy measure at the center of Week 3’s discussion.
+
+  **Topics**:
+
+  1. Stein's Method
+  2. The Stein Operator
+  3. Stein Equation
+  4. Stein's Identity
+
+  **Notes**: In this class, we discussed the theoretical concepts behind Stein's method, and discussed different ways to interpret the core ideas. See here for the notes in [Colab](https://colab.research.google.com/drive/1HqHSP9x01te7e33-zDR00vAsPX_M19h2) or here for the [PDF](/assets/svgd_notes/week02.pdf).
+
+  **Required Reading**:
+
+  1. [Section 2 of Kernelized Stein Discrepancy](https://arxiv.org/abs/1602.03253).
+  2. [Stein's Method on Wikipedia](https://en.wikipedia.org/wiki/Stein%27s_method).
+  
+  **Optional Reading**:
+
+  1. [A Short History of Stein's Method](https://arxiv.org/abs/1404.1392).
+  2. [Gentle Introduction to Stein's Method](http://www.ims.nus.edu.sg/Programs/stein09/files/A%20Gentle%20Introduction%201.pdf).
+  
+  **Questions**:
+
+  1. Prove Stein's Identity for a standard Gaussian random variable $$Z$$.
+     <details><summary>Solution</summary>
+     <p>
+      Recall that Stein's Identity tells us that for a unit-normal random variable \(Z\) (i.e \(Z \sim \mathcal{N}(0, 1)\)):
+
+      $$ \mathbf{E}f'(Z) = \mathbf{E}Zf(Z)$$
+
+      for all absolutely continuous functions \(f\) with \( \mathbf{E}[f'(Z)] < \infty \). 
+
+      To start, we state, without proof, that the density function of the unit normal Gaussian:
+
+      $$ p(z) = \frac{1}{\sqrt{2\pi}}e^{\frac{-z^2}{2}} $$
+
+      satisfies \( zp(z) = p'(z) \).
+
+      For some normal \(Z\), we can break the left hand side of the original identity into two integrals:
+
+      $$\mathbf{E}f'(Z) = \int_0^\infty f'(z)p(z)dz + \int_{-\infty}^0 f'(z)p(z)dz $$
+
+      For each left-hand side integral, we use <a href="https://en.wikipedia.org/wiki/Fubini%27s_theorem">Fubini's Theorem</a>:
+
+      $$ \int_0^\infty f'(z)p(z)dz = \int_0^\infty f'(z) \int_z^\infty yp(y)dydz $$
+
+      $$ \int_0^\infty f'(z)p(z)dz = \int_0^\infty  \int_z^\infty f'(z)yp(y)dydz $$
+
+      $$ \int_0^\infty f'(z)p(z)dz = \int_0^\infty  \int_0^y f'(z)yp(y)dzdy $$
+
+      Leading us to our final integral:
+
+      $$ \int_0^\infty f'(z)p(z)dz = \int_0^\infty  [f(y) - f(0)] yp(y)dy $$
+
+      For the second integral, it evaluates to \( \int_{-\infty}^0  [f(y) - f(0)] yp(y)dy \)
+
+      When we combine each individual result, we get:
+
+      $$ \mathbf{E}f'(Z) = \mathbf{E}Z[f(Z) - f(0)] = \mathbf{E}Zf(Z)$$
+
+      which proves the forward direction. 
+     </p>
+     </details>
+  2. Explain why Stein's Identity is useful. 
+     <details><summary>Solution</summary>
+     <p>
+      Stein's Identity in the converse as well; if the identity holds, we can conclude the random variable, which we call \(W\), is also normal. However, if the two quantities in Stein's Identity are approximately equal, then Stein's Identity also lets us conclude that \(W\) is also approximately normal. Stein's Identity and Method are used to quantify this "approximately" term, which we briefly discuss below.
+
+      Probability metrics (between two random variables \(X\) and \(Y\)) take the general form of:
+
+      $$d(X, Y) = \sup_{h \in \mathcal{H}} | \mathbf{E}h(X) - \mathbf{E}h(Y) |$$ 
+
+      for some class of functions \( \mathcal{H} \). We normally want to bound the distances between the corresponding distribution functions \(P \) and \(Q \), but that choice is less important for this brief discussion.
+
+      When we choose different classes of functions, we can recover various distances that we often use (in machine learning) to compare probability distributions, such as the Kolmorgov or Wasserstein distance. 
+
+      We get to the Stein Discrepancy by measuring the distance between \(W\) to our standard normal \(Z\) via:
+
+      $$ \mathbf{E}h(W) - \mathcal{N}h $$ 
+
+      where \(\mathcal{N}h = \mathbf{E}h\) for \(h \in \mathcal{H}\).
+
+      Stein's Identity tells us that the discrepancy can also be measured by:
+
+      $$ \mathbf{E}[f'(W) - Wf(W)]$$
+
+      which, when we evaluate at \(w\), gives us the Stein Equation:
+
+      $$ f'(w) - wf(w) = h(w) -  \mathcal{N}h $$
+
+      Since we're trying to bound: \(\mathbf{E}h(W) -  \mathcal{N}h\), we can now instead bound the LHS, which turns out to be a lot easier once we account for all of the boundary conditions.
+     </p>
+     </details>
+<br />
+
+# 3 Kernelized Stein Discrepancy
+  **Motivation**: The main theoretical meat comes from a single 2016 paper titled Kernelized Stein Discrepancy (KSD). KSD takes the powerful Stein’s Identity, and uses RKHS theory to define a tractable discrepancy between a ground truth distribution and samples from an arbitrary one. Most importantly, KSD defines a discrepancy function that does not involve calculating the normalizing constant, allowing it to be much more widely applicable in practical tasks. We will discuss the difference between likelihood-free and likelihood-based methods in machine learning, how this normalization constant proves to be problematic in machine learning, and how KSD allows us to sidestep this issue with a new, tractable discrepancy. KSD will serve as the launch pad for the algorithm at the focus of this curriculum, Stein Variational Gradient Descent. 
+
+  **Topics**:
+
+  1. A Stein Discrepancy
+  2. Goodness of Fit
+  3. Tractable Optimization of the Stein Discrepancy
+
+  **Notes**: In this class, we worked through the Kernelized Stein Discrepancy paper, focusing on the optimization and use cases of such a method. See here for the notes in [Colab](https://colab.research.google.com/drive/1V7zpm9U3TCjIM9DxeRWo6IEypDkZObrH) or here for the [PDF](/assets/svgd_notes/week03.pdf).
+
+  **Required Reading**:
+
+  1. [A Short Introduction to Kernelized Stein Discrepancy](http://www.cs.dartmouth.edu/~qliu/PDF/ksd_short.pdf).
+  2. [ICML 2015 Slides on KSD](https://www.cs.dartmouth.edu/~qliu/PDF/slides_ksd_icml2015.pdf).
+  3. [Kernelized Stein Discrepancy](https://arxiv.org/abs/1602.03253).
+  4. [What is Maximum Mean Discrepancy?](https://stats.stackexchange.com/questions/276497/maximum-mean-discrepancy-distance-distribution).
+  
+  **Optional Reading**:
+
+  Although we focus on the work leading up to Stein Variational Gradient Descent, this week's optional reading provides historical context on how Stein's Method was introduced into the context of machine learning. 
+
+  1. [Measuring Sample Quality with Stein’s Method](https://arxiv.org/abs/1506.03039).
+  2. [A Kernel Test of Goodness of Fit](https://arxiv.org/abs/1602.02964)
+  3. [Measuring Sample Quality with Kernels](https://arxiv.org/abs/1703.01717)
+  
+  The first reference, from Gorham and Mackey, introduced the notion of a Stein Discrepancy. Kernelized Stein Discrepancy, the paper of focus for this week, built upon that idea with kernels, enabling the use of kernel functions in the Stein Discrepancy. The latter two references are also works that independently developed kernel-based Stein Discrepancies.
+
+  **Questions**:
+
+  1. What determines the choice of kernel in KSD?
+
+  <details><summary>Solution</summary>
+    <p>
+        Since KSD requires an RKHS for optimization, the kernel must be positive definite. However, whenever given a positive definite kernel \(K\), we can always build an associated RKHS as follows. 
+
+        If we take \(H\) as the Hilbert space of functions \(f: \mathcal{X} \rightarrow \mathbf{R}\) defined on some set \(\mathcal{X}\) with some inner product \( \langle \cdot, \cdot \rangle_H \) defined on \(H\), then we can define the evaluation functional \(e_x: H \rightarrow \mathbf{R}\) as \(f \rightarrow e_x(f) = f(x) \).
+
+        Using the above definitions, our space \( H\) is an RKHS iff the evaluation functionals are continuous. As we saw in the notes, we call the given kernel \(K\) a reproducing kernel if:
+
+        <br />
+
+        <b>1.</b> \(K(x, \cdot), \; \forall x \in \mathcal{X}\) 
+
+        <br />
+        <b>2.</b> \(\langle f, K_x \rangle = f(x) \; \forall f \in H, \forall x \in \mathcal{X}\).
+
+        <br />
+
+        Thus, every reproducing kernel \( K\) induces a unique RKHS given the kernel is positive definite. 
+
+        Excitingly, in the context of machine learning, positive definite kernels themselves can be defined in terms of inner products. Therefore, we can generate arbitrary kernels and RKHS with some feature map \( \Phi: \mathcal{X} \rightarrow \mathcal{F}\) where feature space \( \mathcal{F}\) is a Hilbert space with some inner product \( \langle \cdot, \cdot \rangle \). 
+    </p>
+  </details>
+
+<br />
+
+# 4 Stein Variational Gradient Descent
+  **Motivation**:  Stein Variational Gradient Descent (SVGD) is a popular, non-parametric Bayesian Inference algorithm that’s been applied to Variational Inference, Reinforcement Learning, GANs, and much more. This week, we study the algorithm in its entirety, building off of last week’s work on KSD, and seeing how viewing KSD from a KL-Divergence-minimization lens induces a powerful, practical algorithm. We discuss the benefits of SVGD over other similar approximators, and look at a practical implementation of the algorithm.
+
+  **Topics**:
+
+  1. Stein Variational Gradient Descent
+  2. Implementing the Algorithm
+  
+  **Notes**: In this class, we go over the core paper, Stein Variational Gradient Descent. At the end of the notes, we provide link to implementations in a variety of different languages. See here for the notes in [Colab](https://colab.research.google.com/drive/0B2rVTvobCLlWNEY4SENKdG1OQ3c) or here for the [PDF](/assets/svgd_notes/week04.pdf).
+
+  **Required Reading**:
+
+  1. [SVGD Slides](https://www.cs.dartmouth.edu/~qliu/PDF/steinslides16.pdf).
+  2. [SVGD Paper](https://arxiv.org/abs/1608.04471).
+  3. [Sanyam Kapoor's great notebook on Stein Gradients](https://www.sanyamkapoor.com/machine-learning/stein-gradient/).
+  
+  **Optional Reading**:
+
+  1. [SVGD: Theory and Applications](https://www.cs.dartmouth.edu/~qliu/PDF/svgd_aabi2016.pdf).
+  2. [Learning to Sample with Amortized SVGD](https://arxiv.org/abs/1707.06626).
+  
+  **Questions**:
+
+  1. Compare and contrast the method shown here and MCMC. What are some advantages MCMC still has over SVGD?
+     <details><summary>Solution</summary>
+      <p>
+          Below are some ideas we discussed in our class. <br/>
+
+          <b>1.</b> SVGD requires a compact subspace \( \mathcal{X} \), and as noted <a href="http://proceedings.mlr.press/v97/chen19b/chen19b.pdf">here in Chen '19</a>, requires the number of particles to be fixed apriori.<br/>
+
+          <b>2.</b> SVGD has a lot less theoretical understanding compared to MCMC (which, is potentially due to the recency of the result). SVGD has had analysis done in the infinite-particle regime, but minimal work done in finite particle scenarios (an example of such work can be found <a href="https://papers.nips.cc/paper/8101-stein-variational-gradient-descent-as-moment-matching.pdf">here</a>. A concern of theoretical analysis is the complexity of analyzing the interacting particle updates, so the works covered here either view it from a dynamical systems / differential equation perspective (which concerns the smooth transformation of density), or discuss the properties of the final particles, regardless of how they were algorithmically attained.<br/>
+
+          <b>3.</b> SVGD still seems to collapse in high-dimensional spaces, leading to exciting new research in <a href="https://arxiv.org/abs/1902.03394">why this occurs</a> and <a href="https://arxiv.org/abs/1711.04425">ideas on how to get around it</a>.
+     </p>
+     </details>
+  2. Prove that the discrepancy in Equation 3 of the Stein Variational Gradient Descent Paper only equals 0 when \(p\) and \(q\) are equal.
+     <details><summary>Solution</summary>
+     <p>
+      Recall the operator definition of Stein's Identity:
+
+      $$ \mathbf{E}_p[\mathcal{A}_pf(x)] = 0$$
+
+      If \( p \neq q \), we get \( \mathbf{E}_q[\mathcal{A}_pf(x)] \) for some choice of function \( f \).
+
+      We can expand this to:
+
+      $$\mathbf{E}_q[\mathcal{A}_pf(x)] - \mathbf{E}_q[\mathcal{A}_qf(x)]$$
+
+      Recalling the full definition of the operator:
+
+      $$\mathcal{A}_pf(x) = \mathbf{E}_p[s_p(x)f(x) + \nabla_x f(x)] = 0$$
+
+      where score function \( s_p(x) \) is just \( \nabla_x \log p(x) \), we are left with
+
+      $$\mathbf{E}_q[(s_p(x) - s_q(x))f(x)]$$
+
+      This means unless \(p = q \rightarrow s_p(x) = s_q(x) \; \forall x \in \mathcal{X} \), we can always find some function \(f\) for which the above quantity is nonzero.
+
+     </p>
+     </details>
+  3. Implement SVGD in your favorite language (see the notes for links to different implementations). Then, let’s take a look at the role of the kernel in SVGD:
+    
+     * Remove the repulsive kernel term and observe how particles collapse to modes.
+    
+     * Remove the kernel’s contribution in the first term.
+    
+     What happens?	
+
+<br />
+
+# 5. SVGD as Gradient Flow
+  **Motivation**: SVGD as Gradient Flow is one of the first papers that analyzes the dynamics and theoretical properties of SVGD. This paper covers an incredible amount of seemingly-disparate topics, connecting them in a succinct explanation. Due to the relative difficulty of the material, especially the necessary background, the attached notes are self-contained and should be read alongside the paper.
+
+  **Topics**:
+
+  1. Large Sample Regime of SVGD
+  2. Continuous Time Analysis of SVGD
+  3. Optimal Transport, Wasserstein Distances, and Differential Geometry
+  4. SVGD as a Gradient Flow
+
+  **Notes**:  In this class, we try to understand the geometric implications of SVGD. The notes are structured relatively differently - with the amount of background needed, relevant material is introduced in-line. As a result, the ideal way to understand this week requires reading the notes alongside the paper, using the background sections to understand the concepts and their connections within the paper. See here for the notes in [PDF](/assets/svgd_notes/week05.pdf).
+
+  **Required Reading**:
+
+  1. [Stein Variational Gradient Descent as Gradient Flow](https://arxiv.org/abs/1704.07520).
+
+<br />
+
+# 6. Stein in Reinforcement Learning
+  **Motivation**: One of the most exciting use cases of SVGD is in reinforcement learning, due to its connection to maximum entropy reinforcement learning. This week, we study two key techniques in reinforcement learning that use SVGD as the underlying mechanism. In reinforcement learning, the target distribution is not known, so we derive gradient updates to our parameters using policy gradients. As we derive the gradient estimators in the maximum-entropy framework of reinforcement learning, we will start to see what benefits SVGD-based methods have. In particular, we will focus on the explore-exploit tradeoff, as well as normalization constants for intractable distributions, and see how SVGD helps us get around complicated problems regarding both. 
+
+  **Topics**:
+
+  1. Reinforcement Learning
+  2. Explore vs. Exploit
+  3. Maximum Entropy Reinforcement Learning
+
+  **Notes**:  In this class, we look at the application area of reinforcement learning, and see how the diversity induced by SVGD (and its connection to maxmimum entropy reinforcement learning) generates strongly-exploring policies. See here for the notes in [Colab](https://colab.research.google.com/drive/178X8BgGrUmPaRTLulL_ETUKaBf-MfrgS) or here for the [PDF](/assets/svgd_notes/week06.pdf).
+
+  **Required Reading**:
+
+  1. [Stein Variational Policy Gradient](https://arxiv.org/abs/1704.02399).
+  2. [Reinforcement Learning with Energy-Based Policies](https://arxiv.org/abs/1702.08165).
+  
+  **Optional Reading**:
+
+  1. [A Long Peek into Reinforcement Learning](https://lilianweng.github.io/lil-log/2018/02/19/a-long-peek-into-reinforcement-learning.html).
+  2. [Learning to Draw Samples with Amortized SVGD - Same as W4](https://arxiv.org/abs/1707.06626).
+  3. [Soft Q-Learning BAIR Blogpost](https://bair.berkeley.edu/blog/2017/10/06/soft-q-learning/).
+  4. [Learning Self-Imitating Diverse Policies (an improved SVPG)](https://arxiv.org/abs/1805.10309).
+  5. [Bayesian MAML](https://arxiv.org/abs/1806.03836).
+  
+  **Questions**:
+
+  1. What are some of the issues with using the RBF kernel when comparing RL policies? Is parameter space appropriate for comparing policies?
+     <details><summary>Solution</summary>
+     <p>
+      While it works in practice, the networks used for particles in the original SVPG paper were reasonably small. With larger numbers of parameters (i.e which are necessary when working with image-based observations), parameter-based discrepancies start to make even less sense. This is one of two core ideas that drove the formulation of the Self-Imitating Diverse Policies paper, seen as Resource 4 in Optional Reading.
+     </p>
+     </details>
+
+  2. In SVPG, the introduction of a prior (and priors in RL) is one active area of research. To incorporate priors in this framework, what "space" does the prior need to be over? 
+
+     <details><summary>Solution</summary>
+     <p>
+      SVPG incorporates a prior over \(q \), which is actually a prior over the distribution of particle parameters \(\theta\). Since this space is uninterpretable, the prior term is set to be a constant, generating an "improper" prior that, in most use cases, can get dropped out of the optimization. Even if you were to use an old set of particles as a prior, the term is basically unusable, because in order to estimate the density of \(q\), you'd need to fit high-dimensional ( \( d = \mathbf{R}^{|\theta|} \)) kernel-density estimators. In addition, usually the number of particles used is much less than the number of parameters each has, making the density estimation an ill-posed problem.
+     </p>
+     </details>
+   
+  3. With the code implementation linked in the notes (or, your own), ablate on the architecture of each SVPG particle. What types of behavioral differences do you see in the different policies as you increase or decrease? Try adding a second layer instead; for example, how does a 2-layer, 200 neuron-per-layer network compare to a single-layer, 400 neuron particle?
+     
+<br />
+
