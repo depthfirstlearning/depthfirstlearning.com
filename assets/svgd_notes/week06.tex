@@ -1,0 +1,221 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{scribe}
+\usepackage{listings}
+\usepackage{csquotes}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+
+\LectureNumber{6}
+\LectureDate{June 20, 2019}
+\LectureTitle{Stein's Method in Reinforcement Learning}
+
+\lstset{style=mystyle}
+
+\begin{document}
+	\MakeScribeTop
+
+%#############################################################
+%#############################################################
+%#############################################################
+%#############################################################
+
+One of the most exciting use cases of SVGD is in reinforcement learning, due to its connection to maximum entropy reinforcement learning. This week, we study two key techniques in reinforcement learning that use SVGD as the underlying mechanism. In reinforcement learning, the target distribution is not known, so we derive gradient updates to our parameters using policy gradients. As we derive the gradient estimators in the maximum-entropy framework of reinforcement learning, we will start to see what benefits SVGD-based methods have. In particular, we will focus on the explore-exploit tradeoff, as well as normalization constants for intractable distributions, and see how SVGD helps us get around complicated problems regarding both. 
+
+\section{Table of Contents}
+
+\begin{enumerate}
+    \item Reinforcement Learning
+    \item Stein Variational Policy Gradient
+    \item Soft Q-Learning and Amortized SVGD
+    \item Implementations
+\end{enumerate}
+
+\section{Reinforcement Learning}
+
+In reinforcement learning, we often focus on learning a \textit{representation} of the environment (an abstraction of states, a model of the world), or how to \textit{operate} in it. We focus on the latter: the paradigm of \textit{control}.\\
+
+\noindent In reinforcement learning, the base setup consists of a Markov Decision Process: a tuple of $S$: the state space, $A$: the action space, $R$: the reward function, and $T$: the transition function. The state space could be images, or x-y coordinates of the agent's location in a map, while the action space might describe the different commands a robot's motors may take. Both the reward function and transition function take in a state $s \in S$ and action $a \in A$, and generate a numerical reward for that pair and the next state $s' \in S$ respectively. In the control paradigm, an agent aims to learn a policy $\pi$, which is a mapping from $S \rightarrow A$. The policy tells an agent what actions to take in which state, in order to maximize some long-term expectation of the cumulative rewards: the \textit{return}. \\
+
+\noindent While return can take many forms, we focus on the general notation. Below describes the general form of \textit{return}:
+
+\begin{equation}
+    G_t = \sum_k^\infty \gamma^k R_{t+k+1}
+\end{equation}
+
+\noindent where $\gamma \in [0, 1)$ is the \textit{discount factor}, which effectively tunes our horizon: from this state, how much should we \textit{discount} future returns. A smaller gamma prioritizes early returns (myopic), where as $\gamma \rightarrow 1$, we give later rewards larger contributions to \textit{this} state's expected return.
+
+\section{Policy Optimization via Policy Gradients}
+
+\paragraph{Note:} We will abstract away the derivation of the policy gradient theorem. A fantastic explanation / derivation of this sits in Lilian Weng's \href{https://lilianweng.github.io/lil-log/2018/04/08/policy-gradient-algorithms.html}{blog on policy gradient algorithms} \cite{weng2018PG}. \\
+
+\noindent Of course, in the beginning, our policy won't know what to do generally. Based on feedback it gets from the environment (in the form of rewards), we want to \textit{teach} it what to do in each state. However, unlike supervised learning, we don't have a \textit{ground truth} distribution for this (in the form of labels), and must learn how to do this via exploration (more on the explore-exploit tradeoffs later). \\
+
+\noindent However, without labels, a bigger question arises: \textit{how} do we actually use these to optimize our policy, which aims to maximizes the return $G_t$? Here, we use the policy gradient theorem, which uses frames the cost function of policy optimization as follows:
+
+\begin{equation}
+    J(\theta) = \mathbf{E}_{\tau \sim \pi_\theta} [R(\tau)]
+\end{equation}
+
+\noindent where $\tau$ is the \textit{trajectory}: the states and actions taken by $\pi: s_0, a_0, s_1, a_1 ... \sim \pi$ in the environment. \\
+
+\noindent Effectively, we are learning a policy $\pi$ with parameters $\theta$, looking to perform gradient ascent on the cost function above to maximize it:
+
+\begin{equation}
+    \theta_{t+1} = \theta_t + \epsilon \nabla_\theta J(\theta) |_{\theta_t}
+\end{equation}
+
+\noindent  where $\epsilon$ is some small step size. \\
+
+\noindent  The policy gradient theorem explains how we can use the sampled actions and corresponding returns to actually calculate the above gradient, which we summarize below:
+
+\begin{equation}
+    \nabla_\theta J(\theta) = \mathbf{E}_{\tau \sim \pi_\theta} [\sum_{t=0}^H \nabla_\theta \log \pi_\theta(a | s)R(\tau)]
+\end{equation}
+
+\noindent This is what we call the REINFORCE policy gradient estimator \cite{reinforce} in the undiscounted finite horizon (where the horizon is given by $H$). REINFORCE comes with a whole host of its own issues, but the following sections don't depend as much on the details of these, so we abstract them away and provide resources for interested readers. Policy gradient algorithms have gone through ups-and-downs in popularity over the years, but currently, they are a popular research topic with lots of interesting work coming out.
+
+\section{Stein Variational Policy Gradient}
+
+In this section, we focus on the first of three papers in our exploration into Applied SVGD in RL: Stein Variational Policy Gradient \cite{liu2017stein}. Before that, we set the scene for one of the toughest open problems in RL research today: the explore-exploit tradeoff.
+
+\subsection{Explore or Exploit?}
+
+As we've seen throughout this curriculum, supervised learning learns a function $f: \mathcal{X} \rightarrow \mathcal{Y}$, whereas reinforcement learning learns a function $\pi: \mathcal{S} \rightarrow \mathcal{A}$, hoping to maximize return. On the surface, they seem quite similar. However, the reinforcement learning paradigm has to deal with a fundamental issue, one that supervised learning doesn't have: the issue of exploration. \\ 
+
+\noindent In supervised learning, we are provided with targets (labels). This allows us, even in the beginning of training, to quickly gauge \textit{how} wrong we are. We are even given the ground truth answer, allowing us to take advantage of this extra information. On the other end, there is also an easy way (given a set training set) to know when we are "done". While this doesn't address complex issues and intricacies such as overfitting, in general, it provides a good contrast to the RL paradigm. \\
+
+\noindent In reinforcement learning, the agent doesn't have access to the ground truth. While some methods require the knowledge of transition matrices or reward functions, most RL algorithms don't like to incorporate these as givens into the algorithm. RL algorithms, therefore, have no notion of \textit{ground truth} to optimize against. How good was this action in this state? Alone, it's unclear to say: only when we take \textit{another} action that gives us 10x the original reward, do we have an understanding of how \textit{good} something is. Good exploration is often tied with good performance in reinforcement learning, allowing our algorithms to sample various and diverse parts of the state space, leading to stronger and more robust policies. \\
+
+\noindent (Un)fortunately, this leads to some very tough research questions: how much exploration should you do, before you try to \textit{exploit} the reward sources you do know about? Should you ever re-explore? Should it be continuous, or in spurts? While the answers are unclear, one promising route as been maximum-entropy reinforcement learning, which we cover in the next section.
+
+\subsection{Maximum-Entropy Reinforcement Learning}
+
+\noindent Maximum-Entropy Reinforcement Learning \cite{maxentzeibart} provides a framework for incorporating long-term exploration by augementing the per-timestep reward with the entropy, which we call the entropy-augmented return \cite{schulman2017equivalence}:
+
+\begin{equation}
+    J_{ME}(\theta) = \mathbf{E}_{\tau \sim \pi_\theta} \sum_t [r(s_t, a_t) + \alpha \mathcal{H}( \cdot | s_t) ]
+\end{equation}
+
+\noindent  If you're familiar with reinforcement learning (particularly, implementationally), it is important to notice that this is different than an entropy \textit{bonus}, which typically, is a single-step bonus given when calculating the policy gradient:
+
+\begin{equation}
+    \nabla_\theta J(\theta) = \mathbf{E}_{\tau \sim \pi_\theta} [\sum_{t=0}^H \nabla_\theta \log \pi_\theta(a | s)R(\tau)] - \alpha \mathcal{H}( \cdot | s_t) 
+\end{equation}
+
+\noindent  where the entropy term sits outside the summation, controlled by a temperature term $\alpha$. \\ 
+
+\noindent While entropy can be thought of "randomness" (we calculate the entropy as a KL Divergence between the current policy and a uniform, random one, which maximizes the equation when the policy is random) at any given timestep, the entropy-augmented return incorporates this randomness into the objective function. From the introduction of Soft Q-Learning \cite{haarnoja2017reinforcement}. \\
+
+\noindent Maximum entropy RL does not just prioritize the single deterministic behavior that has the lowest cost, but the entire range of low-cost behaviors, explicitly maximizing the entropy of the corresponding policy. As we shall see in a later section, Maximum Entropy RL has other benefits, but for now, we attribute it to being able to learn diverse, exploratory policies.
+
+\subsection{SVGD for Diverse Policies}
+
+\noindent The pieces seem to be there already: Maximum Entropy RL looks for diverse policies, and the Stein gradient helps maximize some optimization variable (as we've seen it, the log probability of the samples) while diversifying the particles via the kernel term. Stein Variational Policy Gradient (SVPG) treats the the policy parameters as a random variable, and then search for a distribution $q(\theta)$ in a Bayesian Inference framework:\\
+
+\begin{equation}
+    J_{ME}(\theta) = \max_q \{ \mathbf{E}_{q(\theta)}[J(\theta)] + \alpha \mathcal{H}(q)\}
+\end{equation}
+
+\noindent It is important here to note that the entropy is now considered in \textit{parameter} space, rather than action space. We leave the discussion of that choice until the next section.\\
+
+\noindent In addition, the entropy terms discussed in the above sections are all actually KL Divergences, comparing $\pi$ or $q$ with some base distribution. When we use a uniform prior, we now have the entropy (to a constant, which drops out in the optimization). But, \textit{if} we did have a prior to use, maximum entropy allows for a principled way to incorporate it. We defer the discussion on priors until the last section. \\
+
+\noindent Back to SVPG, when we treat $\theta$ as a random variable, we can calculated $\nabla_q$ of the above optimization, leading us to:
+
+\begin{equation}
+    \nabla_q J_{ME}(\theta) = \int_{\theta} (J(\theta) - \alpha \log q(\theta) - \alpha - \alpha \log q_0(\theta))
+\end{equation}
+
+\noindent where $q_0$ is the prior that we calculate the KL Divergence against. Without a proper prior, the authors choose to set $\log q_0(\theta)$ to 1, leading to the last two terms cancelling out. This leads to an optimal distribution of:
+
+\begin{equation}
+    \log q^*(\theta) = \frac{1}{\alpha} J(\theta)
+\end{equation}
+
+\noindent and when we exponentiate both sides (and keep the original prior term inside the equation), we get the proportionality statement seen in Equation 7 of the original paper. \\
+
+\noindent The key insight is plugging in the SVPG posterior into the SVGD update rule, leading to the following update rule:\\
+
+\begin{equation}
+    \hat \phi (\theta_i) = \frac{1}{n} \sum_{j=1}^n \nabla_{\theta_j} \frac{1}{\alpha}J(\theta)k(\theta_i, \theta_j) + \nabla_{\theta_j} k(\theta_i, \theta_j) 
+\end{equation}
+
+\noindent We can therefore calculate $\nabla_\theta J(\theta)$ using any of our original policy gradient estimators (the Tensorflow implementations at the bottom used REINFORCE, whereas the Pytorch one uses Advantage Actor Critic (A2C) \cite{mnih2016asynchronous}, and plug them into the update rule above. \\
+
+\noindent In practice, this means that we have to maintain $n$ policies (often small neural networks, parameterized by $\theta_i$), roll them out separately (but, in parallel), and calculate their Stein policy gradient updates in the above, interactive fashion. The authors show strong exploratory behavior on a few continuous control tasks, but maintaining multiple, ensembled policies cuts a divide in the RL community. However, SVPG is a good fit for methods or areas where parallelization is already a part of the framework, such as domain randomization \cite{mehta2019active}. 
+
+\subsection{Self Imitation Learning: Towards Diversity in Policy Space}
+
+Diversity is good, but makes an underlying assumption: diversity according to \textit{what}? SVPG makes the assumption that similarly-\textit{parameterized} policies generate similar behavior, but when dealing with deep networks, calculating kernel similarity scores between their parameters may not work as well. Instead, a more practical comparison would compare the behavioral similarity between particles. Learning Self-Imitating Diverse Policies \cite{gangwani2018learning} improves on SVPG in two ways: they move away from the RBF kernel and instead utilize a JS-kernel, based on the \href{https://en.wikipedia.org/wiki/Jensen\%E2\%80\%93Shannon_divergence}{Jensen-Shannon Divergence}, in order to better model similarities between policies. They build upon the self-imitation learning framework \cite{oh2018selfimitation}, which itself builds upon the equivalence between soft Q-learning \cite{schulman2017equivalence} (discussed below) and policy gradient methods! Almost full circle!
+
+\section{Soft Q-Learning}
+
+\noindent There are lots of benefits to using more complicated distributions, especially in the context of exploration and stability in reinforcement learning. However, a major issue arises: how do we sample from them? In this section, we cover Amortized SVGD \cite{feng2017learning} and show how Soft Q-Learning \cite{haarnoja2017reinforcement} uses this to learn exploratory and compositional policies.
+
+\subsection{Amortized SVGD: Learning To Sample}
+
+\noindent As we've seen in previous weeks, there exist intractable distributions that we want to model with variational distributions: distributions that are restricted to a simpler form that approximate the target density $p(x)$. Variational inference traditionally performs well when we can sample $p(x)$ (but maybe, cannot calculate normalization constant $Z$), but the assumption is that we have the full ability to calculate the density $q(x)$, as well as its gradients (in order to minimize the KL Divergence, $D(q || p)$). \\ 
+
+\noindent However, sometimes, we cannot calculate the density $q$; Deemed wild variational inference \cite{ranganath2016operator}, the problem is set up as follows: \\ 
+
+\begin{displayquote}
+Given some density $p(x)$ (i.e real images) defined on $\mathcal{X}$ and a simulator $\hat x = f(\psi; \eta)$, parameterized by $\eta$ and takes random seed $\psi$ drawn from unknown density $q_0$ to output some value on $\mathcal{X}$, find parameters $\eta$ s.t $f(\psi \sim $q_0$; \eta)$ closely approximates density $p$.
+\end{displayquote}
+
+\noindent In our case, the simulator will be a neural network, which takes in some random seed, and at convergence, generates samples $\hat x$ that closely sample those that make up the ground-truth density $p(x)$. $\psi$ is usually noise sampled from some distribution (i.e $\mathcal{N}(0, 1)$) which then gets passed through the network. Due to the complexity of the network's underlying function, We can only have $\hat x$ and the derivative for optimization. \\
+
+\noindent Amortized SVGD can be succinctly described as follows, from the original paper: \\
+
+\begin{displayquote}
+At convergence, the samples drawn from $q_\eta$ reach the equilibrium state of SVGD, and hence form a good approximation of $p$. We can view this method as “amortizing” or distilling the SVGD dynamics using parametric family $q_\eta$ or its inference network $f(\psi; \eta)$ and call it amortized SVGD.
+\end{displayquote}
+
+\noindent Knowing the SVGD will provide arbitrarily good estimates of some target distribution, Amortized SVGD trains its network outputs to match those given by SVGD, and at convergence, uses the amortized ones for rollouts. They use various optimization techniques (MSE between the network output and Stein samples), but interestingly, Equation (15) of their paper, reproduced below, is effectively a "backprop of the SVG into $f$":
+
+\begin{equation}
+    \eta \leftarrow \eta + \epsilon \sum_n \partial_\eta f(\psi_i; \eta) \phi^*(x_i)  
+\end{equation}
+
+\noindent where $\phi^*$ is the Stein gradient calculated when given sample $x_i$. 
+
+\subsection{Soft Q-Learning}
+
+\noindent As we've seen, maximum entropy RL is great for learning diverse policies: in general, we find this works best when we have \textit{multimodal} distributions: i.e there is often more than one group, or mode, of optimal actions, and ideally, we'd like to explore both. The problem for RL in continuous control is that a choice of policy parameterization has to be made - traditionally, we'd use normal distributions and use noise to explore, but this doesn't cover the multi-modal case described above. The authors in Soft Q-Learning choose to use energy-based models, where the optimal policy takes the form of:
+
+\begin{equation}
+    \pi(a | s) \propto \exp Q(s, a)
+\end{equation}
+
+\noindent  where the $Q$ function is represented by a neural network. However, energy-based models are notoriously hard to sample from, and traditionally, MCMC methods have been used. As we've seen above, amortized SVGD learns a network that, at convergence, can learn to generate samples from arbitrary distributions, so the authors use it to generate actions from the energy-based model. \\
+
+\noindent  They use the same ideas above and backpropogate the Stein gradient in order to transform their action network samples - which take noise samples $\xi$ and maps them to actions via $f^\phi(\xi, s_t)$ - into samples from the target energy-based model specified by $Q_{soft}$ (the soft Q-network, hence the name of the paper).  \\
+
+\noindent  Amortized inference for samples from this distribution allows for other benefits of energy-based models (namely good exploration and compositionality; you can find really amazing videos of this on their blog post \cite{bairblogmaxent} to meet the expressivity of deep learning. Soft Q-Learning paved the way for Soft Actor-Critic \cite{haarnoja2018soft}, an incredibly popular actor-critic algorithm in wide use in the deep RL community today.
+
+\section{Implementations}
+
+Below you can find some open-source implementations of the various algorithms discussed above:
+
+\begin{itemize}
+    \item \href{https://github.com/largelymfs/svpg_REINFORCE}{largelymfs's Tensorflow Implementation of SVPG}
+    \item \href{https://github.com/jsikyoon/svpg_tensorflow}{jsikyoon's Tensorflow Implementation of SVPG}
+    \item \href{https://github.com/montrealrobotics/active-domainrand/tree/master/common/svpg}{Bhairav's Pytorch Implementation of SVPG}
+    \item \href{https://github.com/haarnoja/softqlearning}{Tuomas Haarnoja's Implementation of Soft Q-Learning}
+\end{itemize}
+
+\bibliographystyle{abbrv}           % if you need a bibliography
+\bibliography{w6ref}                % assuming yours is named mybib.bib
+
+
+%%%%%%%%%%% end of doc
+\end{document}
