@@ -1,0 +1,155 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{soul}
+
+\title{Depth First Learning Problem Set 2: Random matrix theory basics}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1: Avoided crossings in random matrix spectra}
+
+In the first DFL session's intro to RMT, we mentioned that eigenvalues of random matrices tend to \emph{repel} each other.  In fact, one of the recommended textbooks on RMT says that 
+\begin{quote}
+    This interplay between confinement and repulsion is the physical mechanism at the heart of many results in RMT.
+\end{quote}
+
+This problem explores that statement, relating it to a concept which comes up often in physics: the avoided crossing.  
+
+\begin{enumerate}[label=(\alph*)]
+\item The simplest example of an avoided crossing is in a two-by-two matrix.  Let's take the matrix 
+ \begin{center}
+\begin{pmatrix}
+\Delta & J \\
+J & -\Delta
+\end{pmatrix}
+\end{center}
+
+Since this matrix is symmetric, its eigenvalues will be real.  \textbf{What are its eigenvalues?}
+
+To see the avoided crossing here, \textbf{plot the eigenvalues as a function of $\Delta$, first for $J=0$, then for a few non-zero values of $J$.}
+
+You should see a gap open up as $J$ grows beyond zero.  \textbf{What is the size of this gap?}
+
+\item Now take a matrix of the form 
+ \begin{center}
+\begin{pmatrix}
+A & C \\
+C & D
+\end{pmatrix}
+\end{center}
+
+In terms of $A$, $B$, $C$, and $D$, \textbf{what is the absolute value of the difference between the two eigenvalues of this matrix?}
+
+\item Now let's make the matrix a random matrix.  We will take $A$, $C$, and $D$ to be random variables, where the diagonal entries $A$ and $D$ are distributed according to a normal distribution with mean zero and variance one, while the non-diagonal entry $C$ is also a zero-mean Gaussian but with a variance of $1/2$.  
+
+\textbf{Use the formula you derived in the previous part of the question to calculate the probability distribution function for the spacing between the two eigenvalues of the matrix.}
+
+\textbf{What is the behavior of this pdf at zero?  How does this relate to the avoided crossing you calculated earlier?}
+
+\item \textbf{Verify using numerical simulation that the pdf you found in the previous part is correct.}
+
+\end{enumerate}
+
+
+\section*{Problem 2: Properties of the Gaussian Orthogonal Ensemble}
+
+One of the simplest and most-studied random matrices is the so-called Gaussian Orthogonal Ensemble, or GOE.  In this problem, we will discover some properties of the GOE.  
+\begin{enumerate}[label=(\alph*)]
+\item To sample from the Gaussian orthogonal ensemble, one way is to generate an $N$ by $N$ random matrix where all of the entries are independent, identically-distributed Gaussians with zero mean and unit variance.  The eigenvalues of this matrix will in general be complex, so we symmetrize the matrix by adding it to its transpose and dividing by two.  
+
+\textbf{From the above information, what is the joint probability density function of the entries of a GOE matrix?}
+
+\item One of the celebrated properties of the GOE is its rotational invariance. Rotational invariance here means that any orthonormal vector in $N$ dimensions is equally likely to be an eigenvector of a GOE matrix: no direction is preferred.  The rest of the problem is dedicated to showing that the GOE is in fact rotationally invariant.  
+
+First, imagine a diagonalizable matrix $M$, which has some (real) eigenvalues and eigenvectors.  \textbf{If I want to make a matrix which is the same as $M$ except that every eigenvector is rotated by a rotation matrix $O$, what is the resulting matrix?}
+
+\item The trace of a matrix is defined as the sum of its diagonal entries.  \textbf{Show that a matrix $M$, and its rotated version, have the same trace.}
+
+\item \textbf{Write the pdf of entries of a GOE matrix (which you found in part (a) above) in terms of the trace of some matrix, and use this to argue that the distribution is rotationally invariant.}
+
+\end{enumerate}
+
+\section*{Problem 3: Analysis with random matrices warm-up}
+
+In this problem, we'll explore a one of the first brushes with actually analyzing random matrices that one will come across in studying the subject - getting some notion of the sizes of various random matrix ensembles, and understanding how the distributions, conditions, and dependencies between them, all of which determine various random matrix ensembles, generate the size. This will also be directly relevant to the family of papers we're interested in since the size of the random matrices we'll be considering is a prerequisite to understanding both what initial constraints to place on the matrices we study and how to properly normalize them for analysis.
+
+We'll break this problem down into several concrete steps, building up to the final definition of size we'll use and how to calculate it for the prototypical example of random matrices, which also happens to be the ensemble relevant for us: Wigner matrices.
+
+\begin{enumerate}
+    \item What exactly does it mean for a matrix (which is really just a linear transformation on, say, some Euclidean space) to have a magnitude? Let's start with how we measure size for numbers where this already makes sense, and then generalize. The absolute value of a real (or complex) number is typically conceptualized as the "distance from zero", but since matrices are linear transformations it makes more sense to treat numbers as one-dimensional linear transformations too, visualized as acting via multiplication to stretch the real line. The absolute value, then, is the stretch factor. Matrices, however, do not have a single stretch factor - after all, if they did, all their eigenvalues would be the same - but instead we can simply use the maximum stretch factor, defining the \textbf{operator norm} of a matrix $ M $ as $ || M ||_\text{op} = \sup_{x \neq 0} \frac{|| M x ||_2}{|| x ||_2} $.
+    
+    \textbf{Let's start by proving that this norm is coordinate-independent. Take a matrix $ M $ and any invertible change-of-basis matrix $ P $, and show that $ M $ and $ P M P^{-1} $ have the same operator norm.}
+    
+    \item \textbf{How is the operator norm related to the spectrum of a matrix?} Assume the matrix is symmetric.
+    
+    \item Now let's take an $ N \times N $ random matrix $ M_N $ whose entries are i.i.d. with zero mean and unit variance. To make this a Wigner matrix, we'll also stipulate that it's symmetric - so $ (M_N)_{ji} = (M_N)_{ij} $ - and therefore guaranteed $ N $ (counting multiplicity) real eigenvalues. Exactly computing the operator norm of $ M_N $ requires techniques that are out of scope (see the epsilon-net method, or the moment method, for how to do this) but something we can determine using the spectrum is how the operator norm grows with $ N $.
+    
+    \textbf{To start this off, prove that}
+    $$ || M_N ||_\text{op} = \lim_{p \to \infty} \left( \text{tr}(M_N)^p \right)^\frac{1}{p} $$
+    
+    \item \textbf{Taking } $ p = 2 $ \textbf{above, show that } $ \frac{1}{N} \text{tr}(M_N^2) $ \textbf{is the average squared eigenvalue.} Note that this is a reasonable proxy for the average size of the eigenvalues - without squaring, we would have unwanted cancellations in the average.
+    
+    \item \textbf{Show that the average squared eigenvalue of $ M_N $ grows as $ O(N) $.}
+    
+    \item \textbf{Finally, show why dividing each entry of $ M_N $ by $ \sqrt{N} $ is precisely what we need to ensure that the spectrum is on average $ O(1) $ (and thus the operator norm is too, though you don't have to prove this).}
+    
+\end{enumerate}
+
+\section*{Problem 4: Proving the semicircle law}
+
+In this problem, we'll prove one of the most prominent results in random matrix theory: the semicircle law. Essentially, we'll find that the distribution of eigenvalues of an $ N \times N $ Wigner matrix converges (in $ N $) to a particular distribution - that of a semicircle. This is striking because the definition of a Wigner matrix imposes a small number of mild constraints on the structure of the random matrices, basically just the bare minimum we need to ensure our random matrices are well-defined enough to actually study their spectra, but beyond requiring the matrix be symmetric and its entries be i.i.d with bounded moments, we've stipulated nothing about the actual distributions of the entries. We'll use a powerful technique commonly applied in random matrix theory, and which we'll meet again in upcoming lectures: the Stieltjes transform.
+
+Let's define the $ N \times N $ Wigner matrix $ W_N $ by normalizing the $ M_N $ from the above $ M_N $ from the previous problem. This way, we can guarantee that the eigenvalue spectrum doesn't explode without bound as we take $ N \to \infty $ and actually forms a valid distribution worth studying. More formally, define
+
+$$ \begin{aligned} W_n := \frac{1}{\sqrt{n}} \begin{bmatrix} \zeta_{ij} \end{bmatrix}_{1 \leq i, j \leq n} &\text{ where for } \begin{cases} i > j&: \mathbb{E}(\zeta_{ij}) = 0 \text{ (centered) and } \text{Var}(\zeta_{ij}) = \mathbb{E}(| \zeta_{ij} |^2) = 1 \\ i < j&: \zeta_{ij} = \zeta_{ji} \\ i = j&: \mathbb{E}(\zeta_{ii}) = 0, \text{Var}(\zeta_{ii}) < \infty \end{cases} \\ &\text{ and the } \zeta_{ij} \text{ are i.i.d. for } i \geq j \end{aligned} $$
+
+To formally study the eigenvalue distribution of $ W_N $, let's define the \textit{empirical spectral distribution} $ \mu_N = \frac{1}{N} \sum_{i = 1}^N \delta_{\lambda_i} $ where the $ \lambda_i $ are the $ N $ eigenvalues of $ W_N $ and $ \delta $ refers to the Dirac delta function. So, we're essentially constructing a pretty artifical "distribution" of the finitely many eigenvalues of $ W_N $ by simply placing a point mass at each eigenvalue and then normalizing. This is the distribution we'll show converges to the semicircle distribution.
+
+\begin{enumerate}
+    \item The \textit{Stieltjes transform} of $ W_N $ is defined
+        $$ s_{\mu_N}(z) = \int_\mathbb{R} \frac{\text{ d} \mu_N(t)}{t - z} $$
+    \textbf{How can we rewrite this in terms of the trace of $ W_N $?}
+        
+    \item The \textit{semicircle distribution} that we'll show $ \mu_N $ converges to is defined precisely to have the shape of a semicircle in the upper half plane with radius 2 (because the eigenvalues of $ W_N $ concentrate in the interval $ [-2, 2] $, though this isn't super relevant).
+        $$ \rho_\text{sc}(z) = \frac{1}{2 \pi} \sqrt{4 - x^2} $$
+    \textbf{What is the Stieltjes transform of the semicircle distribution?}
+        
+    \end{enumerate}
+        
+You might be wondering why the semicircle, of all shapes, comes up here. This is related to another observation you may have made about the Stieltjes transform of the semicircle from the previous part of this problem, namely that it looks strikingly like something akin to the quadratic formula. Indeed, this is because the semicircle distribution is in fact the solution to a quadratic equation: the \textit{self-consistency equation}. $ \rho_\text{sc} $ is the unique distribution that satisfies
+    $$ s_\rho = \frac{1}{-z - s_\rho} $$
+Because the self-consistency equation has one unique solution (the proof of uniqueness is out of scope), if we can show that
+    $$ s_{\mu_N} \approx \frac{1}{-z - s_{\mu_N}} $$
+with the approximation becoming exact as $ N \to \infty $, then we'll be done. The next couple parts of this question will walk you through proving this.
+
+\begin{enumerate}
+    \item[3.] The Stieltjes transform of a Wigner matrix is basically the average diagonal entry of the quantity $ (W_N - z I_N)^{-1} $, which is also known as the resolvent. The resolvent is a diagonal matrix, and based on the assumption that its last entry is typical (it is, but we won't prove this here), we can approximate the Stieltjes transform, which is exactly equal to $ \frac{1}{n} \text{tr} \left( (W_N - z I_N)^{-1} \right) $ with $(W_N - z I_N)^{-1}_{NN}$.
+    
+    \textbf{Letting $\zeta_{ij}$ denote the entries of $ W_N $, use the Schur complements formula}
+    $$ \text{ for } n \times n \text{ block matrix } M = \begin{bmatrix} A & B \\ C & D \end{bmatrix}, M_{nn} = (D - C A^{-1} B)^{-1} $$
+    \textbf{to show that}
+    $$(W_N - z I_N)^{-1}_{NN} = \left( \frac{1}{\sqrt{N}} \zeta_{NN} - z - \frac{1}{N} X^* (W_{N - 1} - z I_{N - 1})^{-1} X \right)^{-1}$$
+    \textbf{for random vector $X$ with i.i.d entries and top left minor $W_{N - 1}$ Of $ W_N$.}
+    \textit{Hint: Decompose $ W_N $ into a block matrix first.}
+    
+    \item[4.] \textbf{Finally, show that}
+    $$ \mathbb{E} \left( \frac{1}{N} X^* (W_{N - 1} - z I_{N - 1})^{-1} X \right) = \frac{1}{N} \text{tr} \left( (W_{N - 1} - z I_{N - 1})^{-1} \right) = s_{\mu_{N - 1}}(z) $$
+    
+\end{enumerate}
+
+This part suffices to complete the proof, because it shows that at least in expectation, as we take $ N \to \infty $, the $ \frac{1}{\sqrt{N}} \zeta_{NN} $ term vanishes since $ \frac{1}{\sqrt{N}} \rightarrow 0 $ and $ \zeta_{NN}$ is $ O(1) $, and so we are left with
+$$ s_{\mu_N}(z) \approx (W_N - z I_N)^{-1}_{NN} \approx \left(-z - s_{\mu_{N - 1}}(z) \right)^{-1} \approx \left(-z - s_{\mu_N}(z) \right)^{-1} $$
+for large $ N $. Hence, the empirical spectral distribution of $W_N$ obeys the self-consistency equation as $N \to \infty$, and thus converges to the semicircle distribution. Note that while we've shown this only in expectation, it can be easily extended rigorously using the Cauchy interlacing formula, though this is out of scope.
+
+\end{document}
