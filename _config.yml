@@ -35,6 +35,19 @@ luca:
     name: Luca Venturi
     email: venturi@cims.nyu.edu
     web: https://cims.nyu.edu/~venturi/
+piyush:
+    name: Piyush Patil
+    email: piyush.patil210@gmail.com
+    web:
+vinay:
+    name: Vinay Ramasesh
+    email: vvr1590@gmail.com
+    web:
+riley:
+    name: Riley Edmunds
+    email: rileyedmunds@gmail.com
+    web:
+
 
 # Build settings
 markdown:       kramdown
