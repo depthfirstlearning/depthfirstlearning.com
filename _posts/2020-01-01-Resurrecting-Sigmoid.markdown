@@ -1,10 +1,12 @@
 ---
 layout: post
-title:  "Resurrecting the sigmoid in deep learning through dynamical isometry: theory and practice"
+title:  "Resurrecting the sigmoid: Theory and practice"
 date:   2020-01-01 6:00:00 -0400
 categories: neural-nets
-author: "Jeffrey Pennington, Samuel S. Schoenholz, Surya Ganguli"
-blurb: "Curriculum covering the paper Resurrecting the sigmoid in deep learning through dynamical isometry: theory and practice, by Pennington et al"
+authors: ['piyush', 'vinay', 'riley'] 
+blurb: "With the success of deep networks across task ranging from vision to
+language, it is important to understand how to properly trian very deep neural
+networks with gradient-based methods. This paper studies, from a rigorous theoretical perspective, which combinations of network weight initializations and network activation functions can result in deep networks which are trainable."
 feedback: true
 ---
 
@@ -12,7 +14,7 @@ This guide would not have been possible without the help and feedback from many 
 
 Special thanks to Yasaman Bahri for her useful contributions to this guide, her feedback, support, and mentoring.
 
-Thank you to Krishna Agrawal, Sam Schoenholz, and Jeffrey Pennington for their valuable input and guidance.
+Thank you to Kumar Agrawal, Sam Schoenholz, and Jeffrey Pennington for their valuable input and guidance.
 
 Finally, thank you to our students Chris Akers, Brian Friedenberg, Sajel Shah, Vincent Su, Witold Szejgis, for their curiosity and commitment to the course material, and their useful feedback on the curriculum.
 
@@ -25,13 +27,13 @@ Finally, thank you to our students Chris Akers, Brian Friedenberg, Sajel Shah, V
 
 As deep networks continue to make progress in a variety of tasks such as vision and language processing, it is important to understand how to properly train very deep neural networks with gradient-based methods.  This paper studies, from a rigorous theoretical perspective, which combinations of network weight initializations and network activation functions can result in deep networks which are trainable.  The analysis framework used is applicable to more general network architectures, including deep convolutional neural networks which are state-of-the-art in image classification tasks.  
 
-In this currriculum, we will go through all the background topics necessary to understand the calculations in the paper.  At the end, you will have an understanding of analysis techniques used to study the dynamics of signal propagation in very wide neural networks and be able to perform some simple calculations using random matrix theory.  
+In this currriculum, we will go through all the background topics necessary to understand the calculations in the paper.  By the end, you will have an understanding of analysis techniques used to study the dynamics of signal propagation in very wide neural networks and be able to perform some simple calculations using random matrix theory.  
 
 <br />
 
 # General resources:
 
-The two foundations on which this paper is based are: (1) random matrix theory (RMT), and (2) 'mean-field' analysis of signal propagation in wide neural networks.  The first resource below is a friendly introduction to RMT, while the second and third are the papers in which the mean-field analysis was developed.  These are good resources to return to throughout the course, though they cover much more than we need to understand the current paper.  The deep learning book of Goodfellow et al. is a good reference for fundamentals of deep learning.  
+The two foundations on which this paper is based are: (1) random matrix theory (RMT), and (2) 'mean-field' analysis of signal propagation in wide neural networks.  The first resource below is a friendly introduction to RMT, while the second and third are the papers in which the mean-field analysis for deep neural networks was developed.  These are good resources to return to throughout the course, though they cover much more than we need to understand the current paper.  The deep learning book of Goodfellow et al. is a good reference for fundamentals of deep learning.  
 
 1. Livan, Novaes & Vivo: [Introduction to Random Matrices - Theory and Practice
 ](https://arxiv.org/abs/1712.07903)
@@ -41,7 +43,6 @@ The two foundations on which this paper is based are: (1) random matrix theory (
 4. Goodfellow, Bengio & Courville: [Deep Learning](http://www.deeplearningbook.org)
 
 Other helpful resources:
-
 1. [Course Outline](/assets/sigmoid/misc/Course Outline.docx)
 
 
@@ -55,15 +56,16 @@ We also suggest that you skim the paper itself, specifically the introductory se
 **Objectives**:
 After doing these readings, we would like you to understand the following background:
 - Explain the vanishing/exploding gradient problem, and why it worsens as networks become deeper
-- Relate vanishing/exploding gradients to the eigenvalues of the input-output Jacobian of the network, and the input-output Jacobian of individual Jacobian layers
+- Relate vanishing/exploding gradients to the spectrums of various Jacobians
 - Explain heuristics used by the community to circumvent the problem of vanishing/exploding gradients, in particular:
   - common initialization schemes, such as Xavier initialization
   - pre-training
   - skip connections / residual neural networks
   - non-saturating activation functions (ReLU and its variants)
-We would also like you to have an overview of our paper's structure:
-- Motivate and explain the problem the paper is trying to solve: concentrating the entire spectrum of the network's Jacobian around unity
-- Unerstand the setup of the paper, specifically why the following tools are necessary:
+We would also like you to have an overview of the paper's structure:
+- Motivate and explain the problem the paper is trying to solve
+		 - concentrating the entire spectrum of the network's Jacobian around unity
+- Understand the setup of the paper, specifically why the following tools are necessary:
      - Mean-field signal propagation analysis
      - Random matrix theory
 
@@ -74,7 +76,7 @@ We would also like you to have an overview of our paper's structure:
 
 **Required Reading** 
 
-Prerequisite reading: 
+Prerequisite: 
 For those of you that aren’t familiar with deep learning, please read the following sections from the [Deep Learning book](http://www.deeplearningbook.org):
 - 2.7 (Eigendecomposition)
 - 2.8 (Singular value decomposition)
@@ -89,21 +91,22 @@ From the [Deep Learning book](http://www.deeplearningbook.org)
 - 8.2 (Challenges in neural network optimization)
 - 8.4 (Parameter initialization strategies)
 
-[All you need is a good init](https://arxiv.org/pdf/1511.06422.pdf) by Mishkin et al., sections 1 and 2
-[Understanding the difficulty of training deep feedforward neural networks](http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf) by Glorot and Bengio 
+Other: 
+[All you need is a good init](https://arxiv.org/pdf/1511.06422.pdf) by Mishkin et al., sections 1 and 2  
+[Understanding the difficulty of training deep feedforward neural networks](http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf) by Glorot and Bengio  
 Wikipedia [article](https://en.wikipedia.org/wiki/Residual_neural_network) on residual networks (skip connections)
 
 
 **Optional Reading**:
 
 1. [Deep Residual Learning for Image Recognition](https://arxiv.org/pdf/1512.03385.pdf)
-2. [Depth-first learning](http://www.depthfirstlearning.com/2019/NeuralODEs#3-resnets), section 3 on ResNets
+2. [Depth-first learning : NeuralODEs](http://www.depthfirstlearning.com/2019/NeuralODEs#3-resnets), section 3 on ResNets
 
 <br />
 
 # 2 Signal propagation
 
-**Motivation**: One of the foundations the analysis in the Resurrecting the Sigmoid paper rests on is the analysis of signal propagation in wide neural networks.  Understanding this mean-field analysis framework, and its results, also connects to more recent investigations of, e.g., neural networks as Gaussian processes, and the neural tangent kernel.  
+**Motivation**: One of the foundations which the analysis in _Resurrecting the Sigmoid_ rests on, is signal propagation in wide neural networks.  Understanding this mean-field analysis framework, and its results, also connects to more recent investigations of, e.g., neural networks as Gaussian processes, and the neural tangent kernel (see the [Jacot et al., 2018](https://arxiv.org/abs/1806.07572) and [Lee et al., 2019](https://arxiv.org/pdf/1902.06720).
 
 **Topics**:
 
@@ -116,26 +119,28 @@ Since this analysis is relatively new, the main sources of information online ar
 ](https://arxiv.org/abs/1606.05340) (Sections 1, 2, and 3)
 - Schoenholz, Gilmer, Ganguli, & Sohl-Dickstein: [Deep information propagation](https://arxiv.org/pdf/1611.01232.pdf) (Sections 1, 2, 3, and 5)
 
-These are very useful references, but for those unfamiliar with the field, not necessarily pedagogical.  The problem set listed below is designed to walk you through understanding the formalism in a self-contained manner.  We strongly suggest working through the problem set before reading the papers above, and only consulting afterwards or for reference.  Certain problems in the problem set point to sections of the above papers for hints.  
+These are very useful references, but for those unfamiliar with the field, not necessarily pedagogical.  The problem set listed below is designed to walk you through understanding the formalism in a self-contained manner.  We **strongly** suggest working through the problem set before reading the papers above, and only consulting afterwards or for reference.  Certain problems in the problem set point to sections of the above papers for hints.  
 
 **Optional Reading**:
 
 Once you understand the mean-field analysis framework, you will have a good foundation for understanding the following papers.  These are strictly 'bonus', i.e. not connected to the main paper of this course.
 1. [Deep Neural Networks as Gaussian Processes](https://arxiv.org/abs/1711.00165)
-2. [Wide Neural Networks of Any Depth Evolve as Linear Models under Gradient Descent](https://arxiv.org/abs/1902.06720)d
+2. [Wide Neural Networks of Any Depth Evolve as Linear Models under Gradient Descent](https://arxiv.org/abs/1902.06720)
 
 **Questions**:
 
 The full problem set, from which the below problems are taken, is [here](/assets/sigmoid/problem-sets/pdfs/1.pdf).
 
-1. Problem 2 from full set: The mean field approximation
+1. Problem 2 from full set: **The mean field approximation**
 
-In this problem, we use the knowledge we gained in problem 1 to properly choose to initialize the weights and biases according to $$W^l \sim \mathcal{N}(0, \sigma_w^2/N)$$ and $$b^l \sim \mathcal{N}(0, \sigma_b^2)$$. We'll investigate some techniques that will be useful in understanding precisely how the network's random initialization influences what the net does to its inputs; specifically, we'll be able to take a look at how the \textit{depth} of the network together with the initialization governs the propagation of an input point as it flows forward through the network's layers.
+In this problem, we use the knowledge we gained in problem 1 to properly choose to initialize the weights and biases according to $$W^l \sim \mathcal{N}(0, \sigma_w^2/N)$$ and $$b^l \sim \mathcal{N}(0, \sigma_b^2)$$. We'll investigate some techniques that will be useful in understanding precisely how the network's random initialization influences what the net does to its inputs; specifically, we'll be able to take a look at how the _depth_ of the network together with the initialization governs the propagation of an input point as it flows forward through the network's layers.
 
 a. A natural property of input points to study as the input flows through the net layer by layer is its length. Intuitively, this is closely related to how the net transforms the input space, and to how the depth of the net relates to that transformation. Compute the length $$q^l$$ of the activation vector outputted by layer $$l$$. When considering non-rectangular nets, where layer $$l$$ has length $$N_l$$, we want to distinguish this activation norm from the width of individual layers, so what's a more appropriate quantity we can track to understand how the lengths of activation vectors change in the net?
 
 b. What probabilistic quantity of the neuronal activations does $$q^l$$ approximate (with the approximation improving for larger $$N$$)?
-_Hint: recall that all neuronal activations $$h^l_i$$ are zero-mean, and consider the definition of $$q^l$$ from part (a) in terms of the empirical distribution of $$h^l_i$$.
+<details><summary>Hint</summary>
+Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the definition of \(q^l\) from part (a) in terms of the empirical distribution of \(h^l_i\).
+</details>
 
 c. Calculate the variance of an individual neuron's pre-activations, that is, the variance of $$h_i^l$$.  Your answer should be a recurrence relation, expressing this variance in terms of $$h^{l-1}$$ (and the parameters $$\sigma_w$$ and $$\sigma_b$$).
 
