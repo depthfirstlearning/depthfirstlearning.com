@@ -106,9 +106,7 @@ Wikipedia [article](https://en.wikipedia.org/wiki/Residual_neural_network) on re
 
 # 2 Signal propagation
 
-**Motivation**: One of the foundations which the analysis in _Resurrecting the Sigmoid_ rests on, is signal propagation in wide neural networks.  Understanding this mean-field analysis framework, and its results, also connects to more recent investigations of, e.g., neural networks as Gaussian processes, and the neural tangent kernel. 
-> (krishna) : As piyush suggested, might be a good idea to link to the
-> corresponding papers on NTK. 
+**Motivation**: One of the foundations which the analysis in _Resurrecting the Sigmoid_ rests on, is signal propagation in wide neural networks.  Understanding this mean-field analysis framework, and its results, also connects to more recent investigations of, e.g., neural networks as Gaussian processes, and the neural tangent kernel (see the [Jacot et al., 2018](https://arxiv.org/abs/1806.07572) and [Lee et al., 2019](https://arxiv.org/pdf/1902.06720).
 
 **Topics**:
 
