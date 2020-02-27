@@ -59,7 +59,7 @@ We also suggest that you skim the paper itself, specifically the introductory se
 **Objectives**:
 After doing these readings, we would like you to understand the following background:
 - Explain the vanishing/exploding gradient problem, and why it worsens as networks become deeper
-- Relate vanishing/exploding gradients to the eigenvalues of the input-output Jacobian of the network, and the input-output Jacobian of individual Jacobian layers  # (krishna) : needs rephrasing
+- Relate vanishing/exploding gradients to the spectrums of various Jacobians
 - Explain heuristics used by the community to circumvent the problem of vanishing/exploding gradients, in particular:
   - common initialization schemes, such as Xavier initialization
   - pre-training
