@@ -14,7 +14,7 @@ This guide would not have been possible without the help and feedback from many 
 
 Special thanks to Yasaman Bahri for her useful contributions to this guide, her feedback, support, and mentoring.
 
-Thank you to Kumar Krishna Agrawal, Sam Schoenholz, and Jeffrey Pennington for their valuable input and guidance.
+Thank you to Kumar Agrawal, Sam Schoenholz, and Jeffrey Pennington for their valuable input and guidance.
 
 Finally, thank you to our students Chris Akers, Brian Friedenberg, Sajel Shah, Vincent Su, Witold Szejgis, for their curiosity and commitment to the course material, and their useful feedback on the curriculum.
 
@@ -27,7 +27,7 @@ Finally, thank you to our students Chris Akers, Brian Friedenberg, Sajel Shah, V
 
 As deep networks continue to make progress in a variety of tasks such as vision and language processing, it is important to understand how to properly train very deep neural networks with gradient-based methods.  This paper studies, from a rigorous theoretical perspective, which combinations of network weight initializations and network activation functions can result in deep networks which are trainable.  The analysis framework used is applicable to more general network architectures, including deep convolutional neural networks which are state-of-the-art in image classification tasks.  
 
-In this currriculum, we will go through all the background topics necessary to understand the calculations in the paper.  At the end, you will have an understanding of analysis techniques used to study the dynamics of signal propagation in very wide neural networks and be able to perform some simple calculations using random matrix theory.  
+In this currriculum, we will go through all the background topics necessary to understand the calculations in the paper.  By the end, you will have an understanding of analysis techniques used to study the dynamics of signal propagation in very wide neural networks and be able to perform some simple calculations using random matrix theory.  
 
 <br />
 
@@ -43,9 +43,6 @@ The two foundations on which this paper is based are: (1) random matrix theory (
 4. Goodfellow, Bengio & Courville: [Deep Learning](http://www.deeplearningbook.org)
 
 Other helpful resources:
-
-# (krishna) : Do we need to edit this doc to remove some of the class specific
-details?
 1. [Course Outline](/assets/sigmoid/misc/Course Outline.docx)
 
 
@@ -94,7 +91,7 @@ From the [Deep Learning book](http://www.deeplearningbook.org)
 - 8.2 (Challenges in neural network optimization)
 - 8.4 (Parameter initialization strategies)
 
- > (krishna) Needs header?  
+Other: 
 [All you need is a good init](https://arxiv.org/pdf/1511.06422.pdf) by Mishkin et al., sections 1 and 2  
 [Understanding the difficulty of training deep feedforward neural networks](http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf) by Glorot and Bengio  
 Wikipedia [article](https://en.wikipedia.org/wiki/Residual_neural_network) on residual networks (skip connections)
