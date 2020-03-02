@@ -305,17 +305,41 @@ $$ \sigma_x = \left( \begin{array}{cc} 0 & 1 \\ 1 & 0 \end{array} \right) $$
   Thus the sampled matrix will be $$z \sigma_x$$.
 
 a. What is the spectral density $$\rho_1(x)$$ of eigenvalues of matrices sampled from ensemble 1?
+<details><summary>Solution</summary>
+    <p>
+    The eigenvalues of \(\sigma_z\) are \(\pm 1\),  so the spectral density \(\rho_1(x)\) will be identical to the probability density of \(z\) except for a factor of \(2\) (because it has to integrate to \(2\), the number of eigenvalues, instead of \(1\) namely
+    $$\rho_1(x) = \frac{\sqrt{2}}{\sqrt{\pi}} e^{-x^2/2}$$
+    </p>
+</details>
 
 b. What is the spectral density $$\rho_2(x)$$ of eigenvalues of matrices sampled from ensemble 2?
-
+<details><summary>Solution</summary>
+    <p>
+    The eigenvalues of \(\sigma_x\) are exactly the same as those of \(\sigma_z\), namely \(\pm 1\),  so the spectral density \(\rho_2(x)\) is the same as \(\rho_1(x)\):
+    $$\rho_2(x) = \frac{\sqrt{2}}{\sqrt{\pi}} e^{-x^2/2}$$
+    </p>
+</details>
 You should have found above that the spectral densities of both ensembles are the same.  However, we will see now that simply knowing the spectral density is not enough to determine the spectral density of the sum.
 
 c. Let $$A$$ and $$B$$ be two matrices independently sampled from ensemble 1.  Calculate _analytically_ the spectral density of the sum, $$A + B$$.
-
+<details><summary>Solution</summary>
+    <p>
+    We can write this matrix as \((z_1 + z_2)\sigma_z\), where \(z_1\) and \(z_2\) are standard normal variables.  The eigenvalues are thus \(\pm (z_1 + z_2)\).  Since \(z_1\) and \(z_2\) are independent, their sum will be a zero-mean Gaussian with variance \(2\).  So the spectral density of eigenvalues will be twice that of such a Gaussian, namely:
+    $$\rho_{A+B}(\lambda) = \frac{1}{\sqrt{\pi}} e^{-\lambda^2/4}$$
+  </p>
+</details>
 d. Now let $$C$$ be a matrix sampled from ensemble 2.  In the next part, you will calculate the spectral density of the sum $$A + C$$, where $$A$$ is drawn from ensemble 1 and $$C$$ is drawn from ensemble 2.  However, to see immediately that the distributions of $$A+B$$ and $$A+C$$ will be different, consider the behavior of the spectral density of $$A+C$$ at zero.  Based on your knowledge of avoided crossings from the previous problem set, **describe the spectral density of $$A+C$$ at $$\lambda =0$$ and contrast this to the spectral density of $$A+B$$**.
-
+<details><summary>Solution</summary>
+    <p>
+    Notice that the matrix \(A+C\) will have the same form as the matrix considered in the previous problem set, and we found that for such a matrix the presence of the off-diagonal term caused their to be a level repulsion.  So, the eigenvalue spectral density should go to zero as \(\lambda\) approaches zero, for the matrix \(A+C\).  However, in the above part, we calculated that for matrices \(A+B\), there is no avoided crossing and the pdf is finite at \(\lambda = 0\).
+    </p>
+</details>
 e. Now let $$C$$ be a matrix sampled from ensemble 2.  Calculate the spectral density of the sum, $$A + C$$.  Make sure this is consistent with what you argued above about the behavior at $$\lambda = 0$$.
-
+<details><summary>Solution</summary>
+    <p>
+    Notice that the matrix \(A+C\)will have the same form as the matrix considered in the previous problem set, and we found that for such a matrix the presence of the off-diagonal term caused their to be a level repulsion.  So, the eigenvalue spectral density should go to zero as \(\lambda\)approaches zero, for the matrix \(A+C\).  However, in the above part, we calculated that for matrices \(A+B\), there is no avoided crossing and the pdf is finite at \(\lambda = 0\).
+    </p>
+</details>
 Notice that the answers you got in the previous two parts were different, even though the underlying matrices that were being added had the same spectral density and independent entries.
 
 2. Using the tools of free probability theory
@@ -343,23 +367,102 @@ $$ \frac{1}{2\pi}\sqrt{4-x^2} \mapsto \frac{z - \sqrt{z^2 - 4}}{2} $$
 
 **Use the above fact to calculate the Stieltjes transform of the GOE semicircle given at the beginning of this problem (part (a)).  This is the first step to calculating the spectral density of the sum.**
 
+<details><summary>Solution</summary>
+    <p>
+    Define 
+    $$\begin{eqnarray*}
+        f(x) &=& \frac{1}{2\pi}\sqrt{4 - x^2} \\
+        g(x) &=& \frac{1}{\pi}\sqrt{2 - x^2}
+    \end{eqnarray*}$$
+    Notice that 
+    \begin{equation}
+        g(x) = \sqrt{2} f(x\sqrt{2}).
+    \end{equation}
+    If we define \(G_g(z)\) and \(G_f(z)\) as the Green's functions corresponding to \(g(x)\) and \(f(x)\), respectively, then we can get a relation between the two:
+    \begin{eqnarray}
+        G_g(z) &=& \int~dt~\frac{g(t)}{z - t} \\
+        &=& \sqrt{2}\int~dt~\frac{f(t\sqrt{2})}{z - t} \\
+        &=& \sqrt{2}\int~\frac{dy}{\sqrt{2}} \frac{f(y)}{z - y/\sqrt{2}} \\
+        &=& \sqrt{2}\int~dy~\frac{f(y)}{z\sqrt{2} - y} \\
+        &=& \sqrt{2}G_f(z\sqrt{2}).
+    \end{eqnarray}
+    Since we have previously calculated that 
+    \begin{equation}
+        G_f(z) = \frac{z - \sqrt{z^2 - 4}}{2},
+    \end{equation}
+    this immediately gives us that
+    \begin{equation}
+        G_g(z) = z - \sqrt{z^2 - 2}.
+    \end{equation}
+    </p>
+</details>
 b.  We have calculated the Stieltjes transform or Green's function of the semicircle.  Now we proceed to calculate the so-called Blue's function, which is just defined as the functional inverse of the Green's function.  That is, the Green's function $$G(z)$$ and the Blue's function $$B(z)$$ satisfy 
 
 $$ G(B(z)) = B(G(z)) = z $$
 
 **Calculate the Blue's function corresponding to the semicircle Green's function you derived above.**
-
+<details><summary>Solution</summary>
+    <p>
+    The inverse function is defined by the relation 
+    \begin{equation}
+        z = B - \sqrt{B^2 - 2}.
+    \end{equation}
+    Then 
+    \begin{eqnarray}
+        \sqrt{B^2 - 2} &=& B - z \\
+        B^2 - 2 &=& B^2 - 2Bz + z^2 \\
+        2Bz &=& z^2 + 2 \\
+        B &=& \frac{z}{2} + \frac{1}{z}
+    \end{eqnarray}
+    </p>
+</details>
 c. You should have noticed that the Blue's function you calculated had a singularity at the origin, that is, a term given by $$1/z$$.  The $$R$$-transform is defined as the Blue's function minus that singularity; that is, 
 
 $$ R(z) = B(z) - \frac{1}{z} $$
 
 **What is the $$R$$-transform of the GOE semicircle?**
-
+<details><summary>Solution</summary>
+    <p>
+    Since
+    \begin{equation}
+        B = \frac{z}{2} + \frac{1}{z},
+    \end{equation}
+    we can immediately write
+    \begin{equation}
+        R(z) = \frac{z}{2}
+    \end{equation}
+    </p>
+</details>
 d. Finally we come to the law of addition of freely independent random matrices:  If we are given freely independent random matrices $$X$$ and $$Y$$, whose $$R$$-transforms are $$R_X(z)$$ and $$R_Y(z)$$, respectively, then the $$R$$-transform of the sum (or more precisely, the $$R$$-transform of the spectral density of the sum $$X + Y$$) is simply given by $$R_X(z) + R_Y(z)$$.
 
 Assume that two standard GOE matrices, say $$H_1$$ and $$H_2$$, are freely independent. **What is the $$R$$-transform of the spectral density of the sum $$H_+ = pH_1 + (1 - p) H_2$$?**
-
+<details><summary>Solution</summary>
+    <p>
+    \textbf{Solution:}
+    $R_{H_+}(z) = z$
+    </p>
+</details>
 e. **Using the results above, argue that the sum of two freely-independent ensembles described by the semicircular law is also described by the semicircular law.**
+<details><summary>Solution</summary>
+    <p>
+The \(R\)-transform of the sum (\(z\)) has the same functional form as the individual \(R\)-transforms (\(z/2\)), so it seems plausible that this means that when we invert it, we get a semicircle.  Let's make sure of this fact.
+
+We should first figure out how the scaling of the \(R\)-transform affects the scaling of the matrix it is describing.  We can guess that this amounts to a simple scaling of the matrix itself.  Under the scaling of a general matrix \(H \mapsto cH\), the eigenvalue distribution goes from \(\rho(\lambda) \mapsto \rho(\lambda/c) /c\).  Then, by the same logic we used in part (a) of this problem, the Green's function goes \(G \mapsto G(z/c)/c\) (in part (a), \(c\) was \(\sqrt{2}\)).  To figure out the change in the Blue's function, we can write:
+\begin{eqnarray}
+    G_{pH}(B_{pH}(z)) = \frac{1}{p} G_{H}(B_{H}(z)/p) = z \\
+     G_{H}(B_{H}(z)/p) = pz \\
+     B_{pH}(z) = p B_H(pz) \\
+\end{eqnarray}
+And finally we can get the scaling of the \(R\)-transform:
+\begin{eqnarray}
+    R_{pH}(z) &=& pB_H(pz) - \frac{1}{z} \\
+    &=& p\left( R_H(pz) + \frac{1}{pz} \right) - \frac{1}{z} \\
+    &=& p R_H(pz)
+\end{eqnarray}
+With this result, we know that if we multiply the GOE matrix by \(\sqrt{2}\), the \(R\)-transform goes from \(z/2\) to \(z\).  This means that the spectral density of a sum of two GOE matrices is still semicircular, just with a \(\sqrt{2}\) scaling.  Another way of saying this is that the semicircular law is stable under free addition.
+    </p>
+</details>
+
 
 <br />
 
@@ -401,15 +504,36 @@ where the input is denoted $$h^0$$ and the output is given by $$x^L$$.
 a. **What is the Jacobian $$J$$ of the input-output relation of this network?**
 
 _Hint: see eq. 2 of the paper._
+<details><summary>Solution</summary>
+    <p>
+    Using the chain rule gives:
+    $$ J = \prod_{l=1}^L D^l W^l$$
+    where \(D^l\) is a matrix of pointwise derivatives of the nonlinearity \(\phi\) at layer \(l\):
+    \begin{equation}
+        (D^l)_{ij} = \frac{dx^l_j}{dh^l_i} = \phi ' (h^l_i)\delta_{ij}.
+    \end{equation}
+    </p>
+</details>
 
 b. As the paper discusses, we are interested in the spectrum of singular values of $$J$$, but all of the tools we have developed so far deal with the eigenvalue spectrum. 
 
 **In terms of the singular values of $$J$$, what are the eigenvalues of $$JJ^T$$?**
-
-The definition of dynamical isometry, the condition we're after, is that the magnitude of the singular values of $$J$$ should concentrate around 1. 
-
+<details><summary>Solution</summary>
+    <p>
+    The definition of dynamical isometry, the condition we're after, is that the magnitude of the singular values of $$J$$ should concentrate around 1. 
+    </p>
+</details>
 **What is the dynamical isometry condition in terms of the eigenvalues of $$JJ^T$$?**
+<details><summary>Solution</summary>
+    <p>
+    The singular values of a matrix \(A\) are the square roots of the eigenvalues of \(AA^T\), so the eigenvalues of \(JJ^T\) are the squared singular values of \(J\).  
 
+    Quick proof: By SVD, $$A=U \Sigma V^\dagger $$
+    $$AA^T = (U\Sigma V^\dagger)(U\Sigma V^\dagger)^\dagger = U \Sigma^T \Sigma U^\dagger = U \Sigma^2 U^\dagger$$ where \(\Sigma^2\) is composed of squared singular values and \(V^\dagger\) is matrix \(V\)'s conjugate transpose. Note that \(\Sigma^2\) equals matrix \(D\) from a spectral decomposition of \(AA^T\), which contains eigenvalues of \(AA^T\). Thus the squared singular values of \(A\) equal the eigenvalues of \(AA^T\). \qedsymbol
+
+    So, the dynamical isometry condition is that the spectrum of eigenvalues of \(JJ^T\) concentrates around unity.
+    </p>
+</details>
 c. Now that we're focused on $$JJ^T$$ instead of $$J$$, read the following section reproduced from the main paper, about the $$S$$-transform of $$JJ^T$$'s spectral density: 
 
 $$ S_{JJ^T} = \prod_{l=1}^L S_{W_lW_l^T} S_{D_l^2} = S_{WW^T}^L S_{D^2}^L $$
@@ -420,6 +544,29 @@ _where we have used the identical distribution of the weights to define $$S_{WW^
 _Hint: this is done in the first appendix of the paper. Note that you should assume free independence of the $$D$$'s and $$W$$'s._
 
 The upshot of this problem is that we need to calculate the quantities $$S_{WW^T}$$ and $$S_{D^2}$$ for whatever nonlinearities and weight initialization schemes we're interested in.  
+<details><summary>Solution</summary>
+    <p>
+    $$JJ^T =\left( \prod_{l=1} D^l W^l\right) \left(\prod_{l=1} D^l W^l\right)^T = \left(D_L W_L \ldots D_1 W_1\right) \left(D_L W_L \ldots D_1 W_1\right)^T$$ by expanding the product.  So 
+    $$ S_{JJ^T} = S_{\left( D_L W_L \ldots D_1 W_1\right) \left( D_L W_L \ldots D_1 W_1\right)^T} $$
+    Since the \(S\)-transform is defined in terms of moments of the eigenvalue distribution, it is invariant to cyclic permutations (since the trace, which defines moments, is invariant to cyclic permutations).  So, we can re-order matrices in the product, yielding:
+    $$ S_{JJ^T} = S_{(W_L^T D_L^T D_L W_L) (D_{L-1} W_{L-1} \ldots D_1 W_1)(D_{L-1} W_{L-1} \ldots D_1 W_1)^T} $$
+    Then, assuming free independence, the \(S\)-transforms multiply:
+    $$ S_{JJ^T} = S_{(W_L^T D_L^T D_L W_L)} S_{(D_{L-1} W_{L-1} \ldots D_1 W_1)(D_{L-1} W_{L-1} \ldots D_1 W_1)^T}.$$
+
+    Again using invariance to cyclic permutations:
+    $$ S_{JJ^T} = S_{(D_L^T D_L W_L W_L^T)} S_{(D_{L-1} W_{L-1} \ldots D_1 W_1)(D_{L-1} W_{L-1} \ldots D_1 W_1)^T}.$$
+    And again assuming free independence:
+    $$ S_{JJ^T} = S_{D_L^T D_L} S_{W_L W_L^T} S_{(D_{L-1} W_{L-1} \ldots D_1 W_1)(D_{L-1} W_{L-1} \ldots D_1 W_1)^T}.$$
+    Since \(D\) is diagonal,
+    $$ S_{JJ^T} = S_{D_L^2} S_{W_L W_L^T} S_{(D_{L-1} W_{L-1} \ldots D_1 W_1)(D_{L-1} W_{L-1} \ldots D_1 W_1)^T}.$$
+    Continuing this procedure we get
+    $$ S_{JJ^T} = \prod_{l=1}^L S_{D_l^2} S_{W_l^T W_l} $$
+    Since the weight matrices \(W^l\) for each layer are identically distributed, their \(S\)-transforms are equal, so we can drop the subscript and write:
+    $$ S_{JJ^T} =  S_{W^T W}^L \prod_{l=1}^L S_{D_l^2}$$
+    Finally, using the fact that \(D^l\) matrices are identically distributed gives the desired expression.
+    $$ S_{JJ^T} =  \left(S_{W^T W}\right)^L \left(S_{D^2}\right)^L$$
+    </p>
+</details>
 
 3. $$S_{D^2}$$ for ReLU and hard-tanh networks
 
@@ -440,31 +587,98 @@ We want the spectral density, $$\rho_{JJ^T}(\lambda)$$, of $$JJ^T$$, where $$J$$
 a. The probability density function of the $$D$$ matrix depends on the distributions of inputs to the nonlinearity.  To calculate this, we will make a couple simplifying assumptions.  The first assumption is that we initialize the network at a critical point (defined in problem set 2).  
 
 **If we are interested in finding conditions for achieving dynamical isometry, why is it a good assumption that the network is initialized at criticality?**
-
+<details><summary>Solution</summary>
+    <p>
+    The criticality condition, \(\chi = 1\), implies that the <em>mean</em> squared singular value of \(J\), or equivalently that the mean eigenvalue of \(JJ^T\), is unity.  Dynamical isometry means that the <em>entire</em> spectrum of squared singular values of \(J\) is concentrated around unity.  So criticality is a prerequisite for dynamical isometry. 
+    </p>
+</details>
 b. The second assumption we make in calculating the distribution of inputs to the nonlinearity is that the we have settled to a stationary point of the length map (the variance map). **Reread section 2.2 of _Resurrecting the Sigmoid_, and argue why this is also a good assumption.**
-
+<details><summary>Solution</summary>
+    <p>
+    As described in both <em>Exponential Expressivity in Deep Neural Networks Through Transient Chaos</em> and in section 2.2 of <em>Resurrecting the Sigmoid</em>, the empirical distribution of network pre-activations approximates a \(0\)-mean, \(q^l\)-variance Gaussian distribution in the large-width limit.  The length map describing the evolution of \(q^l\) has a fixed point, which the papers show empirically is rapidly converged to.  Because of this rapid convergence, it is natural to assume that only a few initial layers are not characterized by this variance, and that we can neglet them in computing the spectrum of the network's Jacobian.  Conveniently, assuming we are at a fixed point makes \(D^2\) is independent of \(l\), greatly simplifying our analysis. 
+    </p>
+</details>
 c. To find the critical points of both the ReLU and hard-tanh networks, recall from problem set 2 that criticality was defined by the condition $$\chi = 1$$, where $$\chi$$ is defined in eqn. (5) of the main paper. 
 As in the paper, define $$p(q^*)$$ as the probability, given the variance $$q^*$$, that a given neuron in a layer is in its linear (i.e. not constant) regime. **Show that $$\chi = \sigma_w^2 p(q^*)$$.**
 
 _Hint: plug the nonlinearity into the equation for $$\chi$$ and reduce_
-
+<details><summary>Solution</summary>
+    <p>
+    $$\chi = \sigma_w^2 \int D h \phi ' ((\sqrt(q^*)h)^2$$
+    Where \(D h\) is the standard Gaussian measure. Note that when \(\phi' = 0\) (the slope of the activation function is zero) then \(\chi=0\). Thus, since \(\chi\) only takes on values in \({0,1}\). Thus the Gaussian measure integral, which represents probability that \(\phi ' \neq 0\) reduces to \(p(q^*)\), the probability that \(\phi' = 0\), so \(\chi = \sigma_w^2 p(q^*)\).
+    </p>
+</details>
 d. **In terms of $$p(q^*)$$, what is the spectral density $$\rho_{D^2}(z)$$ (for both ReLU and hard-tanh networks) of the eigenvalues of $$D^2$$? **.
-
+<details><summary>Solution</summary>
+    <p>
+    Bernoulli with parameter equal to the probability of being in the linear regime. The Dirac delta expresses the fact that both ReLU and hard-tanh are piecewise linear with sections at value \(0\), so their probability of being in the linear regime is a step function -- it allows us to express a discrete pdf (in this case with two values, \(0\) and \(1\)).
+    </p>
+</details>
 e. **Following equations 7-10 in the main paper, derive the Stieltjes transform $$G_{D^2}(z)$$, the moment-generating function  $$M_{D^2}(z)$$, and the $$S$$-transform  $$S_{D^2}(z)$$ in terms of $$p(q^*)$$**. 
 Note: This should be the same for both ReLU and hard-tanh networks.
+<details><summary>Solution</summary>
+    <p>
+    Recall that:
+    $$ \rho_{D^2} (z) = (1-p(q^*)) \delta (z) + p(q^*) \delta(z-1)$$
 
+    Then recall the definition 
+    $$ G_{D^2} (z) = \int_\mathcal{R} \frac{\rho_x (t) dt}{z-t} = \frac{\rho_x(0)}{z} + \frac{\rho_x (1)}{z-1} = \frac{1-p(q^*)}{z} + \frac{p(q^*)}{z-1}$$
+
+    Then 
+    \begin{eqnarray*}
+    M_{D^2}(z) &=& z G_{D^2}(z) - 1 \\
+    &=& z \left(\frac{1-p(q^*)}{z} + \frac{p(q^*)}{z-1}\right) - 1 \\
+    &=&  -p(q^*) + \frac{z p(q^*)}{z-1} \\
+    &=& p(q^*) \left(\frac{z}{z-1} - 1\right) \\
+    &=& \frac{p(q^*)}{{z-1}}
+    \end{eqnarray*}
+
+    Next use the definition 
+    \begin{equation*}
+        S_{D ^2} (z) = \frac{1+z}{z M_{D^2}^{-1} (z)}.
+    \end{equation*}
+    The inverse $M_{D^2}^{-1}(z)$ is $\frac{p(q^*)}{z} + 1$. Thus:
+    $$ S_{D^2}(z) = \frac{1+z}{z \left(\frac{p(q^*)}{z} + 1\right)}  = \frac{z+1}{z+ p(q^*)}$$
+    </p>
+</details>
 f. Now that we've calculated the transforms we wanted in terms of $$p(q^*)$$, let us see what the critical point (which determines $$q^*$$ and $$p(q^*)$$) looks like for our two nonlinearity options. **For ReLU networks, what is $$p(q^*)$$?  Show that this implies that the only critical point for ReLU networks is $$(\sigma_w, \sigma_b) = (\sqrt{2},0).$$** 
-
+<details><summary>Solution</summary>
+    <p>
+    For ReLUs, the nonlinearity is half in the positive linear regime and half at \(0\). Assuming \(0\)-mean symmetric activation distributions, the probability of being in the linear regime is \(p(q^*) = \frac{1}{2}\).
+    Using the above result that \( \chi = \sigma_w^2 p(q^*) \) immediately tells us that \( \sigma_w^2 = 2 \).  
+    Using equation (4) in the <em>Resurrecting the Sigmoid</em> paper,
+    $$q^* = \sigma_w^2 \int \mathcal{D} h ~\phi(\sqrt{q^*}h)^2 + \sigma_b^2$$
+    and using the fact that \(\phi\) is a ReLU, we can write  -->
+    $$q^* = q^* \sigma_w^2 \int_{h>0} \mathcal{D} h~ h^2 + \sigma_b^2.$$
+    Since the integrand is an even function, it can be evaluated easily
+    $$q^* = \frac{1}{2} q^* \sigma_w^2 \int \mathcal{D} h~ h^2 + \sigma_b^2.$$
+    The integral now is the variance of \(h\), which is unity by construction, so we simply get
+    $$q^* = \frac{1}{2} q^* \sigma_w^2  + \sigma_b^2.$$
+    Plugging in \(\sigma_w^2=2\) gives \(q^* = q^* + \sigma_b^2\), meaning \(\sigma_b^2 = 0\).
+     </p>
+</details>
 g. For hard-tanh networks, the behavior is a bit more complex, but we can calculate it numerically.  As we saw in problem set 2, for the smooth tanh network there is a 1D curve in the $$(\sigma_w, \sigma_b)$$ plane which satisfies criticality.  The same is true for the hard tanh network, as we'll now see.  We are interested in three quantities, all of which are functions of $$\sigma_w$$ and $$\sigma_b$$:  $$q^*$$, $$p(q^*)$$, and $$\chi$$. We've already seen (in part (c) above) that if we know $$\sigma_w$$ and $$p(q^*)$$, we can easily determine $$\chi$$.  It turns out that there is also a simple relation between $$q^*$$ and $$p(q^*)$$. **Show that for the hard tanh network, $$p(q^*) = \mathrm{erf}(1/\sqrt{2q^*})$$.**
-
+<details><summary>Solution</summary>
+    <p>
+    TODO(seems like there's no solution in the latex)
+    </p>
+</details>
 Now all that's left is to determine $$q^*$$ as a function of $$\sigma_w$$ and $$\sigma_b$$, and then we can get both $$q^*$$ and $$p(q^*)$$. Remember that in problem set 2, you derived the relation 
 
 $$ q^* = \sigma_w^2 \int~ \mathcal{D}h~ \phi(\sqrt{q^*}h)^2 + \sigma_b^2 $$
-
+<details><summary>Solution</summary>
+    <p>
+    TODO(seems like there's no solution in the latex) 
+    </p>
+</details>
 **Use this relation to get an implicit expression for $$q^*$$ in terms of $$\sigma_w$$ and $$\sigma_b$$.**
 
 **Using the three relations, and any programming language or numerical package of your choice, plot (in the $$\sigma_w$$, $$\sigma_z$$ plane) the three quantities of interest, and identify the critical line $$\chi = 1$$.**
-
+<details><summary>Solution</summary>
+    <p>
+    For hard-tanh, \(p(q^*)\) is the probability that a normally distribution set of activations takes on values in hard-tanh's linear regime (recall this is between \(-1\) and \(1\)). Thus we integrate \(\int_{-1}^{1} z dz\) where \(z\) is a zero-mean Gaussian with variance \(q^*\). The integral of the Gaussian is given by the error function. The error function (denoted \(erf\) and defined as the integral of the standard Gaussian) is commonly defined without the leading factor \(\frac{2}{\pi}\), so \(\int z dz = erf(\sqrt(1/2q^*)\) (the parameter \(1/2q^*\) is arrived at by substituting \(t=h/\sqrt{2q^*}\)). Thus \(p(q^*) = erf(\sqrt(1/2q^*)\).
+    </p>
+</details>
 4. Can Gaussian initialization achieve dynamical isometry?
 
 In this problem, we will consider weights with a Gaussian initialization, and use the results from the previous problems to investigate whether dynamical isometry can be achieved for such nets over our two main activation functions of interest (ReLU and hard-tanh).
@@ -472,11 +686,28 @@ In this problem, we will consider weights with a Gaussian initialization, and us
 a. As we've seen in the decomposition from the previous problems, the $$S$$-transform of $$\mathbf{J} \mathbf{J}^T$$  depends on the $$S$$-transform of $$D^2$$, which was computed above, and that of $$ WW^T $$, which is a _Wishart random matrix_, i.e. the product of two random Gaussian matrices.
 
 **Prove that $$S_{WW^T}(z) = \frac{1}{\sigma_w^2 \cdot (z + 1)}$$, using the following connection between the moments of a Wishart matrix and the Catalan numbers:**
-
 $$ m_k = \frac{\sigma_w^{2k}}{k + 1} {2k \choose k} $$
 
 **where $$m_k$$ is the $$k^\text{th}$$ moment of $$WW^T$$.**
-
+<details><summary>Solution</summary>
+    <p>
+    Given the moments, we can easily form the moment-generating function
+    $$ M_{WW^T}(z) &= \sum_{k = 1}^\infty \frac{m_k}{z^k} = \sum_{k = 1}^\infty \left( \frac{\sigma_w^2}{z} \right)^k \frac{1}{k + 1} {2k \choose k} = \sum_{k = 1}^\infty \left( \frac{\sigma_w^2}{z} \right)^k C_k $$
+    where \(C_k\) is the \(k^\text{th}\) Catalan number. So, we can now exploit the defining recurrence relation for the Catalan numbers, that \(C_k = \sum_{j = 0}^{k - 1} C_j C_{k - j - 1}\) (if you think of the \(k^\text{th}\) Catalan number as the number of ways to balance \(2k\) parentheses, this recurrence is pretty intuitive). To start off, this recurrence starts with the \(C_0\), though our MGF does not, and this might make the calculation more difficult; let's temporarily work with
+    $$ f(x) := \sum_{k = 0}^\infty \left( \frac{\sigma_w^2}{z} \right)^k C_k = 1 + M_{WW^T}(z) $$
+    Next, the recurrence is in a sum of products of Catalan numbers; specifically, products whose indices have a constant sum. Seeing as \(f(x)\) is basically an infinitely long polynomial, and polynomial multiplication also involves such product sums, a good first attempt to apply this recurrence is to square our function. Indeed, we have:
+    $$ f(x)^2 = \sum_{k = 0}^\infty \sum_{j = 0}^\infty \left( \frac{\sigma_w^2}{z} \right)^{k + j} C_k C_j $$
+    which after collecting like terms, is
+    $$ f(x)^2 = \sum_{k = 0}^\infty \left( \frac{\sigma_w^2}{z} \right)^k \sum_{j = 0}^{k - 1} C_j C_{k - j} = \sum_{k = 0}^\infty \left( \frac{\sigma_w^2}{z} \right)^k C_{k + 1} $$
+    Thus,
+    $$ \frac{\sigma_w^2}{z} f(x)^2 = \frac{\sigma_w^2}{z} \left( M_{WW^T}(z) + 1 \right)^2  = \sum_{k = 1}^\infty \left( \frac{\sigma_w^2}{z} \right)^k C_k = M_{WW^T}(z) $$
+    Solving the quadratic equation yields
+    $$ M_{WW^T}(z) = \frac{z}{2 \sigma_w^2} - 1 - \frac{1}{2} \sqrt{1 - \frac{4 \sigma_w^2}{z}} $$
+    Now that we've reduced the MGF to a quadratic polynomial, inverting it is easy enough, and we are left with
+    $$ M_{WW^T}^{-1}(z) = \sigma_w^2 \frac{(z + 1)^2}{z} $$
+    $$ S_{WW^T}(z) = \left( \sigma_w^2 \cdot (z + 1) \right)^{-1} $$
+    </p>
+</details>
 b. We now have enough pieces to begin attacking the calculation of the Jacobian singular value distribution - recall that due to the decomposition
 
 $$ S_{JJ^T} = (S_{WW^T})^L \cdot (S_{D^2})^L $$
@@ -486,13 +717,27 @@ once we've calculated the $$S$$-transforms for $$D^2$$ and $$WW^T$$, we can easi
 **Using your solution to the previous part and the calculation of** $$S_{D^2}$$ **from the earlier problems, show that**
 
 $$ S_{JJ^T} = \sigma_w^{-2L} \cdot (z + p(q^*))^{-L} .$$
-
+<details><summary>Solution</summary>
+    <p>
+    We calculated \(S_{D^2}\) in part (e) of problem 3, showing that 
+    $$S_{D^2}(z) = \frac{z+1}{z+ p(q^*)}$$
+    And from the previous part we know that 
+    $$S_{WW^T}(z) = \frac{1}{\sigma_w^2(z+1)},$$
+    so combining these gives
+    $$ S_{JJ^T} = (S_{WW^T})^L (S_{D^2})^L = \left( \sigma_w^{-2} (1 + z)^{-1} \right)^L \left( \frac{1 + z}{z + p(q^*)} \right)^L = \sigma_w^{-2L} (z + p(q^*))^{-L} $$
+    </p>
+</details>
 c. From the $$S$$-transform, one route to getting information about the spectrum of $$JJ^T$$ is to compute the spectral density $$\rho_{JJ^T}(\lambda)$$. While that calculation is too involved, we can get the answer to the question of achieving dynamical isometry by a slightly more indirect route.
 
 **Use the $$S$$-transform you calculated above to calculate $$M_{JJ^T}^{-1}$$ (the inverse of the moment-generating function for $$\mathbf{J} \mathbf{J}^T$$).**
 
 _Hint: To compute the inverse MGF, recall the definition of the $$S$$-transform given in the paper (section 2.3, eqn. 10)._
-
+<details><summary>Solution</summary>
+    <p>
+     The \(S\)-transform is defined so that \(S_{JJ^T} = \frac{1 + z}{z M^{-1}_{JJ^T}(z)}\), so
+    $$ M^{-1}_{JJ^T}(z) = \frac{1 + z}{z S_{JJ^T}(z)} = \frac{1 + z}{z} \left(z + p(q^*)\right)^L \sigma_w^{2L} $$
+    </p>
+</details>
 d. We can now compute the variance of the $$JJ^T$$ eigenvalue distribution, $$\sigma_{JJ^T}^2$$. You should have calculated above that
 
 $$ M_{JJ^T}^{-1}(z) = \frac{1 + z}{z} \cdot (z + p(q^*))^L \cdot \sigma_w^{2L} $$
@@ -507,7 +752,63 @@ $$ m_1 = \sigma_w^{2L} p(q^*)^L $$
 $$ m_2 = m_1^2 \cdot \frac{L + p(q^*)}{p(q^*)} $$
 
 _Hint: Use the [Lagrange inversion theorem](https://en.wikipedia.org/wiki/Lagrange_inversion_theorem) (eqn. 18 in the paper) to obtain a power series for the inverse MGF and equate corresponding coefficients with our calculated expressions._
+<details><summary>Solution</summary>
+    <p>
+    Note that we have a formula for \(M^{-1}(z)\) (suppressing the \(JJ^T\) subscript for clarity, but the moments are defined in terms of \(M(z)\).  In the paper, the Lagrange inversion theorem is used to express the constant and \(1/z\) coefficients of \(M^{-1}(z)\) in terms of the \(m_1\) and \(m_2\).  Here is a slightly hand-wavy proof of that result (the rigorous proof turns out to be quite difficult):
+    
 
+    Assume that the \(M^{-1}(z)\) can be written as a Taylor series with an additional \(1/z\) term  (This assumption is one of the weaknesses of this proof).  So
+    $$
+        M^{-1}(z) = \frac{a}{z} + b + cz + dz^2 + \cdots
+    $$
+    Since we know that 
+    $$
+        M(z) = \frac{m_1}{z} + \frac{m_2}{z^2} + \cdots,
+    $$
+    we can write
+    $$
+        z = \frac{m_1}{M^{-1}(z)} + \frac{m_2}{M^{-1}(z)^2} + \cdots
+    $$
+    Plugging in our ansatz above gives 
+    $$
+        z = \frac{m_1}{\left( \frac{a}{z} + b + cz + dz^2 + \cdots \right)} + \frac{m_2}{\left( \frac{a}{z} + b + cz + dz^2 + \cdots \right)^2} + \cdots
+    $$
+    We'll expand the RHS of the above equations assuming \(z\) to be small, and then equate coefficients of the RHS and LHS.  Specifically, we will expand the RHS to second order in \(z\).
+    $$ 
+    z  = \frac{m_1 z}{a} \bigg( 1 + (b/a) + (c/a)z + (d/a)z^2 + \cdots \bigg)^{-1} + \cdots
+    $$
+    $$ 
+    \frac{m_2 z^2}{a^2} \bigg( 1 + (b/a) + (c/a)z + (d/a)z^2 + \cdots \bigg)^{-2} + \cdots = \frac{m_1}{a} z - \frac{m_1 b}{a^2} z^2 + \frac{m_2}{a^2} z^2 + O(z^3) 
+    $$
+        
+    Since the coefficient of \(z\) above has to be unity, and the coefficient of \(z^2\) has to be zero, this implies that \(a = m_1\) and \(b .= m_2/m_1\).  This implies that our sought-after expression for \(M^{-1}(z)\) is 
+    $$M^{-1}(z) = \frac{m_1}{z} + \frac{m_2}{m_1} + \cdots$$
+    
+    
+    With this expression in hand, we can directly extract the constant and \(1/z\) coefficients of the function \(M^{-1}(z)\):
+    
+    Given the result of our earlier calculation that 
+    $$ M_{JJ^T}^{-1}(z) = \left(1+\frac{1}{z}\right) \cdot (z + p(q^*))^L \cdot \sigma_w^{2L}, $$
+    we see that the only place to get a \(1/z\) term here is from the constant term when the \((z+p(q^*))^L\) is expanded.  This constant term will simply be \(p(q^*)^L\), so the \(1/z\) term here, which is \(m_1\), is
+    $$
+        m_1 = \sigma_w^{2L} p(q^*)^L
+    $$
+    The constant term comes from two places.  One, the \(p(q^*)^L\) multiplies the \(1\) in the first term, and the term \(Lzp(q^*)^{L-1}\), coming from the binomial expansion, multiplies the \(1/z\) in the first term.  
+    So this means that the constant coefficient, \(m_2/m_1\), is given by
+    $$
+        \frac{m_2}{m_1} = \sigma_w^{2L} p(q^*)^L + \sigma_w^{2L} L p(q^*)^{L-1}.
+    $$
+    Recognizing the first term in the RHS sum as \(m_1\), we can factor to get 
+    $$
+        \frac{m_2}{m_1} = m_1 \left( 1 + \frac{L}{p(q^*)} \right), 
+    $$
+    or,
+    $$
+        m_2 =  m_1^2 \left( 1 + \frac{L}{p(q^*)} \right),
+    $$
+    as desired.
+    </p>
+</details>
 <br />
 
 # 5 Paper Experiments & Results, Future / Related Work
