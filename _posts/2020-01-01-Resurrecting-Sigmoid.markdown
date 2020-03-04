@@ -135,7 +135,7 @@ The full problem set, from which the below problems are taken, is [here](/assets
 
 In this problem, we use the knowledge we gained in problem 1 to properly choose to initialize the weights and biases according to \(W^l \sim \mathcal{N}(0, \sigma_w^2/N)\) and \(b^l \sim \mathcal{N}(0, \sigma_b^2)\). We'll investigate some techniques that will be useful in understanding precisely how the network's random initialization influences what the net does to its inputs; specifically, we'll be able to take a look at how the _depth_ of the network together with the initialization governs the propagation of an input point as it flows forward through the network's layers.
 
-a. A natural property of input points to study as the input flows through the net layer by layer is its length. Intuitively, this is closely related to how the net transforms the input space, and to how the depth of the net relates to that transformation. Compute the length \(q^l\) of the activation vector outputted by layer \(l\). When considering non-rectangular nets, where layer \(l\) has length \(N_l\), we want to distinguish this activation norm from the width of individual layers, so what's a more appropriate quantity we can track to understand how the lengths of activation vectors change in the net?
+a. A natural property of input points to study as the input flows through the net layer by layer is its length. Intuitively, this is closely related to how the net transforms the input space, and to how the depth of the net relates to that transformation. **Compute the length \(q^l\) of the activation vector outputted by layer \(l\). When considering non-rectangular nets, where layer \(l\) has length \(N_l\), we want to distinguish this activation norm from the width of individual layers, so what's a more appropriate quantity we can track to understand how the lengths of activation vectors change in the net?**
 <details><summary>Solution</summary>
     <p>
         The length is simply the Euclidean magnitude, i.e. \(\sum_{i = 1}^N (h_i^l)^2\). We can stabilize this quantity, especially when \(N\) differs across layers, by normalizing:
@@ -143,7 +143,7 @@ a. A natural property of input points to study as the input flows through the ne
     </p>
 </details>
 
-b. What probabilistic quantity of the neuronal activations does \(q^l\) approximate (with the approximation improving for larger \(N\))?
+b. **What probabilistic quantity of the neuronal activations does \(q^l\) approximate (with the approximation improving for larger \(N\))?**
 <details><summary>Hint</summary>
 Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the definition of \(q^l\) from part (a) in terms of the empirical distribution of \(h^l_i\).
 </details>
@@ -154,7 +154,7 @@ Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the d
     </p>
 </details>
 
-c. Calculate the variance of an individual neuron's pre-activations, that is, the variance of \(h_i^l\).  Your answer should be a recurrence relation, expressing this variance in terms of \(h^{l-1}\) (and the parameters \(\sigma_w\) and \(\sigma_b\)).
+c. **Calculate the variance of an individual neuron's pre-activations, that is, the variance of \(h_i^l\).**  Your answer should be a recurrence relation, expressing this variance in terms of \(h^{l-1}\) (and the parameters \(\sigma_w\) and \(\sigma_b\)).
 <details><summary>Solution></summary>
     <p>
         Because the means of both the weight and bias distributions are zero, to calculate the variance we just need to calculate the second moment.  We can use the fact that the weights and biases are initialized independently, so that the variance of \(h_i^l\) is the sum of a bias term and a variance term:
@@ -169,7 +169,7 @@ c. Calculate the variance of an individual neuron's pre-activations, that is, th
     </p>
 </details>
 
-d. Now consider the limit that the number of hidden neurons, \(N\), approaches infinity. Use the central limit theorem to argue that in this limit, the pre-activations will be zero-mean Gaussian distributed. Be explicit about the conditions under which this result holds.
+d. Now consider the limit that the number of hidden neurons, \(N\), approaches infinity. **Use the central limit theorem to argue that in this limit, the pre-activations will be zero-mean Gaussian distributed. Be explicit about the conditions under which this result holds.**
 <details><summary>Solution></summary>
     <p>
         The basic idea here is to use the central limit theorem since the pre-activation is a sum of a large number of random variables, i.e.:
@@ -188,7 +188,7 @@ d. Now consider the limit that the number of hidden neurons, \(N\), approaches i
     </p>
 </details>
 
-e. With this zero-mean Gaussian approximation of \(q^l\), we have a single parameter characterizing this aspect of signal propagation in the net: the variance, \(q^l\), of individual neuronal activations (a proxy for squared activation vector lengths). Let's now look at how this variance changes from layer to layer, by deriving the relationship between \(q^l\) and \(q^{l - 1}\). In part (c), your answer should have included a term \(\langle (x^{l-1})^2 \rangle\).  In terms of the activation function \(\phi\) and the variance \(q^{l-1}\), write this expectation value as an integral over the standard Gaussian measure.
+e. With this zero-mean Gaussian approximation of \(q^l\), we have a single parameter characterizing this aspect of signal propagation in the net: the variance, \(q^l\), of individual neuronal activations (a proxy for squared activation vector lengths). Let's now look at how this variance changes from layer to layer, by deriving the relationship between \(q^l\) and \(q^{l - 1}\). In part (c), your answer should have included a term \(\langle (x^{l-1})^2 \rangle\). **In terms of the activation function \(\phi\) and the variance \(q^{l-1}\), write this expectation value as an integral over the standard Gaussian measure.**
 <details><summary>Solution></summary>
     <p>
         Since \(x_i^{l-1} = \phi(h_i^{l-1})\), we can write the variance \(\langle (x^{l-1})^2 \rangle\) as 
@@ -207,7 +207,7 @@ e. With this zero-mean Gaussian approximation of \(q^l\), we have a single param
     </p>
 </details>
 
-f. Use this result to write a recursion relation for \(q^l\) in  terms of \(q^{l-1}\), \(\sigma_w\), and \(\sigma_b\).
+f. **Use this result to write a recursion relation for \(q^l\) in  terms of \(q^{l-1}\), \(\sigma_w\), and \(\sigma_b\).**
 <details><summary>Solution></summary>
     <p>
         We just plug in, to get 
