@@ -1,0 +1,202 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{scribe}
+\usepackage{listings}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+
+\LectureNumber{1}
+\LectureDate{May 15, 2019}
+\LectureTitle{Mathematical Preliminaries and Basics}
+
+\lstset{style=mystyle}
+
+\begin{document}
+    \MakeScribeTop
+
+%#############################################################
+%#############################################################
+%#############################################################
+%#############################################################
+
+Before jumping into all the math and methodology, we have to be able to  understand the basics of what’s going on. Most importantly, we will review the basics of measure theory and reproducing kernel hilbert spaces. Measure theory allows us to understand the notion of discrepancy measures between distributions, which we will use later on to quantify the difference between two arbitrary distributions of interest. Our other topic, Reproducing Kernel Hilbert Spaces (RKHS), will serve as the connection between measure theory and a practical machine learning algorithm. With RKHS, we will be able to define and optimize intractable measures which previously, were only useful for theoretical analysis or a restrictive class of functions. These two together set the foundation for defining a tractable Kernelized Stein Discrepancy, which serves as the driving factor behind Stein Variational Gradient Descent. 
+
+\section{Table of Contents}
+
+\begin{enumerate}
+    \item Measure Theory
+    \item Kernels
+    \item Reproducing Kernel Hilbert Space
+    \item Machine Learning Basics 
+
+\end{enumerate}
+
+To keep the PDF as clean as possible, you can refer to required and optional reading on the main class site.
+
+\subsection{Objectives}
+
+\paragraph{What are we trying to learn?} Overall, we'll cover a host of topics, but mostly center around a single paper: Stein Variational Gradient Descent \cite{liu2016stein}. We will use many other papers and resources, but our main goal is to understand how SVGD works - we will cover everything about the algorithm: from mathematical foundations and practical implementations to tricks and failure points. Understanding this single paper will allow us to enter into an exciting, (relatively) young field of research, while drawing connections with established techniques and theoretical concepts along the way. 
+\paragraph{Why do we care about this?} Stein's Method is a powerful statistical method, one that is at the disposal (and the focus) of many statisticians today. Recently, Stein's Method has made its way into machine learning and has proved to be a fruitful research area. Stein's Method has deep connections to many machine learning problems of interest. By the end of this guide, you should be able to understand the relevant mathematics behind this powerful tool.   
+\subsection{General Curriculum}
+
+Over the next six weeks, we'll cover the following topics, with theoretical and practical percentage splits shown as $(T | P)$ next to each topic.
+
+\begin{enumerate}
+    \item Introduction and Basics $(90 | 10)$
+    \item Stein's Method $(100 | 0)$
+    \item Kernelized Stein Discrepancy $(80 | 20)$
+    \item Stein Variational Gradient Descent $(60 | 40)$
+    \item SVGD as Gradient Flow $(90 | 10)$
+    \item Stein's Method in Reinforcement Learning $(40 | 60)$
+\end{enumerate}
+
+\section{Measure Theory}
+
+This first week is relatively more "lecture-style", with ensuring that concepts and terms are understood. 
+
+\subsection{Definitions to Know}
+
+The exercise we tried was to make sure that people could explain the following terms in their own words, either via intuition or mathematics.
+
+\begin{itemize}
+    \item Limit
+    \item Cauchy Sequence
+    \item Metric Space
+    \item Complete, Banach, Hilbert Spaces
+    \item Measure
+\end{itemize}
+
+\subsection{Questions to Test Understanding}
+\label{sec:ques-measure}
+
+You can find the answers to the questions at the end of this PDF.
+
+\begin{enumerate}
+    \item "However, Cauchy sequences are not the same as convergent sequences", but a property of Cauchy sequences is that they are \textbf{bounded}. What's the difference?
+
+    \item "The open interval (0, 1) is not complete whereas the closed interval [0, 1] is complete". Why? Can we use this example to get a intuitive definition of \textbf{complete}?
+
+    \item Explain the difference between a Banach and Hilbert Space. Is every Hilbert space a Banach space?
+\end{enumerate}
+
+\section{Kernels}
+
+\subsection{Definitions to Know}
+
+The exercise we tried was to make sure that people could explain the following terms in their own words, either via intuition or mathematics.
+
+\begin{itemize}
+    \item Kernel, Properties of Kernels
+    \item Feature Map
+    \item Gram Matrix
+\end{itemize}
+
+\subsection{Questions to Test Understanding}
+\label{sec:ques-kernel}
+
+You can find the answers to the questions at the end of this PDF.
+
+\begin{enumerate}
+    \item In Machine Learning, kernels can be thought of as a "dot product" (a kind of similarity score) in high-dimensional space. Why would this be useful? Given a feature map, do we always have a corresponding kernel? Given any kernel, can we always explicitly write out the elements of the corresponding feature map?
+
+    \item How would kernels be useful in a classification problem like the one shown in Figure \ref{fig:kernel-classification}? 
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[height=200pt]{figures/w1/kernel.png}
+        \caption{A Difficult Classification Problem for Linear Regression}
+        \label{fig:kernel-classification}
+    \end{figure}
+    
+\end{enumerate}
+
+\section{Reproducing Kernel Hilbert Space}
+
+The exercise we tried was to make sure that people could explain the following terms in their own words, either via intuition or mathematics.
+
+\begin{itemize}
+    \item Hilbert Space
+    \item Inner Product, Norms
+    \item Reproducing Property
+\end{itemize}
+
+\paragraph{Important Details} Some of the important concepts from \cite{Gretton15introductionto} are reproduced here. A Hilbert Space is a space $\mathcal{H}$ on which an **inner product is defined** (+ some stuff that won't be relevant here). A kernel is then defined as a function $k: \mathcal{X} \times \mathcal{X} \rightarrow \mathbb{R}$ if there exists a space $\mathcal{H}$ and map $\phi: \mathcal{X} \rightarrow \mathcal{H}$ s.t $k$ is the inner product of the two feature mapped points. Kernel functions are positive definite.
+
+\paragraph{A Worked Example} Here, we see how kernels and RKHS are used in practice.
+
+\noindent Define $\phi$ as 
+\begin{equation}
+    \phi: \mathbb{R}^2 \rightarrow \mathbb{R}^3, \; \phi(x) = [x_1, x_2, x_1x_2]^T
+\end{equation} 
+
+\noindent  where kernel $k$ is traditional dot product. If we define a function of features of $x$, we can define an equivalent representation for $f: \mathbb{R}^2 \rightarrow \mathbb{R}$ (since $X \in \mathbb{R}^2$).
+
+\begin{equation}
+f(x) + ax_1 + bx_2 + cx_1x_2, \; f(\cdot) = [a, b,  c]^T
+\end{equation} 
+
+\noindent That means that $f(x) \in \mathbb{R}$ is a function evaluated at a particular point, so we can write:
+
+\begin{align}
+    f(x) &= f(\cdot) \cdot \phi(x) \\
+    f(x) &= \langle f(\cdot), \phi(x)\rangle_\mathcal{H}
+\end{align}
+
+
+\noindent which means the evalution of $f(x)$ is an \textbf{inner product in feature space}.
+
+\paragraph{Two main properties of the RKHS:}
+
+\begin{enumerate}
+    \item The feature map of every point is \textbf{in the feature space}: $\forall x \in \mathcal{X}, k(\cdot, x) \in \mathcal{H}$
+    \item The reproducing property: $\forall x \in \mathcal{X}, \langle f, k(\cdot, x) \rangle_\mathcal{H} = f(x)$. 
+    This means that for any $x, y \in \mathcal{X}$: 
+    \begin{equation}
+        k(x, y) = \langle k(\cdot, x), k(\cdot, y)_\mathcal{H} \rangle
+    \end{equation}
+\end{enumerate}
+
+\subsection{Questions to Test Understanding}
+\label{sec:ques-rkhs}
+
+You can find the answers to the questions at the end of this PDF.
+
+\begin{enumerate}
+    \item Explain the reproducing property in your own terms.
+
+    \item Explain how the space of all $\phi(x)$ can be smaller than $\mathcal{H}$, the space of functions, as seen in Figure \ref{fig:hilbertspace}? 
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[height=100pt]{figures/w1/hilbertspace.png}
+        \caption{Feature space and mapping}
+        \label{fig:hilbertspace}
+    \end{figure}
+    
+\end{enumerate}
+
+% \section{Solutions}
+
+% In this section, we provide the solutions to the questions listed above.
+
+% \subsection{Solutions to Section \ref{sec:ques-measure}}
+
+% \subsection{Solutions to Section \ref{sec:ques-kernel}}
+
+% \subsection{Solutions to Section \ref{sec:ques-rkhs}}
+
+%%%%%%%%%%% If you don't have citations then comment the lines below:
+%
+\bibliographystyle{abbrv}           % if you need a bibliography
+\bibliography{w1ref}                % assuming yours is named mybib.bib
+
+
+%%%%%%%%%%% end of doc
+\end{document}

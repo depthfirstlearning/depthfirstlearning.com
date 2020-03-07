@@ -1,0 +1,179 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{scribe}
+\usepackage{listings}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+
+\LectureNumber{3}
+\LectureDate{May 29, 2019}
+\LectureTitle{A Kernelized Stein Discrepancy}
+
+\lstset{style=mystyle}
+
+\begin{document}
+	\MakeScribeTop
+
+%#############################################################
+%#############################################################
+%#############################################################
+%#############################################################
+
+The main theoretical meat comes from a single paper titled Kernelized Stein Discrepancy (KSD) \cite{liu2016kernelized}. KSD takes the powerful Stein's Identity, and uses RKHS theory to define a tractable discrepancy between a ground truth distribution and samples from an arbitrary one. Most importantly, KSD defines a discrepancy function that does not involve calculating the normalizing constant, allowing it to be much more widely applicable in practical tasks. We will discuss the difference between likelihood-free and likelihood-based methods in machine learning, how this normalization constant proves to be problematic in machine learning, and how KSD allows us to sidestep this issue with a new, tractable discrepancy. KSD will serve as the launch pad for the algorithm at the focus of this curriculum, Stein Variational Gradient Descent. 
+
+\section{Table of Contents}
+
+\begin{enumerate}
+    \item A Stein Discrepancy
+    \item Why? Goodness of Fit, Its Importance, and Its Difficulties
+    \item A Tractable Optimization
+    \item Intuition and Discussion
+\end{enumerate}
+
+\paragraph{Note:} In the resources linked, The roles of $p$ and $q$ are switched in resources 1 and 3.
+
+\section{A Stein Discrepancy}
+
+We start by recapping last week, with some minor differences. The Stein Operator, is defined as:
+
+\begin{equation}
+    \mathcal{A}_p\mathbf{f}(x) = s_p(x)\mathbf{f}(x)^T + \nabla_x \mathbf{f}(x) 
+\end{equation}
+
+\noindent where $s_p(x)$ is the (Stein) score function of p: $s_p(x) = \nabla_x \log p(x) = \frac{\nabla_x p(x)}{p(x)}$ and both $s_p(x)$ and $\mathcal{A}\mathbf{f}$ is now a vector-valued function, mapping from $\mathcal{X} \rightarrow \mathbf{R}^d$. We say $f$ is in the \textit{Stein class} of smooth density $p$ if $f$ is smooth and satisfies:
+
+
+\begin{equation}
+    \int_{x \in \mathcal{X}} \nabla_x (f(x)p(x))dx = 0
+\end{equation} 
+
+\noindent The vector-valued function $\mathbf{f}$ is in the Stein class of $p$ if each individual dimensional component of the function is in the Stein class of $p$. The first equation now has a few extra subscripts (the $_p$ subscripts), which now denote which density the operator is defined on. We are again worrying about two densities: a ground truth one $p$, and then an empirical one, $q$.
+
+\section{Why? Goodness of Fit, Its Importance, and Its Difficulties}                                                                                                Before we start playing around with the Stein Operator again, its important to now understand the problem setup. From Week 1's final section, we're going to be working in the general framework of model checking, and more specifically, we're concerned about \textit{goodness-of-fit}. \\
+
+\noindent Goodness of fit is absolutely crucial in the field of statistics, and encompasses the tools and methods that answer the general question of "how well does my model fit the observed data"? Given some empirical data, defined as $\{ x_i \} \sim q$, and our statistical model, we're looking to either accept or reject the following \href{https://www.statisticshowto.datasciencecentral.com/goodness-of-fit-test/}{null hypothesis}:
+
+\begin{equation}
+    H_0: p = q
+\end{equation}
+
+\noindent meaning that our empirical samples \textit{were} drawn from the same distribution as samples from our statistical model. \\ 
+
+\noindent However, in practice, this can become quite hairy quite quickly. Our standard goodness-of-fit tests often only work with low-dimensional data, or require extra assumptions such as being able to bin our data, making these tests restrictive for most practical settings. Other times, sampling from the ground truth distribution can become impractical due to the dreaded \href{https://en.wikipedia.org/wiki/Normalizing_constant}{normalizing constant}, $Z$, which turns any probability function into a density. Calculating this can be intractable, and most methods - including the one discussed here - will look for ways around doing so. \\
+
+\noindent With the operator equation, and the null hypothesis, our first step towards a Stein \texit{discrepancy} is to switch the expectation:
+
+\begin{equation}
+    \mathbf{E}_q[\mathcal{A}_pf(x)] = 0, \; \forall f \Leftrightarrow p=q 
+\end{equation}
+
+\noindent Intuititvely, this makes sense - if $p$ and $q$ are truly the same, then it shouldn't matter which density we calculate the expectation under.  This implies that for some $p \neq q$, there exists some $f$ such that $\mathbf{E}_q[\mathcal{A}_pf(x)] \neq 0$. From \cite{ley2013}, we know that we can then rewrite the operator as function of the difference in score functions, given smooth densities $p$ and $q$ supported on $\mathcal{X}$.
+
+\begin{equation}
+    \mathbf{E}_q[\mathcal{A}_pf(x)] = \mathbf{E}_q[\mathcal{A}_pf(x)] - \mathbf{E}_q[\mathcal{A}_qf(x)] = \mathbf{E}_q[(s_p(x) - s_q(x))^Tf(x)] 
+\end{equation}
+
+\noindent This implies that \textit{unless} $\nabla_x \log p(x)$ is exactly $\nabla_x \log q(x)$, we can always find some function $\mathbf{f}$ where the above equation is nonzero. This allows us to (finally) define the (squared) \noindent{Stein Discrepancy}, which we write as:
+
+\begin{equation}
+    \sqrt{\mathbb{S}(q, p)} = \max_{f \in \mathcal{F}}[\text{trace}(\mathcal{A}_pf(x))] 
+\end{equation}
+
+\noindent \textit{Wondering where the trace comes from? You can find it right before Section 3 in the KSD paper, but give it a shot yourself!} \\
+
+\noindent This is usually as far as Stein's Method in statistics may have gone. While it gives a functional form for optimization, choices of family $\mathcal{F}$ were usually made with desirable properties (i.e bounded norms), rather than being practically optimizable. Essentially, it all boils down to the choice of functional family: rich enough to capture the intricacies we're looking for, especially in high dimensions, but easy enough to \textit{actually} optimize. \cite{gorham2015measuring} provided the first attempt at making this optimization tractable, but here, we focus on the choice of $\mathcal{F}$ being a Reproducing Kernel Hilbert Space, as done in the Kernelized Stein Discrepancy paper.
+
+\section{A Tractable Optimization}
+
+What choice of $\mathcal{F}$ is reasonable? Why not take an a kernel $k$ and its corresponding (unit ball of) RKHS (See Week 1) to be $\mathcal{F}$? Of course, this is the choice that the authors made, and it has some nice properties that we'll take advantage of, but \texit{why this}?:
+
+\begin{enumerate}
+    \item The (kernelized) Stein Discrepancy is a valid discrepancy (proved in Definition 3.1 and Proposition 3.3 in \cite{liu2016kernelized}).
+    \item This choice removes the dependence of the normalization constant, and now only depends on $p$ through its score function, which is easily calculatable.
+    \item It provides a practical and grounded \textit{empirical} approximation to the density, through uses of a \href{https://en.wikipedia.org/wiki/U-statistic}{U-statistic}. 
+\end{enumerate}
+
+\noindent While the paper is quite interesting on its own, some parts (connections to other discrepancies, empirical results on GoF) are less important to our roadmap, so we summarize the most important detail below. \\ 
+
+\noindent With the RKHS as the family of functions, the solution to the optimization problem has a \textit{closed form solution}, written as:
+
+\begin{equation}
+    \mathbb{S}(q, p) = \mathbf{E}_{x, x' \sim q}[\kappa_p(x, x')]
+\end{equation}
+
+\noindent where $\kappa_p = \text{trace}(\mathcal{A}_p^x\mathcal{A}_p^{x'}k(x, x'))$, with $\mathcal{A}_p^x$ being the Stein operator w.r.t $x$. This closed form solution allows for empirical estimation of the discrepancy, which allows for a natural goodness-of-fit test (based on whether the discrepancy is greater than some threshold or not). \\
+
+\noindent However, this formulation has a much more relevant (to our discussion) interpretation by connecting the Stein Operator to the derivative of the KL-Divergence, leading to the centerpiece paper of our roadmap: Stein Variational Gradient Descent \cite{liu2016stein}.
+
+\section{Intuition and Discussion}
+
+Below are two really interesting threads that occurred on Piazza after this week's discussion: one by \href{}{Calvin Woo}, and one by \href{}{Sanyam Kapoor}. However, before you start on the following, you may find it useful to read through the following items on:
+
+\begin{itemize}
+    \item Integral Probability Metrics: \cite{gorham2015measuring, imp1, imp2}
+    \item Adjoints: \cite{inflarge} (Chapter on Duals and Adjoints)
+\end{itemize}
+
+\subsection{Sanyam's Intuition}
+
+\paragraph{Note:} Sanyam also has an amazing blog post on \href{https://www.sanyamkapoor.com/machine-learning/stein-gradient/}{Stein's Method in ML} - check it out!
+
+\noindent Going back to the integral probability metrics (IPMs) to define distance between an unknown target P and our model's estimate Q,
+
+\begin{equation}
+    d(P,Q) = \sup_{h \in \mathcal{H}} || \mathbf{E}_{X \sim Q}[h(X)] - \mathbf{E}_{X \sim P}[h(X)] ∣∣
+\end{equation}
+
+\noindent over an expressive enough family of test functions $\mathcal{H}$, this metric is pretty much impossible to compute because we don't know $P$ in the first place. What Stein's method allows us to do is get rid of that second term $P$ to get us one step closer to hopefully being clever about $\mathcal{H}$ and getting a tractable optimization problem (because $Q$ is in our control). It gets rid of that second term containing the unknown distribution by choosing a family of functions in the Stein class of $P$ (so that the term goes to zero).
+
+\subsection{Calvin's Alternate Analysis}
+
+\href{https://calwoo.github.io}{Calvin Woo} provided a nice post on our class Piazza, transcribed here.
+
+To make things concrete, lets look at the case of Stein's identity for a Gaussian normal variable $X \sim \mathcal{N}(0,1)$. Expanding out what's in the paper, we get that for any smooth function $f$ of a suitable Hilbert space of functions, we have
+
+\begin{equation}
+    \mathbf{E}_{x \sim \mathcal{N}(0,1)}[f'(x) - xf(x)]=0
+\end{equation} 
+
+\paragraph{Calvin's question to the class:} How can we think about this? Can we prove this without resorting to a priori knowing the Stein operator?
+
+Here were some hints:
+
+\begin{enumerate}
+    \item The pdf of the Gaussian is:
+    \begin{equation}
+        p(x)=\frac{1}{\sqrt{2\pi}}\e^{\frac{-x^2}{2}}
+    \end{equation}
+    so, $\mathcal{N}(0,1)$ is a solution to the ordinary differential equation $p'(x)+ xp(x)=0$.
+    
+    \item For $L$ a linear operator on functions, we call $L^*$ the adjoint (operator) equation if for any $f,g \in C_\infty(R)$ (smooth functions), we have $\langle Lf,g \rangle = \langle f,L^*g \rangle$, where the inner product is the standard function space inner product.
+    
+    \item Use the two above ingredients to discover Stein's identity for the Gaussian. The first part is just a verification-- now that we know it, we can write $L= \frac{d}{dx} + x$ and so the ODE becomes $Lp=0$. Here $L$ is thus a linear operator on functions, and so we can try to compute it's adjoint equation using the definition $\langle Lf,g \rangle = \langle f,L^*g \rangle$.
+    
+    \begin{align}
+        \langle Lf,g \rangle &= \int_{-\infty}^\infty [f'(x) + xf(x)]g(x)dx \\ 
+        &= \int_{-\infty}^\infty f(x)[−g'(x)+xg(x)]dx
+    \end{align}
+    
+    \noindent where in expanding it, we used integration by parts and the boundary condition (decay of the function at infinity). Thus $L^*=−\frac{d}{dx}+x$. Now Stein's identity follows for any such function $g$ by noting that $Lρ=0$ implies $0=\langle Lp, g \rangle = \langle p, L^*g \rangle $. Now just notice that $0=\langle p, L^*g \rangle = 0$ is just the expectation value above.
+    
+\end{enumerate}
+
+%%%%%%%%%%% If you don't have citations then comment the lines below:
+%
+\bibliographystyle{abbrv}           % if you need a bibliography
+\bibliography{w3ref}                % assuming yours is named mybib.bib
+
+
+%%%%%%%%%%% end of doc
+\end{document}

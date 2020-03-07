@@ -1,0 +1,135 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{scribe}
+\usepackage{listings}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+
+\LectureNumber{4}
+\LectureDate{June 7, 2019}
+\LectureTitle{Stein Variational Gradient Descent}
+
+\lstset{style=mystyle}
+
+\begin{document}
+	\MakeScribeTop
+
+%#############################################################
+%#############################################################
+%#############################################################
+%#############################################################
+
+Stein Variational Gradient Descent (SVGD) is a popular, non-parametric Bayesian Inference algorithm that’s been applied to Variational Inference, Reinforcement Learning, GANs, and much more. This week, we study the algorithm in its entirety, building off of last week’s work on KSD, and seeing how viewing KSD from a KL-Divergence-minimization lens induces a powerful, practical algorithm. We discuss the benefits of SVGD over other similar approximators, and look at a practical implementation of the algorithm.
+
+\section{Table of Contents}
+
+\begin{enumerate}
+    \item Motivation
+    \item Variational Inference
+    \item Variational Inference Using Smooth Transforms
+    \item Stein Operators and KL Divergence
+    \item SVGD
+    \item Benefits of SVGD
+    \item Implementations
+\end{enumerate}
+
+\section{Variational Inference}
+
+Last week, we saw an efficient test to test if two distributions, $p$ and $q$, were the same in \textit{Kernelized Stein Discrepancy}. This week, we're looking into subsequent step: given some ground truth distribution $p$, and some initial representation of $q$, how can we \textit{transform} $q$ into $p$? \\
+
+\noindent This week, we'll be studying the Stein Variational Gradient Descent paper, which casts the above problem in the framework of \href{https://ermongroup.github.io/cs228-notes/inference/variational/}{variational} \href{https://arxiv.org/abs/1601.00670}{inference}: given some $p$, and some parameterized family of (simpler) distributions $\mathcal{Q}$, how do we find some $q^* \in \mathcal{Q}$ that approximates $p$? In this sense, variational inference casts the problem as an optimization of some "cost" function $\mathcal{J}(q)$, which is a function of the chosen distribution. \\
+
+\noindent Alternative methods to approximate $p$, most commonly sampling-based variants of \href{https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo}{MCMC}, provide strong guarantees in infinite time, but not many in the finite sample regime. While still an exciting research area, there are some issues with scaling these methods up, and accelerating them with common hardware like GPUs, both of which are positive charateristics of variational inference.
+
+\subsection{The KL-Divergence}
+
+In order to frame the variational inference problem as an optimization problem, we need a method of comparing our two distributions. For this, we turn to the \href{https://timvieira.github.io/blog/post/2014/10/06/kl-divergence-as-an-objective-function/}{KL-Divergence}. This function, formally defined in the equation below, measures differences in information content between two distributions.
+
+\begin{equation}
+KL(q || p) = \mathbf{E}_q[\log q(x) - \log p(x)]
+\end{equation}
+
+\noindent When working with some unnormalized distribution $\bar p$, the optimization, which is searching for some distribution $ q^* \in \mathcal{Q}$, becomes:
+
+\begin{equation}
+KL(q || p) = \arg\min_{q \in \mathcal{Q}} \{ {\mathbf{E}_q[\log q(x)] - \mathbf{E}_q[\log \bar p(x)] + logZ} \}
+\end{equation}
+
+\noindent The normalization constant $Z$ drops out of the optimization here. It's important to note that the KL Divergence is a \textit{divergence}, not a distance: this means, in general, $KL(q || p) \neq KL(p || q)$. In fact, working out the gradients for each direction gives different benefits (and issues), but in general, we focus on the former as the latter requires evaluation on the normalization constant of $p$. Optimizing the equation above will - in theory; in practice, they will almost never find the globally optimal solution - find a distribution $q^*$ that minimizes the KL Divergence.
+
+\section{Variational Inference Using Smooth Transforms}
+
+Of course, after choosing to optimize the KL Divergence, we still have to choose the family of distributions. Choices often center around parameterized functions classes, or normal distributions, but for SVGD, we are going to focus on the distributions obtained by \textit{smooth transforms} from a tractable reference distribution. \\
+
+\noindent $\mathcal{Q}$ takes the form of $z = \textbf{T}(x)$, where $\textbf{T}: \mathcal{X} \rightarrow \mathcal{X}$ is a smooth one-to-one transform, with $x \sim q_0(x)$. It can be shown (from optimal transport theory) that these are expressive distributions, that in theory can approximate almost any other distribution. \\
+
+\noindent While we've constrained our distribution family, in practice, we \textit{also} need to worry about the class of transforms: balancing accuracy, tractability, and computational constraints, along with the injectiveness required by $\mathbf{T}$ provide a lot of requirements, many of which cannot be achieved in parallel. In the following two sections, we'll see the choices that SVGD makes to achieve these constraints.
+
+\section{Stein Operators and KL Divergence}
+
+The authors describe a small perturbation of the identity map: $\mathbf{T} = x + \epsilon \phi(x)$, which, given a small enough $\epsilon$, guarantees $\mathbf{T}$ to be a injective map.
+
+\paragraph{Note:} Theorem 3.1 and Lemma 3.2 will be discussed qualitatively (with focus on their implications), as the paper's appendix does a good job of walking through the steps. \\
+
+\noindent Theorem 3.1 relates the derivative of KLD to the negative trace of the Stein Operator, and because of Kernelized Stein Discrepancy, we can relate $\phi_{q, p}^*$ as the optimal perturbation direction (i.e steepest descent on KL) in the RKHS. Lemma 3.2 shows us that this generates a iterative procedure that allows us to start with \textit{any} $q_0$ that will, under the smooth transform assumptions above, converge to ground truth distribution $p$. In short, we apply iterative transforms, $\mathbf{T}^*_i = x + \epsilon_i \cdot \phi^*_{q_i, p}(x)$, to each distribution $q_i$ (starting from tractable $q_0$), until we converge ($\phi_{q_\infty, p}^* = 0$, which means the transform becomes the identity map).  \\
+
+\noindent The paper includes an interpretation from a functional gradient perspective, but as that won't be important until next week, we skip directly to the practical algorithm proposed. 
+
+\section{Stein Variational Gradient Descent}
+
+Now, we're ready to set the stage for SVGD. From the paper, we know that the optimal direction is:
+
+\begin{equation}
+    \phi^*_{q, p}(\cdot) = \mathbf{E}_{x \sim q} [k(x, \cdot)\nabla_x \log p(x) + \nabla_x k(x, \cdot)]
+\end{equation}
+
+\noindent To approximate the expectation, we average over an initial set of particles and use an empirical version of the transform (averaged over the particles) to move our particles to match our target distribution $p(x)$.  \\
+
+\noindent The entire algorithm can be condensed into a single line, which repeats until convergence given an initial set of $n$ particles $\{ x_i \}$ and target distribution $p(x)$.
+
+\begin{equation}
+    \hat \phi^*(x_i) = \frac{1}{n} \sum^n_{j=1}[k(x_j, x_i)\nabla_{x_j} \log p(x_j) + \nabla_{x_j} k(x_j, x_i)]
+\end{equation}
+
+\noindent This is calculated individually for each particle, and then used with some step size to "move" the particle. 
+
+\subsection{Benefits of SVGD}
+
+\begin{enumerate}
+    \item With more particles (a larger  n), the approximation for each  $q_i$  gets better.
+    \item With a single particle, this reduces into a MAP estimate.
+    \item SVGD, unlike other methods, is expressive without requiring the inversion of a Jacobian matrix (a very expensive operation).
+    \item The two terms in the above equation help introduce accuracy - the first term maximizes log probability of the samples - and diversity - the second term repulses similar particles - into the approximation.
+    \item With automatic differention packages, many parts of SVGD can be parallelized and offloaded to efficient hardware implementations.
+    \item The final form of the update is incredibly similar to standard gradient descent, making implementation and understanding extremely easy.
+    \item (A pro, but not from this paper) SVGD has strong guarantees for particular settings, and can be seen from various different lenses (one of which we'll see next week).
+\end{enumerate}
+
+\subsection{Implementations}
+
+Here are some implementations of SVGD in:
+
+\begin{enumerate}
+    \item \href{https://github.com/dilinwang820/Stein-Variational-Gradient-Descent}{Matlab and Python (original authors)}
+    \item \href{https://github.com/activatedgeek/svgd}{Autograd (Sanyam Kapoor)}
+    \item \href{https://github.com/calwoo/steins-method}{Pytorch (Calvin Woo)}
+    \item \href{https://colab.research.google.com/drive/1ihKq85VQo3RBT-qaUl0D7gwLwlxB5VY7}{Jax (Bhairav Mehta)}
+\end{enumerate}
+
+%%%%%%%%%%% If you don't have citations then comment the lines below:
+%
+\bibliographystyle{abbrv}           % if you need a bibliography
+\bibliography{mybib}                % assuming yours is named mybib.bib
+
+
+%%%%%%%%%%% end of doc
+\end{document}

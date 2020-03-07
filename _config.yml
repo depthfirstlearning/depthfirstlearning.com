@@ -35,6 +35,10 @@ luca:
     name: Luca Venturi
     email: venturi@cims.nyu.edu
     web: https://cims.nyu.edu/~venturi/
+bhairav:
+    name: Bhairav Mehta
+    email: bhairavmehta95@gmail.com
+    web: https://bhairavmehta95.github.io
 piyush:
     name: Piyush Patil
     email: piyush.patil210@gmail.com
@@ -47,7 +51,6 @@ riley:
     name: Riley Edmunds
     email: rileyedmunds@gmail.com
     web:
-
 
 # Build settings
 markdown:       kramdown
