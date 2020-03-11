@@ -62,6 +62,7 @@ After doing these readings, we would like you to understand the following backgr
   - pre-training
   - skip connections / residual neural networks
   - non-saturating activation functions (ReLU and its variants)
+  
 We would also like you to have an overview of the paper's structure:
 - Motivate and explain the problem the paper is trying to solve
 		 - concentrating the entire spectrum of the network's Jacobian around unity
@@ -106,7 +107,7 @@ Other:
 
 # 2 Signal propagation
 
-**Motivation**: One of the foundations which the analysis in _Resurrecting the Sigmoid_ rests on, is signal propagation in wide neural networks.  Understanding this mean-field analysis framework, and its results, also connects to more recent investigations of, e.g., neural networks as Gaussian processes, and the neural tangent kernel (see the [Jacot et al., 2018](https://arxiv.org/abs/1806.07572) and [Lee et al., 2019](https://arxiv.org/pdf/1902.06720)).
+**Motivation**: One of the foundations which the analysis in _Resurrecting the Sigmoid_ rests on is signal propagation in wide neural networks.  Understanding this mean-field analysis framework, and its results, also connects to more recent investigations of, e.g., neural networks as Gaussian processes and the neural tangent kernel (see the [Jacot et al., 2018](https://arxiv.org/abs/1806.07572) and [Lee et al., 2019](https://arxiv.org/pdf/1902.06720))).
 
 **Topics**:
 
@@ -147,6 +148,7 @@ b. **What probabilistic quantity of the neuronal activations does \\(q^l\\) appr
 <details><summary>Hint</summary>
 Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the definition of \(q^l\) from part (a) in terms of the empirical distribution of \(h^l_i\).
 </details>
+
 
 <details><summary>Solution></summary>
     <p>
@@ -363,10 +365,11 @@ href="../assets/sigmoid/problem-sets/source/1/stable_fixed_point.png">[stable fi
 
 **Questions**:
 
-The full problem set, from which the below problems are taken, is [here](/assets/sigmoid/problem-sets/pdfs/2.pdf).  
+The full problem set, from which the problems below are taken, is [here](/assets/sigmoid/problem-sets/pdfs/2.pdf).  
 
 
 1. Avoided crossings in the spectra of random matrices
+
 In the first DFL session’s intro to RMT, we mentioned that eigenvalues of random matrices tend to repel each other. Indeed, as one of the recommended textbooks on RMT states, this interplay between confinement and repulsion is the physical mechanism at the heart of many results in RMT. This problem explores that statement, relating it to a concept which comes up often in physics: the avoided crossing.
 
 a. The simplest example of an avoided crossing is in a \\(2 \times 2\\) matrix. Let’s take the matrix
@@ -616,7 +619,7 @@ $$ G(z) = \int_\mathbb{R}~dt \frac{\rho(t)}{z - t} $$
 
 (In the previous problem set, this was called \\(s_{\mu_N}(z)\\).  In literature you often see the \\(G(z)\\) notation, since the Stieltjes transform is also known as the _resolvent_ or _Green's function_.)
 
-You should have calculated in the last problem set that under the Stieltjes transform, 
+In the last problem set, you should have found that under the Stieltjes transform, 
 
 $$ \frac{1}{2\pi}\sqrt{4-x^2} \mapsto \frac{z - \sqrt{z^2 - 4}}{2} $$
 
@@ -793,7 +796,7 @@ b. As the paper discusses, we are interested in the spectrum of singular values 
 </details>
 c. Now that we're focused on \\(JJ^T\\) instead of \\(J\\), read the following section reproduced from the main paper, about the \\(S\\)-transform of \\(JJ^T\\)'s spectral density: 
 
-$$ S_{JJ^T} = \prod_{l=1}^L S_{W_lW_l^T} S_{D_l^2} = S_{WW^T}^L S_{D^2}^L $$  where we have used the identical distribution of the weights to define \\(S_{WW^T} = S_{W_l W_l^T}\\) for all \\(l\\), and we have also used the fact the pre-activations are distributed independently of depth as \\(h_l \sim \mathcal{N}(0,q^*)\\), which implies that \\(S_{D_l^2} = S_{D^2}\\) for all \\(l\\). Eqn.(12) provides a method to compute the spectrum \\(\rho_{JJ^T} (\lambda)\\). Starting from \\(\rho_{W^T W} (\lambda)\\) and \\(\rho_{D^2}\\), we compute their respective \\(S\\)-transforms through the sequence of equations eqns. (7), (9), and (10), take the product in eqn. (12), and then reverse the sequence of steps to go from \\(S_{JJ^T}\\) to \\(\rho_{JJ^T} (\lambda)\\) through the inverses of eqns. (10), (9), and (8). Thus we must calculate the \\(S\\)-transforms of \\(WW^T\\) and \\(D^2\\), which we attack next for specific nonlinearities and weight ensembles in the following sections. In principle, this procedure can be carried out numerically for an arbitrary choice of nonlinearity, but we postpone this investigation to future work.
+$$ S_{JJ^T} = \prod_{l=1}^L S_{W_lW_l^T} S_{D_l^2} = S_{WW^T}^L S_{D^2}^L $$  where we have used the identical distribution of the weights to define \\(S_{WW^T} = S_{W_l W_l^T}\\) for all \\(l\\), and we have also used the fact the pre-activations are distributed independently of depth as \\(h_l \sim \mathcal{N}(0,q^*)\\), which implies that \\(S_{D_l^2} = S_{D^2}\\) for all \\(l\\).  Eqn.(12) provides a method to compute the spectrum \\(\rho_{JJ^T} (\lambda)\\). Starting from \\(\rho_{W^T W} (\lambda)\\) and \\(\rho_{D^2}\\), we compute their respective \\(S\\)-transforms through the sequence of equations eqns. (7), (9), and (10), take the product in eqn. (12), and then reverse the sequence of steps to go from \\(S_{JJ^T}\\) to \\(\rho_{JJ^T} (\lambda)\\) through the inverses of eqns. (10), (9), and (8). Thus we must calculate the \\(S\\)-transforms of \\(WW^T\\) and \\(D^2\\), which we attack next for specific nonlinearities and weight ensembles in the following sections. In principle, this procedure can be carried out numerically for an arbitrary choice of nonlinearity, but we postpone this investigation to future work.
 
 **Prove the equation at the top of the box.**
 
