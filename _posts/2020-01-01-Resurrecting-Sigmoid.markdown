@@ -20,7 +20,7 @@ Finally, thank you to our students Chris Akers, Brian Friedenberg, Sajel Shah, V
 
 <div class="deps-graph">
 <iframe class="deps" src="/assets/resurrecting-the-sigmoid.svg" width="200"></iframe>
-<div>Basic dependency graph for the paper.</div>
+<div>Concept dependency graph. Click to navigate.</div>
 </div>
 
 # Why
