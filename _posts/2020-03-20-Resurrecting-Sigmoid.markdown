@@ -934,7 +934,7 @@ Now all that's left is to determine \\(q^\*\\) as a function of \\(\sigma_w\\) a
 $$ q^* = \sigma_w^2 \int~ \mathcal{D}h~ \phi(\sqrt{q^*}h)^2 + \sigma_b^2 $$
 <details><summary>Solution</summary>
     <p>
-    TODO(seems like there's no solution in the latex) 
+    For hard-tanh, \(p(q^*)\) is the probability that a normally distribution set of activations takes on values in hard-tanh's linear regime (recall this is between \(-1\) and \(1\)). Thus we integrate \(\int_{-1}^{1} z dz\) where \(z\) is a zero-mean Gaussian with variance \(q^*\). The integral of the Gaussian is given by the error function. The error function (denoted \(erf\) and defined as the integral of the standard Gaussian) is commonly defined without the leading factor \(\frac{2}{\pi}\), so \(\int z dz = erf(\sqrt(1/2q^*)\) (the parameter \(1/2q^*\) is arrived at by substituting \(t=h/\sqrt{2q^*}\)). Thus \(p(q^*) = erf(\sqrt(1/2q^*)\).
     </p>
 </details>
 **Use this relation to get an implicit expression for \\(q^*\\) in terms of \\(\sigma_w\\) and \\(\sigma_b\\).**
