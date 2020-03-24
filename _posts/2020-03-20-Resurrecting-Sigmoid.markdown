@@ -926,25 +926,20 @@ f. Now that we've calculated the transforms we wanted in terms of \\(p(q^\*)\\),
 g. For hard-tanh networks, the behavior is a bit more complex, but we can calculate it numerically.  As we saw in problem set 2, for the smooth tanh network there is a 1D curve in the \\((\sigma_w, \sigma_b)\\) plane which satisfies criticality.  The same is true for the hard tanh network, as we'll now see.  We are interested in three quantities, all of which are functions of \\(\sigma_w\\) and \\(\sigma_b\\):  \\(q^\*\\), \\(p(q^\*)\\), and \\(\chi\\). We've already seen (in part (c) above) that if we know \\(\sigma_w\\) and \\(p(q^\*)\\), we can easily determine \\(\chi\\).  It turns out that there is also a simple relation between \\(q^\*\\) and \\(p(q^\*)\\). __Show that for the hard tanh network, \\(p(q^\*) = \mathrm{erf}(1/\sqrt{2q^\*})\\).__
 <details><summary>Solution</summary>
     <p>
-    TODO(seems like there's no solution in the latex)
+    For hard-tanh, \(p(q^*)\) is the probability that a normally distribution set of activations takes on values in hard-tanh's linear regime (recall this is between \(-1\) and \(1\)). Thus we integrate \(\int_{-1}^{1} z dz\) where \(z\) is a zero-mean Gaussian with variance \(q^*\). The integral of the Gaussian is given by the error function. The error function (denoted \(erf\) and defined as the integral of the standard Gaussian) is commonly defined without the leading factor \(\frac{2}{\pi}\), so \(\int z dz = erf(\sqrt(1/2q^*)\) (the parameter \(1/2q^*\) is arrived at by substituting \(t=h/\sqrt{2q^*}\)). Thus \(p(q^*) = erf(\sqrt(1/2q^*)\).
     </p>
 </details>
 Now all that's left is to determine \\(q^\*\\) as a function of \\(\sigma_w\\) and \\(\sigma_b\\), and then we can get both \\(q^\*\\) and \\(p(q^\*)\\). Remember that in problem set 2, you derived the relation 
 
 $$ q^* = \sigma_w^2 \int~ \mathcal{D}h~ \phi(\sqrt{q^*}h)^2 + \sigma_b^2 $$
-<details><summary>Solution</summary>
-    <p>
-    For hard-tanh, \(p(q^*)\) is the probability that a normally distribution set of activations takes on values in hard-tanh's linear regime (recall this is between \(-1\) and \(1\)). Thus we integrate \(\int_{-1}^{1} z dz\) where \(z\) is a zero-mean Gaussian with variance \(q^*\). The integral of the Gaussian is given by the error function. The error function (denoted \(erf\) and defined as the integral of the standard Gaussian) is commonly defined without the leading factor \(\frac{2}{\pi}\), so \(\int z dz = erf(\sqrt(1/2q^*)\) (the parameter \(1/2q^*\) is arrived at by substituting \(t=h/\sqrt{2q^*}\)). Thus \(p(q^*) = erf(\sqrt(1/2q^*)\).
-    </p>
-</details>
 **Use this relation to get an implicit expression for \\(q^*\\) in terms of \\(\sigma_w\\) and \\(\sigma_b\\).**
 
-**Using the three relations, and any programming language or numerical package of your choice, plot (in the \\(\sigma_w\\), \\(\sigma_z\\) plane) the three quantities of interest, and identify the critical line \\(\chi = 1\\).**
 <details><summary>Solution</summary>
     <p>
-    For hard-tanh, \(p(q^*)\) is the probability that a normally distribution set of activations takes on values in hard-tanh's linear regime (recall this is between \(-1\) and \(1\)). Thus we integrate \(\int_{-1}^{1} z dz\) where \(z\) is a zero-mean Gaussian with variance \(q^*\). The integral of the Gaussian is given by the error function. The error function (denoted \(erf\) and defined as the integral of the standard Gaussian) is commonly defined without the leading factor \(\frac{2}{\pi}\), so \(\int z dz = erf(\sqrt(1/2q^*)\) (the parameter \(1/2q^*\) is arrived at by substituting \(t=h/\sqrt{2q^*}\)). Thus \(p(q^*) = erf(\sqrt(1/2q^*)\).
+    TODO
     </p>
 </details>
+
 __4.__ Can Gaussian initialization achieve dynamical isometry?
 
 In this problem, we will consider weights with a Gaussian initialization, and use the results from the previous problems to investigate whether dynamical isometry can be achieved for such nets over our two main activation functions of interest (ReLU and hard-tanh).
