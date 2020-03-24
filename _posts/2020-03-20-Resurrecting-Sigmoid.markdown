@@ -936,7 +936,9 @@ $$ q^* = \sigma_w^2 \int~ \mathcal{D}h~ \phi(\sqrt{q^*}h)^2 + \sigma_b^2 $$
 
 <details><summary>Solution</summary>
     <p>
-    TODO
+        $$ q^* = \sigma_w^2 \int~ \mathcal{D}h~ \phi(\sqrt{q^*}h)^2 + \sigma_b^2 $$
+        The hard-tanh nonlinearity squares to unity when \(|\sqrt{q^* h}|\leq 1\), and otherwise squares to \(q^* h^2\).  So we can immediately write
+        $$ q^* = \sigma_w^2 \left[ 1 + \int_{-1/\sqrt{q^*}}^{+1/sqrt{q^*}} \frac{q^*h^2 - 1}{\sqrt{2\pi}} e^{-h^2/2} \right] + \sigma_b^2 $$
     </p>
 </details>
 
