@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "Resurrecting the sigmoid: Theory and practice"
-date:   2020-01-01 6:00:00 -0400
+title:  "Resurrecting the sigmoid: Theory and Practice"
+date:   2020-03-20 6:00:00 -0400
 categories: neural-nets
 authors: ['piyush', 'vinay', 'riley'] 
 blurb: "With the success of deep networks across task ranging from vision to
@@ -25,15 +25,15 @@ Finally, thank you to our students Chris Akers, Brian Friedenberg, Sajel Shah, V
 
 # Why
 
-As deep networks continue to make progress in a variety of tasks such as vision and language processing, it is important to understand how to properly train very deep neural networks with gradient-based methods.  This paper studies, from a rigorous theoretical perspective, which combinations of network weight initializations and network activation functions can result in deep networks which are trainable.  The analysis framework used is applicable to more general network architectures, including deep convolutional neural networks which are state-of-the-art in image classification tasks.  
+As deep networks continue to make progress in a variety of tasks such as vision and language processing, it is important to understand how to properly train very deep neural networks with gradient-based methods.  This paper studies, from a rigorous theoretical perspective, which combinations of network weight initializations and network activation functions can result in deep networks which are trainable. The analysis framework used is applicable to more general network architectures, including deep convolutional neural networks which are state-of-the-art in image classification tasks.  
 
 In this currriculum, we will go through all the background topics necessary to understand the calculations in the paper.  By the end, you will have an understanding of analysis techniques used to study the dynamics of signal propagation in very wide neural networks and be able to perform some simple calculations using random matrix theory.  
 
 <br />
 
-# General resources:
+# General resources
 
-The two foundations on which this paper is based are: (1) random matrix theory (RMT), and (2) 'mean-field' analysis of signal propagation in wide neural networks.  The first resource below is a friendly introduction to RMT, while the second and third are the papers in which the mean-field analysis for deep neural networks was developed.  These are good resources to return to throughout the course, though they cover much more than we need to understand the current paper.  The deep learning book of Goodfellow et al. is a good reference for fundamentals of deep learning.
+The two foundations of this paper are: (1) random matrix theory (RMT), and (2) 'mean-field' analysis of signal propagation in wide neural networks. The first resource below is a friendly introduction to RMT, while the second and third are the papers in which the mean-field analysis for deep neural networks was developed. These are good resources to return to throughout the course, though they cover much more than we need to understand the current paper. The deep learning book of Goodfellow et al. is a good reference for fundamentals of deep learning.
 
 1. Livan, Novaes & Vivo: [Introduction to Random Matrices - Theory and Practice
 ](https://arxiv.org/abs/1712.07903)
@@ -43,7 +43,8 @@ The two foundations on which this paper is based are: (1) random matrix theory (
 4. Goodfellow, Bengio & Courville: [Deep Learning](http://www.deeplearningbook.org)
 
 Other helpful resources:
-1. [Course Outline](/assets/sigmoid/misc/Course Outline.docx)
+1. [Course Outline](/assets/sigmoid/misc/Course Outline.docx) : Outline of
+	 prerequisites for the curriculum.
 
 
 
@@ -78,7 +79,9 @@ We would also like you to have an overview of the paper's structure:
 **Required Reading** 
 
 Prerequisite: 
-For those of you that aren’t familiar with deep learning, please read the following sections from the [Deep Learning book](http://www.deeplearningbook.org):
+For those of you that aren’t familiar with deep learning, please read the following sections from the [Deep Learning book](http://www.deeplearningbook.org).
+ 
+Preliminaries:
 - 2.7 (Eigendecomposition)
 - 2.8 (Singular value decomposition)
 - 3.2 (Random variables)
@@ -88,7 +91,6 @@ For those of you that aren’t familiar with deep learning, please read the foll
 - 5.7 (Supervised learning algorithms)
 
 Initialization: 
-From the [Deep Learning book](http://www.deeplearningbook.org)
 - 8.2 (Challenges in neural network optimization)
 - 8.4 (Parameter initialization strategies)
 
@@ -130,9 +132,10 @@ Once you understand the mean-field analysis framework, you will have a good foun
 
 **Questions**:
 
-The full problem set, from which the below problems are taken, is [here](/assets/sigmoid/problem-sets/pdfs/1.pdf).
+For each week, we have a full problem set, which tries to test and improve your
+understanding of the topics covered this week. This week's problem set is [here](/assets/sigmoid/problem-sets/pdfs/1.pdf). In this section we highlight couple of problems which we __highly recommend__.
 
-1. Problem 2 from full set: **The mean field approximation**
+__1.__  Problem 2 from full set: **The mean field approximation**
 
 In this problem, we use the knowledge we gained in problem 1 to properly choose to initialize the weights and biases according to \\(W^l \sim \mathcal{N}(0, \sigma_w^2/N)\\) and \\(b^l \sim \mathcal{N}(0, \sigma_b^2)\\). We'll investigate some techniques that will be useful in understanding precisely how the network's random initialization influences what the net does to its inputs; specifically, we'll be able to take a look at how the _depth_ of the network together with the initialization governs the propagation of an input point as it flows forward through the network's layers.
 
@@ -150,14 +153,14 @@ Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the d
 </details>
 
 
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         \(q^l\) is the second moment of the empirical distribution of layer \(l\) activations, and hence approximates the variance. Indeed, as \(N \to \infty\), the empirical average can be written \(q^l = \mathbb{E} \left( (h^l_i)^2 \right) = \text{Var}(h^l_i)\).
     </p>
 </details>
 
 c. **Calculate the variance of an individual neuron's pre-activations, that is, the variance of \\(h_i^l\\).**  Your answer should be a recurrence relation, expressing this variance in terms of \\(h^{l-1}\\) (and the parameters \\(\sigma_w\\) and \\(\sigma_b\\)).
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         Because the means of both the weight and bias distributions are zero, to calculate the variance we just need to calculate the second moment.  We can use the fact that the weights and biases are initialized independently, so that the variance of \(h_i^l\) is the sum of a bias term and a variance term:
             $$ \begin{align*}
@@ -172,7 +175,7 @@ c. **Calculate the variance of an individual neuron's pre-activations, that is, 
 </details>
 
 d. Now consider the limit that the number of hidden neurons, \(N\), approaches infinity. **Use the central limit theorem to argue that in this limit, the pre-activations will be zero-mean Gaussian distributed. Be explicit about the conditions under which this result holds.**
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         The basic idea here is to use the central limit theorem since the pre-activation is a sum of a large number of random variables, i.e.:
             $$ h_i^l = \sum_j^N W_{ij}^l x_j^{l-1} + b_i^l $$
@@ -191,7 +194,7 @@ d. Now consider the limit that the number of hidden neurons, \(N\), approaches i
 </details>
 
 e. With this zero-mean Gaussian approximation of \\(q^l\\), we have a single parameter characterizing this aspect of signal propagation in the net: the variance, \\(q^l\\), of individual neuronal activations (a proxy for squared activation vector lengths). Let's now look at how this variance changes from layer to layer, by deriving the relationship between \\(q^l\\) and \\(q^{l - 1}\\). In part (c), your answer should have included a term \\(\langle (x^{l-1})^2 \rangle\\). **In terms of the activation function \\(\phi\\) and the variance \\(q^{l-1}\\), write this expectation value as an integral over the standard Gaussian measure.**
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         Since \(x_i^{l-1} = \phi(h_i^{l-1})\), we can write the variance \(\langle (x^{l-1})^2 \rangle\) as 
             $$ \begin{align*}
@@ -210,28 +213,28 @@ e. With this zero-mean Gaussian approximation of \\(q^l\\), we have a single par
 </details>
 
 f. **Use this result to write a recursion relation for \\(q^l\\) in  terms of \\(q^{l-1}\\), \\(\sigma_w\\), and \\(\sigma_b\\).**
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         We just plug in, to get 
             $$ q^l = \sigma_w^2 \int_\mathbb{R}~dy ~\phi(y\sqrt{q^{l-1}})^2  ~\rho(y) + \sigma_b^2 $$
     </p>
 </details>
 
-2. Problem 3 from full set: Fixed points and stability
+__2.__ Problem 3 from full set: Fixed points and stability
 
 In the previous problem, we found a recurrence relation relating the length of a vector at layer \\(l\\) of a network to the length of the vector at the previous layer, \\(l-1\\) of the network.  In this problem, we are interested in studying the properties of this recurrence relation.  In the _Resurrecting the sigmoid_ paper, the results of this problem are used to understand at which bias point to evaluate the Jacobian of the input-output map of the network.
 
 Note that in this problem, we are just taking the recurrence relation as a given, i.e. we do not need to worry about random variables or probabilities; all of that went into determining the recurrence relation. Instead, we'll use tools from the theory of dynamical systems to investigate the properties - in particular, the asymptotics - of this recurrence relation.
 
 a. A simple example of a dynamical system is a recurrence defined by some initial value \\(x_0\\) and a relation \\(x_n = f(x_{n-1})\\) for all \\(n>0\\).  This system defines the resulting sequence \\(x_n\\).  Sometimes, these systems have _fixed points_, which are values \\(x^\*\\) such that \\(f(x^\*) = x^\*\\). __If the value of the system, \\(x_m\\), at some time-step \\(m\\) , happens to be a fixed point \\(x^*\\), what is the subsequent evolution of the system?__
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         Since \(f(x^*) = x^*\), for all times greater than \(m\), the system simply stays at \(x^*\).
     </p>
 </details>
 
 b. **For the recurrence relation you derived in the previous problem, what is the equation which a fixed-point of the variance,** \\(q^\*\\)**, must satisfy? Under some conditions (i.e. for some values of** \\(\sigma_w\\) **and \\(\sigma_b\\)), the value** \\(q^\*=0\\) **is a fixed point of the system.  What are these conditions?**
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         A fixed point has to satisfy 
             $$ q^* = \sigma_w^2 \int_\mathbb{R} \phi \left( \rho \sqrt{q^*} \right)^2 \text{ d}\rho + \sigma_b^2 $$
@@ -240,7 +243,7 @@ b. **For the recurrence relation you derived in the previous problem, what is th
 </details>
 
 c. Now let us be concrete, and look at the recurrence relation in the special case of a nonlinearity \\(\phi(h)\\) which is both monotonically increasing and satisfies \\(\phi(0) = 0\\).  Note that both of the nonlinearities considered in the paper we are studying, the \\(\tanh\\) and ReLU nonlinearities, satisfy this property. **Show that those two properties (monotonicity and \\(\phi(0)=0\\)) imply that the length map \\(q^l(q^{l-1})\\) is monotonically increasing. What is the maximum number of times any concave function can intersect the line \\(y = x\\)?  What does this imply about the number of fixed points the length map \\(q^l(q^{l-1})\\) can have?**
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         To prove that the function is monotonically increasing with its argument \(q\), we take the derivative:
             $$ \begin{align*}
@@ -255,7 +258,7 @@ c. Now let us be concrete, and look at the recurrence relation in the special ca
 </details>
 
 d. Let's be concrete now and consider the nonlinearity to be a ReLU. **Compute (analytically) the length map** \\(q^l = f(q^{l-1})\\)**, which will also depend on** \\(\sigma_w\\) **and** \\(\sigma_b\\) **.  For what values of** \\(\sigma_w\\) **and** \\(\sigma_b\\) **does the system have fixed point(s)? How does the value of the fixed point depend on** \\(\sigma_w\\) **and** \\(\sigma_b\\)?
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         Starting from 
             $$ f(q) = \sigma_w^2 \int_\mathbb{R}~\phi(\rho\sqrt{q})^2~d\rho + \sigma_b^2 $$
@@ -273,7 +276,7 @@ d. Let's be concrete now and consider the nonlinearity to be a ReLU. **Compute (
 </details>
 
 e. Now let's consider the sigmoid nonlinearity \\(\phi(h) = \tanh(h)\\).  In this case the length map cannot be computed analytically, but it can be done numerically. **Numerically plot the length map, \\(q^l=f(q^{l-1})\\), for a few values of \\(\sigma_w\\) and \\(\sigma_b\\) in the following regimes: (i) \\(\sigma_b=0\\) and \\(\sigma_w < 1\\), (ii) \\(\sigma_b = 0\\) and \\(\sigma_w > 1\\), and (iii) \\(\sigma_b > 0\\).  Describe qualitatively the fixed points of the map in each regime.**
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         The following Python code should work:
             <pre>
@@ -297,7 +300,7 @@ e. Now let's consider the sigmoid nonlinearity \\(\phi(h) = \tanh(h)\\).  In thi
 </details>
 
 f. Let’s now talk about the stability of fixed points. In a dynamical system, once the system reaches (or starts at) a fixed point, by definition it can never leave. But what happens if the system gets or starts near a fixed point?  In real physical systems, this question is very relevant because physical systems almost always have some noise which pushes the system away from a fixed point. In general, the fixed point can be either stable or unstable. For a stable fixed point, initializing the system near the fixed point will result in behavior which converges to the fixed point, i.e reducing the magnitude of the perturbation away from the fixed point. Conversely, for an unstable fixed point, the system initialized nearby will be repelled from the fixed point. **Use the derivative of the length map at a fixed point to derive conditions on the stability of the fixed point.**
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         If the absolute value of the derivative \(\frac{df}{dx}\), evaluated at the fixed point \(x^*\), is less than \(1\), then the system is stable.  This can be seen from considering initializing the system near the fixed point, say at \(x^* + \Delta x\).  After going through the length map, the value will be 
         $$ \begin{aligned}
@@ -312,14 +315,14 @@ f. Let’s now talk about the stability of fixed points. In a dynamical system, 
 </details>
 
 g. With this understanding of stability, revisit your result in part (e) for the \\(\tanh\\) nonlinearity. **Specifically, discuss the stability of the fixed points in each of the three regimes.  You can estimate the derivative of the length map by looking at the graphs.**
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         See the italicized paragraph in the solutions above, from the transient chaos paper.  In regime (i), there is a single fixed point, \(q^*=0\), and it is stable.  In regime (ii), there are two fixed points, \(q^*=0\) (unstable) and some other positive value (stable), and in regime (iii), there is only a positive fixed point, which is stable.
     </p>
 </details>
 
 h. **Do the same stability analysis for the ReLU network.**
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         In the \(\sigma_b = 0\) case, where the only fixed point is at \(q=0\), that point is stable if \(\sigma_w < \sqrt{2}\) (because then the slope of the line is less than unity) and unstable if \(\sigma_w > \sqrt{2}\).  Even for non-zero \(\sigma_b\), the fixed point (which will now be non-zero) is stable if \(\sigma_w < \sqrt{2}\).  
 
@@ -331,7 +334,7 @@ i. **(Optional) You should have found above that the both the ReLU and** \\(\tan
 <details><summary>Hint</summary>
     You can just draw a picture for this one. Consider using the fact that the length map is concave, which we discussed in part c).
 </details>
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         Having two stable fixed points would mean having two intersection points with the line \(y=x\) at which the slope of the function is less than unity.  But this means that in both cases we approach the function from above, which means that there must have been a third intersection point in the middle.  But we already proved that because of the concavity of the length map, the system can have at most two fixed points.
         <a
@@ -368,7 +371,7 @@ href="../assets/sigmoid/problem-sets/source/1/stable_fixed_point.png">[stable fi
 The full problem set, from which the problems below are taken, is [here](/assets/sigmoid/problem-sets/pdfs/2.pdf).  
 
 
-1. Avoided crossings in the spectra of random matrices
+__1.__ Avoided crossings in the spectra of random matrices
 
 In the first DFL session’s intro to RMT, we mentioned that eigenvalues of random matrices tend to repel each other. Indeed, as one of the recommended textbooks on RMT states, this interplay between confinement and repulsion is the physical mechanism at the heart of many results in RMT. This problem explores that statement, relating it to a concept which comes up often in physics: the avoided crossing.
 
@@ -380,7 +383,7 @@ $$ \begin{pmatrix}
 \end{pmatrix} $$
 
 i. Since this matrix is symmetric, its eigenvalues will be real. **What are its eigenvalues?**
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         The polynomial to solve for the eigenvalues \(\lambda\) is 
             $$ \begin{eqnarray}
@@ -392,7 +395,7 @@ So the eigenvalues are \(\pm \sqrt{\Delta^2 + J^2}\).
 </details>
 
 ii. To see the avoided crossing here, **plot the eigenvalues as a function of \\(\Delta\\), first for \\(J=0\\), then for a few non-zero values of \\(J\\).**
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         Here is an example graph, showing \(J\) values \(0\), \(1\), and \(2\). The blue line shows no gap when \(J = 0\), and the gap opens up when \(J\) is non-zero.
         <a
@@ -401,7 +404,7 @@ href="../assets/sigmoid/problem-sets/source/2/avoided_crossing.png">[avoided cro
 </details>
 
 iii. You should see a gap (i.e. the minimal distance between the eigenvalue curves) open up as \\(J\\) becomes non-zero. **What is the size of this gap?**
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         To get the gap, evaluate the expression for the eigenvalues when \(\Delta\) is zero, and you find that the gap is \(2|J|\).
     </p>
@@ -415,7 +418,7 @@ $$ \begin{pmatrix}
 \end{pmatrix}. $$
 
 In terms of \(A\), \(C\), and \(D\), **what is the absolute value of the difference between the two eigenvalues of this matrix?**
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         The difference in eigenvalues won't shift if we add a multiple of the identity matrix to our original matrix, meaning that the eigenvalue difference is the same as that of the matrix  
             $$ \begin{pmatrix} 
@@ -430,7 +433,7 @@ In terms of \(A\), \(C\), and \(D\), **what is the absolute value of the differe
 c. Now let’s make the matrix a random matrix.  We will take \\(A\\), \\(C\\), and \\(D\\) to be independent random variables, where the diagonal entries \\(A\\) and \\(D\\) are distributed according to a normal distribution with mean zero and variance one,  while the off-diagonal entry \\(C\\) is also a zero-mean Gaussian but with a variance of \\(\frac{1}{2}\\).
 
 i. **Use the formula you derived in the previous part of the question to calculate the probability distribution function for the spacing between the two eigenvalues of the matrix.**
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         From the previous part we know the spacing as a function of the random variables \(A\), \(B\), \(C\):
             $$ s = \sqrt{4C^2 + \left( A - D \right) ^2} $$
@@ -470,14 +473,14 @@ i. **Use the formula you derived in the previous part of the question to calcula
 </details>
 
 ii. **What is the behavior of this pdf at zero?  How does this relate to the avoided crossing you calculated earlier?**
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         Clearly the pdf we calculated above is exactly zero at \(s=0\), and grows linearly with \(s\).  This absence of spacings at zero is the same phenomenon as the avoided crossing noted above for deterministic matrices.  Another way to see this is to note that from the first part of the problem, the only way to have a spacing of zero is to have the diagonal elements equal each other while the off-diagonal element needs to be zero.  The set of points satisfying this condition is a line in the full 3D space of points, so will have a very low probability of occurring.
     </p>
 </details>
 
 d. **Verify using numerical simulation that the pdf you found in the previous part is correct.**
-<details><summary>Solution></summary>
+<details><summary>Solution</summary>
     <p>
         The following Python code should work; by generating plots using the two functions, we can verify that they match.
             <pre>
@@ -536,7 +539,7 @@ It is tough to find an exposition of free probability theory (i.e., the theory o
 
 The full problem set, from which the below problems are taken, is [here](/assets/sigmoid/problem-sets/pdfs/3.pdf).
 
-1. Why we need free probability
+__1.__ Why we need free probability
 
 In the upcoming lectures, we will encounter the concept of free independence of random matrices.  As a reminder, in standard probability theory (of scalar-valued random variables), two random variables \\(X\\) and \\(Y\\) are said to be independent if their joint pdf is simply the product of the individual marginals, i.e.
 
@@ -601,7 +604,7 @@ e. Now let \\(C\\) be a matrix sampled from ensemble 2.  Calculate the spectral 
 </details>
 Notice that the answers you got in the previous two parts were different, even though the underlying matrices that were being added had the same spectral density and independent entries.
 
-2. Using the tools of free probability theory
+__2.__ Using the tools of free probability theory
 
 From the last problem, you learned that if you're given two different random matrix ensembles, and you know the spectral density of the eigenvalues of each one, that might not be enough to determine the eigenvalue distribution of the sum (or product) of the two random matrices, _even if all of the entries of the two matrices are mutually independent!_ As we mentioned in the last problem, the (stronger) condition that we are after is known as _free independence_.  In general, proving that two matrix ensembles are "free" (freely independent) is quite tough, so we will not do that here.  Instead, we will look at the tools we use to do calculations _assuming_ we have random matrix ensembles which are freely independent.
 
@@ -747,7 +750,7 @@ With this result, we know that if we multiply the GOE matrix by \(\sqrt{2}\), th
 
 The full problem set, from which the below problems are taken, is [here](/assets/sigmoid/problem-sets/pdfs/4.pdf).
 
-1. Set up
+__1.__ Set up
 In this problem set, we perform the main calculations from the  _Resurrecting the Sigmoid_ paper.  The ultimate aim is to look for conditions under which we can achieve _dynamical isometry_, the condition that all of the singular values of the network's Jacobian have magnitude \\(1\\).  Thus, the problems in this set are all aimed at calculating the eigenvalue spectral density \\(\rho_{JJ^T}(\lambda)\\)  of nets' Jacobians for specific choices of nonlinearities and weight-matrix initializations. We accomplish this by using the rule we learned from free probability:  \\(S\\)-transforms of freely-independent matrix ensembles multiply under matrix multiplication.  Following this logic, we will calculate \\(S\\)-transforms for the matrices \\(WW^T\\) and \\(D^2\\), combine these results to arrive at \\(S_{JJ^T}\\), and from that calculate \\(\rho_{JJ^T}(\lambda)\\).  In this problem set, as in the paper, we do not prove that the matrices are freely independent, but instead take that as an assumption.
 
 Recall that our neural network is defined by the relations:
@@ -829,7 +832,7 @@ The upshot of this problem is that we need to calculate the quantities \\(S_{WW^
     </p>
 </details>
 
-3. \\(S_{D^2}\\) for ReLU and hard-tanh networks
+__3.__ \\(S_{D^2}\\) for ReLU and hard-tanh networks
 
 In this problem, we turn to networks with nonlinearities. We look at two nonlinearities here, the ReLU function and a piecewise approximation to the sigmoid known as the hard-tanh.  These functions are defined as follows: 
 
@@ -923,7 +926,6 @@ f. Now that we've calculated the transforms we wanted in terms of \\(p(q^\*)\\),
 g. For hard-tanh networks, the behavior is a bit more complex, but we can calculate it numerically.  As we saw in problem set 2, for the smooth tanh network there is a 1D curve in the \\((\sigma_w, \sigma_b)\\) plane which satisfies criticality.  The same is true for the hard tanh network, as we'll now see.  We are interested in three quantities, all of which are functions of \\(\sigma_w\\) and \\(\sigma_b\\):  \\(q^\*\\), \\(p(q^\*)\\), and \\(\chi\\). We've already seen (in part (c) above) that if we know \\(\sigma_w\\) and \\(p(q^\*)\\), we can easily determine \\(\chi\\).  It turns out that there is also a simple relation between \\(q^\*\\) and \\(p(q^\*)\\). __Show that for the hard tanh network, \\(p(q^\*) = \mathrm{erf}(1/\sqrt{2q^\*})\\).__
 <details><summary>Solution</summary>
     <p>
-		TODO(PVR): Can we add something about this?  
     TODO(seems like there's no solution in the latex)
     </p>
 </details>
@@ -932,7 +934,6 @@ Now all that's left is to determine \\(q^\*\\) as a function of \\(\sigma_w\\) a
 $$ q^* = \sigma_w^2 \int~ \mathcal{D}h~ \phi(\sqrt{q^*}h)^2 + \sigma_b^2 $$
 <details><summary>Solution</summary>
     <p>
-		TODO(PVR): Can we add something about this?
     TODO(seems like there's no solution in the latex) 
     </p>
 </details>
@@ -944,7 +945,7 @@ $$ q^* = \sigma_w^2 \int~ \mathcal{D}h~ \phi(\sqrt{q^*}h)^2 + \sigma_b^2 $$
     For hard-tanh, \(p(q^*)\) is the probability that a normally distribution set of activations takes on values in hard-tanh's linear regime (recall this is between \(-1\) and \(1\)). Thus we integrate \(\int_{-1}^{1} z dz\) where \(z\) is a zero-mean Gaussian with variance \(q^*\). The integral of the Gaussian is given by the error function. The error function (denoted \(erf\) and defined as the integral of the standard Gaussian) is commonly defined without the leading factor \(\frac{2}{\pi}\), so \(\int z dz = erf(\sqrt(1/2q^*)\) (the parameter \(1/2q^*\) is arrived at by substituting \(t=h/\sqrt{2q^*}\)). Thus \(p(q^*) = erf(\sqrt(1/2q^*)\).
     </p>
 </details>
-4. Can Gaussian initialization achieve dynamical isometry?
+__4.__ Can Gaussian initialization achieve dynamical isometry?
 
 In this problem, we will consider weights with a Gaussian initialization, and use the results from the previous problems to investigate whether dynamical isometry can be achieved for such nets over our two main activation functions of interest (ReLU and hard-tanh).
 
@@ -1078,7 +1079,7 @@ $$ m_2 = m_1^2 \cdot \frac{L + p(q^*)}{p(q^*)} $$
 </details>
 <br />
 
-# 6 Paper Experiments & Results, Future / Related Work
+# 6 Experimental Results, Future Work
 
 **Motivation**: To wrap up our study of this paper, we'll replicate some of their experiments, programatically validating the theoretical results we derived above. We've provided some starter code [here](https://drive.google.com/open?id=1ocuk_mH4fJrFkDKhMT4ZdAqIMIgnFDet) in an IPython notebook.
 
