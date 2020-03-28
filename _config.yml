@@ -39,6 +39,18 @@ bhairav:
     name: Bhairav Mehta
     email: bhairavmehta95@gmail.com
     web: https://bhairavmehta95.github.io
+piyush:
+    name: Piyush Patil
+    email: piyush.patil210@gmail.com
+    web:
+vinay:
+    name: Vinay Ramasesh
+    email: vvr1590@gmail.com
+    web:
+riley:
+    name: Riley Edmunds
+    email: rileyedmunds@gmail.com
+    web:
 
 # Build settings
 markdown:       kramdown

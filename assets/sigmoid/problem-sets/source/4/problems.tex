@@ -1,0 +1,221 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{soul}
+
+\title{Depth First Learning Problem Set 1: Signal propagation}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1: NN Signal propagation framework}
+
+In this problem, we will work with the basic framework for analyzing signal propagation in a feedforward neural networks as the width of the network's hidden layers grows towards infinity.  
+
+To set up the notation, let $x^0 \in \mathbb{R}^{di}$ be the (vector-valued) input to the network.  Each layer, $l$, of the network, is a function from $\mathbb{R}^N \rightarrow \mathbb{R}^N$ defined via the two equations:
+\begin{eqnarray}
+h^l &=& W^l x^{l-1} + b^l \\
+x^l &=& \phi(h^l)
+\end{eqnarray}
+Here $x^{l-1}$ is the input to the layer, $x^l$ is the output, $W^l$ is an $N\times N$ matrix containing the layer's weights, and $b^l$ is an $N$-dimensional vector containing the layer's biases.  The function $\phi$ is the nonlinearity (e.g., sigmoid, ReLU, etc.) used by the network.  We sometimes call the inputs to the nonlinearity ($h^l$) the \emph{pre-activations}, and we call the outputs of the nonlinearity (which are also the outputs of the layer) the \emph{activations}.
+
+Note here that we are considering a specific neural-netowrk architecture in which the number of hidden units does not vary from layer to layer, i.e. each layer is $N$-dimensional.  
+
+\begin{enumerate}[label=(\alph*)]
+\item To initialize the network, we usually draw the weights and biases randomly from some distribution.  Let's ignore the bias term for now (i.e. set $b^l=0$ for all layers $l$).  Since the pre-activations $h^l$ are functions of the random variables, they themselves are (vector-valued, $N$-dimensional) random variables. We want to understand what we can say about the distribution of the $h^l$'s as we move through layers of the network, i.e. as a function of $l$.  
+
+Suppose we initialize each weight matrix $W^l$ from a zero-mean Gaussian with variance $\sigma^2$, i.e. $W^l \sim \mathcal{N}(0, \sigma^2)$. For simplicity, assume the nonlinearity is just the identity function.  We will relax this assumption in the subsequent problems.  
+
+
+\textbf{What are the mean and variance of the distribution of a single-component, $h^l_i$ of $h^l$, given the mean and the variance of the the previous layer's preactivations ($h^{l-1}_i$)?}
+
+
+\item You should find in the previous part that the mean of the distribution of $h^l_i$ is always zero, but that each layer of the network multiplies the variance of the distribution by a factor of $N\sigma^2$.  Typically, the variance of the distribution of pre-activations is a proxy for how much of the nonlinearity we're making use of (e.g. for the sigmoid, if the variance is very small, we're basically in the linear region of the nonlinearity).  To be able to vary the number of layers in a network and not have the behavior change too much, we'd like to have an initialization strategy which keeps the variance of the $h^l$ distribution the same as we change the number of layers.  Clearly, our current strategy ($W^l \sim \mathcal{N}(0, \sigma^2)$) doesn't accomplish this. 
+
+\textbf{Suggest a simple modification of the initialization strategy which would achieve this goal.}
+
+
+\item Now let's add back in the bias term.  Imagine that we initialize according to a simple zero-mean Gaussian, where the variance (as for the weights in part (a)) was independent of the number of hidden units $N$, that is $b^l \sim \mathcal{N}(0, \sigma_b^2)$.  
+
+\textbf{Does this initialization suffer from the same problem as the weight initialization described in part (b)?  If so, how can we fix it?}
+
+\end{enumerate}
+
+\section*{Problem 2: $N\rightarrow\infty$ and the mean-field approximation}
+
+In this problem, we use the knowledge we gained in problem 1 to properly choose to initialize the weights and biases according to $W^l \sim \mathcal{N}(0, \sigma_w^2/N)$ and $b^l \sim \mathcal{N}(0, \sigma_b^2)$. We'll investigate some techniques that will be useful in understanding precisely how the network's random initialization influences what the net does to its inputs; specifically, we'll be able to take a look at how the \textit{depth} of the network together with the initialization governs the propagation of an input point as it flows forward through the network's layers.
+
+\begin{enumerate}[label=(\alph*)]
+\item \textbf{A natural property of input points to study as the input flows through the net layer by layer is its length. Intuitively, this is closely related to how the net transforms the input space, and to how the depth of the net relates to that transformation. Compute the length $q^l$ of the activation vector outputted by layer $l$. When considering non-rectangular nets, where layer $l$ has length $N_l$, we want to distinguish this activation norm from the width of individual layers, so what's a more appropriate quantity we can track to understand how the lengths of activation vectors change in the net?}
+
+\item \textbf{What probabilistic quantity of the neuronal activations does $q^l$ approximate (with the approximation improving for larger $N$)?}
+
+\textit{Hint: Recall that all neuronal activations $h^l_i$ are zero-mean, and consider the definition of $q^l$ from part (a) in terms of the empirical distribution of $h^l_i$.}
+
+\item \textbf{Calculate the variance of an individual neuron's pre-activations, that is, the variance of $h_i^l$.  Your answer should be a recurrence relation, expressing this variance in terms of $h^{l-1}$ (and the parameters $\sigma_w$ and $\sigma_b$}).
+
+(Note 1: You basically did this in problem 1; the differences here are just that the weights are initialized slightly differently and that the bias term exists, and now the noninearity is not just the identity)
+
+(Note 2: This part of the problem does not yet assume that $N\rightarrow \infty$)
+
+\item Now consider the limit that the number of hidden neurons, $N$, approaches infinity.  
+
+\textcolor{red}
+
+\textbf{Use the central limit theorem to argue that in this limit, the pre-activations will be zero-mean Gaussian distributed. Be explicit about the conditions under which this result holds.}
+
+\item With this zero-mean Gaussian approximation of $q^l$, we have a single parameter characterizing this aspect of signal propagation in the net: the variance, $q^l$, of individual neuronal activations (a proxy for squared activation vector lengths). Let's now look at how this variance changes from layer to layer, by deriving the relationship between $q^l$ and $q^{l - 1}$.
+
+\textbf{In part (a), your answer should have included a term $\langle (x^{l-1})^2 \rangle$.  In terms of the activation function $\phi$ and the variance $q^{l-1}$, write this expectation value as an integral over the standard Gaussian measure.}
+
+\textbf{Use this result to write a recursion relation for $q^l$ in  terms of $q^{l-1}$, $\sigma_w$, and $\sigma_b$}.
+
+\end{enumerate}
+
+\section*{Problem 3: Fixed points and stability}
+
+In the previous problem, we found a recursion relation relating the length of a vector at layer $l$ of a network to the length of the vector at the previous layer, $l-1$ of the network.  In this problem, we are interested in studying the properties of this recursion relation.  In the \emph{Resurrecting the sigmoid} paper, the results of this problem are used to understand at which bias point to evaluate the Jacobian of the input-output map of the network.  For more information on this topic, see either of the two papers which are suggested reading for this week:
+\begin{itemize}
+	\item \emph{Exponential expressivity in deep neural networks through transient chaos}
+	\item \emph{Deep information propagation}
+\end{itemize} 
+
+Note that in this problem, we are just taking the recursion relation as a given, i.e. we do not need to worry about random variables or probabilities; all of that went into determining teh recursion relation.  
+
+\begin{enumerate}[label=(\alph*)]
+\item A simple example of a dynamical system is a recurrence defined by some initial value $x_0$ and a relation $x_n = f(x_{n-1})$ for all $n>0$.  This system defines the resulting sequence $x_n$.  Sometimes, these systems have \emph{fixed points}, which are values $x^*$ such that $f(x^*) = x^*$.
+
+\textbf{If the value of the system, $x_m$, at some time-step $m$, happens to be a fixed point $x^*$, what is the subsequent evolution of the system?}
+
+\item \textbf{For the recurrence relation you derived in the previous problem, what is the equation which a fixed-point of the variance, $q^*$, must satisfy?}  
+
+\textbf{Under some conditions (i.e. for some values of $\sigma_w$ and $\sigma_b$), the value $q^*=0$ is a fixed point of the system.  What are these conditions?}
+
+\item Now let us be concrete, and look at the recurrence relation in the special case of a nonlinearity $\phi(h)$ which is both monotonically increasing and satisfies $\phi(0) = 0$.  Note that both of the nonlinearities considered in the paper we are studying, the $tanh$ and ReLU nonlinearities, satisfy this property.  
+
+\textbf{Show that those two properties (monotonicity and $\phi(0)=0$) imply that the length map $q^l(q^{l-1})$ is monotonically increasing.}
+
+\textbf{Optional: Show that these two properties imply that the length map $q^l(q^{l-1})$ is a concave function.} 
+
+(Note: We have not managed to prove this ourselves (and not for lack of trying!), so feel free to skip)
+
+\textbf{What is the maximum number of times any concave function can intersect the line $y = x$?  What does this imply about the number of fixed points the length map $q^l(q^{l-1})$ can have?}
+
+\item Let's be concrete now and consider the nonlinearity to be a ReLU.  
+
+\textbf{Compute (analytically) the length map $q^l = f(q^{l-1})$, which will also depend on $\sigma_w$ and $\sigma_b$.  For what values of $\sigma_w$ and $\sigma_b$ does the system have fixed point(s)? How does the value of the fixed point depend on $\sigma_w$ and $\sigma_b$? }
+
+
+\item Now let's consider the sigmoid nonlinearity $\phi(h) = tanh(h)$.  In this case the length map cannot be computed analytically, but it can be done numerically.  
+
+\textbf{Numerically plot the length map, $q^l=f(q^{l-1})$, for a few values of $\sigma_w$ and $\sigma_b$ in the following regimes: (i) $\sigma_b=0$ and $\sigma_w < 1$, (ii) $\sigma_b = 0$ and $\sigma_w > 1$, and (iii) $\sigma_b > 0$.  Describe qualitatively the fixed points of the map in each regime.}
+
+\item Let’s now talk about the stability of fixed points. In a dynamical system, once the system reaches (or starts at) a fixed point, by definition it can never leave. But what happens if the system gets or starts near a fixed point?  In real physical systems, this question is very relevant because physical systems almost always have some noise which pushes the system away from a fixed point.  
+
+In general, the fixed point can be either stable or unstable.  For a stable fixed point, initializing the system near the fixed point will result in behavior which converges to the fixed point, i.e reducing the magnitude of the perturbation away from the fixed point.  Conversely, for an unstable fixed point, the system initialized nearby will be repelled from the fixed point.  
+
+\textbf{Relate the stability of a particular fixed point to the derivative of the length map evaluated at that fixed point.}
+
+\item With this understanding of stability, revisit your result in part (e) for the $tanh$ nonlinearity.
+
+\textbf{Specifically, discuss the stability of the fixed points in each of the three regimes.  You can evaluate the derivative of the length map by looking at the graphs.}
+
+\item \textbf{Do the same stability analysis for the ReLU network.} 
+
+\item \textbf{(Optional) You should have found above that the both the ReLU and $tanh$ systems never had more than one stable fixed point.  Show that this is a consequence of the concavity of the length map.}
+
+(Hint: You can just draw a picture for this one)
+
+\end{enumerate}
+
+\section*{Problem 4: Correlation maps}
+
+In the previous problem, we discovered a very interesting property of wide neural networks: the existence of fixed points of activation vector lengths.  In this problem, we will explore a similar analysis for correlations between activations due to different inputs to the network and connect this to vanishing/exploding gradients.
+
+Define the correlation $q_{12}^l$ between two inputs $x^{0,1}$ and $x^{0,2}$ at the $l^{th}$ layer of the network via the following inner product:
+\begin{equation}
+    q^l_{12} = \frac{1}{N_L} \sum_{i=1}^{N_l} h_i^l(x^{0,1}) h_i^l(x^{0,2}),
+\end{equation}
+where the notation $h_i^l(x^{0,1})$ means the pre-activation of the $i^{th}$ neuron of the $l^{th}$ layer of the network given the input $x^{0,1}$.  
+
+\begin{enumerate}[label=(\alph*)]
+
+\item As in the previous problem, though the quantity $q_{12}^l$ is defined for a specific realization of the network, averaged over all neurons, we can use the self-averaging assumption treat this as an estimate of a quantity which characterizes a single neuron but averaged over realizations of the network.  
+
+\textbf{What is this quantity?  (It is a quantity that comes up quite often when dealing with correlated random variables)}
+
+\item Now we want to find a recurrence relation to describe the behavior of $q_{12}^l$ as we go through the network.  
+
+\textbf{Show that}
+\begin{align*}{q_{12}^{l}=\mathcal{C}\left(c_{12}^{l-1}, q_{11}^{l-1}, q_{22}^{l-1} | \sigma_{w}, \sigma_{b}\right) \equiv \sigma_{w}^{2} \int \mathcal{D} z_{1} \mathcal{D} z_{2} \phi\left(u_{1}\right) \phi\left(u_{2}\right)+\sigma_{b}^{2}} \\ {u_{1}=\sqrt{q_{11}^{l-1}} z_{1}, \quad u_{2}=\sqrt{q_{22}^{l-1}}\left[c_{12}^{l-1} z_{1}+\sqrt{1-\left(c_{12}^{l-1}\right)^{2}} z_{2}\right]},\end{align*}
+\textbf{where $\mathcal{D} z_{1}$ and $\mathcal{D} z_{2}$ indicate integration with respect to two independent standard normal (Gaussian) variables $z_1$ and $z_2$.  Here $c_{12}^l = q_{12}^l (q^l_{11} q^l_{22})^{-1/2}$ is known as the correlation coefficient.}
+
+(Hint: don't be scared by the ugly-looking definitions of $u_1$ and $u_2$.  This is just done so that we can have the integral over independent Gaussians.  Once you have an expression in terms of dependent Gaussians, a simple change-of-variables should get the result you see above.)
+
+\item Once you have arrived at the above recurrence relation, note that you have a dynamical system which determines the value of $q_{12}^l$ in terms of $q_{12}^{l-1}$, $q_{11}^{l-1}$, and $q_{22}^{l-1}$.  You know from the previous problem, however, that $q_{11}^{l-1}$ and $q_{22}^{l-1}$ converge to fixed points.  Though you'll have to take it on faith for now, it turns out that the convergence of these values to their fixed point happens quickly (compared to the dynamics of $q_{12}^l$), so it is a reasonable approximation to just replace $q_{11}^{l-1}$ and $q_{22}^{l-1}$ with $q^*$.
+
+Also, in the following we will be interested not in $q_{12}^l$ itself but instead $c_{12}^l$ (defined above).
+
+\textbf{In terms of} $\mathcal{C}\left(c_{12}^{l-1}, q_{11}^{l-1}, q_{22}^{l-1} | \sigma_{w}, \sigma_{b}\right)$\textbf{, what is the recurrence relation for the quantity $c_{12}^l$?}
+
+\item \textbf{What are the allowed values of $c_{12}^l$?}
+
+\item It turns out that the recurrence relation you derived above always has a fixed point at $c^* = 1$.  
+
+\textbf{Show this analytically, and then argue why you could have arrived at this result without any calculation.}
+
+\item Now let's examine the stability of the fixed point $c^* = 1$.  To do this, as before, we look at the derivative of the recurrence relation, i.e. $dc^l_{12}/dc^{l-1}_{12}$, evaluated at the point $c^* = 1$.  We will call this quantity $\chi$.  It can be shown that 
+\begin{equation}
+    \chi = \sigma_w^2 \int~\mathcal{D}z \left[\phi'(\sqrt{q^*} z)\right]^2
+\end{equation}
+
+\textbf{If you want, prove the above relation.  Since this is just algebra and not too instructive, feel free to skip this part. }
+
+\end{enumerate}
+
+\section*{Problem 5: Connection between $\chi$ and exploding/vanishing gradients}
+
+In the previous problem, we saw that a unit correlation coefficient (the highest value which is allowed) is a fixed point under evolution through the neural network.  However, it was not always stable.  The stability depended on whether the quantity $\chi$, defined as the derivative of $dc_{12}^l/dc^{l-1}_{12}$, is greater or less than 1.  In this problem, we want to understand the connection between the quantity $\chi$ and exploding or vanishing gradients.  
+
+A starting point to understand the connection between $\chi$ and gradients is to consider what it means for the fixed point $c^*=1$ to be stable or unstable.  If $\chi > 1$, and the fixed point $c^* = 1$ is thus unstable, then two input vectors which are highly correlated will de-correlate as they are processed by the network.  Conversely, if $\chi < 1$, then two vectors will become more correlated as they are processed.  Thus it seems like if $\chi > 1$, space is stretched, while if $\chi < 1$, space is contracted.  In this problem we find that $\chi$ is precisely the factor by which space is streched or contracted by each layer of the neural network.
+
+\begin{enumerate}[label=(\alph*)]
+\item Start by considering a plain linear transformation, $\mathbf{y} = \mathbf{J}\mathbf{x}$, where $\mathbf{x}$ and $\mathbf{y}$ are vectors and $\mathbf{J}$ is a matrix. 
+
+\textbf{Averaged over all possible directions in which $\mathbf{x}$ can point, what is the ratio of the squared length of $\mathbf{y}$ to that of $\mathbf{x}$, in relation to the singular values of $\mathbf{J}$?}
+
+\item Consider the transformation enacted by layer $l$ of a neural network, 
+\begin{equation}
+h^l &=& W^l \phi(h^{l-1}) + b^l. 
+\end{equation}
+Let $\mathbf{D}$ be a diagonal matrix whose entries are $D_{ii} = \phi'(h_i^{l-1})$.  
+
+\textbf{In terms of $W^l$ and $D$, what is the Jacobian of the transformation $h^{l-1}\rightarrow h^l$?}
+
+\textbf{From the problem above, we want the mean-squared singular value of the Jacobian.  Show that this mean-squared singluar value is exactly equal to the expression for $\chi$ calculated earlier, when we take the expectation with respect to the distribution of the weight matrix and the distribution of the pre-activations}
+
+\item How does the value of $\chi$ relate to exploding and vanishing gradients?
+
+\item To emphasize that $\chi$ is a function of $\sigma_w$ and $\sigma_b$, we go back to the expression for $\chi$, 
+\begin{equation}
+    \chi = \sigma_w^2 \int~\mathcal{D}z \left[\phi'(\sqrt{q^*} z)\right]^2,
+\end{equation}
+and explicitly write the dependence of the fixed point $q^*$ on $\sigma_w$ and $\sigma_b$.  Remember that this dependence can be written implicitly via the equation
+\begin{equation}
+q^{*}=\sigma_{w}^{2} \int \phi\left(\rho \sqrt{q^{*}}\right)^{2} \mathrm{d} \rho+\sigma_{b}^{2}.
+\end{equation}
+
+\textbf{Numerically calculate the value of $\chi$ for several values of $\sigma_w$ and $\sigma_b$, for the hyperbolic tangent nonlinearity.  Make a contour plot, and specifically indicate the curve corresponding to $\chi=1$}
+
+\end{enumerate}
+
+\end{document}
