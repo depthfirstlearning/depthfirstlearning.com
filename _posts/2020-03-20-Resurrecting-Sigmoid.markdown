@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Resurrecting the sigmoid: Theory and Practice"
-date:   2020-03-20 6:00:00 -0400
+date:   2020-03-30 6:00:00 -0400
 categories: neural-nets
 authors: ['piyush', 'vinay', 'riley'] 
 blurb: "With the success of deep networks across task ranging from vision to
@@ -1088,5 +1088,6 @@ $$ m_2 = m_1^2 \cdot \frac{L + p(q^*)}{p(q^*)} $$
 Here are a couple papers you might enjoy, which build upon the results of this paper:
 1. [Dynamical Isometry and a Mean Field Theory of CNNs: How to Train 10,000-Layer Vanilla Convolutional Neural Networks](https://arxiv.org/pdf/1806.05393.pdf) by Xiao et al.
 2. [The Emergence of Spectral Universality in Deep Networks](https://arxiv.org/pdf/1802.09979.pdf)
-
+3. [Statistical Mechanics of Deep
+	 Learning](https://www.annualreviews.org/doi/full/10.1146/annurev-conmatphys-031119-050745)
 <br />
