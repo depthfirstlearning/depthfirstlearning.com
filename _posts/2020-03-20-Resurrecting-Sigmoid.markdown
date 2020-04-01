@@ -56,13 +56,13 @@ We also suggest that you skim the paper itself, specifically the introductory se
 
 **Objectives**:
 After doing these readings, we would like you to understand the following background:
-- Explain the vanishing/exploding gradient problem, and why it worsens as networks become deeper
-- Relate vanishing/exploding gradients to the spectrums of various Jacobians
+- Explain the vanishing/exploding gradient problem, and why it worsens as networks become deeper.
+- Relate vanishing/exploding gradients to the spectrums of various Jacobians.
 - Explain heuristics used by the community to circumvent the problem of vanishing/exploding gradients, in particular:
-  - common initialization schemes, such as Xavier initialization
-  - pre-training
-  - skip connections / residual neural networks
-  - non-saturating activation functions (ReLU and its variants)
+  - Common initialization schemes, such as Xavier initialization.
+  - Pre-training.
+  - Skip connections / residual neural networks.
+  - Non-saturating activation functions (ReLU and its variants).
   
 We would also like you to have an overview of the paper's structure:
 - Motivate and explain the problem the paper is trying to solve
@@ -73,8 +73,8 @@ We would also like you to have an overview of the paper's structure:
 
 **Topics**:
 
-- Trainability of networks, specifically the vanishing/exploding gradient problem
-- Introduction to the paper / course overview
+- Trainability of networks, specifically the vanishing/exploding gradient problem.
+- Introduction to the paper / course overview.
 
 **Required Reading** 
 
@@ -95,15 +95,15 @@ Initialization:
 - 8.4 (Parameter initialization strategies)
 
 Other:  
-- [All you need is a good init](https://arxiv.org/pdf/1511.06422.pdf) by Mishkin et al., sections 1 and 2
-- [Understanding the difficulty of training deep feedforward neural networks](http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf) by Glorot and Bengio
-- Wikipedia [article](https://en.wikipedia.org/wiki/Residual_neural_network) on residual networks (skip connections)
+- [All you need is a good init](https://arxiv.org/pdf/1511.06422.pdf) by Mishkin et al., sections 1 and 2.
+- [Understanding the difficulty of training deep feedforward neural networks](http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf) by Glorot and Bengio.
+- Wikipedia [article](https://en.wikipedia.org/wiki/Residual_neural_network) on residual networks (skip connections).
 
 
 **Optional Reading**:
 
-1. [Deep Residual Learning for Image Recognition](https://arxiv.org/pdf/1512.03385.pdf)
-2. [Depth-first learning : NeuralODEs](http://www.depthfirstlearning.com/2019/NeuralODEs#3-resnets), section 3 on ResNets
+1. [Deep Residual Learning for Image Recognition](https://arxiv.org/pdf/1512.03385.pdf).
+2. [Depth-first learning : NeuralODEs](http://www.depthfirstlearning.com/2019/NeuralODEs#3-resnets), section 3 on ResNets.
 
 <br />
 
@@ -133,13 +133,13 @@ Once you understand the mean-field analysis framework, you will have a good foun
 **Questions**:
 
 For each week, we have a full problem set, which tries to test and improve your
-understanding of the topics covered this week. This week's problem set is [here](/assets/sigmoid/problem-sets/pdfs/1.pdf). In this section we highlight couple of problems which we __highly recommend__.
+understanding of the topics covered this week. This week's problem set is [here](/assets/sigmoid/problem-sets/pdfs/1.pdf). In this section we highlight couple of problems which we highly recommend doing.
 
-1. Problem 2 from full set: **The mean field approximation**
+1. Problem 2 from full set: The mean field approximation
 
     In this problem, we use the knowledge we gained in problem 1 to properly choose to initialize the weights and biases according to \\(W^l \sim \mathcal{N}(0, \sigma_w^2/N)\\) and \\(b^l \sim \mathcal{N}(0, \sigma_b^2)\\). We'll investigate some techniques that will be useful in understanding precisely how the network's random initialization influences what the net does to its inputs; specifically, we'll be able to take a look at how the _depth_ of the network together with the initialization governs the propagation of an input point as it flows forward through the network's layers.
 
-    1. A natural property of input points to study as the input flows through the net layer by layer is its length. Intuitively, this is closely related to how the net transforms the input space, and to how the depth of the net relates to that transformation. **Compute the length \\(q^l\\) of the activation vector outputted by layer \\(l\\). When considering non-rectangular nets, where layer \\(l\\) has length \\(N_l\\), we want to distinguish this activation norm from the width of individual layers, so what's a more appropriate quantity we can track to understand how the lengths of activation vectors change in the net?**
+    1. A natural property of input points to study as the input flows through the net layer by layer is its length. Intuitively, this is closely related to how the net transforms the input space, and to how the depth of the net relates to that transformation. Compute the length \\(q^l\\) of the activation vector outputted by layer \\(l\\). When considering non-rectangular nets, where layer \\(l\\) has length \\(N_l\\), we want to distinguish this activation norm from the width of individual layers, so what's a more appropriate quantity we can track to understand how the lengths of activation vectors change in the net?
         <details><summary>Solution</summary>
         <p>
         The length is simply the Euclidean magnitude, i.e. \(\sum_{i = 1}^N (h_i^l)^2\). We can stabilize this quantity, especially when \(N\) differs across layers, by normalizing:
@@ -147,7 +147,7 @@ understanding of the topics covered this week. This week's problem set is [here]
         </p>
         </details>
 
-    2. **What probabilistic quantity of the neuronal activations does \\(q^l\\) approximate (with the approximation improving for larger \\(N\\))?**
+    2. What probabilistic quantity of the neuronal activations does \\(q^l\\) approximate (with the approximation improving for larger \\(N\\))?
         <details><summary>Hint</summary>
 Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the definition of \(q^l\) from part (a) in terms of the empirical distribution of \(h^l_i\).
         </details>
@@ -158,7 +158,7 @@ Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the d
     		</p>
         </details>
 
-    3. **Calculate the variance of an individual neuron's pre-activations, that is, the variance of \\(h_i^l\\).**  Your answer should be a recurrence relation, expressing this variance in terms of \\(h^{l-1}\\) (and the parameters \\(\sigma_w\\) and \\(\sigma_b\\)).
+    3. Calculate the variance of an individual neuron's pre-activations, that is, the variance of \\(h_i^l\\).  Your answer should be a recurrence relation, expressing this variance in terms of \\(h^{l-1}\\) (and the parameters \\(\sigma_w\\) and \\(\sigma_b\\)).
         <details><summary>Solution</summary>
         <p>
         Because the means of both the weight and bias distributions are zero, to calculate the variance we just need to calculate the second moment.  We can use the fact that the weights and biases are initialized independently, so that the variance of \(h_i^l\) is the sum of a bias term and a variance term:
@@ -173,7 +173,7 @@ Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the d
         </p>
         </details>
 
-    4. Now consider the limit that the number of hidden neurons, \(N\), approaches infinity. **Use the central limit theorem to argue that in this limit, the pre-activations will be zero-mean Gaussian distributed. Be explicit about the conditions under which this result holds.**
+    4. Now consider the limit that the number of hidden neurons, \(N\), approaches infinity. Use the central limit theorem to argue that in this limit, the pre-activations will be zero-mean Gaussian distributed. Be explicit about the conditions under which this result holds.
         <details><summary>Solution</summary>
         <p>
         The basic idea here is to use the central limit theorem since the pre-activation is a sum of a large number of random variables, i.e.:
@@ -192,7 +192,7 @@ Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the d
         </p>
         </details>
 
-    5. With this zero-mean Gaussian approximation of \\(q^l\\), we have a single parameter characterizing this aspect of signal propagation in the net: the variance, \\(q^l\\), of individual neuronal activations (a proxy for squared activation vector lengths). Let's now look at how this variance changes from layer to layer, by deriving the relationship between \\(q^l\\) and \\(q^{l - 1}\\). In part (c), your answer should have included a term \\(\langle (x^{l-1})^2 \rangle\\). **In terms of the activation function \\(\phi\\) and the variance \\(q^{l-1}\\), write this expectation value as an integral over the standard Gaussian measure.**
+    5. With this zero-mean Gaussian approximation of \\(q^l\\), we have a single parameter characterizing this aspect of signal propagation in the net: the variance, \\(q^l\\), of individual neuronal activations (a proxy for squared activation vector lengths). Let's now look at how this variance changes from layer to layer, by deriving the relationship between \\(q^l\\) and \\(q^{l - 1}\\). In part (c), your answer should have included a term \\(\langle (x^{l-1})^2 \rangle\\). In terms of the activation function \\(\phi\\) and the variance \\(q^{l-1}\\), write this expectation value as an integral over the standard Gaussian measure.
         <details><summary>Solution</summary>
         <p>
         Since \(x_i^{l-1} = \phi(h_i^{l-1})\), we can write the variance \(\langle (x^{l-1})^2 \rangle\) as 
@@ -211,7 +211,7 @@ Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the d
         </p>
         </details>
 
-     6. **Use this result to write a recursion relation for \\(q^l\\) in  terms of \\(q^{l-1}\\), \\(\sigma_w\\), and \\(\sigma_b\\).**
+     6. Use this result to write a recursion relation for \\(q^l\\) in  terms of \\(q^{l-1}\\), \\(\sigma_w\\), and \\(\sigma_b\\).
         <details><summary>Solution</summary>
         <p>
         We just plug in, to get 
@@ -226,14 +226,14 @@ Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the d
 
     Note that in this problem, we are just taking the recurrence relation as a given, i.e. we do not need to worry about random variables or probabilities; all of that went into determining the recurrence relation. Instead, we'll use tools from the theory of dynamical systems to investigate the properties - in particular, the asymptotics - of this recurrence relation.
 
-    1. A simple example of a dynamical system is a recurrence defined by some initial value \\(x_0\\) and a relation \\(x_n = f(x_{n-1})\\) for all \\(n>0\\).  This system defines the resulting sequence \\(x_n\\).  Sometimes, these systems have _fixed points_, which are values \\(x^\*\\) such that \\(f(x^\*) = x^\*\\). __If the value of the system, \\(x_m\\), at some time-step \\(m\\) , happens to be a fixed point \\(x^*\\), what is the subsequent evolution of the system?__
+    1. A simple example of a dynamical system is a recurrence defined by some initial value \\(x_0\\) and a relation \\(x_n = f(x_{n-1})\\) for all \\(n>0\\).  This system defines the resulting sequence \\(x_n\\).  Sometimes, these systems have _fixed points_, which are values \\(x^\*\\) such that \\(f(x^\*) = x^\*\\). If the value of the system, \\(x_m\\), at some time-step \\(m\\) , happens to be a fixed point \\(x^*\\), what is the subsequent evolution of the system?
         <details><summary>Solution</summary>
         <p>
         Since \(f(x^*) = x^*\), for all times greater than \(m\), the system simply stays at \(x^*\).
         </p>
         </details>
 
-    2. **For the recurrence relation you derived in the previous problem, what is the equation which a fixed-point of the variance,** \\(q^\*\\)**, must satisfy? Under some conditions (i.e. for some values of** \\(\sigma_w\\) **and \\(\sigma_b\\)), the value** \\(q^\*=0\\) **is a fixed point of the system.  What are these conditions?**
+    2. For the recurrence relation you derived in the previous problem, what is the equation which a fixed-point of the variance, \\(q^\*\\), must satisfy? Under some conditions (i.e. for some values of \\(\sigma_w\\) and \\(\sigma_b\\)), the value \\(q^\*=0\\) is a fixed point of the system.  What are these conditions?
         <details><summary>Solution</summary>
         <p>
         A fixed point has to satisfy 
@@ -242,7 +242,7 @@ Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the d
         </p>
         </details>
 
-    3. Now let us be concrete, and look at the recurrence relation in the special case of a nonlinearity \\(\phi(h)\\) which is both monotonically increasing and satisfies \\(\phi(0) = 0\\).  Note that both of the nonlinearities considered in the paper we are studying, the \\(\tanh\\) and ReLU nonlinearities, satisfy this property. **Show that those two properties (monotonicity and \\(\phi(0)=0\\)) imply that the length map \\(q^l(q^{l-1})\\) is monotonically increasing. What is the maximum number of times any concave function can intersect the line \\(y = x\\)?  What does this imply about the number of fixed points the length map \\(q^l(q^{l-1})\\) can have?**
+    3. Now let us be concrete, and look at the recurrence relation in the special case of a nonlinearity \\(\phi(h)\\) which is both monotonically increasing and satisfies \\(\phi(0) = 0\\).  Note that both of the nonlinearities considered in the paper we are studying, the \\(\tanh\\) and ReLU nonlinearities, satisfy this property. Show that those two properties (monotonicity and \\(\phi(0)=0\\)) imply that the length map \\(q^l(q^{l-1})\\) is monotonically increasing. What is the maximum number of times any concave function can intersect the line \\(y = x\\)?  What does this imply about the number of fixed points the length map \\(q^l(q^{l-1})\\) can have?
         <details><summary>Solution</summary>
         <p>
         To prove that the function is monotonically increasing with its argument \(q\), we take the derivative:
@@ -257,7 +257,7 @@ Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the d
         </p>
         </details>
 
-    4. Let's be concrete now and consider the nonlinearity to be a ReLU. **Compute (analytically) the length map** \\(q^l = f(q^{l-1})\\)**, which will also depend on** \\(\sigma_w\\) **and** \\(\sigma_b\\) **.  For what values of** \\(\sigma_w\\) **and** \\(\sigma_b\\) **does the system have fixed point(s)? How does the value of the fixed point depend on** \\(\sigma_w\\) **and** \\(\sigma_b\\)?
+    4. Let's be concrete now and consider the nonlinearity to be a ReLU. Compute (analytically) the length map \\(q^l = f(q^{l-1})\\), which will also depend on \\(\sigma_w\\) and \\(\sigma_b\\) .  For what values of \\(\sigma_w\\) and \\(\sigma_b\\) does the system have fixed point(s)? How does the value of the fixed point depend on \\(\sigma_w\\) and \\(\sigma_b\\)?
         <details><summary>Solution</summary>
         <p>
         Starting from 
@@ -275,7 +275,7 @@ Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the d
         </p>
         </details>
 
-    5. Now let's consider the sigmoid nonlinearity \\(\phi(h) = \tanh(h)\\).  In this case the length map cannot be computed analytically, but it can be done numerically. **Numerically plot the length map, \\(q^l=f(q^{l-1})\\), for a few values of \\(\sigma_w\\) and \\(\sigma_b\\) in the following regimes: (i) \\(\sigma_b=0\\) and \\(\sigma_w < 1\\), (ii) \\(\sigma_b = 0\\) and \\(\sigma_w > 1\\), and (iii) \\(\sigma_b > 0\\).  Describe qualitatively the fixed points of the map in each regime.**
+    5. Now let's consider the sigmoid nonlinearity \\(\phi(h) = \tanh(h)\\).  In this case the length map cannot be computed analytically, but it can be done numerically. Numerically plot the length map, \\(q^l=f(q^{l-1})\\), for a few values of \\(\sigma_w\\) and \\(\sigma_b\\) in the following regimes: (i) \\(\sigma_b=0\\) and \\(\sigma_w < 1\\), (ii) \\(\sigma_b = 0\\) and \\(\sigma_w > 1\\), and (iii) \\(\sigma_b > 0\\).  Describe qualitatively the fixed points of the map in each regime.
         <details><summary>Solution</summary>
         <p>
         The following Python code should work:
@@ -299,7 +299,7 @@ Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the d
         </p>
         </details>
 
-    6. Let’s now talk about the stability of fixed points. In a dynamical system, once the system reaches (or starts at) a fixed point, by definition it can never leave. But what happens if the system gets or starts near a fixed point?  In real physical systems, this question is very relevant because physical systems almost always have some noise which pushes the system away from a fixed point. In general, the fixed point can be either stable or unstable. For a stable fixed point, initializing the system near the fixed point will result in behavior which converges to the fixed point, i.e reducing the magnitude of the perturbation away from the fixed point. Conversely, for an unstable fixed point, the system initialized nearby will be repelled from the fixed point. **Use the derivative of the length map at a fixed point to derive conditions on the stability of the fixed point.**
+    6. Let’s now talk about the stability of fixed points. In a dynamical system, once the system reaches (or starts at) a fixed point, by definition it can never leave. But what happens if the system gets or starts near a fixed point?  In real physical systems, this question is very relevant because physical systems almost always have some noise which pushes the system away from a fixed point. In general, the fixed point can be either stable or unstable. For a stable fixed point, initializing the system near the fixed point will result in behavior which converges to the fixed point, i.e reducing the magnitude of the perturbation away from the fixed point. Conversely, for an unstable fixed point, the system initialized nearby will be repelled from the fixed point. Use the derivative of the length map at a fixed point to derive conditions on the stability of the fixed point.
         <details><summary>Solution</summary>
         <p>
         If the absolute value of the derivative \(\frac{df}{dx}\), evaluated at the fixed point \(x^*\), is less than \(1\), then the system is stable.  This can be seen from considering initializing the system near the fixed point, say at \(x^* + \Delta x\).  After going through the length map, the value will be 
@@ -314,14 +314,14 @@ Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the d
         </p>
         </details>
 
-    7. With this understanding of stability, revisit your result in part (e) for the \\(\tanh\\) nonlinearity. **Specifically, discuss the stability of the fixed points in each of the three regimes.  You can estimate the derivative of the length map by looking at the graphs.**
+    7. With this understanding of stability, revisit your result in part (e) for the \\(\tanh\\) nonlinearity. Specifically, discuss the stability of the fixed points in each of the three regimes.  You can estimate the derivative of the length map by looking at the graphs.
         <details><summary>Solution</summary>
         <p>
         See the italicized paragraph in the solutions above, from the transient chaos paper.  In regime (i), there is a single fixed point, \(q^*=0\), and it is stable.  In regime (ii), there are two fixed points, \(q^*=0\) (unstable) and some other positive value (stable), and in regime (iii), there is only a positive fixed point, which is stable.
         </p>
         </details>
 
-    8. **Do the same stability analysis for the ReLU network.**
+    8. Do the same stability analysis for the ReLU network.
         <details><summary>Solution</summary>
         <p>
         In the \(\sigma_b = 0\) case, where the only fixed point is at \(q=0\), that point is stable if \(\sigma_w < \sqrt{2}\) (because then the slope of the line is less than unity) and unstable if \(\sigma_w > \sqrt{2}\).  Even for non-zero \(\sigma_b\), the fixed point (which will now be non-zero) is stable if \(\sigma_w < \sqrt{2}\).  
@@ -330,7 +330,7 @@ Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the d
         </p>
         </details>
 
-    9. **(Optional) You should have found above that the both the ReLU and** \\(\tanh\\) **systems never had more than one stable fixed point.  Show that this is a consequence of the concavity of the length map.**
+    9. (Optional) You should have found above that the both the ReLU and \\(\tanh\\) systems never had more than one stable fixed point.  Show that this is a consequence of the concavity of the length map.
         <details><summary>Hint</summary>
     You can just draw a picture for this one. Consider using the fact that the length map is concave, which we discussed in part c).
         </details>
@@ -382,7 +382,7 @@ The full problem set, from which the problems below are taken, is [here](/assets
    		 J & -\Delta 
 		\end{pmatrix} $$
 
-        1. Since this matrix is symmetric, its eigenvalues will be real. **What are its eigenvalues?**
+        1. Since this matrix is symmetric, its eigenvalues will be real. What are its eigenvalues?
             <details><summary>Solution</summary>
             <p>
         The polynomial to solve for the eigenvalues \(\lambda\) is 
@@ -394,7 +394,7 @@ So the eigenvalues are \(\pm \sqrt{\Delta^2 + J^2}\).
       		  </p>
        		  </details>
 
-        2. To see the avoided crossing here, **plot the eigenvalues as a function of \\(\Delta\\), first for \\(J=0\\), then for a few non-zero values of \\(J\\).**
+        2. To see the avoided crossing here, plot the eigenvalues as a function of \\(\Delta\\), first for \\(J=0\\), then for a few non-zero values of \\(J\\).
             <details><summary>Solution</summary>
             <p>
         Here is an example graph, showing \(J\) values \(0\), \(1\), and \(2\). The blue line shows no gap when \(J = 0\), and the gap opens up when \(J\) is non-zero.
@@ -403,7 +403,7 @@ href="../assets/sigmoid/problem-sets/source/2/avoided_crossing.png">[avoided cro
             </p>
             </details>
 
-        3. You should see a gap (i.e. the minimal distance between the eigenvalue curves) open up as \\(J\\) becomes non-zero. **What is the size of this gap?**
+        3. You should see a gap (i.e. the minimal distance between the eigenvalue curves) open up as \\(J\\) becomes non-zero. What is the size of this gap?
             <details><summary>Solution</summary>
             <p>
         To get the gap, evaluate the expression for the eigenvalues when \(\Delta\) is zero, and you find that the gap is \(2|J|\).
@@ -418,7 +418,7 @@ href="../assets/sigmoid/problem-sets/source/2/avoided_crossing.png">[avoided cro
         C & D 
         \end{pmatrix}. $$
 
-        In terms of \(A\), \(C\), and \(D\), **what is the absolute value of the difference between the two eigenvalues of this matrix?**
+        In terms of \(A\), \(C\), and \(D\), what is the absolute value of the difference between the two eigenvalues of this matrix?
         <details><summary>Solution</summary>
         <p>
         The difference in eigenvalues won't shift if we add a multiple of the identity matrix to our original matrix, meaning that the eigenvalue difference is the same as that of the matrix  
@@ -433,7 +433,7 @@ href="../assets/sigmoid/problem-sets/source/2/avoided_crossing.png">[avoided cro
 
     3. Now let’s make the matrix a random matrix.  We will take \\(A\\), \\(C\\), and \\(D\\) to be independent random variables, where the diagonal entries \\(A\\) and \\(D\\) are distributed according to a normal distribution with mean zero and variance one,  while the off-diagonal entry \\(C\\) is also a zero-mean Gaussian but with a variance of \\(\frac{1}{2}\\).
 
-        1. **Use the formula you derived in the previous part of the question to calculate the probability distribution function for the spacing between the two eigenvalues of the matrix.**
+        1. Use the formula you derived in the previous part of the question to calculate the probability distribution function for the spacing between the two eigenvalues of the matrix.
             <details><summary>Solution</summary>
             <p>
 						From the previous part we know the spacing as a function of the random variables \(A\), \(B\), \(C\):
@@ -473,14 +473,14 @@ href="../assets/sigmoid/problem-sets/source/2/avoided_crossing.png">[avoided cro
             </p>
             </details>
 
-        2. **What is the behavior of this pdf at zero?  How does this relate to the avoided crossing you calculated earlier?**
+        2. What is the behavior of this pdf at zero?  How does this relate to the avoided crossing you calculated earlier?
             <details><summary>Solution</summary>
 						<p>
 						Clearly the pdf we calculated above is exactly zero at \(s=0\), and grows linearly with \(s\).  This absence of spacings at zero is the same phenomenon as the avoided crossing noted above for deterministic matrices.  Another way to see this is to note that from the first part of the problem, the only way to have a spacing of zero is to have the diagonal elements equal each other while the off-diagonal element needs to be zero.  The set of points satisfying this condition is a line in the full 3D space of points, so will have a very low probability of occurring.
 						</p>
 						</details>
 
-        4. **Verify using numerical simulation that the pdf you found in the previous part is correct.**
+        4. Verify using numerical simulation that the pdf you found in the previous part is correct.
             <details><summary>Solution</summary>
             <p>
         The following Python code should work; by generating plots using the two functions, we can verify that they match.
@@ -597,7 +597,7 @@ The full problem set, from which the below problems are taken, is [here](/assets
         </p>
         </details>
 
-    4. Now let \\(C\\) be a matrix sampled from ensemble 2.  In the next part, you will calculate the spectral density of the sum \\(A + C\\), where \\(A\\) is drawn from ensemble 1 and \\(C\\) is drawn from ensemble 2.  However, to see immediately that the distributions of \\(A+B\\) and \\(A+C\\) will be different, consider the behavior of the spectral density of \\(A+C\\) at zero.  Based on your knowledge of avoided crossings from the previous problem set, **describe the spectral density of \\(A+C\\) at \\(\lambda =0\\) and contrast this to the spectral density of \\(A+B\\)**.
+    4. Now let \\(C\\) be a matrix sampled from ensemble 2.  In the next part, you will calculate the spectral density of the sum \\(A + C\\), where \\(A\\) is drawn from ensemble 1 and \\(C\\) is drawn from ensemble 2.  However, to see immediately that the distributions of \\(A+B\\) and \\(A+C\\) will be different, consider the behavior of the spectral density of \\(A+C\\) at zero.  Based on your knowledge of avoided crossings from the previous problem set, describe the spectral density of \\(A+C\\) at \\(\lambda =0\\) and contrast this to the spectral density of \\(A+B\\).
 
         <details><summary>Solution</summary>
         <p>
@@ -636,7 +636,7 @@ Notice that the answers you got in the previous two parts were different, even t
 
         $$ \frac{1}{2\pi}\sqrt{4-x^2} \mapsto \frac{z - \sqrt{z^2 - 4}}{2} $$
 
-        **Use the above fact to calculate the Stieltjes transform of the GOE semicircle given at the beginning of this problem (part (a)).  This is the first step to calculating the spectral density of the sum.**
+        Use the above fact to calculate the Stieltjes transform of the GOE semicircle given at the beginning of this problem (part (a)).  This is the first step to calculating the spectral density of the sum.
 
         <details><summary>Solution</summary>
         <p>
@@ -673,7 +673,7 @@ Notice that the answers you got in the previous two parts were different, even t
 
         $$ G(B(z)) = B(G(z)) = z $$
 
-        **Calculate the Blue's function corresponding to the semicircle Green's function you derived above.**
+        Calculate the Blue's function corresponding to the semicircle Green's function you derived above.
         <details><summary>Solution</summary>
         <p>
     The inverse function is defined by the relation 
@@ -694,7 +694,7 @@ Notice that the answers you got in the previous two parts were different, even t
 
         $$ R(z) = B(z) - \frac{1}{z} $$
 
-        **What is the \\(R\\)-transform of the GOE semicircle?**
+        What is the \\(R\\)-transform of the GOE semicircle?
 
         <details><summary>Solution</summary>
         <p>
@@ -711,14 +711,14 @@ Notice that the answers you got in the previous two parts were different, even t
 
     4. Finally we come to the law of addition of freely independent random matrices:  If we are given freely independent random matrices \\(X\\) and \\(Y\\), whose \\(R\\)-transforms are \\(R_X(z)\\) and \\(R_Y(z)\\), respectively, then the \\(R\\)-transform of the sum (or more precisely, the \\(R\\)-transform of the spectral density of the sum \\(X + Y\\)) is simply given by \\(R_X(z) + R_Y(z)\\).
 
-        Assume that two standard GOE matrices, say \\(H_1\\) and \\(H_2\\), are freely independent. **What is the \\(R\\)-transform of the spectral density of the sum \\(H_+ = pH_1 + (1 - p) H_2\\)?**
+        Assume that two standard GOE matrices, say \\(H_1\\) and \\(H_2\\), are freely independent. What is the \\(R\\)-transform of the spectral density of the sum \\(H_+ = pH_1 + (1 - p) H_2\\)?
         <details><summary>Solution</summary>
         <p>
     $$R_{H_+}(z) = z$$
         </p>
         </details>
 
-    5. **Using the results above, argue that the sum of two freely-independent ensembles described by the semicircular law is also described by the semicircular law.**
+    5. Using the results above, argue that the sum of two freely-independent ensembles described by the semicircular law is also described by the semicircular law.
 
         <details><summary>Solution</summary>
         <p>
@@ -780,7 +780,7 @@ The full problem set, from which the below problems are taken, is [here](/assets
 
     where the input is denoted \\(h^0\\) and the output is given by \\(x^L\\).  
 
-    1. **What is the Jacobian \\(J\\) of the input-output relation of this network?**
+    1. What is the Jacobian \\(J\\) of the input-output relation of this network?
 
         <details><summary>Hint</summary>
     See eq. 2 of the paper.
@@ -799,14 +799,14 @@ The full problem set, from which the below problems are taken, is [here](/assets
 
     2. As the paper discusses, we are interested in the spectrum of singular values of \\(J\\), but all of the tools we have developed so far deal with the eigenvalue spectrum. 
 
-        **In terms of the singular values of \\(J\\), what are the eigenvalues of \\(JJ^T\\)?**
+        In terms of the singular values of \\(J\\), what are the eigenvalues of \\(JJ^T\\)?
         <details><summary>Solution</summary>
         <p>
     The definition of dynamical isometry, the condition we're after, is that the magnitude of the singular values of \(J\) should concentrate around 1. 
         </p>
         </details>
 
-        **What is the dynamical isometry condition in terms of the eigenvalues of \\(JJ^T\\)?**
+        What is the dynamical isometry condition in terms of the eigenvalues of \\(JJ^T\\)?
         <details><summary>Solution</summary>
         <p>
         The singular values of a matrix \(A\) are the square roots of the eigenvalues of \(AA^T\), so the eigenvalues of \(JJ^T\) are the squared singular values of \(J\).
@@ -824,7 +824,7 @@ The full problem set, from which the below problems are taken, is [here](/assets
 
     $$ S_{JJ^T} = \prod_{l=1}^L S_{W_lW_l^T} S_{D_l^2} = S_{WW^T}^L S_{D^2}^L $$  where we have used the identical distribution of the weights to define \\(S_{WW^T} = S_{W_l W_l^T}\\) for all \\(l\\), and we have also used the fact the pre-activations are distributed independently of depth as \\(h_l \sim \mathcal{N}(0,q^*)\\), which implies that \\(S_{D_l^2} = S_{D^2}\\) for all \\(l\\).  Eqn.(12) provides a method to compute the spectrum \\(\rho_{JJ^T} (\lambda)\\). Starting from \\(\rho_{W^T W} (\lambda)\\) and \\(\rho_{D^2}\\), we compute their respective \\(S\\)-transforms through the sequence of equations eqns. (7), (9), and (10), take the product in eqn. (12), and then reverse the sequence of steps to go from \\(S_{JJ^T}\\) to \\(\rho_{JJ^T} (\lambda)\\) through the inverses of eqns. (10), (9), and (8). Thus we must calculate the \\(S\\)-transforms of \\(WW^T\\) and \\(D^2\\), which we attack next for specific nonlinearities and weight ensembles in the following sections. In principle, this procedure can be carried out numerically for an arbitrary choice of nonlinearity, but we postpone this investigation to future work.
 
-    **Prove the equation at the top of the box.**
+    Prove the equation at the top of the box.
     <details><summary>Hint</summary>
     This is done in the first appendix of the paper. Note that you should assume free independence of the \(D\)'s and \(W\)'s.
     </details>
@@ -873,14 +873,14 @@ The full problem set, from which the below problems are taken, is [here](/assets
 
     1. The probability density function of the \\(D\\) matrix depends on the distributions of inputs to the nonlinearity.  To calculate this, we will make a couple simplifying assumptions.  The first assumption is that we initialize the network at a critical point (defined in problem set 2).  
 
-        **If we are interested in finding conditions for achieving dynamical isometry, why is it a good assumption that the network is initialized at criticality?**
+        If we are interested in finding conditions for achieving dynamical isometry, why is it a good assumption that the network is initialized at criticality?
         <details><summary>Solution</summary>
         <p>
     The criticality condition, \(\chi = 1\), implies that the <em>mean</em> squared singular value of \(J\), or equivalently that the mean eigenvalue of \(JJ^T\), is unity.  Dynamical isometry means that the <em>entire</em> spectrum of squared singular values of \(J\) is concentrated around unity.  So criticality is a prerequisite for dynamical isometry. 
         </p>
         </details>
 
-    2. The second assumption we make in calculating the distribution of inputs to the nonlinearity is that the we have settled to a stationary point of the length map (the variance map). **Reread section 2.2 of _Resurrecting the Sigmoid_, and argue why this is also a good assumption.**
+    2. The second assumption we make in calculating the distribution of inputs to the nonlinearity is that the we have settled to a stationary point of the length map (the variance map). Reread section 2.2 of _Resurrecting the Sigmoid_, and argue why this is also a good assumption.
         <details><summary>Solution</summary>
         <p>
     As described in both <em>Exponential Expressivity in Deep Neural Networks Through Transient Chaos</em> and in section 2.2 of <em>Resurrecting the Sigmoid</em>, the empirical distribution of network pre-activations approximates a \(0\)-mean, \(q^l\)-variance Gaussian distribution in the large-width limit.  The length map describing the evolution of \(q^l\) has a fixed point, which the papers show empirically is rapidly converged to.  Because of this rapid convergence, it is natural to assume that only a few initial layers are not characterized by this variance, and that we can neglet them in computing the spectrum of the network's Jacobian.  Conveniently, assuming we are at a fixed point makes \(D^2\) is independent of \(l\), greatly simplifying our analysis. 
@@ -888,7 +888,7 @@ The full problem set, from which the below problems are taken, is [here](/assets
         </details>
 
     3. To find the critical points of both the ReLU and hard-tanh networks, recall from problem set 2 that criticality was defined by the condition \\(\chi = 1\\), where \\(\chi\\) is defined in eqn. (5) of the main paper. 
-As in the paper, define \\(p(q^\*)\\) as the probability, given the variance \\(q^\*\\), that a given neuron in a layer is in its linear (i.e. not constant) regime. **Show that \\(\chi = \sigma_w^2 p(q^*)\\).**
+As in the paper, define \\(p(q^\*)\\) as the probability, given the variance \\(q^\*\\), that a given neuron in a layer is in its linear (i.e. not constant) regime. Show that \\(\chi = \sigma_w^2 p(q^*)\\).
 
         <details><summary>Hint</summary>
     Plug the nonlinearity into the equation for \(\chi\) and reduce.
@@ -907,7 +907,7 @@ As in the paper, define \\(p(q^\*)\\) as the probability, given the variance \\(
         </p>
         </details>
 
-    5. **Following equations 7-10 in the main paper, derive the Stieltjes transform \\(G_{D^2}(z)\\), the moment-generating function  \\(M_{D^2}(z)\\), and the \\(S\\)-transform  \\(S_{D^2}(z)\\) in terms of \\(p(q^*)\\)**. 
+    5. Following equations 7-10 in the main paper, derive the Stieltjes transform \\(G_{D^2}(z)\\), the moment-generating function  \\(M_{D^2}(z)\\), and the \\(S\\)-transform  \\(S_{D^2}(z)\\) in terms of \\(p(q^*)\\). 
 Note: This should be the same for both ReLU and hard-tanh networks.
         <details><summary>Solution</summary>
         <p>
@@ -962,7 +962,7 @@ Note: This should be the same for both ReLU and hard-tanh networks.
         Now all that's left is to determine \\(q^\*\\) as a function of \\(\sigma_w\\) and \\(\sigma_b\\), and then we can get both \\(q^\*\\) and \\(p(q^\*)\\). Remember that in problem set 2, you derived the relation 
 
         $$ q^* = \sigma_w^2 \int~ \mathcal{D}h~ \phi(\sqrt{q^*}h)^2 + \sigma_b^2 $$
-        **Use this relation to get an implicit expression for \\(q^*\\) in terms of \\(\sigma_w\\) and \\(\sigma_b\\).**
+        Use this relation to get an implicit expression for \\(q^*\\) in terms of \\(\sigma_w\\) and \\(\sigma_b\\).
 
         <details><summary>Solution</summary>
         <p>
@@ -979,8 +979,8 @@ Note: This should be the same for both ReLU and hard-tanh networks.
 
     1. As we've seen in the decomposition from the previous problems, the \\(S\\)-transform of \\(\mathbf{J} \mathbf{J}^T\\)  depends on the \\(S\\)-transform of \\(D^2\\), which was computed above, and that of \\( WW^T \\), which is a _Wishart random matrix_, i.e. the product of two random Gaussian matrices.
 
-        **Prove that \\(S_{WW^T}(z) = \frac{1}{\sigma_w^2 \cdot (z + 1)}\\), using the following connection between the moments of a Wishart matrix and the Catalan numbers:**
-$$ m_k = \frac{\sigma_w^{2k}}{k + 1} {2k \choose k} $$ **where \\(m_k\\) is the \\(k^\text{th}\\) moment of \\(WW^T\\).**
+        Prove that \\(S_{WW^T}(z) = \frac{1}{\sigma_w^2 \cdot (z + 1)}\\), using the following connection between the moments of a Wishart matrix and the Catalan numbers:
+$$ m_k = \frac{\sigma_w^{2k}}{k + 1} {2k \choose k} $$ where \\(m_k\\) is the \\(k^\text{th}\\) moment of \\(WW^T\\).
         <details><summary>Solution</summary>
         <p>
     Given the moments, we can easily form the moment-generating function
@@ -1007,7 +1007,7 @@ $$ m_k = \frac{\sigma_w^{2k}}{k + 1} {2k \choose k} $$ **where \\(m_k\\) is the 
 
         once we've calculated the \\(S\\)-transforms for \\(D^2\\) and \\(WW^T\\), we can easily obtain the \\(S\\)-transform of \\(\mathbf{J} \mathbf{J}^T\\).
 
-        **Using your solution to the previous part and the calculation of** \\(S_{D^2}\\) **from the earlier problems, show that**
+        Using your solution to the previous part and the calculation of \\(S_{D^2}\\) from the earlier problems, show that
 
         $$ S_{JJ^T} = \sigma_w^{-2L} \cdot (z + p(q^*))^{-L} .$$
 
@@ -1024,7 +1024,7 @@ $$ m_k = \frac{\sigma_w^{2k}}{k + 1} {2k \choose k} $$ **where \\(m_k\\) is the 
 
     3. From the \\(S\\)-transform, one route to getting information about the spectrum of \\(JJ^T\\) is to compute the spectral density \\(\rho_{JJ^T}(\lambda)\\). While that calculation is too involved, we can get the answer to the question of achieving dynamical isometry by a slightly more indirect route.
 
-        **Use the \\(S\\)-transform you calculated above to calculate \\(M_{JJ^T}^{-1}\\) (the inverse of the moment-generating function for \\(\mathbf{J} \mathbf{J}^T\\)).**
+        Use the \\(S\\)-transform you calculated above to calculate \\(M_{JJ^T}^{-1}\\) (the inverse of the moment-generating function for \\(\mathbf{J} \mathbf{J}^T\\)).
 
         <details><summary>Hint</summary>
     To compute the inverse MGF, recall the definition of the \(S\)-transform given in the paper (section 2.3, eqn. 10).
