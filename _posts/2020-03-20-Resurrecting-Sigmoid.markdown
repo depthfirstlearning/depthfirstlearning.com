@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Resurrecting the Sigmoid: Theory and Practice"
-date:   2020-04-01 6:00:00 -0400
+date:   2020-04-07 6:00:00 -0400
 categories: neural-nets
 authors: ['piyush', 'vinay', 'riley'] 
 blurb: "With the success of deep networks across task ranging from vision to
