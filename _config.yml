@@ -54,7 +54,7 @@ riley:
 
 # Build settings
 markdown:       kramdown
-
+future:         false 
 # Assets
 sass:
   sass_dir:     _sass
