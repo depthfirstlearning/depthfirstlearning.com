@@ -42,15 +42,15 @@ bhairav:
 piyush:
     name: Piyush Patil
     email: piyush.patil210@gmail.com
-    web:
+    web: https://www.linkedin.com/in/piyush-patil
 vinay:
     name: Vinay Ramasesh
     email: vvr1590@gmail.com
-    web:
+    web: https://www.linkedin.com/in/vinay-ramasesh-09a43191
 riley:
     name: Riley Edmunds
     email: rileyedmunds@gmail.com
-    web:
+    web: https://www.linkedin.com/in/rileyedmunds
 
 # Build settings
 markdown:       kramdown
