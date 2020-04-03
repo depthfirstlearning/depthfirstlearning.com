@@ -12,11 +12,11 @@ feedback: true
 
 This guide would not have been possible without the help and feedback from many people. 
 
-Special thanks to Yasaman Bahri for her useful contributions to this guide, her feedback, support, and mentoring.
+Special thanks to Yasaman Bahri for her feedback, support, and mentoring.
 
 Thank you to Kumar Krishna Agrawal, Sam Schoenholz, and Jeffrey Pennington for their valuable input and guidance.
 
-Finally, thank you to our students Chris Akers, Brian Friedenberg, Sajel Shah, Vincent Su, Witold Szejgis, for their curiosity and commitment to the course material, and their useful feedback on the curriculum.
+Finally, thank you to our group members Chris Akers, Brian Friedenberg, Sajel Shah, Vincent Su, Witold Szejgis, for their curiosity, commitment to the course material, and feedback on the curriculum.
 
 <div class="deps-graph">
 <iframe class="deps" src="/assets/resurrecting-the-sigmoid.svg" width="200"></iframe>
@@ -25,74 +25,75 @@ Finally, thank you to our students Chris Akers, Brian Friedenberg, Sajel Shah, V
 
 # Why
 
-As deep networks continue to make progress in a variety of tasks such as vision and language processing, it is important to understand how to properly train very deep neural networks with gradient-based methods.  This paper studies, from a rigorous theoretical perspective, which combinations of network weight initializations and network activation functions can result in deep networks which are trainable. The analysis framework used is applicable to more general network architectures, including deep convolutional neural networks which are state-of-the-art in image classification tasks.  
+As deep networks continue to make progress in a variety of tasks such as vision and language processing, 
+it is important to understand how to properly train very deep networks with gradient-based methods.
+This paper studies, from a rigorous theoretical perspective, which combinations of network weight initializations and network activation functions result in trainable deep networks. 
+The analysis framework used is broadly applicable to general network architectures.
 
-In this currriculum, we will go through all the background topics necessary to understand the calculations in the paper.  By the end, you will have an understanding of analysis techniques used to study the dynamics of signal propagation in very wide neural networks and be able to perform some simple calculations using random matrix theory.  
+In this currriculum, we will go through all the background topics necessary to understand this mathematically heavy paper. By the end, you will have an understanding of the dynamics of signal propagation in very wide neural networks, as well as an introduction to random matrix theory.  
 
 <br />
 
 # General resources
 
-The two foundations of this paper are: (1) random matrix theory (RMT), and (2) 'mean-field' analysis of signal propagation in wide neural networks. The first resource below is a friendly introduction to RMT, while the second and third are the papers in which the mean-field analysis for deep neural networks was developed. These are good resources to return to throughout the course, though they cover much more than we need to understand the current paper. The deep learning book of Goodfellow et al. is a good reference for fundamentals of deep learning.
+This paper is founded upon Random Matrix Theoryy (RMT), and mean-field analysis of signal propagation. 
+The first resource below is a friendly introduction to RMT, while the second and third are the 
+papers in which the mean-field analysis for deep neural networks was developed. 
+These are good resources to return to throughout the course. For Deep Learning, w recommend Goodfellow et al,
+listed as the fourth resource. And finally the course outline is listed below in case you want an offline copy.
 
-1. Livan, Novaes & Vivo: [Introduction to Random Matrices - Theory and Practice
-](https://arxiv.org/abs/1712.07903)
-2. Poole, Lahiri, Raghu, Sohl-Dickstein & Ganguli: [Exponential expressivity in deep neural networks through transient chaos
-](https://arxiv.org/abs/1606.05340)
-3. Schoenholz, Gilmer, Ganguli, & Sohl-Dickstein: [Deep information propagation](https://arxiv.org/pdf/1611.01232.pdf)
-4. Goodfellow, Bengio & Courville: [Deep Learning](http://www.deeplearningbook.org)
-
-Other helpful resources:
-1. [Course Outline](/assets/sigmoid/misc/Course Outline.docx) : Outline of
-	 prerequisites for the curriculum.
-
+1. Livan, Novaes & Vivo: [Introduction to Random Matrices - Theory and Practice](https://arxiv.org/abs/1712.07903).
+2. Poole, Lahiri, Raghu, Sohl-Dickstein & Ganguli: [Exponential expressivity in deep neural networks through transient chaos](https://arxiv.org/abs/1606.05340).
+3. Schoenholz, Gilmer, Ganguli, & Sohl-Dickstein: [Deep information propagation](https://arxiv.org/pdf/1611.01232.pdf).
+4. Goodfellow, Bengio & Courville: [Deep Learning](http://www.deeplearningbook.org).
+5. [Course Outline](/assets/sigmoid/misc/Course Outline.docx).
 
 
-# 1 Introduction
 
-**Motivation**: The paper we will study in this DFL course is part of a body of work with the broad goal of understanding what combination of network architecture and initialization allow a neural network to be trained with gradient-based methods.  This week, you will read about this problem of trainability, specifically its manifestation in deep neural networks and potential solutions developed by the community.
+# 1 Introduction [to Trainability].
 
-We also suggest that you skim the paper itself, specifically the introductory sections, to understand the relevance of vanishing/exploding gradients to trainability of neural networks.
+**Motivation**: The paper we will study here is part of a body of 
+work with the broad goal of understanding what combination of network architecture 
+and initialization allow a neural network to be trained with gradient-based methods. This week, you will read about this problem, specifically its manifestation in 
+deep neural networks.
 
-**Objectives**:
-After doing these readings, we would like you to understand the following background:
-- Explain the vanishing/exploding gradient problem, and why it worsens as networks become deeper.
+We also suggest that you skim the paper itself, focusing on the introductory sections, 
+to understand the relevance of vanishing/exploding gradients to the trainability of neural networks.
+
+**Objectives**: Understand the following background.
+- Explain the vanishing/exploding gradient problem and why it worsens with network depth.
 - Relate vanishing/exploding gradients to the spectrums of various Jacobians.
-- Explain heuristics used by the community to circumvent the problem of vanishing/exploding gradients, in particular:
+- Understand heuristics used by the community to circumvent the vanishing/exploding gradients, e.g.
   - Common initialization schemes, such as Xavier initialization.
   - Pre-training.
   - Skip connections / residual neural networks.
-  - Non-saturating activation functions (ReLU and its variants).
+  - Non-saturating activation functions (ReLU and its variants.
   
-We would also like you to have an overview of the paper's structure:
-- Motivate and explain the problem the paper is trying to solve
-		 - concentrating the entire spectrum of the network's Jacobian around unity
-- Understand the setup of the paper, specifically why the following tools are necessary:
-     - Mean-field signal propagation analysis
-     - Random matrix theory
+We would also like you to have an overview of the paper's structure and the problem the paper is trying to solve - how to concentrate the entire spectrum of the network's Jacobian around unity.
+Understand why mean-field signal propagation analysis and random matrix theory are necessary for this task.
 
 **Topics**:
 
 - Trainability of networks, specifically the vanishing/exploding gradient problem.
-- Introduction to the paper / course overview.
+- Introduction to the paper and course overview.
 
 **Required Reading** 
 
 Prerequisite: 
-For those of you that aren’t familiar with deep learning, please read the following sections from the [Deep Learning book](http://www.deeplearningbook.org).
+For familiarity with deep learning, please read the following sections from the [Deep Learning book](http://www.deeplearningbook.org).
  
 Preliminaries:
-- 2.7 (Eigendecomposition)
-- 2.8 (Singular value decomposition)
-- 3.2 (Random variables)
-- 3.3 (Probability distributions)
-- 3.7 (Independence and conditional independence)
-- 3.8 (Expectation, variance, and covariance)
-- 5.7 (Supervised learning algorithms)
+- 2.7 (Eigendecomposition).
+- 2.8 (Singular value decomposition).
+- 3.2 (Random variables).
+- 3.3 (Probability distributions).
+- 3.7 (Independence and conditional independence).
+- 3.8 (Expectation, variance, and covariance).
+- 5.7 (Supervised learning algorithms).
 
 Initialization: 
-- 8.2 (Challenges in neural network optimization)
-- 8.4 (Parameter initialization strategies)
+- 8.2 (Challenges in neural network optimization).
+- 8.4 (Parameter initialization strategies).
 
 Other:  
 - [All you need is a good init](https://arxiv.org/pdf/1511.06422.pdf) by Mishkin et al., sections 1 and 2.
@@ -109,7 +110,9 @@ Other:
 
 # 2 Signal propagation
 
-**Motivation**: One of the foundations which the analysis in _Resurrecting the Sigmoid_ rests on is signal propagation in wide neural networks.  Understanding this mean-field analysis framework, and its results, also connects to more recent investigations of, e.g., neural networks as Gaussian processes and the neural tangent kernel (see the [Jacot et al., 2018](https://arxiv.org/abs/1806.07572) and [Lee et al., 2019](https://arxiv.org/pdf/1902.06720))).
+**Motivation**: The _Resurrecting the Sigmoid_ paper relies on signal propagation in wide neural networks. 
+Understanding this framework connects us to more recent investigations of neural networks as Gaussian processes and the neural tangent kernel ([Jacot et al., 2018](https://arxiv.org/abs/1806.07572) and [Lee et al., 2019](https://arxiv.org/pdf/1902.06720))).
+
 
 **Topics**:
 
@@ -117,29 +120,30 @@ Other:
 
 **Required Reading**:
 
-Since this analysis is relatively new, the main sources of information online are the original papers in which the framework was developed, namely: 
+Since this analysis is relatively new, the main sources of information online are the original papers in which it was developed, namely: 
 - Poole, Lahiri, Raghu, Sohl-Dickstein & Ganguli: [Exponential expressivity in deep neural networks through transient chaos
-](https://arxiv.org/abs/1606.05340) (Sections 1, 2, and 3)
-- Schoenholz, Gilmer, Ganguli, & Sohl-Dickstein: [Deep information propagation](https://arxiv.org/pdf/1611.01232.pdf) (Sections 1, 2, 3, and 5)
+](https://arxiv.org/abs/1606.05340) (Sections 1, 2, and 3).
+- Schoenholz, Gilmer, Ganguli, & Sohl-Dickstein: [Deep information propagation](https://arxiv.org/pdf/1611.01232.pdf) (Sections 1, 2, 3, and 5).
 
-These are very useful references, but for those unfamiliar with the field, not necessarily pedagogical.  The problem set listed below is designed to walk you through understanding the formalism in a self-contained manner.  We **strongly** suggest working through the problem set before reading the papers above, and only consulting afterwards or for reference.  Certain problems in the problem set point to sections of the above papers for hints.
+These are very useful references, but not necessarily pedagogical for those unfamiliar with the field. 
+The problem set below is designed to walk you through understanding the formalism in a self-contained manner. We **strongly** suggest doing the problem set before reading the papers above and only consulting afterwards or for reference.
+Note that certain problems point to sections of the above papers for hints.
 
 **Optional Reading**:
 
-Once you understand the mean-field analysis framework, you will have a good foundation for understanding the following papers.  These are strictly 'bonus', i.e. not connected to the main paper of this course.
+Once you understand the mean-field analysis framework, you will have a good foundation for the following papers.  These are 'bonus' and not connected to the target paper.
 1. [Deep Neural Networks as Gaussian Processes](https://arxiv.org/abs/1711.00165)
 2. [Wide Neural Networks of Any Depth Evolve as Linear Models under Gradient Descent](https://arxiv.org/abs/1902.06720)
 
 **Questions**:
 
-For each week, we have a full problem set, which tries to test and improve your
-understanding of the topics covered this week. This week's problem set is [here](/assets/sigmoid/problem-sets/pdfs/1.pdf). In this section we highlight couple of problems which we highly recommend doing.
+This week's problem set is [here](/assets/sigmoid/problem-sets/pdfs/1.pdf). In this section we highlight a couple of the problems.
 
-1. Problem 2 from full set: The mean field approximation
+1. Problem 2: The mean field approximation.
 
     In this problem, we use the knowledge we gained in problem 1 to properly choose to initialize the weights and biases according to \\(W^l \sim \mathcal{N}(0, \sigma_w^2/N)\\) and \\(b^l \sim \mathcal{N}(0, \sigma_b^2)\\). We'll investigate some techniques that will be useful in understanding precisely how the network's random initialization influences what the net does to its inputs; specifically, we'll be able to take a look at how the _depth_ of the network together with the initialization governs the propagation of an input point as it flows forward through the network's layers.
 
-    1. A natural property of input points to study as the input flows through the net layer by layer is its length. Intuitively, this is closely related to how the net transforms the input space, and to how the depth of the net relates to that transformation. Compute the length \\(q^l\\) of the activation vector outputted by layer \\(l\\). When considering non-rectangular nets, where layer \\(l\\) has length \\(N_l\\), we want to distinguish this activation norm from the width of individual layers, so what's a more appropriate quantity we can track to understand how the lengths of activation vectors change in the net?
+    1. A natural property to study in a network is its length. Intuitively, this is closely related to how the net transforms the input space, and to how its depth relates to that transformation. Compute the length \\(q^l\\) of the activation vector output by layer \\(l\\). When considering non-rectangular nets, where layer \\(l\\) has length \\(N_l\\), we want to distinguish this activation norm from the width of individual layers. What's a more appropriate quantity we can track to understand how the lengths of activation vectors change in the net?
         <details><summary>Solution</summary>
         <p>
         The length is simply the Euclidean magnitude, i.e. \(\sum_{i = 1}^N (h_i^l)^2\). We can stabilize this quantity, especially when \(N\) differs across layers, by normalizing:
@@ -220,7 +224,7 @@ Recall that all neuronal activations \(h^l_i\) are zero-mean, and consider the d
         </details>
 
   
-2. Problem 3 from full set: Fixed points and stability
+2. Problem 3: Fixed points and stability.
 
     In the previous problem, we found a recurrence relation relating the length of a vector at layer \\(l\\) of a network to the length of the vector at the previous layer, \\(l-1\\) of the network.  In this problem, we are interested in studying the properties of this recurrence relation.  In the _Resurrecting the sigmoid_ paper, the results of this problem are used to understand at which bias point to evaluate the Jacobian of the input-output map of the network.
 
@@ -344,36 +348,38 @@ href="../assets/sigmoid/problem-sets/source/1/stable_fixed_point.png">[stable fi
 
 <br />
 
-# 3 Random Matrix Theory first glance
+# 3 Random Matrix Theory: Introduction.
 
-**Motivation**: The crux of the paper uses tools from the field of random matrix theory, which studies ensembles of matrix-valued random variables. Here, we will take a first stab at analyzing some of the relevant questions surrounding random matrices, getting a feel for how they and their spectra differ from deterministic matrices, depend on the way we sample the matrices, and what random matrices from different ensembles have in common.
+**Motivation**: The crux of the paper uses tools from random matrix theory, which studies ensembles of matrix-valued random variables.
+Here, we will take a first stab at analyzing some relevant questions and get a feel for how the spectra of random matrices from deterministic matrices.
+We will also see that the spectra depend on how we sample the matrices. Finally, we will investigate what random matrices from different ensembles have in common.
 
 **Objectives**:
 - Gain familiarity with working with the spectra of random matrices.
 - Understand the typical behavior of a random matrix's eigenvalues.
 - Understand how standard RMT eigenvalue distributions are influenced by both level repulsion and confinement.
-- Understand why RMT is used in the Resurrecting the Sigmoid paper
+- Understand why RMT is used in the Resurrecting the Sigmoid paper.
 
 **Topics**:
-- Eigenvalue spacing in random matrices
+- Eigenvalue spacing in random matrices.
 
 **Readings**:
 
-1. [Livan RMT textbook, sections 2.1 - 2.3](https://arxiv.org/pdf/1712.07903.pdf)
+1. [Livan RMT textbook, sections 2.1 - 2.3](https://arxiv.org/pdf/1712.07903.pdf).
 
 **Optional Readings**:
 
-1. [Random Matrix Theory and its Innovative Applications](http://math.mit.edu/~edelman/publications/random_matrix_theory_innovative.pdf) by Edelman and Yang
-2. [Livan RMT textbook, chapters 3, 6, and 7](https://arxiv.org/pdf/1712.07903.pdf)
+1. [Random Matrix Theory and its Innovative Applications](http://math.mit.edu/~edelman/publications/random_matrix_theory_innovative.pdf) by Edelman and Yang.
+2. [Livan RMT textbook, chapters 3, 6, and 7](https://arxiv.org/pdf/1712.07903.pdf).
 
 **Questions**:
 
 The full problem set, from which the problems below are taken, is [here](/assets/sigmoid/problem-sets/pdfs/2.pdf).  
 
 
-1. Avoided crossings in the spectra of random matrices
+1. Avoided crossings in the spectra of random matrices.
 
-    In the first DFL session’s intro to RMT, we mentioned that eigenvalues of random matrices tend to repel each other. Indeed, as one of the recommended textbooks on RMT states, this interplay between confinement and repulsion is the physical mechanism at the heart of many results in RMT. This problem explores that statement, relating it to a concept which comes up often in physics: the avoided crossing.
+    In the first DFL session’s intro to RMT, we mentioned that eigenvalues of random matrices tend to repel each other. Indeed, as one of the recommended textbooks on RMT states, this interplay between confinement and repulsion is the physical mechanism at the heart of many results in RMT. This problem explores that statement, relating it to a concept which comes up often in physics - the avoided crossing.
 
     1. The simplest example of an avoided crossing is in a \\(2 \times 2\\) matrix. Let’s take the matrix
 
@@ -504,11 +510,14 @@ href="../assets/sigmoid/problem-sets/source/2/avoided_crossing.png">[avoided cro
 
 <br />
 
-# 4 Random Matrix Theory: Central tools and concepts
+# 4 Random Matrix Theory: Central concepts.
 
-**Motivation**: In this section we cover the final topic before we can get to the calculations in the paper: free probability, specifically its instantiation in random matrix theory.  This is a huge topic, and quite difficult, but to understand the paper, luckily we don’t need to learn too much of the field.  The basic question to think about is: given two random matrices whose spectral densities we know, when can we calculate the spectral density of their sum or product?  
+**Motivation**: In this section we cover the final topic before we can get to the calculations in the paper - free probability.
+Specifically, we discuss its instantiation in random matrix theory.
+This is a huge topic, but to understand the paper, we luckily don’t need to cover too much space.
+The basic question to think about is, "__Given two random matrices whose spectral densities we know, when can we calculate the spectral density of their sum or product?__"
 
-We also cover some canonical results in random matrix theory, like the semicircular law.
+We also address canonical results in random matrix theory, like the semicircular law.
 
 **Objectives**:
 - Understand some basic properties that are of interest when working with random matrices.
@@ -523,24 +532,24 @@ We also cover some canonical results in random matrix theory, like the semicircu
 
 **Reading**:
 
-As before, the primary learning tool this week is the problem set below.  The following readings will help contextualize the problems.  
+The primary learning tool is again the problem set.  The following readings will help contextualize the problems.  
 
-1. [Livan RMT textbook, chapter 17](https://arxiv.org/pdf/1712.07903.pdf)
-2. Section 2.3 of the [Resurrecting the Sigmoid](https://arxiv.org/pdf/1711.04735.pdf) paper 
-3. [Partial Freeness of Random Matrices](https://arxiv.org/abs/1204.2257) by Chen et al., Sections 1, 2, 3, and 5
+1. [Livan RMT textbook, chapter 17](https://arxiv.org/pdf/1712.07903.pdf).
+2. Section 2.3 of the [Resurrecting the Sigmoid](https://arxiv.org/pdf/1711.04735.pdf) paper.
+3. [Partial Freeness of Random Matrices](https://arxiv.org/abs/1204.2257) by Chen et al., Sections 1, 2, 3, and 5.
 
 **Optional Readings**:
 
-It is tough to find an exposition of free probability theory (i.e., the theory of non-commuting random variables) at an elementary level.  The chapter in the Livan textbook listed above is a great resource, and the following papers might also help shed light on the subject.
+It is tough to find an exposition of free probability theory (i.e., the theory of non-commuting random variables) at an elementary level.  The chapter in the Livan textbook listed above is a great resource, and the following papers might also help.
 
-1. [Financial Applications of Random Matrix Theory: a short review](https://arxiv.org/pdf/0910.1205.pdf) by Bouchaud and Potters, section III
-2. [Applying Free Random Variables to Random Matrix Analysis of Financial Data Part I: A Gaussian Case](https://arxiv.org/pdf/physics/0603024.pdf) by Burda et al. 
+1. [Financial Applications of Random Matrix Theory: a short review](https://arxiv.org/pdf/0910.1205.pdf) by Bouchaud and Potters, section III.
+2. [Applying Free Random Variables to Random Matrix Analysis of Financial Data Part I: A Gaussian Case](https://arxiv.org/pdf/physics/0603024.pdf) by Burda et al.
 
 **Questions**:
 
 The full problem set, from which the below problems are taken, is [here](/assets/sigmoid/problem-sets/pdfs/3.pdf).
 
-1. Why we need free probability
+1. Why we need free probability.
 
     In the upcoming lectures, we will encounter the concept of free independence of random matrices.  As a reminder, in standard probability theory (of scalar-valued random variables), two random variables \\(X\\) and \\(Y\\) are said to be independent if their joint pdf is simply the product of the individual marginals, i.e.
 
@@ -614,7 +623,7 @@ The full problem set, from which the below problems are taken, is [here](/assets
         </details>
 Notice that the answers you got in the previous two parts were different, even though the underlying matrices that were being added had the same spectral density and independent entries.
 
-2. Using the tools of free probability theory
+2. Using free probability theory.
 
     From the last problem, you learned that if you're given two different random matrix ensembles, and you know the spectral density of the eigenvalues of each one, that might not be enough to determine the eigenvalue distribution of the sum (or product) of the two random matrices, _even if all of the entries of the two matrices are mutually independent!_ As we mentioned in the last problem, the (stronger) condition that we are after is known as _free independence_.  In general, proving that two matrix ensembles are "free" (freely independent) is quite tough, so we will not do that here.  Instead, we will look at the tools we use to do calculations _assuming_ we have random matrix ensembles which are freely independent.
 
@@ -744,16 +753,17 @@ Notice that the answers you got in the previous two parts were different, even t
 
 <br />
 
-# 5 Calculations in Resurrecting the Sigmoid
+# 5 Calculations in Resurrecting the Sigmoid.
 
-**Motivation**: Now, we are finally ready to actually perform the calculations from the paper, regarding the input-output Jacobian of randomly initialized neural nets, using random matrix theory and building off of the signal propagation concepts from section 2. Using this analysis, we will be able to predict the conditions under which dynamical isometry - which guarantees that inputs and gradients neither vanish nor explode as they pass through the net - is achievable.
+**Motivation**: We are ready to actually perform the calculations from the paper using RMT and building off of the signal propagation concepts from section two.
+Using this analysis, we will be able to predict under what conditions is dynamical isometry achievable. This principle is the one that guarantees that inputs and gradients neither vanish nor explode as they pass through the net.
 
 **Objectives**:
 - Be able to use the \\(S\\)-transform to calculate \\(\sigma_{JJ^T}^2\\) and \\(\lambda_\text{max}\\) for Gaussian nets.
 - For Gaussian-initialized neural networks, explain why dynamical isometry is unattainable.
 - Be able to use the \\(S\\)-transform to calculate \\(\sigma_{JJ^T}^2\\) and \\(\lambda_\text{max}\\) for orthogonal nets.
 - Explain why orthogonal-initizlied neural networks can be initialized attain dynamical isometry when used with a sigmoidal activation function.
-- Understand how to choose initialization parameters of an orthogonal, sigmoidal net of a given depth to ensure dynamical isometry
+- Understand how to choose initialization parameters of an orthogonal, sigmoidal net of a given depth to ensure dynamical isometry.
 
 **Topics**:
 - Jacobian spectra of neural networks with  Gaussian- and orthogonal- initialized random weight matrices.
@@ -761,13 +771,13 @@ Notice that the answers you got in the previous two parts were different, even t
 
 **Required Reading**:
 
-1. [_Resurrecting the Sigmoid_, sections 2.2 and 2.5](https://arxiv.org/pdf/1711.04735.pdf)
+1. [_Resurrecting the Sigmoid_, sections 2.2 and 2.5](https://arxiv.org/pdf/1711.04735.pdf).
 
 **Questions**:
 
 The full problem set, from which the below problems are taken, is [here](/assets/sigmoid/problem-sets/pdfs/4.pdf).
 
-1. Setup
+1. Setting up the calculations.
 
     In this problem set, we perform the main calculations from the  _Resurrecting the Sigmoid_ paper.  The ultimate aim is to look for conditions under which we can achieve _dynamical isometry_, the condition that all of the singular values of the network's Jacobian have magnitude \\(1\\).  Thus, the problems in this set are all aimed at calculating the eigenvalue spectral density \\(\rho_{JJ^T}(\lambda)\\)  of nets' Jacobians for specific choices of nonlinearities and weight-matrix initializations. We accomplish this by using the rule we learned from free probability:  \\(S\\)-transforms of freely-independent matrix ensembles multiply under matrix multiplication.  Following this logic, we will calculate \\(S\\)-transforms for the matrices \\(WW^T\\) and \\(D^2\\), combine these results to arrive at \\(S_{JJ^T}\\), and from that calculate \\(\rho_{JJ^T}(\lambda)\\).  In this problem set, as in the paper, we do not prove that the matrices are freely independent, but instead take that as an assumption.
 
@@ -900,7 +910,7 @@ As in the paper, define \\(p(q^\*)\\) as the probability, given the variance \\(
         </p>
         </details>
 
-    4. __In terms of \\(p(q^\*)\\), what is the spectral density \\(\rho_{D^2}(z)\\) (for both ReLU and hard-tanh networks) of the eigenvalues of \\(D^2\\)?__.
+    4. In terms of \\(p(q^\*)\\), what is the spectral density \\(\rho_{D^2}(z)\\) (for both ReLU and hard-tanh networks) of the eigenvalues of \\(D^2\\)?.
         <details><summary>Solution</summary>
         <p>
     Bernoulli with parameter equal to the probability of being in the linear regime. The Dirac delta expresses the fact that both ReLU and hard-tanh are piecewise linear with sections at value \(0\), so their probability of being in the linear regime is a step function -- it allows us to express a discrete pdf (in this case with two values, \(0\) and \(1\)).
@@ -935,7 +945,7 @@ Note: This should be the same for both ReLU and hard-tanh networks.
         </p>
         </details>
 
-    6. Now that we've calculated the transforms we wanted in terms of \\(p(q^\*)\\), let us see what the critical point (which determines \\(q^\*\\) and \\(p(q^\*)\\)) looks like for our two nonlinearity options. __For ReLU networks, what is \\(p(q^\*)\\)?  Show that this implies that the only critical point for ReLU networks is \\((\sigma_w, \sigma_b) = (\sqrt{2},0).\\)__  
+    6. Now that we've calculated the transforms we wanted in terms of \\(p(q^\*)\\), let us see what the critical point (which determines \\(q^\*\\) and \\(p(q^\*)\\)) looks like for our two nonlinearity options. For ReLU networks, what is \\(p(q^\*)\\)?  Show that this implies that the only critical point for ReLU networks is \\((\sigma_w, \sigma_b) = (\sqrt{2},0).\\)  
         <details><summary>Solution</summary>
         <p>
     For ReLUs, the nonlinearity is half in the positive linear regime and half at \(0\). Assuming \(0\)-mean symmetric activation distributions, the probability of being in the linear regime is \(p(q^*) = \frac{1}{2}\).
@@ -952,7 +962,7 @@ Note: This should be the same for both ReLU and hard-tanh networks.
         </p>
         </details>
 
-    7. For hard-tanh networks, the behavior is a bit more complex, but we can calculate it numerically.  As we saw in problem set 2, for the smooth tanh network there is a 1D curve in the \\((\sigma_w, \sigma_b)\\) plane which satisfies criticality.  The same is true for the hard tanh network, as we'll now see.  We are interested in three quantities, all of which are functions of \\(\sigma_w\\) and \\(\sigma_b\\):  \\(q^\*\\), \\(p(q^\*)\\), and \\(\chi\\). We've already seen (in part (c) above) that if we know \\(\sigma_w\\) and \\(p(q^\*)\\), we can easily determine \\(\chi\\).  It turns out that there is also a simple relation between \\(q^\*\\) and \\(p(q^\*)\\). __Show that for the hard tanh network, \\(p(q^\*) = \mathrm{erf}(1/\sqrt{2q^\*})\\).__
+    7. For hard-tanh networks, the behavior is a bit more complex, but we can calculate it numerically.  As we saw in problem set 2, for the smooth tanh network there is a 1D curve in the \\((\sigma_w, \sigma_b)\\) plane which satisfies criticality.  The same is true for the hard tanh network, as we'll now see.  We are interested in three quantities, all of which are functions of \\(\sigma_w\\) and \\(\sigma_b\\):  \\(q^\*\\), \\(p(q^\*)\\), and \\(\chi\\). We've already seen (in part (c) above) that if we know \\(\sigma_w\\) and \\(p(q^\*)\\), we can easily determine \\(\chi\\).  It turns out that there is also a simple relation between \\(q^\*\\) and \\(p(q^\*)\\). Show that for the hard tanh network, \\(p(q^\*) = \mathrm{erf}(1/\sqrt{2q^\*})\\).
         <details><summary>Solution</summary>
         <p>
     For hard-tanh, \(p(q^*)\) is the probability that a normally distribution set of activations takes on values in hard-tanh's linear regime (recall this is between \(-1\) and \(1\)). Thus we integrate \(\int_{-1}^{1} z dz\) where \(z\) is a zero-mean Gaussian with variance \(q^*\). The integral of the Gaussian is given by the error function. The error function (denoted \(erf\) and defined as the integral of the standard Gaussian) is commonly defined without the leading factor \(\frac{2}{\pi}\), so \(\int z dz = erf(\sqrt(1/2q^*)\) (the parameter \(1/2q^*\) is arrived at by substituting \(t=h/\sqrt{2q^*}\)). Thus \(p(q^*) = erf(\sqrt(1/2q^*)\).
@@ -1110,9 +1120,9 @@ $$ m_k = \frac{\sigma_w^{2k}}{k + 1} {2k \choose k} $$ where \\(m_k\\) is the \\
         </details>
 <br />
 
-# 6 Experimental Results, Future Work
+# 6 Experimental Results & Future Work.
 
-**Motivation**: To wrap up our study of this paper, we'll replicate some of their experiments, programatically validating the theoretical results we derived above. We've provided some starter code [here](https://drive.google.com/open?id=1ocuk_mH4fJrFkDKhMT4ZdAqIMIgnFDet) in an IPython notebook.
+**Motivation**: Before wrapping up, we will programatically validate the theoretical results we derived above. You can find starter code in an IPython notebook [here](https://drive.google.com/open?id=1ocuk_mH4fJrFkDKhMT4ZdAqIMIgnFDet).
 
 **Objectives**:
 - Experimentally confirm the linear dependence of the singular value spectrum of a neural net's Jacobian under various random initializations.
@@ -1121,7 +1131,7 @@ $$ m_k = \frac{\sigma_w^{2k}}{k + 1} {2k \choose k} $$ where \\(m_k\\) is the \\
 **Follow-up reading**:
 Here are a couple papers you might enjoy, which build upon the results of this paper:
 1. [Dynamical Isometry and a Mean Field Theory of CNNs: How to Train 10,000-Layer Vanilla Convolutional Neural Networks](https://arxiv.org/pdf/1806.05393.pdf) by Xiao et al.
-2. [The Emergence of Spectral Universality in Deep Networks](https://arxiv.org/pdf/1802.09979.pdf)
+2. [The Emergence of Spectral Universality in Deep Networks](https://arxiv.org/pdf/1802.09979.pdf).
 3. [Statistical Mechanics of Deep
-	 Learning](https://www.annualreviews.org/doi/full/10.1146/annurev-conmatphys-031119-050745)
+	 Learning](https://www.annualreviews.org/doi/full/10.1146/annurev-conmatphys-031119-050745).
 <br />
