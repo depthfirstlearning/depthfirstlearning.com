@@ -11,7 +11,7 @@ feedback: true
 ---
 
 [Editor’s Note: This class was a part of the 2019 DFL Jane Street Fellowship.]
-
+ 
 This guide would not have been possible without the help and feedback from many people. 
 
 Special thanks to Yasaman Bahri for her feedback, support, and mentoring.
