@@ -51,6 +51,10 @@ riley:
     name: Riley Edmunds
     email: rileyedmunds@gmail.com
     web: https://www.linkedin.com/in/rileyedmunds
+kroon:
+    name: Steve Kroon
+    email: skroon@gmail.com
+    web: https://twitter.com/skroon
 
 # Build settings
 markdown:       kramdown

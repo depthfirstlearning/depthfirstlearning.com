@@ -8,7 +8,7 @@ blurb: "Stein Variational Gradient Descent is a powerful, non-parameteric Bayesi
 feedback: true
 ---
 
-[Editor’s Note: This class was a part of the 2019 DFL Jane Street Fellowship.]
+[Editor’s Note: This class was a part of the 2019 DFL [Jane Street](https://www.janestreet.com/) Fellowship.]
 
 This guide is thanks to a many different people, all of whom took their time to give feedback, write reviews, and provide their own insights to the curriculum.
 
