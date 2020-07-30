@@ -41,7 +41,7 @@ AlphaGoZero.
 <br />
 # Common Resources:
 1. Knuth: [An Analysis of Alpha-Beta Pruning](https://pdfs.semanticscholar.org/dce2/6118156e5bc287bca2465a62e75af39c7e85.pdf)
-2. SB: [Reinforcement Learning: An Introduction, Sutton & Barto](http://incompleteideas.net/book/bookdraft2017nov5.pdf).
+2. SB: [Reinforcement Learning: An Introduction, Sutton & Barto](http://incompleteideas.net/book/RLbook2020.pdf).
 3. Kun: [Jeremy Kun: Optimizing in the Face of Uncertainty](https://jeremykun.com/2013/10/28/optimism-in-the-face-of-uncertainty-the-ucb1-algorithm/).
 4. Vodopivec: [On Monte Carlo Tree Search and Reinforcement Learning](https://pdfs.semanticscholar.org/3d78/317f8aaccaeb7851507f5256fdbc5d7a6b91.pdf).
 
