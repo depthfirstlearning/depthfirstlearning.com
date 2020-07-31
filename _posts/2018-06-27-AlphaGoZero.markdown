@@ -215,8 +215,8 @@ AlphaGoZero.
      off-policy algorithm is Q-Learning.
      </p>
      </details>
-  3. SB: Exercises 3.13, 3.14, 3.15, 3.20, 4.3.
-  4. SB: Exercise 4.6 - How would policy iteration be defined for action values?
+  3. SB: Exercises 3.15, 3.16, 3.17, 3.23, 4.3.
+  4. SB: Exercise 4.5 - How would policy iteration be defined for action values?
   Give a complete algorithm for computing $$q^{*}$$, analogous to that on page 65
   for computing $$v^{*}$$.
        <details><summary>Solution</summary>
@@ -229,7 +229,7 @@ AlphaGoZero.
         <li> \( q^{*} \leftarrow Q(s, a) \) </li>
        </ol> </p>
        </details>
-  5. SB: Exercise 13.2 - Prove that the eligibility vector 
+  5. SB: Exercise 13.3 - Prove that the eligibility vector 
   $$\nabla_{\theta} \ln \pi (a | s, \theta) = x(s, a) - \sum_{b} \pi (b | s, \theta)x(s, b)$$ 
   using the definitions and elementary calculus. Here, $$\pi (a | s, \theta)$$ = softmax( $$\theta^{T}x(s, a)$$ ).
        <details><summary>Solution</summary>
