@@ -38,7 +38,7 @@ In this currriculum, we will go through all the background topics necessary to u
 
 # General resources
 
-This paper is founded upon Random Matrix Theoryy (RMT), and mean-field analysis of signal propagation. 
+This paper is founded upon Random Matrix Theory (RMT), and mean-field analysis of signal propagation. 
 The first resource below is a friendly introduction to RMT, while the second and third are the 
 papers in which the mean-field analysis for deep neural networks was developed. 
 These are good resources to return to throughout the course. For Deep Learning, w recommend Goodfellow et al,
