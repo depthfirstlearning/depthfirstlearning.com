@@ -47,7 +47,7 @@ Stein's Method is a powerful statistical method, one that is at the disposal (an
   **Required Reading**:
 
   1. [Reproducing Kernel Hilbert Spaces Tutorial, Section 1 - 3](http://www.gatsby.ucl.ac.uk/~gretton/coursefiles/lecture4_introToRKHS.pdf).
-  2. [A gentle introduction to Measure Theory (Chandalia)](https://www.win.tue.nl/~rvhassel/Onderwijs/Old-Onderwijs/2DE08-1011/ConTeXt-OWN-FA-201209-Bib/Literature/sigma-algebra/gc_06_measure_theory.pdf).
+  2. [A gentle introduction to Measure Theory (Chandalia)](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.124.3854&rep=rep1&type=pdf).
   
   **Optional Reading**:
 
@@ -140,7 +140,7 @@ Stein's Method is a powerful statistical method, one that is at the disposal (an
   **Optional Reading**:
 
   1. [A Short History of Stein's Method](https://arxiv.org/abs/1404.1392).
-  2. [Gentle Introduction to Stein's Method](http://www.ims.nus.edu.sg/Programs/stein09/files/A%20Gentle%20Introduction%201.pdf).
+  2. [Gentle Introduction to Stein's Method](https://www.ims.nus.edu.sg/oldwww/Programs/stein09/files/A%20Gentle%20Introduction%201.pdf).
   
   **Questions**:
 
@@ -229,8 +229,8 @@ Stein's Method is a powerful statistical method, one that is at the disposal (an
 
   **Required Reading**:
 
-  1. [A Short Introduction to Kernelized Stein Discrepancy](http://www.cs.dartmouth.edu/~qliu/PDF/ksd_short.pdf).
-  2. [ICML 2015 Slides on KSD](https://www.cs.dartmouth.edu/~qliu/PDF/slides_ksd_icml2015.pdf).
+  1. [A Short Introduction to Kernelized Stein Discrepancy](https://www.cs.utexas.edu/~lqiang/PDF/ksd_short.pdf).
+  2. [ICML 2015 Slides on KSD](https://www.cs.utexas.edu/~lqiang/PDF/slides_ksd_icml2015.pdf).
   3. [Kernelized Stein Discrepancy](https://arxiv.org/abs/1602.03253).
   4. [What is Maximum Mean Discrepancy?](https://stats.stackexchange.com/questions/276497/maximum-mean-discrepancy-distance-distribution).
   
@@ -285,13 +285,13 @@ Stein's Method is a powerful statistical method, one that is at the disposal (an
 
   **Required Reading**:
 
-  1. [SVGD Slides](https://www.cs.dartmouth.edu/~qliu/PDF/steinslides16.pdf).
+  1. [SVGD Slides](https://www.cs.utexas.edu/~lqiang/PDF/steinslides16.pdf).
   2. [SVGD Paper](https://arxiv.org/abs/1608.04471).
   3. [Sanyam Kapoor's great notebook on Stein Gradients](https://www.sanyamkapoor.com/machine-learning/stein-gradient/).
   
   **Optional Reading**:
 
-  1. [SVGD: Theory and Applications](https://www.cs.dartmouth.edu/~qliu/PDF/svgd_aabi2016.pdf).
+  1. [SVGD: Theory and Applications](https://www.cs.utexas.edu/~lqiang/PDF/svgd_aabi2016.pdf).
   2. [Learning to Sample with Amortized SVGD](https://arxiv.org/abs/1707.06626).
   
   **Questions**:
