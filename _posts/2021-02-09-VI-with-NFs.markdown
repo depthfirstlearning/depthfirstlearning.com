@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Variational Inference with Normalizing Flows"
-date:   2021-02-10 6:00:00 -0400
+date:   2021-02-09 6:00:00 -0400
 categories: neural-nets,variational-inference,normalizing-flows
 author: 'kroon' 
 blurb: "Large-scale neural models using amortized variational inference, such as the variational auto-encoder, typically rely on simple variational families.
