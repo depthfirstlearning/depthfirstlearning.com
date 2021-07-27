@@ -23,8 +23,10 @@ def convert(docx_path, output_path):
         match = m.match(paragraph.text)
         if match is not None:
             speaker, _, _ = match.groups()
+            speaker = speaker.strip()
             speakers.add(speaker)
     speakers = sorted(speakers)
+    print(speakers)
 
     captions = []
     speaker = None
