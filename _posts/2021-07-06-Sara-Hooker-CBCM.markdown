@@ -1,7 +1,7 @@
 ---
 layout: audio
 title:  "Characterising Bias in Compressed Models by Sara Hooker"
-date:   2021-07-06 10:00:00 -0400
+date:   2021-08-06 10:00:00 -0400
 audiofile: /assets/audios/sarahooker.cbcm.mp3
 captionfile: "captions/sarahooker.cbcm.html"
 categories: generalization
