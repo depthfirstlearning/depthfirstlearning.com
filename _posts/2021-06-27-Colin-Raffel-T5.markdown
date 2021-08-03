@@ -1,7 +1,7 @@
 ---
 layout: audio
 title:  "T5 by Colin Raffel"
-date:   2021-07-27 10:00:00 -0400
+date:   2021-08-03 10:00:00 -0400
 audiofile: /assets/audios/colinraffel.t5.mp3
 captionfile: "captions/colinraffel.t5.html"
 categories: nlp
