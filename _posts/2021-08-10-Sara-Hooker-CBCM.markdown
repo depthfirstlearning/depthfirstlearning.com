@@ -4,7 +4,7 @@ title:  "Characterising Bias in Compressed Models by Sara Hooker"
 date:   2021-08-10 10:00:00 -0400
 audiofile: /assets/audios/sarahooker.cbcm.mp3
 captionfile: "captions/sarahooker.cbcm.html"
-categories: generalization
+categories: generalization,compression
 author: cinjon
 blurb: "[Audio] Characterising Bias in Compressed Models is an important paper analyzing
         how the methods that we use to make machine learning models smaller impact
