@@ -1,7 +1,7 @@
 ---
 layout: audio
 title:  "Learning the Optimizer by Luke Metz"
-date:   2021-08-13 10:00:00 -0400
+date:   2021-08-13 09:00:00 -0400
 audiofile: /assets/audios/lukemetz.learnedopts.mp3
 captionfile: "captions/lukemetz.learnedopts.html"
 categories: optimization
