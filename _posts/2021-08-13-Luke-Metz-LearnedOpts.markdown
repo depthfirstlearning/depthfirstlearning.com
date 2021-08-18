@@ -19,6 +19,3 @@ step towards replacing hand-designed features with learned functions, this time 
 optimizer. This has been a three year journey for Luke; listen to him describe what
 he's learned along the way and where are the pain points, from research to
 engineering.
-
-
-
