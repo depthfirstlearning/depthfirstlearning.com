@@ -1,23 +1,14 @@
 ---
 layout: audio
-title:  "'Bringing the people back in' by Emily Denton"
-date:   2021-08-25 10:00:00 -0400
+title:  "Bringing the people back in by Emily Denton"
+date:   2021-08-20 10:00:00 -0400
 audiofile: /assets/audios/emilydenton.peopleback.mp3
 captionfile: "captions/emilydenton.peopleback.html"
 categories: fairness
 author: cinjon
-blurb: "[Audio] TODO"
+blurb: "[Audio] What are the histories, values, and norms of a dataset? This is an important question for practitioners to understand because datasets serve as the root of what we as a field care about. Listen to Emily Denton explain how her team is thinking about this problem and the four research questions they pose in this paper."
 feedback: true
 ---
 
-TODO !
-
-[Tasks, stability, architecture, and compute: Training more effective learned optimizers, and using them to train themselves](https://arxiv.org/abs/2009.11243)
-was a paper from September, 2020, by [Luke Metz](http://lukemetz.com/) and co. It is another
-step towards replacing hand-designed features with learned functions, this time the
-optimizer. This has been a three year journey for Luke; listen to him describe what
-he's learned along the way and where are the pain points, from research to
-engineering.
-
-
-Bringing the people back in: Contesting benchmark machine learning datasets
+[Bringing the people back in: Contesting benchmark machine learning datasets](https://arxiv.org/abs/2007.07399) was a paper from July, 2020, by [Emily Denton](https://cephaloponderer.com/) and team.
+It is an interogation of how datasets in machine learning are made and how they influence the field. The work motivates the need for genealogical methods for datasets so that we can trace their history and ensure that users are sufficiently aware of what biases they introduce into resulting infrastructure. This is an ongoing journey for Emily in her blossoming career. Listen to her describe that journey here.
