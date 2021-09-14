@@ -1,7 +1,7 @@
 ---
 layout: audio
 title:  "Bringing the people back in by Emily Denton"
-date:   2021-09-14 10:00:00 -0400
+date:   2021-09-14 4:00:00 -0400
 audiofile: /assets/audios/emilydenton.peopleback.mp3
 captionfile: "captions/emilydenton.peopleback.html"
 categories: fairness
